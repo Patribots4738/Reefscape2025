@@ -1,0 +1,50 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [7]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [8]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX (v6)[10]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Auto Routine": "String Chooser",
+      "/SmartDashboard/Field": "Field2d"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "AdvantageKit": {
+        "RealOutputs": {
+          "Draggables": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "open": true
+    },
+    "visible": true
+  }
+}
