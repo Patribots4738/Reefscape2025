@@ -49,6 +49,8 @@ public interface ModuleIO {
 
     default void setTurnPosition(double position) {}
 
+    default void setTurnVelocity(double velocity) {}
+
     default void setGains(GainConstants driveGains, GainConstants turnGains) {}
 
 }

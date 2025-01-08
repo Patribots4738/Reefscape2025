@@ -59,6 +59,10 @@ public class Module {
         this.desiredState = correctedDesiredState;
     }
 
+    public void setTurnVelocity(double velocity) {
+        io.setTurnVelocity(velocity);
+    }
+
     public void setTurnZero() {
         io.setTurnPosition(0);
     }

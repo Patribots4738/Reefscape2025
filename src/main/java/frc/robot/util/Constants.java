@@ -251,6 +251,8 @@ public final class Constants {
         // the steering motor in the MAXSwerve Module.
         public static final boolean TURNING_ENCODER_INVERTED = true;
 
+        public static final double MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC = 20.0 * Math.PI;
+
         // Calculations required for driving motor conversion factors and feed forward
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = NeoMotorConstants.VORTEX_FREE_SPEED_RPM / 60;
         // **********************************************************************MAX SWERVE**********************
@@ -351,6 +353,8 @@ public final class Constants {
         public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.080322;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
+
+        public static final double MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC = 20.0 * Math.PI;
 
         public static final boolean INVERT_TURNING_MOTOR = false;
 

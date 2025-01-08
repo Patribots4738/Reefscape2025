@@ -129,6 +129,11 @@ public class ModuleIONeo implements ModuleIO {
     }
 
     @Override
+    public void setTurnVelocity(double velocity) {
+        turnMotor.setTargetVelocity(velocity);
+    }
+
+    @Override
     public void setGains(GainConstants driveGains, GainConstants turnGains) {
         driveMotor.setPID(driveGains);
         turnMotor.setPID(turnGains);

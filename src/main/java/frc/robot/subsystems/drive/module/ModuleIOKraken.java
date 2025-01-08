@@ -23,7 +23,6 @@ public class ModuleIOKraken implements ModuleIO {
      * @param index
      */
     public ModuleIOKraken(int drivingCANId, int turningCANId, int canCoderId, double absoluteEncoderOffset) {
-        // TODO: CHANGE USETORQUECONTROL TO TRUE ONCE WE HAVE PHOENIX PRO
         driveMotor = new Kraken(drivingCANId, "Drivebase", true, false);
         turnMotor = new Kraken(turningCANId, "Drivebase", true, false);
         turnEncoder = new CANCoderCustom(canCoderId, "Drivebase");
@@ -155,6 +154,11 @@ public class ModuleIOKraken implements ModuleIO {
     @Override
     public void setTurnPosition(double position) {
         turnMotor.setTargetPosition(position);
+    }
+    
+    @Override
+    public void setTurnVelocity(double velocity) {
+        turnMotor.setTargetVelocity(velocity);
     }
 
     @Override

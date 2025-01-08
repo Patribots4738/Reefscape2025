@@ -149,6 +149,7 @@ public class RobotContainer {
         controller.rightBumper().whileTrue(swerve.getSetWheelsO());
         controller.b().whileTrue(swerve.driveCharacterization());
         controller.y().whileTrue(swerve.getSetWheelsZero());
+        controller.a().whileTrue(swerve.tuneTurnVelocityCommand());
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
