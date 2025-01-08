@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.util.Constants.AutoConstants;
-import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.KrakenMotorConstants;
 import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.Constants.NeoMotorConstants;
@@ -116,7 +114,6 @@ public class Robot extends LoggedRobot {
 
     @Override   
     public void autonomousInit() {
-        DriveConstants.MAX_SPEED_METERS_PER_SECOND = AutoConstants.MAX_SPEED_METERS_PER_SECOND;
         Robot.gameMode = GameMode.AUTONOMOUS;
         robotContainer.onEnabled();
         // We only need to update alliance becuase
@@ -150,7 +147,6 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopInit() {
         Robot.gameMode = GameMode.TELEOP;
-        DriveConstants.MAX_SPEED_METERS_PER_SECOND = DriveConstants.MAX_TELEOP_SPEED_METERS_PER_SECOND;
         robotContainer.onEnabled();
     }
 

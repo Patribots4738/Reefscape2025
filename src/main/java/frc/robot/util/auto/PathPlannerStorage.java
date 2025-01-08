@@ -33,13 +33,6 @@ public class PathPlannerStorage {
 
     public static final ArrayList<Pose2d> AUTO_STARTING_POSITIONS = new ArrayList<Pose2d>();
 
-    public static final PathConstraints PATH_CONSTRAINTS =
-        new PathConstraints(
-            AutoConstants.MAX_SPEED_METERS_PER_SECOND, 
-            AutoConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED, 
-            AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, 
-            AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
-
     public static final HashMap<String, List<PathPlannerPath>> AUTO_PATHS = new HashMap<String, List<PathPlannerPath>>();
     /**
      * Creates a new AutoPathStorage object.

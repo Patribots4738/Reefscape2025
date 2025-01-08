@@ -79,13 +79,9 @@ public final class Constants {
     public static final class DriveConstants {
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
-        public static double MAX_SPEED_METERS_PER_SECOND = AutoConstants.MAX_SPEED_METERS_PER_SECOND;
+        public static final double MAX_SPEED_METERS_PER_SECOND = 4.85;
 
         public static final double MAX_ANGULAR_SPEED_RADS_PER_SECOND = Units.degreesToRadians(1137.21); // radians per second
-
-        public static final double MAX_TELEOP_SPEED_METERS_PER_SECOND = 4.7;
-
-        public static final double PASS_ROTATION_DEADBAND = 10;
 
         public static final double ODOMETRY_FREQUENCY = 250.0;
 
@@ -134,32 +130,13 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-
-        // The below values need to be tuned for each new robot.
-        // They are currently set to the values suggested by Choreo
-        public static final double MAX_SPEED_METERS_PER_SECOND = 5;
-        public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 5;
+        
         // Below is gotten from choreo
         public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.degreesToRadians(1137.21);
         public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Units.degreesToRadians(792.90);
 
-        public static final double AUTO_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
-        public static final double AUTO_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
-        public static final double PASS_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(10);
-
-        public static final double AUTO_ALIGNMENT_DEADBAND = Units.inchesToMeters(3);
-
-        /*
-         * XY:
-         *  P: 5.2
-         *  I: 0.125
-         *  D: 0.0125
-         * 
-         * Theta:
-         *   P: 1.3325
-         *   I: 1 (izone on 20 degrees)
-         *   D: 0.0375
-         */
+        public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
+        public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
         public static final double XY_CORRECTION_P = 4;
         public static final double XY_CORRECTION_I = 0.0125;
@@ -191,8 +168,8 @@ public final class Constants {
             AutoConstants.THETA_GAINS.getI(),
             AutoConstants.THETA_GAINS.getD(),
             new TrapezoidProfile.Constraints(
-                    AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
-                    AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)) 
+                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
+                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)) 
             {{
                 setIZone(Units.degreesToRadians(45));
             }};
@@ -201,13 +178,13 @@ public final class Constants {
         public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS = new TrapezoidProfile.Constraints(
                 MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
 
-        public static HolonomicDriveController HDC = new HolonomicDriveController(
+        public static HolonomicDriveController TELE_HDC = new HolonomicDriveController(
                 XY_PID,
                 XY_PID,
                 THETA_PID
             );
 
-        public static PPHolonomicDriveController PPHDC = new PPHolonomicDriveController(
+        public static PPHolonomicDriveController AUTO_HDC = new PPHolonomicDriveController(
             new PIDConstants(
                 AutoConstants.XY_GAINS.getP(),
                 AutoConstants.XY_GAINS.getI(),
@@ -529,7 +506,7 @@ public final class Constants {
 
     public static final class PigeonConstants {
 
-        public static final double PIGEON_FAST_UPDATE_FREQ_HZ = 100; // TODO: FIND THE SWEET SPOT
+        public static final double PIGEON_FAST_UPDATE_FREQ_HZ = 250; // TODO: FIND THE SWEET SPOT
 
     }
 
@@ -539,7 +516,7 @@ public final class Constants {
 
     public static final class FieldConstants {
 
-        public static boolean IS_SIMULATION = Robot.isSimulation();
+        public static final boolean IS_SIMULATION = Robot.isSimulation();
 
     }
 

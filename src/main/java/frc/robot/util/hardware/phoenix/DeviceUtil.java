@@ -29,7 +29,10 @@ public class DeviceUtil {
             refreshStatus = refreshSupplier.get();
             parameterCheck = parameterCheckSupplier.getAsBoolean();
             if (applyStatus.isOK() && refreshStatus.isOK() && parameterCheck) {
-                System.err.println("Successfully applied " + name + " to device " + deviceId + " on attempt " + i);
+                // Only confirm success if parameter failed previously
+                if (i > 1) {
+                    System.err.println("Successfully applied " + name + " to device " + deviceId + " on attempt " + i);
+                }
                 return applyStatus;
             } else {
                 System.err.println("Failed to apply " + name + " to device " + deviceId + " on attempt " + i);

@@ -95,8 +95,8 @@ public class RobotContainer {
         ));
 
         HDCTuner = new HDCTuner(
-            AutoConstants.HDC.getXController(),
-            AutoConstants.HDC.getThetaController());
+            AutoConstants.TELE_HDC.getXController(),
+            AutoConstants.TELE_HDC.getThetaController());
 
         configureButtonBindings();
         configureTimedEvents();
@@ -208,7 +208,7 @@ public class RobotContainer {
             NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Rotation/2-D").setDouble(AutoConstants.ROTATION_CORRECTION_D);
             return;
         } else {
-            AutoConstants.PPHDC = new PPHolonomicDriveController(
+            AutoConstants.AUTO_HDC = new PPHolonomicDriveController(
                 new PIDConstants(
                     PPHDCP,
                     PPHDCI,

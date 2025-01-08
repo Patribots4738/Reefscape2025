@@ -17,9 +17,9 @@ public class HDCTuner extends SubsystemBase {
     @AutoLogOutput (key = "Managers//HDCTuner/PIDIndex")
     public int PIDIndex = 0;
 
-    public PIDController XYController = AutoConstants.HDC.getXController();
+    public PIDController XYController = AutoConstants.TELE_HDC.getXController();
 
-    public ProfiledPIDController thetaController = AutoConstants.HDC.getThetaController();
+    public ProfiledPIDController thetaController = AutoConstants.TELE_HDC.getThetaController();
 
     public HDCTuner(PIDController XYController, ProfiledPIDController thetaController) {
         this.XYController = XYController;
@@ -27,7 +27,7 @@ public class HDCTuner extends SubsystemBase {
     }
 
     public void updateValues() {
-        AutoConstants.HDC = new HolonomicDriveController(
+        AutoConstants.TELE_HDC = new HolonomicDriveController(
             XYController,
             XYController,
             thetaController
