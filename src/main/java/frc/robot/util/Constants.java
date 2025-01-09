@@ -354,7 +354,7 @@ public final class Constants {
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
-        public static final double MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC = 20.0 * Math.PI;
+        public static final double MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC = 609.669;
 
         public static final boolean INVERT_TURNING_MOTOR = false;
 
