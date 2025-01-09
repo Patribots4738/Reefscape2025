@@ -119,8 +119,8 @@ public class ModuleIONeo implements ModuleIO {
     }
 
     @Override
-    public void runDriveVelocity(double velocity) {
-        driveMotor.setTargetVelocity(velocity);
+    public void runDriveVelocity(double velocity, double feedforward) {
+        driveMotor.setTargetVelocity(velocity, feedforward);
     }
 
     @Override

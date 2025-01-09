@@ -196,7 +196,8 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "Test"
+            "3-J4-CS1-A3-S1-P",
+            "3-J4-CS1-K4-CS1-L4-CS1-A4"
         };
 
     }
@@ -381,7 +382,7 @@ public final class Constants {
         public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 60.0;
         public static final double TURNING_MOTOR_TORQUE_LIMIT_AMPS = 40.0;
 
-        public static final double DRIVING_P = 0.02;
+        public static final double DRIVING_P = Robot.isSimulation() ? 0.5 : 0.02;
         public static final double DRIVING_I = 0;
         public static final double DRIVING_D = 0;
         public static final double DRIVING_S = Robot.isSimulation() ? 0.01453 : 0.07193;

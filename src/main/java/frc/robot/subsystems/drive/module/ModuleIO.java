@@ -45,7 +45,7 @@ public interface ModuleIO {
 
     default void runTurnCharacterization(double input) {}
 
-    default void runDriveVelocity(double velocity) {}
+    default void runDriveVelocity(double velocity, double feedforward) {}
 
     default void setTurnPosition(double position) {}
 

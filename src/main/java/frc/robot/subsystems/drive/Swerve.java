@@ -13,6 +13,9 @@ import org.littletonrobotics.junction.Logger;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.util.DriveFeedforwards;
+import com.pathplanner.lib.util.swerve.SwerveSetpoint;
+import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 
 import java.util.Arrays;
 
@@ -63,6 +66,9 @@ public class Swerve extends SubsystemBase {
     private final Module[] swerveModules;
 
     private SwerveDrivePoseEstimator poseEstimator;
+
+    private final SwerveSetpointGenerator setpointGenerator;
+    private SwerveSetpoint previousSetpoint;
 
     private LoggedTunableConstant driveMultiplier = new LoggedTunableConstant("Drive/DriveMultiplier", 1.0);
     private LoggedTunableConstant driveMaxLinearVelocity = new LoggedTunableConstant("Drive/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
@@ -122,24 +128,6 @@ public class Swerve extends SubsystemBase {
         resetEncoders();
         setBrakeMode();
 
-        RobotConfig config = new RobotConfig(0, 0, new ModuleConfig(0, 0, 0, DCMotor.getKrakenX60Foc(1), 0, 0), 0);
-
-        try {
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        AutoBuilder.configure(
-                this::getPose,
-                this::resetOdometryAuto,
-                this::getRobotRelativeVelocity,
-                (speeds, feedforwards) -> drive(speeds),
-                AutoConstants.AUTO_HDC,
-                config,
-                Robot::isRedAlliance,
-                this);
-
         poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.DRIVE_KINEMATICS,
             gyro.getYawRotation2D(),
@@ -166,6 +154,47 @@ public class Swerve extends SubsystemBase {
                 Units.degreesToRadians(15)
             )
         );
+
+        RobotConfig config;
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            config = new RobotConfig(
+                0, 
+                0, 
+                new ModuleConfig(
+                    0, 
+                    0, 
+                    0, 
+                    DCMotor.getKrakenX60Foc(1), 
+                    0, 
+                    1
+                ), 
+                0
+            );
+            e.printStackTrace();
+        }
+
+        setpointGenerator = new SwerveSetpointGenerator(
+            config, 
+            MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC
+        );
+
+        previousSetpoint = new SwerveSetpoint(
+            getRobotRelativeVelocity(), 
+            getModuleStates(), 
+            DriveFeedforwards.zeros(config.numModules)
+        );
+
+        AutoBuilder.configure(
+            this::getPose,
+            this::resetOdometryAuto,
+            this::getRobotRelativeVelocity,
+            (speeds, feedforwards) -> driveWithSetpoints(speeds),
+            AutoConstants.AUTO_HDC,
+            config,
+            Robot::isRedAlliance,
+            this);
     }
 
     @Override
@@ -281,12 +310,24 @@ public class Swerve extends SubsystemBase {
         return poseEstimator;
     }
 
+    // Drive method used in teleop
     public void drive(ChassisSpeeds robotRelativeSpeeds) {
         setModuleStates(DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
             ChassisSpeeds.discretize(robotRelativeSpeeds, (Timer.getFPGATimestamp() - Robot.previousTimestamp)))
         );
     }
 
+    // Drive method used in auto
+    public void driveWithSetpoints(ChassisSpeeds robotRelativeSpeeds) {
+        previousSetpoint = setpointGenerator.generateSetpoint(
+            previousSetpoint,
+            robotRelativeSpeeds,
+            Timer.getFPGATimestamp() - Robot.previousTimestamp
+        );
+        setModuleStates(previousSetpoint.moduleStates());
+    }
+
+    // Drive method used in teleop
     public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) {
         ChassisSpeeds robotRelativeSpeeds;
 
@@ -435,7 +476,7 @@ public class Swerve extends SubsystemBase {
      */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(
-            desiredStates, 
+            desiredStates,
             getMaxLinearVelocity()
         );
         frontLeft.setDesiredState(desiredStates[0]);
