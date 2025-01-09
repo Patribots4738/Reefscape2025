@@ -13,13 +13,9 @@ import org.littletonrobotics.junction.Logger;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.util.DriveFeedforwards;
-import com.pathplanner.lib.util.swerve.SwerveSetpoint;
-import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 
 import java.util.Arrays;
 
-import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -67,9 +63,6 @@ public class Swerve extends SubsystemBase {
     private final Module[] swerveModules;
 
     private SwerveDrivePoseEstimator poseEstimator;
-
-    private final SwerveSetpointGenerator setpointGenerator;
-    private SwerveSetpoint previousSetpoint;
 
     private LoggedTunableConstant driveMultiplier = new LoggedTunableConstant("Drive/DriveMultiplier", 1.0);
     private LoggedTunableConstant driveMaxLinearVelocity = new LoggedTunableConstant("Drive/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
@@ -136,17 +129,6 @@ public class Swerve extends SubsystemBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        setpointGenerator = new SwerveSetpointGenerator(
-            config, 
-            MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC
-        );
-
-        previousSetpoint = new SwerveSetpoint(
-            getRobotRelativeVelocity(), 
-            getModuleStates(), 
-            DriveFeedforwards.zeros(config.numModules)
-        );
 
         AutoBuilder.configure(
                 this::getPose,
@@ -300,13 +282,9 @@ public class Swerve extends SubsystemBase {
     }
 
     public void drive(ChassisSpeeds robotRelativeSpeeds) {
-        previousSetpoint = setpointGenerator.generateSetpoint(
-            previousSetpoint,
-            robotRelativeSpeeds,
-            Timer.getFPGATimestamp() - Robot.previousTimestamp
+        setModuleStates(DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
+            ChassisSpeeds.discretize(robotRelativeSpeeds, (Timer.getFPGATimestamp() - Robot.previousTimestamp)))
         );
-
-        setModuleStates(previousSetpoint.moduleStates());
     }
 
     public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) {
