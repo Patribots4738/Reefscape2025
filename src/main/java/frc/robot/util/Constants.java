@@ -195,7 +195,9 @@ public final class Constants {
                 AutoConstants.THETA_GAINS.getD(),
                 Units.degreesToRadians(45)));
 
-        public static final String[] AUTO_NAMES = new String[] {};
+        public static final String[] AUTO_NAMES = new String[] {
+            "Test"
+        };
 
     }
 
@@ -347,10 +349,10 @@ public final class Constants {
 
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = -0.287354;
-        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.116732;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.282227;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.080322;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = -0.286133;
+        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.1170097;
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.280518;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.080811;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -372,18 +374,18 @@ public final class Constants {
         public static final double TURNING_ENCODER_POSITION_FACTOR = (2 * Math.PI); // radians
         public static final double TURNING_ENCODER_VELOCITY_FACTOR = (2 * Math.PI); // radians per second
 
-        public static final double DRIVING_MOTOR_STATOR_LIMIT_AMPS = 80.0;
-        public static final double DRIVING_MOTOR_SUPPLY_LIMIT_AMPS = 80.0;
-        public static final double TURNING_MOTOR_STATOR_LIMIT_AMPS = 80.0;
-        public static final double TURNING_MOTOR_SUPPLY_LIMIT_AMPS = 80.0;
-        public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 80.0;
+        public static final double DRIVING_MOTOR_STATOR_LIMIT_AMPS = 60.0;
+        public static final double DRIVING_MOTOR_SUPPLY_LIMIT_AMPS = 60.0;
+        public static final double TURNING_MOTOR_STATOR_LIMIT_AMPS = 60.0;
+        public static final double TURNING_MOTOR_SUPPLY_LIMIT_AMPS = 60.0;
+        public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 60.0;
         public static final double TURNING_MOTOR_TORQUE_LIMIT_AMPS = 40.0;
 
         public static final double DRIVING_P = 0.02;
         public static final double DRIVING_I = 0;
         public static final double DRIVING_D = 0;
-        public static final double DRIVING_S = 0.07193;
-        public static final double DRIVING_V = 0.11441;
+        public static final double DRIVING_S = Robot.isSimulation() ? 0.01453 : 0.07193;
+        public static final double DRIVING_V = Robot.isSimulation() ? 0.12362 : 0.11441;
 
         public static final GainConstants DRIVING_GAINS = new GainConstants(
             DRIVING_P,
@@ -394,10 +396,10 @@ public final class Constants {
             0.0
         );
 
-        public static final double TURNING_P = 23.0;
+        public static final double TURNING_P = Robot.isSimulation() ? 10.0 : 23.0;
         public static final double TURNING_I = 0.0;
         public static final double TURNING_D = 0.2;
-        public static final double TURNING_S = 0.30000900000007824;
+        public static final double TURNING_S = Robot.isSimulation() ? 0.10058899999997811 : 0.30000900000007824;
 
         public static final GainConstants TURNING_GAINS = new GainConstants(
             TURNING_P,
