@@ -100,7 +100,8 @@ public class PathPlannerStorage {
                     .setPoses(getAutoPoses(getSelectedAutoName()));
             }),
             Commands.runOnce(() -> {
-                RobotContainer.field2d.getObject("path").setPoses(new ArrayList<>());
+                RobotContainer.field2d.getObject("path")
+                    .setPoses(new ArrayList<>());
             }),
             () -> Robot.gameMode == GameMode.DISABLED
         ).ignoringDisable(true);

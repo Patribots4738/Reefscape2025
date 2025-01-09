@@ -67,6 +67,8 @@ public class Swerve extends SubsystemBase {
 
     private SwerveDrivePoseEstimator poseEstimator;
 
+    private RobotConfig config;
+
     private final SwerveSetpointGenerator setpointGenerator;
     private SwerveSetpoint previousSetpoint;
 
@@ -155,7 +157,6 @@ public class Swerve extends SubsystemBase {
             )
         );
 
-        RobotConfig config;
         try {
             config = RobotConfig.fromGUISettings();
         } catch (Exception e) {

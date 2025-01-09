@@ -142,26 +142,27 @@ public final class Constants {
         public static final double XY_CORRECTION_I = 0.0125;
         public static final double XY_CORRECTION_D = 0.0125;
 
-        public static final GainConstants XY_GAINS = 
-            new GainConstants(
-                AutoConstants.XY_CORRECTION_P, 
-                AutoConstants.XY_CORRECTION_I, 
-                AutoConstants.XY_CORRECTION_D);
-
-        public static final PIDController XY_PID = new PIDController(
-                AutoConstants.XY_GAINS.getP(),
-                0,
-                AutoConstants.XY_GAINS.getD());
-
         public static final double ROTATION_CORRECTION_P = 3.725;
         public static final double ROTATION_CORRECTION_I = 0;
         public static final double ROTATION_CORRECTION_D = 0;
 
-        public static final GainConstants THETA_GAINS = 
-            new GainConstants(
-                AutoConstants.ROTATION_CORRECTION_P, 
-                AutoConstants.ROTATION_CORRECTION_I, 
-                AutoConstants.ROTATION_CORRECTION_D);
+        public static final GainConstants XY_GAINS = new GainConstants(
+            AutoConstants.XY_CORRECTION_P, 
+            AutoConstants.XY_CORRECTION_I, 
+            AutoConstants.XY_CORRECTION_D
+        );
+
+        public static final GainConstants THETA_GAINS = new GainConstants(
+            AutoConstants.ROTATION_CORRECTION_P, 
+            AutoConstants.ROTATION_CORRECTION_I, 
+            AutoConstants.ROTATION_CORRECTION_D
+        );
+
+        public static final PIDController XY_PID = new PIDController(
+            AutoConstants.XY_GAINS.getP(),
+            0,
+            AutoConstants.XY_GAINS.getD()
+        );
 
         public static final ProfiledPIDController THETA_PID = new ProfiledPIDController(
             AutoConstants.THETA_GAINS.getP(),
@@ -173,10 +174,6 @@ public final class Constants {
             {{
                 setIZone(Units.degreesToRadians(45));
             }};
-
-        // Constraint for the motion-profiled robot angle controller
-        public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS = new TrapezoidProfile.Constraints(
-                MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
 
         public static HolonomicDriveController TELE_HDC = new HolonomicDriveController(
                 XY_PID,
