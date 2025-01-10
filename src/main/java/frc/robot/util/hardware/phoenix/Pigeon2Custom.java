@@ -69,24 +69,13 @@ public class Pigeon2Custom extends Pigeon2 {
     }
 
     /**
-     * Applies a parameter to the Pigeon2Custom device.
-     * 
-     * @param configApplication a supplier that provides the configuration application
-     * @param configName the name of the configuration
-     * @return the status code indicating the result of applying the parameter
-     */
-    public StatusCode applyParameter(Supplier<StatusCode> configApplication, Supplier<StatusCode> refreshConfig, BooleanSupplier parameterCheckSupplier, String configName) {
-        return DeviceUtil.applyParameter(configApplication, refreshConfig, parameterCheckSupplier, configName, getDeviceID());
-    }
-
-    /**
      * Applies a parameter to the device configuration without checking the parameter.
      * 
      * @param configApplication the supplier that applies the configuration parameter
      * @param configName the name of the configuration parameter
      * @return the status code indicating the success or failure of the configuration application
      */
-    public StatusCode applyParameter(Supplier<StatusCode> configApplication, String configName) {
+    private StatusCode applyParameter(Supplier<StatusCode> configApplication, String configName) {
         return DeviceUtil.applyParameter(configApplication, configName, getDeviceID());
     }
 
@@ -97,7 +86,7 @@ public class Pigeon2Custom extends Pigeon2 {
      * @param signals The status signals to which the frequency should be applied.
      * @return The status code indicating the success or failure of applying the signal frequency.
      */
-    public StatusCode applySignalFrequency(double frequency, BaseStatusSignal... signals) {
+    private StatusCode applySignalFrequency(double frequency, BaseStatusSignal... signals) {
         return DeviceUtil.applySignalFrequency(frequency, getDeviceID(), signals);
     }
 
@@ -106,7 +95,7 @@ public class Pigeon2Custom extends Pigeon2 {
      * 
      * @return The status code indicating the result of the operation.
      */
-    public StatusCode restoreFactoryDefaults() {
+    private StatusCode restoreFactoryDefaults() {
         return applyParameter(
             () -> configurator.apply(new Pigeon2Configuration(), 1.0),
             "Factory Defaults"

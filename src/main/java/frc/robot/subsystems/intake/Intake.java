@@ -28,6 +28,7 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
+        motor.refreshSignals();
         hasPiece = hasPiece();
     }
 
@@ -48,7 +49,7 @@ public class Intake extends SubsystemBase {
     }
 
     public Command stopCommand() {
-        return Commands.run(() -> motor.setPercentOutput(0));
+        return setPercentCommand(0.0);
     }
 
     private boolean hasPiece() {

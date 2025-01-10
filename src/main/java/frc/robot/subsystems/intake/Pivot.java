@@ -5,6 +5,7 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Constants.IntakeConstants;
 import frc.robot.util.hardware.phoenix.CANCoderCustom;
@@ -12,18 +13,18 @@ import frc.robot.util.hardware.phoenix.Kraken;
 
 public class Pivot extends SubsystemBase {
 
-    private Kraken motor;
-    private CANCoderCustom encoder;
+    private final Kraken motor;
+    private final CANCoderCustom encoder;
     private boolean atDesired = false;
 
-    /** Creates a new Pivot. */
     public Pivot() {
         motor = new Kraken(IntakeConstants.PIVOT_CAN_ID, "SuperStructure");
         encoder = new CANCoderCustom(IntakeConstants.PIVOT_CANCODER_ID, "SuperStructure");
-        configMotors();
+        configEncoder();
+        configMotor();
     }
 
-    public void configMotors() {
+    public void configMotor() {
         motor.setEncoder(encoder.getDeviceID(), IntakeConstants.PIVOT_GEAR_RATIO);
         motor.setGains(IntakeConstants.PIVOT_GAINS);
         motor.setBrakeMode(true);
@@ -37,6 +38,8 @@ public class Pivot extends SubsystemBase {
 
     @Override
     public void periodic() {
+        encoder.refreshSignals();
+        motor.refreshSignals();
         atDesired = atDesired();
     }
 
@@ -45,7 +48,7 @@ public class Pivot extends SubsystemBase {
     }
 
     public Command setPositionCommand(double position) {
-        return run(() -> setPosition(position));
+        return runOnce(() -> setPosition(position)).andThen(Commands.waitUntil(this::getAtDesired));
     }
 
     public Command stowPositionCommand() {

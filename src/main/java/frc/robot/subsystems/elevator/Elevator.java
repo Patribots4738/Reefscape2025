@@ -6,36 +6,36 @@ package frc.robot.subsystems.elevator;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.hardware.phoenix.CANCoderCustom;
 import frc.robot.util.hardware.phoenix.Kraken;
-import frc.robot.util.Constants;
 
 public class Elevator extends SubsystemBase {
 
-    private Kraken motor;
-    private CANCoderCustom encoder;
-    private boolean atDesired;
+    private final Kraken motor;
+    private final CANCoderCustom encoder;
+    private boolean atDesired = false;
 
-  /** Creates a new Elevator. */
     public Elevator() {
         motor = new Kraken(ElevatorConstants.ELEVATOR_CAN_ID, "SuperStructure");
         encoder = new CANCoderCustom(ElevatorConstants.ELEVATOR_CANCODER_ID, "SuperStructure");
-        configMotors(); 
-
+        configEncoder();
+        configMotor();
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
+        encoder.refreshSignals();
+        motor.refreshSignals();
         atDesired = atDesired();
     }
 
-    public void configMotors() {
-        motor.setGains(ElevatorConstants.ELEVATOR_PID);
+    public void configMotor() {
+        motor.setGains(ElevatorConstants.ELEVATOR_GAINS);
         motor.setEncoder(ElevatorConstants.ELEVATOR_CANCODER_ID, ElevatorConstants.ELEVATOR_GEAR_RATIO);
         motor.setBrakeMode(true);
     }
@@ -46,16 +46,36 @@ public class Elevator extends SubsystemBase {
         encoder.setVelocityConversionFactor(ElevatorConstants.ELEVATOR_VELOCITY_FACTOR);
     }
 
+    public void setPosition(double position) {
+        motor.setTargetPosition(position);
+    }
+
+    public Command setPositionCommand(double position) {
+        return runOnce(() -> setPosition(position)).andThen(Commands.waitUntil(this::getAtDesired));
+    }
+
+    public Command setPositionCommand(DoubleSupplier positionSupplier) {
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::getAtDesired));
+    }
+
+    public Command handoffPositionCommand() {
+        return setPositionCommand(ElevatorConstants.WRIST_HANDOFF_RADIANS);
+    }
+
+    public Command intakePositionCommand() {
+        return setPositionCommand(ElevatorConstants.WRIST_INTAKE_RADIANS);
+    }
+
+    public Command stowPositionCommand() {
+        return setPositionCommand(ElevatorConstants.WRIST_STOW_RADIANS);
+    }
 
     public boolean atDesired() {
-        return motor.getPositionAsDouble() == motor.getTargetPosition(); 
+        return motor.getPositionAsDouble() == motor.getTargetPosition();
     }
 
     public boolean getAtDesired() {
         return atDesired;
     }
 
-    public Command setPositionCommand(double position) {
-        return run(() -> motor.setTargetPosition(position));
-    }
 }

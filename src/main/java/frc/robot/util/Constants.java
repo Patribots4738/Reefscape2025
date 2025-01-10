@@ -507,13 +507,13 @@ public final class Constants {
 
     public static final class CANCoderConstants {
 
-        public static final double ENCODER_UPDATE_FREQ_HZ = 250; // TODO: FIND THE SWEET SPOT
+        public static final double ENCODER_UPDATE_FREQ_HZ = 250;
 
     }
 
     public static final class PigeonConstants {
 
-        public static final double PIGEON_FAST_UPDATE_FREQ_HZ = 250; // TODO: FIND THE SWEET SPOT
+        public static final double PIGEON_FAST_UPDATE_FREQ_HZ = 250;
 
     }
 
@@ -538,43 +538,51 @@ public final class Constants {
         public static final double WRIST_ENCODER_OFFSET = 0.0;
         public static final double ELEVATOR_ENCODER_OFFSET = 0.0;
 
-        public static final double WRIST_POSITION_FACTOR = 1.0;
-        public static final double WRIST_VELOCITY_FACTOR = 1.0;
+        public static final double WRIST_POSITION_FACTOR = 2 * Math.PI;
+        public static final double WRIST_VELOCITY_FACTOR = 2 * Math.PI;
 
         public static final double ELEVATOR_POSITION_FACTOR = 1.0;
         public static final double ELEVATOR_VELOCITY_FACTOR = 1.0;
 
-        public static final double ELEVATOR_GEAR_RATIO = 0.0;
-        public static final double WRIST_GEAR_RATIO = 0.0;
+        public static final double ELEVATOR_GEAR_RATIO = 1.0;
+        public static final double WRIST_GEAR_RATIO = 1.0;
 
-        public static final double WRIST_P = 0.0;
+        public static final double WRIST_P = 0.1;
         public static final double WRIST_I = 0.0;
         public static final double WRIST_D = 0.0;
-        public static final GainConstants WRIST_PID = new GainConstants(WRIST_P, WRIST_I, WRIST_D);
+        public static final GainConstants WRIST_GAINS = new GainConstants(
+            WRIST_P, 
+            WRIST_I, 
+            WRIST_D
+        );
 
-        public static final double ELEVATOR_P = 0.0;
+        public static final double ELEVATOR_P = 0.1;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
-        public static final GainConstants ELEVATOR_PID = new GainConstants(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
+        public static final GainConstants ELEVATOR_GAINS = new GainConstants(
+            ELEVATOR_P, 
+            ELEVATOR_I, 
+            ELEVATOR_D
+        );
 
-        public static final double ELEVATOR_STOW = 0.0;
-        public static final double ELEVATOR_L1 = 0.0;
-        public static final double ELEVATOR_L2 = 0.0;
-        public static final double ELEVATOR_L3 = 0.0;
-        public static final double ELEVATOR_L4 = 0.0;
-        public static final double ELEVATOR_HANDOFF = 0.0;
-        public static final double ELEVATOR_INTAKE = 0.0;
+        public static final double ELEVATOR_L1_METERS = 0.0;
+        public static final double ELEVATOR_L2_METERS = 0.0;
+        public static final double ELEVATOR_L3_METERS = 0.0;
+        public static final double ELEVATOR_L4_METERS = 0.0;
+        public static final double ELEVATOR_HANDOFF_METERS = 0.0;
+        public static final double ELEVATOR_INTAKE_METERS = 0.0;
+        public static final double ELEVATOR_STOW_METERS = 0.0;
 
-        public static final double WRIST_L1 = 0.0;
-        public static final double WRIST_L2 = 0.0;
-        public static final double WRIST_L3 = 0.0;
-        public static final double WRIST_L4 = 0.0;
-        public static final double WRIST_INTAKE = 0.0;
-        public static final double WRIST_HANDOFF = 0.0;
-        public static final double WRIST_STOW = 0.0;
+        public static final double WRIST_L1_RADIANS = 0.0;
+        public static final double WRIST_L2_RADIANS = 0.0;
+        public static final double WRIST_L3_RADIANS = 0.0;
+        public static final double WRIST_L4_RADIANS = 0.0;
+        public static final double WRIST_INTAKE_RADIANS = 0.0;
+        public static final double WRIST_HANDOFF_RADIANS = 0.0;
+        public static final double WRIST_STOW_RADIANS = 0.0;
 
-        public static final double CLAW_OUTTAKE = -1.0;
-        public static final double CLAW_INTAKE = 1.0;
+        public static final double CLAW_OUTTAKE_PERCENT = -1.0;
+        public static final double CLAW_INTAKE_PERCENT = 1.0;
 
     }
 
@@ -591,7 +599,7 @@ public final class Constants {
         public static final double PIVOT_HANDOFF_RADIANS = Math.PI / 2;        
         public static final double PIVOT_INTAKE_RADIANS = 0.0;
 
-        public static final double PIVOT_P = 0.0;
+        public static final double PIVOT_P = 0.1;
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
 

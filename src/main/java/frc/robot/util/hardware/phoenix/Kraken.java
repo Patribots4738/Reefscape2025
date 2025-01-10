@@ -403,7 +403,7 @@ public class Kraken extends TalonFX {
      * @param configName the name of the configuration parameter
      * @return the status code indicating the result of applying the parameter
      */
-    public StatusCode applyParameter(Supplier<StatusCode> configApplication, Supplier<StatusCode> refreshConfig, BooleanSupplier parameterCheck, String configName) {
+    private StatusCode applyParameter(Supplier<StatusCode> configApplication, Supplier<StatusCode> refreshConfig, BooleanSupplier parameterCheck, String configName) {
         return DeviceUtil.applyParameter(configApplication, refreshConfig, parameterCheck, configName, getDeviceID());
     }
 
@@ -414,7 +414,7 @@ public class Kraken extends TalonFX {
      * @param configName the name of the configuration parameter
      * @return the status code indicating the success or failure of the configuration application
      */
-    public StatusCode applyParameter(Supplier<StatusCode> configApplication, String configName) {
+    private StatusCode applyParameter(Supplier<StatusCode> configApplication, String configName) {
         return DeviceUtil.applyParameter(configApplication, configName, getDeviceID());
     }
 
@@ -425,7 +425,7 @@ public class Kraken extends TalonFX {
      * @param signals The status signals to apply the frequency to.
      * @return The status code indicating the success or failure of applying the signal frequency.
      */
-    public StatusCode applySignalFrequency(double frequency, BaseStatusSignal... signals) {
+    private StatusCode applySignalFrequency(double frequency, BaseStatusSignal... signals) {
         return DeviceUtil.applySignalFrequency(frequency, getDeviceID(), signals);
     }
 
@@ -434,7 +434,7 @@ public class Kraken extends TalonFX {
      * 
      * @return The status code indicating the result of the operation.
      */
-    public StatusCode restoreFactoryDefaults() {
+    private StatusCode restoreFactoryDefaults() {
         return applyParameter(
             () -> configurator.apply(new TalonFXConfiguration(), 1.0),
             "Factory Defaults"
