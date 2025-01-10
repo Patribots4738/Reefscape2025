@@ -47,6 +47,10 @@ public class Intake extends SubsystemBase {
         return setPercentCommand(IntakeConstants.OUTTAKE_PERCENT);
     }
 
+    public Command stopCommand() {
+        return Commands.run(() -> motor.setPercentOutput(0));
+    }
+
     private boolean hasPiece() {
         return true;
     }
