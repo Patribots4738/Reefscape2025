@@ -246,6 +246,8 @@ public final class Constants {
         public static final int FRONT_RIGHT_TURNING_CAN_ID = 2;
         public static final int REAR_RIGHT_TURNING_CAN_ID = 8;
 
+        
+
         // Invert the turning encoder, since the output shaft rotates in the opposite
         // direction of
         // the steering motor in the MAXSwerve Module.
@@ -522,6 +524,73 @@ public final class Constants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
 
+    }
+
+    public static final class ElevatorConstants {
+        public static final int WRIST_CAN_ID = 16;
+        public static final int ELEVATOR_CAN_ID = 18;
+        public static final int CLAW_CAN_ID = 20;
+
+        public static final int WRIST_CANCODER_ID = 17;
+        public static final int ELEVATOR_CANCODER_ID = 19;
+
+        public static final double WRIST_ENCODER_OFFSET = 0.0;
+        public static final double ELEVATOR_ENCODER_OFFSET = 0.0;
+
+        public static final double WRIST_POSITION_FACTOR = 1.0;
+        public static final double WRIST_VELOCITY_FACTOR = 1.0;
+
+        public static final double ELEVATOR_POSITION_FACTOR = 1.0;
+        public static final double ELEVATOR_VELOCITY_FACTOR = 1.0;
+
+        public static final double ELEVATOR_GEAR_RATIO = 0.0;
+        public static final double WRIST_GEAR_RATIO = 0.0;
+
+        public static final double WRIST_P = 0.0;
+        public static final double WRIST_I = 0.0;
+        public static final double WRIST_D = 0.0;
+        public static final GainConstants WRIST_PID = new GainConstants(WRIST_P, WRIST_I, WRIST_D);
+
+        public static final double ELEVATOR_P = 0.0;
+        public static final double ELEVATOR_I = 0.0;
+        public static final double ELEVATOR_D = 0.0;
+        public static final GainConstants ELEVATOR_PID = new GainConstants(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
+
+        public static final double ELEVATOR_STOW = 0.0;
+        public static final double ELEVATOR_L1 = 0.0;
+        public static final double ELEVATOR_L2 = 0.0;
+        public static final double ELEVATOR_L3 = 0.0;
+        public static final double ELEVATOR_L4 = 0.0;
+        public static final double ELEVATOR_HANDOFF = 0.0;
+        public static final double ELEVATOR_INTAKE = 0.0;
+
+        public static final double WRIST_L1 = 0.0;
+        public static final double WRIST_L2 = 0.0;
+        public static final double WRIST_L3 = 0.0;
+        public static final double WRIST_L4 = 0.0;
+        public static final double WRIST_INTAKE = 0.0;
+        public static final double WRIST_HANDOFF = 0.0;
+        public static final double WRIST_STOW = 0.0;
+
+        public static final double CLAW_OUTTAKE = -1.0;
+        public static final double CLAW_INTAKE = 1.0;
+
+    }
+
+    public static final class IntakeConstants {
+        public static final int INTAKE_CAN_ID = 13;
+        public static final int PIVOT_CAN_ID = 14;
+        public static final int PIVOT_CANCODER_ID = 15; 
+
+        public static final double STOW_RADIANS = 0.0;
+        public static final double HANDOFF_RADIANS = 0.0;        
+        public static final double INTAKE_RADIANS = Math.PI/2;
+
+        public static final double PIVOT_P = 0.0;
+        public static final double PIVOT_I = 0.0;
+        public static final double PIVOT_D = 0.0;
+
+        public static final double PIVOT_ENCODER_POSITION_FACTOR = 0.0;
     }
 
 }
