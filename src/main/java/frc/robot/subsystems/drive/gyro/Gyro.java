@@ -11,12 +11,15 @@ public class Gyro {
 
     public Gyro(GyroIO io) {
         this.io = io;
-        io.setYaw(0);
     }
 
     public void updateInputs() {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Gyro", inputs);
+    }
+
+    public void setYaw(double yaw) {
+        io.setYaw(yaw);
     }
 
     public Rotation2d getYawRotation2D() {
