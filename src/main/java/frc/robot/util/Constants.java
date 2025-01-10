@@ -528,19 +528,27 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-         public static final int INTAKE_CAN_ID = 13;
+
+        public static final int INTAKE_CAN_ID = 13;
         public static final int PIVOT_CAN_ID = 14;
         public static final int PIVOT_CANCODER_ID = 15;
+
+        public static final double INTAKE_PERCENT = 1.0;
+        public static final double OUTTAKE_PERCENT = -1.0;
         
-        public static final double STOW_RADIANS = 0.0;
-        public static final double HANDOFF_RADIANS = 0.0;        
-        public static final double INTAKE_RADIANS = Math.PI/2;
+        public static final double PIVOT_STOW_RADIANS = Math.PI;
+        public static final double PIVOT_HANDOFF_RADIANS = Math.PI / 2;        
+        public static final double PIVOT_INTAKE_RADIANS = 0.0;
 
         public static final double PIVOT_P = 0.0;
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
 
-        public static final double PIVOT_ENCODER_POSITION_FACTOR = 0.0;
+        public static final double PIVOT_ENCODER_POSITION_FACTOR = 2 * Math.PI;
+        public static final double PIVOT_ENCODER_VELOCITY_FACTOR = 2 * Math.PI;
+        public static final double PIVOT_ENCODER_OFFSET = 0.0;
+
+        public static final double PIVOT_GEAR_RATIO = 1.0;
         
     }
 

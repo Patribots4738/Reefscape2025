@@ -5,53 +5,54 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Constants.IntakeConstants;
+
 import frc.robot.util.hardware.phoenix.Kraken;
+import frc.robot.util.hardware.phoenix.Kraken.TelemetryPreference;
 
 public class Intake extends SubsystemBase {
 
-  private Kraken intake;  
-  private boolean hasPiece;
-  /** Creates a new Intake. */
-  public Intake() {
-    intake = new Kraken(IntakeConstants.INTAKE_CAN_ID, "superStructure");
+    private final Kraken motor;
+    private boolean hasPiece = false;
 
-  } 
-  
-//sets the motors to spin forwards and thus intake the coral/algea  
+    public Intake() {
+        motor = new Kraken(IntakeConstants.INTAKE_CAN_ID, "SuperStructure");
+        configMotor();
+    }
 
-  /**
-   * 
-   * @return
-   */
-  public Command intake() {
-    return Commands.run(() -> intake.setPercentOutput(0.6))
-                    .until(() -> hasPiece())
-                    .andThen(() -> Commands.run(() -> intake.setPercentOutput(0.4)));
-    
-  }
+    private void configMotor() {
+        motor.setBrakeMode(true);
+        motor.setTelemetryPreference(TelemetryPreference.NO_ENCODER);
+    }
 
-//sets the motors to spin backwards and thus outtake the coral/alg
+    @Override
+    public void periodic() {
+        hasPiece = hasPiece();
+    }
 
-  public Command outtake() {
-    return Commands.run(() -> intake.setTargetVelocity(-1));
+    public void setPercent(double percent) {
+        motor.setPercentOutput(percent);
+    }
 
-  }
-  
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run 
-    hasPiece = hasPiece();
-  }
-      
-  public boolean hasPiece() {
-    // TODO: add logic for holding a piece
-    return true;
-  }
+    public Command setPercentCommand(double percent) {
+        return run(() -> setPercent(percent));
+    }
 
-  public boolean getHasPiece() {
-    return hasPiece;
-  }
+    public Command intakeCommand() {
+        return setPercentCommand(IntakeConstants.INTAKE_PERCENT);
+    }
+
+    public Command outtakeCommand() {
+        return setPercentCommand(IntakeConstants.OUTTAKE_PERCENT);
+    }
+
+    private boolean hasPiece() {
+        return true;
+    }
+
+    public boolean getHasPiece() {
+        return hasPiece;
+    }
+
 }
