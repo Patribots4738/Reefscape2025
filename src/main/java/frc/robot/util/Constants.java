@@ -247,6 +247,8 @@ public final class Constants {
         public static final int FRONT_RIGHT_TURNING_CAN_ID = 2;
         public static final int REAR_RIGHT_TURNING_CAN_ID = 8;
 
+        
+
         // Invert the turning encoder, since the output shaft rotates in the opposite
         // direction of
         // the steering motor in the MAXSwerve Module.
@@ -523,6 +525,23 @@ public final class Constants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
 
+    }
+
+    public static final class IntakeConstants {
+         public static final int INTAKE_CAN_ID = 13;
+        public static final int PIVOT_CAN_ID = 14;
+        public static final int PIVOT_CANCODER_ID = 15;
+        
+        public static final double STOW_RADIANS = 0.0;
+        public static final double HANDOFF_RADIANS = 0.0;        
+        public static final double INTAKE_RADIANS = Math.PI/2;
+
+        public static final double PIVOT_P = 0.0;
+        public static final double PIVOT_I = 0.0;
+        public static final double PIVOT_D = 0.0;
+
+        public static final double PIVOT_ENCODER_POSITION_FACTOR = 0.0;
+        
     }
 
 }
