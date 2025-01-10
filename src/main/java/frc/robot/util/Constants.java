@@ -160,7 +160,7 @@ public final class Constants {
 
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.XY_GAINS.getP(),
-            0,
+            AutoConstants.XY_GAINS.getI(),
             AutoConstants.XY_GAINS.getD()
         );
 
@@ -194,7 +194,8 @@ public final class Constants {
 
         public static final String[] AUTO_NAMES = new String[] {
             "3-J4-CS1-A3-S1-P",
-            "3-J4-CS1-K4-CS1-L4-CS1-A4"
+            "4-J4-CS1-K4-CS1-L4-CS1-A4",
+            "Test"
         };
 
     }
@@ -578,19 +579,34 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
+
         public static final int INTAKE_CAN_ID = 13;
         public static final int PIVOT_CAN_ID = 14;
-        public static final int PIVOT_CANCODER_ID = 15; 
+        public static final int PIVOT_CANCODER_ID = 15;
 
-        public static final double STOW_RADIANS = 0.0;
-        public static final double HANDOFF_RADIANS = 0.0;        
-        public static final double INTAKE_RADIANS = Math.PI/2;
+        public static final double INTAKE_PERCENT = 1.0;
+        public static final double OUTTAKE_PERCENT = -1.0;
+        
+        public static final double PIVOT_STOW_RADIANS = Math.PI;
+        public static final double PIVOT_HANDOFF_RADIANS = Math.PI / 2;        
+        public static final double PIVOT_INTAKE_RADIANS = 0.0;
 
         public static final double PIVOT_P = 0.0;
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
 
-        public static final double PIVOT_ENCODER_POSITION_FACTOR = 0.0;
+        public static final GainConstants PIVOT_GAINS = new GainConstants(
+            PIVOT_P,
+            PIVOT_I,
+            PIVOT_D
+        );
+
+        public static final double PIVOT_ENCODER_POSITION_FACTOR = 2 * Math.PI;
+        public static final double PIVOT_ENCODER_VELOCITY_FACTOR = 2 * Math.PI;
+        public static final double PIVOT_ENCODER_OFFSET = 0.0;
+
+        public static final double PIVOT_GEAR_RATIO = 1.0;
+        
     }
 
 }

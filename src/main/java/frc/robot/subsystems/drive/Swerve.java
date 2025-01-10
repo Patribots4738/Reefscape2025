@@ -187,6 +187,10 @@ public class Swerve extends SubsystemBase {
             DriveFeedforwards.zeros(config.numModules)
         );
 
+        configureAutoBuilder();
+    }
+
+    private void configureAutoBuilder() {
         AutoBuilder.configure(
             this::getPose,
             this::resetOdometryAuto,
