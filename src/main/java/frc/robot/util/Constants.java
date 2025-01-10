@@ -194,7 +194,7 @@ public final class Constants {
 
         public static final String[] AUTO_NAMES = new String[] {
             "3-J4-CS1-A3-S1-P",
-            "4-J4-CS1-K4-CS1-L4-CS1-A4"
+            "4-J4-CS1-K4-CS1-L4-CS1-A4-CS1-B4"
         };
 
     }
