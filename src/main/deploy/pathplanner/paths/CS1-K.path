@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.42077312751096
+    "rotation": -59.0362434679265
   },
   "reversed": false,
   "folder": "Coral Station",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -54.385453199746586
+    "rotation": -52.44247457145787
   },
   "useDefaultConstraints": true
 }

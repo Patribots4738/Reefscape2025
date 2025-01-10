@@ -48,7 +48,7 @@
   "folder": "Coral Station",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -52.573695112189
+    "rotation": -52.44247457145787
   },
   "useDefaultConstraints": true
 }
