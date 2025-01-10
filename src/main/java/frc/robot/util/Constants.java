@@ -544,6 +544,12 @@ public final class Constants {
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
 
+        public static final GainConstants PIVOT_GAINS = new GainConstants(
+            PIVOT_P,
+            PIVOT_I,
+            PIVOT_D
+        );
+
         public static final double PIVOT_ENCODER_POSITION_FACTOR = 2 * Math.PI;
         public static final double PIVOT_ENCODER_VELOCITY_FACTOR = 2 * Math.PI;
         public static final double PIVOT_ENCODER_OFFSET = 0.0;

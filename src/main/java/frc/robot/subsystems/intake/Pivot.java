@@ -26,6 +26,7 @@ public class Pivot extends SubsystemBase {
 
     public void configMotors() {
         motor.setEncoder(turnEncoder.getDeviceID(), IntakeConstants.PIVOT_GEAR_RATIO);
+        motor.setGains(IntakeConstants.PIVOT_GAINS);
         motor.setBrakeMode(true);
     }
 
