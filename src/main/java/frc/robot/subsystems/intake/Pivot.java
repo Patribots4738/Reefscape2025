@@ -5,7 +5,6 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Constants.IntakeConstants;
 import frc.robot.util.hardware.phoenix.CANCoderCustom;
@@ -14,26 +13,26 @@ import frc.robot.util.hardware.phoenix.Kraken;
 public class Pivot extends SubsystemBase {
 
     private Kraken motor;
-    private CANCoderCustom turnEncoder;
+    private CANCoderCustom encoder;
     private boolean atDesired = false;
 
     /** Creates a new Pivot. */
     public Pivot() {
         motor = new Kraken(IntakeConstants.PIVOT_CAN_ID, "SuperStructure");
-        turnEncoder = new CANCoderCustom(IntakeConstants.PIVOT_CANCODER_ID, "SuperStructure");
+        encoder = new CANCoderCustom(IntakeConstants.PIVOT_CANCODER_ID, "SuperStructure");
         configMotors();
     }
 
     public void configMotors() {
-        motor.setEncoder(turnEncoder.getDeviceID(), IntakeConstants.PIVOT_GEAR_RATIO);
+        motor.setEncoder(encoder.getDeviceID(), IntakeConstants.PIVOT_GEAR_RATIO);
         motor.setGains(IntakeConstants.PIVOT_GAINS);
         motor.setBrakeMode(true);
     }
 
     public void configEncoder() {
-        turnEncoder.configureMagnetSensor(false, IntakeConstants.PIVOT_ENCODER_OFFSET);
-        turnEncoder.setPositionConversionFactor(IntakeConstants.PIVOT_ENCODER_POSITION_FACTOR);
-        turnEncoder.setVelocityConversionFactor(IntakeConstants.PIVOT_ENCODER_VELOCITY_FACTOR);
+        encoder.configureMagnetSensor(false, IntakeConstants.PIVOT_ENCODER_OFFSET);
+        encoder.setPositionConversionFactor(IntakeConstants.PIVOT_ENCODER_POSITION_FACTOR);
+        encoder.setVelocityConversionFactor(IntakeConstants.PIVOT_ENCODER_VELOCITY_FACTOR);
     }
 
     @Override
