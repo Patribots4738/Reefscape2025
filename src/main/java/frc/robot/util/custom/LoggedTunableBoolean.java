@@ -1,21 +1,21 @@
 package frc.robot.util.custom;
 
-import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
+import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-public class LoggedTunableConstant extends LoggedNetworkNumber {
+public class LoggedTunableBoolean extends LoggedNetworkBoolean {
 
-    private double previousValue;
+    private boolean previousValue;
     
-    public LoggedTunableConstant(String key, double defaultValue) {
+    public LoggedTunableBoolean(String key, boolean defaultValue) {
         super("Tunable/Constants/" + key, defaultValue);
         this.previousValue = defaultValue;
     }
 
-    public LoggedTunableConstant(String key) {
-        this(key, 0.0);
+    public LoggedTunableBoolean(String key) {
+        this(key, false);
     }
 
     public boolean ifChanged() {

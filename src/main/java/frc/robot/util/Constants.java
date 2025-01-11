@@ -410,6 +410,17 @@ public final class Constants {
 
     }
 
+    public static final class ClawConstants {
+
+        public static final int CLAW_CAN_ID = 13;
+
+        public static final boolean BRAKE_MOTOR = true;
+        public static final double CURRENT_LIMIT = 40.0;
+
+        public static final double INTAKE_PERCENT = 0.2;
+        public static final double OUTTAKE_PERCENT = -0.2;
+    }
+
     public static final class OIConstants {
 
         public static final int DRIVER_CONTROLLER_PORT = 0;

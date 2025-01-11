@@ -66,12 +66,12 @@ public class ModuleIONeo implements ModuleIO {
         // drive motor
         inputs.drivePositionMeters = driveMotor.getPosition();
         inputs.driveVelocityMPS = driveMotor.getVelocity();
-        inputs.driveAppliedVolts = driveMotor.getAppliedOutput();
+        inputs.driveAppliedVolts = driveMotor.getBusVoltage();
         inputs.driveSupplyCurrentAmps = driveMotor.getOutputCurrent();
 
 
         // turning motor
-        inputs.turnAppliedVolts = turnMotor.getAppliedOutput();
+        inputs.turnAppliedVolts = turnMotor.getBusVoltage();
         inputs.turnInternalPositionRads = turnMotor.getPosition();
         inputs.turnInternalVelocityRadsPerSec = turnMotor.getVelocity();
         inputs.turnSupplyCurrentAmps = turnMotor.getOutputCurrent();
