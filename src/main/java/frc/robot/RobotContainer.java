@@ -29,6 +29,8 @@ import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.claw.ClawIOKraken;
+import frc.robot.subsystems.superstructure.elevator.Elevator;
+import frc.robot.subsystems.superstructure.elevator.ElevatorIOKraken;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.PathPlannerStorage;
@@ -49,6 +51,7 @@ public class RobotContainer {
 
     private final Swerve swerve;
     private final Claw claw;
+    private final Elevator elevator;
 
     public static Field2d field2d = new Field2d();
 
@@ -81,6 +84,7 @@ public class RobotContainer {
 
         swerve = new Swerve();
         claw = new Claw(new ClawIOKraken());
+        elevator = new Elevator(new ElevatorIOKraken());
 
         SmartDashboard.putData(field2d);
 
@@ -169,6 +173,12 @@ public class RobotContainer {
                 claw.outtakeCommand()
                     .finallyDo(
                         () -> claw.stopCommand().schedule()));
+
+        controller.povUp()
+            .onTrue(elevator.l4PositionCommand());
+
+        controller.povDown()
+            .onTrue(elevator.stowPositionCommand());
 
     }
 

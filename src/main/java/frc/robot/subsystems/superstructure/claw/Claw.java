@@ -30,8 +30,8 @@ public class Claw extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        Logger.processInputs("SubsystemInputs/Superstructure/Claw", inputs);
-        Logger.recordOutput("Subsystems/Superstructure/Claw/HasPiece", hasPiece());
+        Logger.processInputs("SubsystemInputs/Claw", inputs);
+        Logger.recordOutput("Subsystems/Claw/HasPiece", hasPiece());
     }
 
     public void setPercent(double percent) {

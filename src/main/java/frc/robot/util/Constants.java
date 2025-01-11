@@ -419,6 +419,44 @@ public final class Constants {
 
         public static final double INTAKE_PERCENT = 0.2;
         public static final double OUTTAKE_PERCENT = -0.2;
+
+    }
+
+    public static final class ElevatorConstants {
+
+        public static final int ELEVATOR_LEADER_CAN_ID = 14;
+        public static final int ELEVATOR_FOLLOWER_CAN_ID = 15;
+
+        public static final boolean BRAKE_MOTOR = true;
+        public static final double CURRENT_LIMIT = 60.0;
+        public static final double GEAR_RATIO = 1.0;
+        public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
+
+        public static final double ELEVATOR_P = 0.1;
+        public static final double ELEVATOR_I = 0.0;
+        public static final double ELEVATOR_D = 0.0;
+        public static final double ELEVATOR_S = 0.0;
+        public static final double ELEVATOR_G = 0.0;
+
+        public static final GainConstants ELEVATOR_GAINS = new GainConstants(
+            ELEVATOR_P,
+            ELEVATOR_I,
+            ELEVATOR_D,
+            ELEVATOR_S,
+            0.0,
+            ELEVATOR_G
+        );
+
+        public static final double STOW_POSITION_METERS = 0.0;
+        public static final double INTAKE_POSITION_METERS = 0.0;
+        public static final double L1_POSITION_METERS = 0.0;
+        public static final double L2_POSITION_METERS = 0.0;
+        public static final double L3_POSITION_METERS = 0.0;
+        public static final double L4_POSITION_METERS = 0.0;
+
+        public static final double ELEVATOR_DEADBAND_METERS = 0.01;
+
     }
 
     public static final class OIConstants {
