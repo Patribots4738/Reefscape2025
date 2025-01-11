@@ -449,13 +449,55 @@ public final class Constants {
         );
 
         public static final double STOW_POSITION_METERS = 0.0;
-        public static final double INTAKE_POSITION_METERS = 0.0;
-        public static final double L1_POSITION_METERS = 0.0;
-        public static final double L2_POSITION_METERS = 0.0;
-        public static final double L3_POSITION_METERS = 0.0;
-        public static final double L4_POSITION_METERS = 0.0;
+        public static final double INTAKE_POSITION_METERS = 1.5;
+        public static final double L1_POSITION_METERS = 0.5;
+        public static final double L2_POSITION_METERS = 1.0;
+        public static final double L3_POSITION_METERS = 1.5;
+        public static final double L4_POSITION_METERS = 2.0;
 
         public static final double ELEVATOR_DEADBAND_METERS = 0.01;
+
+    }
+
+    public static final class WristConstants {
+
+        public static final int WRIST_CAN_ID = 16;
+        public static final int WRIST_CANCODER_CAN_ID = 17;
+
+        public static final double WRIST_CANCODER_OFFSET = 0.0;
+
+        public static final boolean BRAKE_MOTOR = true;
+
+        public static final double WRIST_P = 0.5;
+        public static final double WRIST_I = 0.0;
+        public static final double WRIST_D = 0.0;
+        public static final double WRIST_S = 0.0;
+        public static final double WRIST_G = 0.0;
+        public static final GainConstants WRIST_GAINS = new GainConstants(
+            WRIST_P,
+            WRIST_I,
+            WRIST_D,
+            WRIST_S,
+            0.0,
+            WRIST_G
+        );
+
+        public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0;
+
+        public static final double CURRENT_LIMIT = 60.0;
+
+        public static final double GEAR_RATIO = 1.0;
+
+        public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
+
+        public static final double STOW_POSITION_RADIANS = 3.0 * Math.PI / 4.0;
+        public static final double INTAKE_POSITION_RADIANS = -Math.PI / 3.0;
+        public static final double L1_POSITION_RADIANS = 3.0 * Math.PI / 4.0;
+        public static final double L2_POSITION_RADIANS = 2.0 * Math.PI / 3.0;
+        public static final double L3_POSITION_RADIANS = 2.0 * Math.PI / 3.0;
+        public static final double L4_POSITION_RADIANS = 3.0 * Math.PI / 4.0;
+
 
     }
 

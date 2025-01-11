@@ -9,8 +9,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     private final Kraken follower;
 
     public ElevatorIOKraken() {
-        leader = new Kraken(ElevatorConstants.ELEVATOR_LEADER_CAN_ID, "rio", true, false);
-        follower = new Kraken(ElevatorConstants.ELEVATOR_FOLLOWER_CAN_ID, "rio", true, false);
+        leader = new Kraken(ElevatorConstants.ELEVATOR_LEADER_CAN_ID, true, false);
+        follower = new Kraken(ElevatorConstants.ELEVATOR_FOLLOWER_CAN_ID, true, false);
         configMotors();
     }
 

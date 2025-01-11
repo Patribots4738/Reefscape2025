@@ -18,6 +18,7 @@ public class Claw extends SubsystemBase {
 
     private final ClawIO io;
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
+    
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Claw/BrakeMotor", ClawConstants.BRAKE_MOTOR);
     private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("Claw/IntakePercent", ClawConstants.INTAKE_PERCENT);
     private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("Claw/OuttakePercent", ClawConstants.OUTTAKE_PERCENT);
