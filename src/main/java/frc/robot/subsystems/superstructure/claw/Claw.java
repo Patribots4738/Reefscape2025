@@ -24,7 +24,7 @@ public class Claw extends SubsystemBase {
     
     public Claw(ClawIO io) {
         this.io = io;
-        brakeMotor.onChanged(runOnce(() -> io.setBrakeMode(brakeMotor.get())));
+        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
     }
 
     @Override
