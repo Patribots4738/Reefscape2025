@@ -465,6 +465,7 @@ public final class Constants {
         public static final int WRIST_ENCODER_DIO_PIN = 0;
 
         public static final double WRIST_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
+        public static final boolean WRIST_ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
 
@@ -482,12 +483,12 @@ public final class Constants {
             WRIST_G
         );
 
-        public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI;
-        public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0;
+        public static final double GEAR_RATIO = 1.0;
+        public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
+        public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
+        public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
         public static final double CURRENT_LIMIT = 60.0;
-
-        public static final double GEAR_RATIO = 1.0;
 
         public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
@@ -504,13 +505,19 @@ public final class Constants {
 
         public static final int CLIMB_LEADER_CAN_ID = 13;
         public static final int CLIMB_FOLLOWER_CAN_ID = 14;
+        public static final int CLIMB_ENCODER_DIO_PIN = 1;
+
+        public static final boolean CLIMB_ENCODER_INVERTED = false;
+        public static final double CLIMB_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
 
         public static final double CLIMB_GEAR_RATIO = 38.57142857142857;
 
-        public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
-        public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
+        public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
+        public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
+        public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
 
         public static final double CURRENT_LIMIT = 80.0;
+        public static final boolean BRAKE_MOTOR = true;
 
         public static final double CLIMB_P = 0.5;
         public static final double CLIMB_I = 0.0;
@@ -528,8 +535,9 @@ public final class Constants {
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = Math.PI / 2.0;
-        public static final double DOWN_POSITION_RADIANS = Math.PI;
         public static final double FINAL_POSITION_RADIANS = Math.PI / 6.0;
+
+        public static final double CLIMB_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
     }
 

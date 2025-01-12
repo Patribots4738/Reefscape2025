@@ -25,6 +25,9 @@ public interface ClimbIO {
         public double followerStatorCurrentAmps = 0.0;
         public double followerTorqueCurrentAmps = 0.0;
         public double followerTemperatureCelcius = 0.0;
+
+        public boolean encoderConnected = false;
+        public double encoderPositionRads = 0.0;
     }
 
     public default void updateInputs(ClimbIOInputs inputs) {}
@@ -34,7 +37,5 @@ public interface ClimbIO {
     public default void runCharacterization(double input) {}
 
     public default void setBrakeMode(boolean brake) {}
-
-    public default void resetEncoder(double position) {}
 
 }

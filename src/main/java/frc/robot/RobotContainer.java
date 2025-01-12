@@ -33,6 +33,8 @@ import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.elevator.ElevatorIOKraken;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
+import frc.robot.subsystems.superstructure.climb.Climb;
+import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.PathPlannerStorage;
@@ -55,6 +57,7 @@ public class RobotContainer {
     private final Claw claw;
     private final Elevator elevator;
     private final Wrist wrist;
+    private final Climb climb;
 
     public static Field2d field2d = new Field2d();
 
@@ -89,6 +92,7 @@ public class RobotContainer {
         claw = new Claw(new ClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
+        climb = new Climb(new ClimbIOKraken());
 
         SmartDashboard.putData(field2d);
 
@@ -189,6 +193,15 @@ public class RobotContainer {
 
         controller.povRight()
             .onTrue(wrist.intakePositionCommand());
+
+        controller.y() 
+            .onTrue(climb.stowPositionCommand());
+
+        controller.b()
+            .onTrue(climb.readyPositionCommand());
+
+        controller.a()
+            .onTrue(climb.finalPositionCommand());
 
     }
 

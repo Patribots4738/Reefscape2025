@@ -18,15 +18,16 @@ public class WristIOKraken implements WristIO {
     }
 
     private void configEncoder() {
+        encoder.setInverted(WristConstants.WRIST_ENCODER_INVERTED);
         encoder.setPositionOffsetRotations(WristConstants.WRIST_ENCODER_POSITION_OFFSET_ROTATIONS);
-        encoder.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
+        encoder.setPositionConversionFactor(WristConstants.ENCODER_POSITION_CONVERSION_FACTOR);
     }
 
     private void configMotor() {
+        motor.setPositionConversionFactor(WristConstants.MOTOR_POSITION_CONVERSION_FACTOR);
+        motor.setVelocityConversionFactor(WristConstants.MOTOR_VELOCITY_CONVERSION_FACTOR);
         motor.resetEncoder(encoder.getPosition());
         motor.setGains(WristConstants.WRIST_GAINS);
-        motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
-        motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR);
         motor.setSupplyCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-WristConstants.CURRENT_LIMIT, WristConstants.CURRENT_LIMIT);
