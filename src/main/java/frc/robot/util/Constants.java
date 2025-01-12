@@ -462,9 +462,9 @@ public final class Constants {
     public static final class WristConstants {
 
         public static final int WRIST_CAN_ID = 12;
-        public static final int WRIST_CANCODER_CAN_ID = 25;
+        public static final int WRIST_ENCODER_DIO_PIN = 0;
 
-        public static final double WRIST_CANCODER_OFFSET = 0.0;
+        public static final double WRIST_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
 
         public static final boolean BRAKE_MOTOR = true;
 

@@ -31,8 +31,6 @@ public class WristIONeo implements WristIO {
         inputs.temperatureCelcius = motor.getMotorTemperature();
 
         inputs.encoderPositionRads = motor.getPosition();
-        inputs.encoderAbsPositionRads = motor.getPosition();
-        inputs.encoderVelocityRadsPerSec = motor.getVelocity();
     }
 
     @Override

@@ -77,6 +77,6 @@ public class Wrist extends SubsystemBase {
     }
 
     public boolean atDesiredPosition() {
-        return MathUtil.isNear(inputs.targetPositionRads, inputs.encoderAbsPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
+        return MathUtil.isNear(inputs.targetPositionRads, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
     }
 }

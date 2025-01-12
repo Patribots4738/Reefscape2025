@@ -18,8 +18,6 @@ public interface WristIO {
 
         public boolean encoderConnected = false;
         public double encoderPositionRads = 0.0;
-        public double encoderAbsPositionRads = 0.0;
-        public double encoderVelocityRadsPerSec = 0.0;
     }
 
     public default void updateInputs(WristIOInputs inputs) {}

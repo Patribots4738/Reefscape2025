@@ -2,31 +2,28 @@ package frc.robot.subsystems.superstructure.wrist;
 
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.Constants.FieldConstants;
-import frc.robot.util.hardware.phoenix.CANCoderCustom;
 import frc.robot.util.hardware.phoenix.Kraken;
+import frc.robot.util.hardware.rev.ThroughBoreEncoder;
 
 public class WristIOKraken implements WristIO {
     
     private final Kraken motor;
-    private final CANCoderCustom encoder;
+    private final ThroughBoreEncoder encoder;
 
     public WristIOKraken() {
         motor = new Kraken(WristConstants.WRIST_CAN_ID, true, false);
-        encoder = new CANCoderCustom(WristConstants.WRIST_CANCODER_CAN_ID);
+        encoder = new ThroughBoreEncoder(WristConstants.WRIST_ENCODER_DIO_PIN);
         configEncoder();
         configMotor();
     }
 
     private void configEncoder() {
-        encoder.configureMagnetSensor(false, WristConstants.WRIST_CANCODER_OFFSET);
+        encoder.setPositionOffsetRotations(WristConstants.WRIST_ENCODER_POSITION_OFFSET_ROTATIONS);
         encoder.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
-        encoder.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR);
     }
 
     private void configMotor() {
-        if (!FieldConstants.IS_SIMULATION) {
-            motor.setEncoder(encoder.getDeviceID(), WristConstants.GEAR_RATIO);
-        }
+        motor.resetEncoder(encoder.getPosition());
         motor.setGains(WristConstants.WRIST_GAINS);
         motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR);
@@ -49,11 +46,9 @@ public class WristIOKraken implements WristIO {
         inputs.temperatureCelcius = motor.getTemperatureAsDouble();
 
         if (!FieldConstants.IS_SIMULATION) {
-            inputs.encoderConnected = encoder.refreshSignals().isOK();
+            inputs.encoderConnected = encoder.isConnected();
         }
-        inputs.encoderPositionRads = inputs.encoderConnected ? encoder.getPositionAsDouble() : motor.getPositionAsDouble();
-        inputs.encoderAbsPositionRads = inputs.encoderConnected ? encoder.getAbsolutePositionAsDouble() : motor.getPositionAsDouble();
-        inputs.encoderVelocityRadsPerSec = inputs.encoderConnected ? encoder.getVelocityAsDouble() : motor.getVelocityAsDouble();
+        inputs.encoderPositionRads = inputs.encoderConnected ? encoder.getPosition() : motor.getPositionAsDouble();
     }
 
     @Override
