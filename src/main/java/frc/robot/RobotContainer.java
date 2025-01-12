@@ -3,7 +3,6 @@ package frc.robot;
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
 import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
@@ -20,9 +19,6 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -34,6 +30,8 @@ import frc.robot.commands.drive.Drive;
 import frc.robot.commands.logging.NTGainTuner;
 import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
+import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.subsystems.superstructure.Superstructure.PlacePosition;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.claw.ClawIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -64,6 +62,7 @@ public class RobotContainer {
     private final Elevator elevator;
     private final Wrist wrist;
     private final Climb climb;
+    private final Superstructure superstructure;
 
     public static Field2d field2d = new Field2d();
 
@@ -108,6 +107,8 @@ public class RobotContainer {
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
 
+        superstructure = new Superstructure(claw, elevator, wrist, climb);
+
         SmartDashboard.putData(field2d);
 
         mech = new LoggedMechanism2d(3, 3);
@@ -130,6 +131,8 @@ public class RobotContainer {
             robotRelativeSupplier,
             () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
         ));
+
+        superstructure.setDefaultCommand(superstructure.goToPlacement());
 
         HDCTuner = new HDCTuner(
             AutoConstants.TELE_HDC.getXController(),
@@ -204,28 +207,16 @@ public class RobotContainer {
                         () -> claw.stopCommand().schedule()));
 
         controller.povUp()
-            .onTrue(elevator.l4PositionCommand());
-
-        controller.povDown()
-            .onTrue(elevator.stowPositionCommand());
+            .onTrue(superstructure.changePlacement(PlacePosition.L4));
 
         controller.povLeft()
-            .onTrue(wrist.stowPositionCommand());
+            .onTrue(superstructure.changePlacement(PlacePosition.L3));
 
         controller.povRight()
-            .onTrue(wrist.intakePositionCommand());
-
-        controller.y() 
-            .onTrue(climb.stowPositionCommand());
-
-        controller.b()
-            .onTrue(climb.readyPositionCommand());
-
-        controller.a()
-            .onTrue(climb.finalPositionCommand());
-
-        controller.x()
-            .onTrue(climb.latchPositionCommand());
+            .onTrue(superstructure.changePlacement(PlacePosition.L2));
+        
+        controller.povDown()
+            .onTrue(superstructure.changePlacement(PlacePosition.L1));
 
     }
 

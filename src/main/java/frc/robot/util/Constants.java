@@ -429,7 +429,9 @@ public final class Constants {
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 60.0;
-        public static final double GEAR_RATIO = 1.0;
+
+        public static final double GEAR_RATIO = 7.75;
+        public static final double MAX_DISPLACEMENT_METERS = 1.177036;
         public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
 
