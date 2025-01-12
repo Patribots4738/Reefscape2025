@@ -3,6 +3,10 @@ package frc.robot;
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
+import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
+import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -17,6 +21,8 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -37,7 +43,6 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
-import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
@@ -49,7 +54,6 @@ public class RobotContainer {
     private EventLoop testButtonBindingLoop = new EventLoop();
 
     private final PatriBoxController driver;
-    @SuppressWarnings("unused")
     private final PatriBoxController operator;
 
     private boolean fieldRelativeToggle = true;
@@ -79,6 +83,14 @@ public class RobotContainer {
     public static SwerveModuleState[] swerveDesiredStates;
     @AutoLogOutput (key = "Draggables/GameModeStart")
     public static double gameModeStart = 0;
+
+    @AutoLogOutput (key = "Draggables/Mech2d")
+    private LoggedMechanism2d mech;
+    private LoggedMechanismRoot2d elevatorRoot;
+    private LoggedMechanismRoot2d climbRoot;
+    public static LoggedMechanismLigament2d elevatorMech;
+    public static LoggedMechanismLigament2d wristMech;
+    public static LoggedMechanismLigament2d climbMech;
     
     public RobotContainer() {
 
@@ -97,6 +109,13 @@ public class RobotContainer {
         climb = new Climb(new ClimbIOKraken());
 
         SmartDashboard.putData(field2d);
+
+        mech = new LoggedMechanism2d(3, 3);
+        elevatorRoot = mech.getRoot("placer", 1.8, 0.1524);
+        climbRoot = mech.getRoot("climber", 1.2, 0.1524);
+        elevatorMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevator", 0.5, 90.0));
+        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", 0.4, 0.0));
+        climbMech = climbRoot.append(new LoggedMechanismLigament2d("climb", 0.5, 0.0));
 
         driver.back().toggleOnTrue(
             Commands.runOnce(() -> fieldRelativeToggle = !fieldRelativeToggle)

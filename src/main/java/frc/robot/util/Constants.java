@@ -483,7 +483,7 @@ public final class Constants {
             WRIST_G
         );
 
-        public static final double GEAR_RATIO = 1.0;
+        public static final double GEAR_RATIO = 2.5;
         public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
         public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;

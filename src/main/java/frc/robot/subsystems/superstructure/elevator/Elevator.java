@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.superstructure.elevator;
 
+import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ElevatorConstants;
 import java.util.function.DoubleSupplier;
 import frc.robot.util.custom.LoggedTunableBoolean;
@@ -39,6 +40,8 @@ public class Elevator extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Elevator", inputs);
         Logger.recordOutput("Subsystems/Elevator/AtDesiredPosition", atDesiredPosition());
+
+        RobotContainer.elevatorMech.setLength(0.5 + inputs.leaderPositionMeters);
     }
 
     public void setPosition(double position) {

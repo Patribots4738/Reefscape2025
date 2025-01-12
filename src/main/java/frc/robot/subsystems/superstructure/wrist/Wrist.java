@@ -5,12 +5,15 @@
 package frc.robot.subsystems.superstructure.wrist;
 
 import java.util.function.DoubleSupplier;
+
+import frc.robot.RobotContainer;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
 import frc.robot.util.custom.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,6 +41,8 @@ public class Wrist extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
         Logger.recordOutput("Subsystems/Wrist/AtDesiredPosition", atDesiredPosition());
+
+        RobotContainer.wristMech.setAngle(Units.radiansToDegrees(inputs.encoderPositionRads));
     }
 
     public void setPosition(double position) {
