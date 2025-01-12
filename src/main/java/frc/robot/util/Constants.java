@@ -313,23 +313,23 @@ public final class Constants {
     }
 
     public static final class MK4cSwerveModuleConstants {
-        // Driving motors CAN IDs
-        public static final int FRONT_LEFT_DRIVING_CAN_ID = 4;
-        public static final int REAR_LEFT_DRIVING_CAN_ID = 7;
+        // Driving motors CAN IDs (EVEN)
+        public static final int FRONT_LEFT_DRIVING_CAN_ID = 3;
+        public static final int REAR_LEFT_DRIVING_CAN_ID = 5;
         public static final int FRONT_RIGHT_DRIVING_CAN_ID = 1;
-        public static final int REAR_RIGHT_DRIVING_CAN_ID = 10;
+        public static final int REAR_RIGHT_DRIVING_CAN_ID = 7;
 
-        // Turning motors CAN IDs
-        public static final int FRONT_LEFT_TURNING_CAN_ID = 5;
-        public static final int REAR_LEFT_TURNING_CAN_ID = 8;
+        // Turning motors CAN IDs (ODD)
+        public static final int FRONT_LEFT_TURNING_CAN_ID = 4;
+        public static final int REAR_LEFT_TURNING_CAN_ID = 6;
         public static final int FRONT_RIGHT_TURNING_CAN_ID = 2;
-        public static final int REAR_RIGHT_TURNING_CAN_ID = 11;
+        public static final int REAR_RIGHT_TURNING_CAN_ID = 8;
 
         // CANcoders CAN IDs
-        public static final int FRONT_LEFT_CANCODER_CAN_ID = 6;
-        public static final int REAR_LEFT_CANCODER_CAN_ID = 9;
-        public static final int FRONT_RIGHT_CANCODER_CAN_ID = 3;
-        public static final int REAR_RIGHT_CANCODER_CAN_ID = 12;
+        public static final int FRONT_LEFT_CANCODER_CAN_ID = 22;
+        public static final int REAR_LEFT_CANCODER_CAN_ID = 23;
+        public static final int FRONT_RIGHT_CANCODER_CAN_ID = 21;
+        public static final int REAR_RIGHT_CANCODER_CAN_ID = 24;
 
         private enum SwerveGearing {
 
@@ -412,7 +412,7 @@ public final class Constants {
 
     public static final class ClawConstants {
 
-        public static final int CLAW_CAN_ID = 13;
+        public static final int CLAW_CAN_ID = 9;
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 40.0;
@@ -424,8 +424,8 @@ public final class Constants {
 
     public static final class ElevatorConstants {
 
-        public static final int ELEVATOR_LEADER_CAN_ID = 14;
-        public static final int ELEVATOR_FOLLOWER_CAN_ID = 15;
+        public static final int ELEVATOR_LEADER_CAN_ID = 10;
+        public static final int ELEVATOR_FOLLOWER_CAN_ID = 11;
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 60.0;
@@ -461,8 +461,8 @@ public final class Constants {
 
     public static final class WristConstants {
 
-        public static final int WRIST_CAN_ID = 16;
-        public static final int WRIST_CANCODER_CAN_ID = 17;
+        public static final int WRIST_CAN_ID = 12;
+        public static final int WRIST_CANCODER_CAN_ID = 25;
 
         public static final double WRIST_CANCODER_OFFSET = 0.0;
 
@@ -498,6 +498,38 @@ public final class Constants {
         public static final double L3_POSITION_RADIANS = 2.0 * Math.PI / 3.0;
         public static final double L4_POSITION_RADIANS = 3.0 * Math.PI / 4.0;
 
+    }
+
+    public static final class ClimbConstants {
+
+        public static final int CLIMB_LEADER_CAN_ID = 13;
+        public static final int CLIMB_FOLLOWER_CAN_ID = 14;
+
+        public static final double CLIMB_GEAR_RATIO = 38.57142857142857;
+
+        public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
+
+        public static final double CURRENT_LIMIT = 80.0;
+
+        public static final double CLIMB_P = 0.5;
+        public static final double CLIMB_I = 0.0;
+        public static final double CLIMB_D = 0.0;
+        public static final double CLIMB_S = 0.0;
+        public static final double CLIMB_G = 0.0;
+        public static final GainConstants CLIMB_GAINS = new GainConstants(
+            CLIMB_P,
+            CLIMB_I,
+            CLIMB_D,
+            CLIMB_S,
+            0.0,
+            CLIMB_G
+        );
+        
+        public static final double STOW_POSITION_RADIANS = 0.0;
+        public static final double READY_POSITION_RADIANS = Math.PI / 2.0;
+        public static final double DOWN_POSITION_RADIANS = Math.PI;
+        public static final double FINAL_POSITION_RADIANS = Math.PI / 6.0;
 
     }
 
