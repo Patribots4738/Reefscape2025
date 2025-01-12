@@ -16,7 +16,7 @@ public class ClimbIONeo implements ClimbIO {
 
     private void configMotor(Neo motor) {
         motor.setPositionConversionFactor(ClimbConstants.MOTOR_POSITION_CONVERSION_FACTOR);
-        motor.setVelocityConversionFactor(ClimbConstants.MOTOR_VELOCITY_CONVERSION_FACTOR);
+        motor.setVelocityConversionFactor(ClimbConstants.MOTOR_VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setPID(ClimbConstants.CLIMB_GAINS);
         motor.setSmartCurrentLimit((int) ClimbConstants.CURRENT_LIMIT);
     }

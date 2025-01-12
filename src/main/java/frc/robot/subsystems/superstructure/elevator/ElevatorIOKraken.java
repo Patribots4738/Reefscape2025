@@ -25,7 +25,6 @@ public class ElevatorIOKraken implements ElevatorIO {
 
     private void configMotors() {
         resetEncoder(0);
-        follower.setMotorInverted(true);
         configMotor(leader);
         configMotor(follower);
         setBrakeMode(ElevatorConstants.BRAKE_MOTOR);

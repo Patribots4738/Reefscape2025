@@ -24,6 +24,7 @@ public class Climb extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Climb/BrakeMotor", ClimbConstants.BRAKE_MOTOR);
     private final LoggedTunableNumber stowPosition = new LoggedTunableNumber("Climb/StowPosition", ClimbConstants.STOW_POSITION_RADIANS);
     private final LoggedTunableNumber readyPosition = new LoggedTunableNumber("Climb/ReadyPosition", ClimbConstants.READY_POSITION_RADIANS);
+    private final LoggedTunableNumber latchPosition = new LoggedTunableNumber("Climb/LatchPosition", ClimbConstants.LATCH_POSITION_RADIANS);
     private final LoggedTunableNumber finalPosition = new LoggedTunableNumber("Climb/FinalPosition", ClimbConstants.FINAL_POSITION_RADIANS);
     
 
@@ -57,6 +58,10 @@ public class Climb extends SubsystemBase {
 
     public Command readyPositionCommand() {
         return setPositionCommand(readyPosition::get);
+    }
+
+    public Command latchPositionCommand() {
+        return setPositionCommand(latchPosition::get);
     }
 
     public Command finalPositionCommand() {

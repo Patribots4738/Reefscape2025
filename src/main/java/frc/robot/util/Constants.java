@@ -510,7 +510,7 @@ public final class Constants {
         public static final boolean CLIMB_ENCODER_INVERTED = false;
         public static final double CLIMB_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
 
-        public static final double CLIMB_GEAR_RATIO = 38.57142857142857;
+        public static final double CLIMB_GEAR_RATIO = 36.09375;
 
         public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
         public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
@@ -535,6 +535,7 @@ public final class Constants {
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = Math.PI / 2.0;
+        public static final double LATCH_POSITION_RADIANS = 2 * Math.PI / 3.0;
         public static final double FINAL_POSITION_RADIANS = Math.PI / 6.0;
 
         public static final double CLIMB_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
