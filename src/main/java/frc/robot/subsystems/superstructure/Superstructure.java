@@ -1,5 +1,7 @@
 package frc.robot.subsystems.superstructure;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.superstructure.claw.Claw;
@@ -78,30 +80,37 @@ public class Superstructure {
         return elevator.atTargetPosition() && wrist.atTargetPosition();
     }
 
-    public Command intakeCommand() {
-        return  
+    public Command stowCommand() {
+        return
             Commands.sequence(
-                setArmPosition(ArmPosition.INTAKE),
-                claw.intakeCommand().until(claw::hasPiece),
                 claw.stopCommand(),
                 setArmPosition(ArmPosition.STOW)
             );
     }
 
-    public Command placeCommand() {
-        return
+    public Command intakeCommand(BooleanSupplier continueIntakingSupplier) {
+        return 
             Commands.sequence(
-                Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
-                claw.outtakeCommand(),
-                setArmPosition(ArmPosition.STOW)
+                setArmPosition(ArmPosition.INTAKE),
+                claw.intakeCommand().until(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+                stowCommand()
             );
     }
 
-    public Command outtakeCommand() {
+    public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
+        return
+            Commands.sequence(
+                Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
+                claw.outtakeCommand().until(() -> !continueOuttakingSupplier.getAsBoolean()),
+                stowCommand()
+            );
+    }
+
+    public Command outtakeCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
                 setArmPosition(ArmPosition.L1),
-                placeCommand()
+                placeCommand(continueOuttakingSupplier)
             );
     }
 

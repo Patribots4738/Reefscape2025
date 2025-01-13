@@ -41,6 +41,7 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
@@ -114,7 +115,7 @@ public class RobotContainer {
         mech = new LoggedMechanism2d(3, 3);
         elevatorRoot = mech.getRoot("placer", 1.8, 0.1524);
         climbRoot = mech.getRoot("climber", 1.2, 0.1524);
-        elevatorMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevator", 0.5, 90.0));
+        elevatorMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevator", ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS, 90.0));
         wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", 0.4, 0.0));
         climbMech = climbRoot.append(new LoggedMechanismLigament2d("climb", 0.5, 0.0));
 
@@ -203,6 +204,15 @@ public class RobotContainer {
         
         controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+
+        controller.leftTrigger()
+            .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
+
+        controller.rightTrigger()
+            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
+
+        controller.rightBumper()
+            .onTrue(superstructure.outtakeCommand(controller::getRightBumper));
 
     }
 
