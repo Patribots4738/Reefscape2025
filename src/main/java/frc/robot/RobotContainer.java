@@ -41,8 +41,10 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.OIConstants;
+import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
 
@@ -116,8 +118,8 @@ public class RobotContainer {
         elevatorRoot = mech.getRoot("placer", 1.8, 0.1524);
         climbRoot = mech.getRoot("climber", 1.2, 0.1524);
         elevatorMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevator", ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS, 90.0));
-        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", 0.4, 0.0));
-        climbMech = climbRoot.append(new LoggedMechanismLigament2d("climb", 0.5, 0.0));
+        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", WristConstants.WRIST_LENGTH_METERS, 0.0));
+        climbMech = climbRoot.append(new LoggedMechanismLigament2d("climb", ClimbConstants.CLIMB_LENGTH_METERS, 0.0));
 
         driver.back().toggleOnTrue(
             Commands.runOnce(() -> fieldRelativeToggle = !fieldRelativeToggle)

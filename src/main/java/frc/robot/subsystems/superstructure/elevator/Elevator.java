@@ -34,7 +34,7 @@ public class Elevator extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Elevator", inputs);
         Logger.recordOutput("Subsystems/Elevator/AtTargetPosition", atTargetPosition());
 
-        RobotContainer.elevatorMech.setLength(0.5 + inputs.leaderPositionMeters);
+        RobotContainer.elevatorMech.setLength(ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS + inputs.leaderPositionMeters);
     }
 
     public void setPosition(double position) {
