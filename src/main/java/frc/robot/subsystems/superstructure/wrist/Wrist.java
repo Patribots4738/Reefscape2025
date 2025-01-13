@@ -33,7 +33,7 @@ public class Wrist extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
-        Logger.recordOutput("Subsystems/Wrist/AtDesiredPosition", atDesiredPosition());
+        Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
 
         RobotContainer.wristMech.setAngle(Units.radiansToDegrees(inputs.encoderPositionRads));
     }
@@ -43,14 +43,14 @@ public class Wrist extends SubsystemBase {
     }
 
     public Command setPositionCommand(double position) {
-        return run(() -> setPosition(position)).andThen(Commands.waitUntil(this::atDesiredPosition));
+        return run(() -> setPosition(position)).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return run(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atDesiredPosition));
+        return run(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
-    public boolean atDesiredPosition() {
+    public boolean atTargetPosition() {
         return MathUtil.isNear(inputs.targetPositionRads, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
     }
 }

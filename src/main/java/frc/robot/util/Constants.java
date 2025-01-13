@@ -630,6 +630,17 @@ public final class Constants {
                 add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_LEFT_TURNING_CAN_ID));
                 add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_RIGHT_TURNING_CAN_ID));
             }});
+            KRAKEN_MOTOR_GROUPS.put("Elevator", new ArrayList<Kraken>() {{
+                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.ELEVATOR_LEADER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.ELEVATOR_FOLLOWER_CAN_ID));
+            }});
+            KRAKEN_MOTOR_GROUPS.put("Wrist", new ArrayList<Kraken>() {{
+                add(KRAKEN_MOTOR_MAP.get(WristConstants.WRIST_CAN_ID));
+            }});
+            KRAKEN_MOTOR_GROUPS.put("Climb", new ArrayList<Kraken>() {{
+                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.CLIMB_LEADER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.CLIMB_FOLLOWER_CAN_ID));
+            }});
 
             return KRAKEN_MOTOR_GROUPS;
         }

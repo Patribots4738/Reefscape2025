@@ -31,7 +31,7 @@ import frc.robot.commands.logging.NTGainTuner;
 import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
-import frc.robot.subsystems.superstructure.Superstructure.PlacePosition;
+import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.claw.ClawIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -132,8 +132,6 @@ public class RobotContainer {
             () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
         ));
 
-        superstructure.setDefaultCommand(superstructure.goToPlacement());
-
         HDCTuner = new HDCTuner(
             AutoConstants.TELE_HDC.getXController(),
             AutoConstants.TELE_HDC.getThetaController());
@@ -194,29 +192,17 @@ public class RobotContainer {
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        controller.leftBumper()
-            .whileTrue(
-                claw.intakeCommand()
-                    .finallyDo(
-                        () -> claw.stopCommand().schedule()));
-
-        controller.rightBumper()
-            .whileTrue(
-                claw.outtakeCommand()
-                    .finallyDo(
-                        () -> claw.stopCommand().schedule()));
-
         controller.povUp()
-            .onTrue(superstructure.changePlacement(PlacePosition.L4));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
 
         controller.povLeft()
-            .onTrue(superstructure.changePlacement(PlacePosition.L3));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
 
         controller.povRight()
-            .onTrue(superstructure.changePlacement(PlacePosition.L2));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
         
         controller.povDown()
-            .onTrue(superstructure.changePlacement(PlacePosition.L1));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
 
     }
 

@@ -30,7 +30,7 @@ public class ClawIOKraken implements ClawIO {
         inputs.supplyCurrentAmps = motor.getSupplyCurrentAsDouble();
         inputs.statorCurrentAmps = motor.getStatorCurrentAsDouble();
         inputs.torqueCurrentAmps = motor.getTorqueCurrentAsDouble();
-        inputs.temperatureCelcius = motor.getTemperatureAsDouble();
+        inputs.temperatureCelsius = motor.getTemperatureAsDouble();
     }
 
     @Override

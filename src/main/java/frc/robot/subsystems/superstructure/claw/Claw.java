@@ -40,7 +40,7 @@ public class Claw extends SubsystemBase {
     }
 
     public Command setPercentCommand(double percent) {
-        return run(() -> setPercent(percent));
+        return runOnce(() -> setPercent(percent));
     }
 
     public Command setPercentCommand(DoubleSupplier percentSupplier) {

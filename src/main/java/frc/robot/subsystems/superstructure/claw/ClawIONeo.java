@@ -26,7 +26,7 @@ public class ClawIONeo implements ClawIO {
         inputs.targetPercentOutput = motor.getTargetPercent();
         inputs.appliedOutputVolts = motor.getBusVoltage();
         inputs.supplyCurrentAmps = motor.getOutputCurrent();
-        inputs.temperatureCelcius = motor.getMotorTemperature();
+        inputs.temperatureCelsius = motor.getMotorTemperature();
     }
 
     @Override

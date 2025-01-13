@@ -14,7 +14,7 @@ public interface ElevatorIO {
         public double leaderSupplyCurrentAmps = 0.0;
         public double leaderStatorCurrentAmps = 0.0;
         public double leaderTorqueCurrentAmps = 0.0;
-        public double leaderTemperatureCelcius = 0.0;
+        public double leaderTemperatureCelsius = 0.0;
 
         public boolean followerMotorConnected = false;
         public double followerPositionMeters = 0.0;
@@ -24,7 +24,7 @@ public interface ElevatorIO {
         public double followerSupplyCurrentAmps = 0.0;
         public double followerStatorCurrentAmps = 0.0;
         public double followerTorqueCurrentAmps = 0.0;
-        public double followerTemperatureCelcius = 0.0;
+        public double followerTemperatureCelsius = 0.0;
     }
 
     public default void updateInputs(ElevatorIOInputs inputs) {}

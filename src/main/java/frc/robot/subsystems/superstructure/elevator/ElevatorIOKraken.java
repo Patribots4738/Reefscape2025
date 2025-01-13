@@ -40,7 +40,7 @@ public class ElevatorIOKraken implements ElevatorIO {
         inputs.leaderSupplyCurrentAmps = leader.getSupplyCurrentAsDouble();
         inputs.leaderStatorCurrentAmps = leader.getStatorCurrentAsDouble();
         inputs.leaderTorqueCurrentAmps = leader.getTorqueCurrentAsDouble();
-        inputs.leaderTemperatureCelcius = leader.getTemperatureAsDouble();
+        inputs.leaderTemperatureCelsius = leader.getTemperatureAsDouble();
 
         inputs.followerMotorConnected = follower.refreshSignals().isOK();
         inputs.followerPositionMeters = follower.getPositionAsDouble();
@@ -50,7 +50,7 @@ public class ElevatorIOKraken implements ElevatorIO {
         inputs.followerSupplyCurrentAmps = follower.getSupplyCurrentAsDouble();
         inputs.followerStatorCurrentAmps = follower.getStatorCurrentAsDouble();
         inputs.followerTorqueCurrentAmps = follower.getTorqueCurrentAsDouble();
-        inputs.followerTemperatureCelcius = follower.getTemperatureAsDouble();
+        inputs.followerTemperatureCelsius = follower.getTemperatureAsDouble();
     }
 
     @Override

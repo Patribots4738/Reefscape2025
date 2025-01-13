@@ -2,7 +2,6 @@ package frc.robot.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
@@ -11,14 +10,12 @@ import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
-public class Superstructure extends SubsystemBase {
+public class Superstructure {
     
     private Claw claw;
     private Elevator elevator;
     private Wrist wrist;
     private Climb climb;
-
-    private PlacePosition currentPosition = PlacePosition.STOW;
 
     private final LoggedTunableNumber elevatorStow = new LoggedTunableNumber("Elevator/StowPostion", ElevatorConstants.STOW_POSITION_METERS);
     private final LoggedTunableNumber elevatorIntake = new LoggedTunableNumber("Elevator/IntakePosition", ElevatorConstants.INTAKE_POSITION_METERS);
@@ -40,22 +37,22 @@ public class Superstructure extends SubsystemBase {
         this.wrist = wrist;
         this.climb = climb;
 
-        elevatorStow.onChanged(runOnce(() -> PlacePosition.STOW.elevatorPose = elevatorStow.get()));
-        elevatorIntake.onChanged(runOnce(() -> PlacePosition.INTAKE.elevatorPose = elevatorIntake.get()));
-        elevatorL1.onChanged(runOnce(() -> PlacePosition.L1.elevatorPose = elevatorL1.get()));
-        elevatorL2.onChanged(runOnce(() -> PlacePosition.L2.elevatorPose = elevatorL2.get()));
-        elevatorL3.onChanged(runOnce(() -> PlacePosition.L3.elevatorPose = elevatorL3.get()));
-        elevatorL4.onChanged(runOnce(() -> PlacePosition.L4.elevatorPose = elevatorL4.get()));
+        elevatorStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.elevatorPose = elevatorStow.get()));
+        elevatorIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.elevatorPose = elevatorIntake.get()));
+        elevatorL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.elevatorPose = elevatorL1.get()));
+        elevatorL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.elevatorPose = elevatorL2.get()));
+        elevatorL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.elevatorPose = elevatorL3.get()));
+        elevatorL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.elevatorPose = elevatorL4.get()));
 
-        wristStow.onChanged(runOnce(() -> PlacePosition.STOW.wristPose = wristStow.get()));
-        wristIntake.onChanged(runOnce(() -> PlacePosition.INTAKE.wristPose = wristIntake.get()));
-        wristL1.onChanged(runOnce(() -> PlacePosition.L1.wristPose = wristL1.get()));
-        wristL2.onChanged(runOnce(() -> PlacePosition.L2.wristPose = wristL2.get()));
-        wristL3.onChanged(runOnce(() -> PlacePosition.L3.wristPose = wristL3.get()));
-        wristL4.onChanged(runOnce(() -> PlacePosition.L4.wristPose = wristL4.get()));
+        wristStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.wristPose = wristStow.get()));
+        wristIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.wristPose = wristIntake.get()));
+        wristL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.wristPose = wristL1.get()));
+        wristL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.wristPose = wristL2.get()));
+        wristL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.wristPose = wristL3.get()));
+        wristL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.wristPose = wristL4.get()));
     }
 
-    public enum PlacePosition {
+    public enum ArmPosition {
         INTAKE (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS),
         STOW   (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS),
         L1     (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS),
@@ -65,26 +62,47 @@ public class Superstructure extends SubsystemBase {
 
         private double elevatorPose, wristPose;
 
-        PlacePosition(double elevatorPose, double wristPose) {
+        ArmPosition(double elevatorPose, double wristPose) {
             this.elevatorPose = elevatorPose;
             this.wristPose = wristPose;
         }
-
     }
 
-    public Command goToPlacement() {
+    public Command setArmPosition(ArmPosition position) {
         return 
-            run(() -> 
-                elevator.setPositionCommand(() -> currentPosition.elevatorPose)
-                    .alongWith(wrist.setPositionCommand(() -> currentPosition.wristPose)).schedule());
+            elevator.setPositionCommand(() -> position.elevatorPose)
+                .alongWith(wrist.setPositionCommand(() -> position.wristPose));
     }
 
-    public Command changePlacement(PlacePosition newPosition) {
-        return runOnce(() -> this.currentPosition = newPosition);
+    public boolean armAtTargetPosition() {
+        return elevator.atTargetPosition() && wrist.atTargetPosition();
     }
 
-    @Override
-    public void periodic() {
-        System.out.println(currentPosition + ": " + currentPosition.elevatorPose + " " + currentPosition.wristPose);
+    public Command intakeCommand() {
+        return  
+            Commands.sequence(
+                setArmPosition(ArmPosition.INTAKE),
+                claw.intakeCommand().until(claw::hasPiece),
+                claw.stopCommand(),
+                setArmPosition(ArmPosition.STOW)
+            );
     }
+
+    public Command placeCommand() {
+        return
+            Commands.sequence(
+                Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
+                claw.outtakeCommand(),
+                setArmPosition(ArmPosition.STOW)
+            );
+    }
+
+    public Command outtakeCommand() {
+        return
+            Commands.sequence(
+                setArmPosition(ArmPosition.L1),
+                placeCommand()
+            );
+    }
+
 }

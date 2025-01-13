@@ -32,7 +32,7 @@ public class Elevator extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Elevator", inputs);
-        Logger.recordOutput("Subsystems/Elevator/AtDesiredPosition", atDesiredPosition());
+        Logger.recordOutput("Subsystems/Elevator/AtTargetPosition", atTargetPosition());
 
         RobotContainer.elevatorMech.setLength(0.5 + inputs.leaderPositionMeters);
     }
@@ -42,14 +42,14 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command setPositionCommand(double position) {
-        return run(() -> setPosition(position)).andThen(Commands.waitUntil(this::atDesiredPosition));
-    }
+        return run(() -> setPosition(position)).andThen(Commands.waitUntil(this::atTargetPosition));
+    }   
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return run(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atDesiredPosition));
+        return run(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
-    public boolean atDesiredPosition() {
+    public boolean atTargetPosition() {
         return MathUtil.isNear(inputs.leaderTargetPositionMeters, inputs.leaderPositionMeters, ElevatorConstants.ELEVATOR_DEADBAND_METERS);
     }
 
