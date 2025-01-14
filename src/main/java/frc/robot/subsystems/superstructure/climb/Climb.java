@@ -48,12 +48,12 @@ public class Climb extends SubsystemBase {
         io.setPosition(position);
     }
 
-    public Command setPositionCommand(double position) {
-        return run(() -> setPosition(position)).andThen(Commands.waitUntil(this::atDesiredPosition));
+    public Command setPositionCommand(DoubleSupplier positionSupplier) {
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atDesiredPosition));
     }
 
-    public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return run(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atDesiredPosition));
+    public Command setPositionCommand(double position) {
+        return setPositionCommand(() -> position);
     }
 
     public Command stowPositionCommand() {

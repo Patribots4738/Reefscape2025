@@ -39,25 +39,25 @@ public class Superstructure {
         this.wrist = wrist;
         this.climb = climb;
 
-        elevatorStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.elevatorPose = elevatorStow.get(), elevator));
-        elevatorIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.elevatorPose = elevatorIntake.get(), elevator));
-        elevatorL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.elevatorPose = elevatorL1.get(), elevator));
-        elevatorL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.elevatorPose = elevatorL2.get(), elevator));
-        elevatorL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.elevatorPose = elevatorL3.get(), elevator));
-        elevatorL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.elevatorPose = elevatorL4.get(), elevator));
+        elevatorStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.elevatorPose = elevatorStow.get()).ignoringDisable(true));
+        elevatorIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.elevatorPose = elevatorIntake.get()).ignoringDisable(true));
+        elevatorL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.elevatorPose = elevatorL1.get()).ignoringDisable(true));
+        elevatorL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.elevatorPose = elevatorL2.get()).ignoringDisable(true));
+        elevatorL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.elevatorPose = elevatorL3.get()).ignoringDisable(true));
+        elevatorL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.elevatorPose = elevatorL4.get()).ignoringDisable(true));
 
-        wristStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.wristPose = wristStow.get(), wrist));
-        wristIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.wristPose = wristIntake.get(), wrist));
-        wristL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.wristPose = wristL1.get(), wrist));
-        wristL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.wristPose = wristL2.get(), wrist));
-        wristL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.wristPose = wristL3.get(), wrist));
-        wristL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.wristPose = wristL4.get(), wrist));
+        wristStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.wristPose = wristStow.get()).ignoringDisable(true));
+        wristIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.wristPose = wristIntake.get()).ignoringDisable(true));
+        wristL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.wristPose = wristL1.get()).ignoringDisable(true));
+        wristL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.wristPose = wristL2.get()).ignoringDisable(true));
+        wristL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.wristPose = wristL3.get()).ignoringDisable(true));
+        wristL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.wristPose = wristL4.get()).ignoringDisable(true));
     }
 
-    public enum OrderedMovement {
+    public enum MovementOrder {
         WRIST_FIRST,
         ELEVATOR_FIRST,
-        POWER_OF_FRIENDSHIP
+        SIMULTANEOUS
     }
 
     public enum ArmPosition {
@@ -77,7 +77,7 @@ public class Superstructure {
         }
     }
 
-    public Command setArmPosition(ArmPosition position, OrderedMovement order) {
+    public Command setArmPosition(ArmPosition position, MovementOrder order) {
         return 
             Commands.either(
                 elevator.setPositionCommand(() -> position.elevatorPose)
@@ -87,9 +87,9 @@ public class Superstructure {
                         .andThen(wrist.setPositionCommand(() -> position.wristPose)),
                     wrist.setPositionCommand(() -> position.wristPose)
                         .andThen(elevator.setPositionCommand(() -> position.elevatorPose)),
-                    () -> order == OrderedMovement.ELEVATOR_FIRST
+                    () -> order == MovementOrder.ELEVATOR_FIRST
                 ), 
-                () -> order == OrderedMovement.POWER_OF_FRIENDSHIP
+                () -> order == MovementOrder.SIMULTANEOUS
             );
     }
 
@@ -101,15 +101,15 @@ public class Superstructure {
         return
             Commands.sequence(
                 claw.stopCommand(),
-                setArmPosition(ArmPosition.STOW, OrderedMovement.POWER_OF_FRIENDSHIP)
+                setArmPosition(ArmPosition.STOW, MovementOrder.WRIST_FIRST)
             );
     }
 
     public Command intakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
-                setArmPosition(ArmPosition.INTAKE, OrderedMovement.WRIST_FIRST),
-                claw.intakeCommand().until(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+                setArmPosition(ArmPosition.INTAKE, MovementOrder.ELEVATOR_FIRST),
+                claw.intakeCommand().until(() -> !continueIntakingSupplier.getAsBoolean()),
                 stowCommand()
             );
     }
@@ -126,7 +126,7 @@ public class Superstructure {
     public Command outtakeCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
-                setArmPosition(ArmPosition.L1, OrderedMovement.WRIST_FIRST),
+                setArmPosition(ArmPosition.L1, MovementOrder.WRIST_FIRST),
                 placeCommand(continueOuttakingSupplier)
             );
     }

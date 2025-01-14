@@ -42,13 +42,13 @@ public class Wrist extends SubsystemBase {
         io.setPosition(position);
     }
 
-    public Command setPositionCommand(double position) {
-        return run(() -> setPosition(position)).andThen(Commands.waitUntil(this::atTargetPosition));
+    public Command setPositionCommand(DoubleSupplier positionSupplier) {
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
-    public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return run(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
-    }
+    public Command setPositionCommand(double position) {
+        return setPositionCommand(() -> position);
+    }   
 
     public boolean atTargetPosition() {
         return MathUtil.isNear(inputs.targetPositionRads, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);

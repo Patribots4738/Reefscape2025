@@ -39,12 +39,12 @@ public class Claw extends SubsystemBase {
         io.setPercent(percent);
     }
 
-    public Command setPercentCommand(double percent) {
-        return runOnce(() -> setPercent(percent));
-    }
-
     public Command setPercentCommand(DoubleSupplier percentSupplier) {
         return run(() -> setPercent(percentSupplier.getAsDouble()));
+    }
+
+    public Command setPercentCommand(double percent) {
+        return setPercentCommand(() -> percent);
     }
 
     public Command intakeCommand() {
