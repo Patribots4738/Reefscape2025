@@ -545,12 +545,12 @@ public final class Constants {
         public static final double HEIGHT_L3 = 0.0;
         public static final double HEIGHT_L4 = 0.0;
 
-        public static final pose2d CAGE_1 = new pose2d();
-        public static final pose2d CAGE_2 = new pose2d();
-        public static final pose2d CAGE_3 = new pose2d();
-        public static final pose2d CAGE_4 = new pose2d();
-        public static final pose2d CAGE_5 = new pose2d();
-        public static final pose2d CAGE_6 = new pose2d();
+        public static final pose2d CAGE_1 = new pose2d(8.67, 7.32, 0);
+        public static final pose2d CAGE_2 = new pose2d(8.67, 6.22, 0);
+        public static final pose2d CAGE_3 = new pose2d(8.67, 5.13, 0);
+        public static final pose2d CAGE_4 = new pose2d(8.67, 3.03, 0);
+        public static final pose2d CAGE_5 = new pose2d(8.67, 1.94, 0);
+        public static final pose2d CAGE_6 = new pose2d(8.67, 0.85, 0);
     }
 
 }
