@@ -313,23 +313,23 @@ public final class Constants {
     }
 
     public static final class MK4cSwerveModuleConstants {
-        // Driving motors CAN IDs
-        public static final int FRONT_LEFT_DRIVING_CAN_ID = 4;
-        public static final int REAR_LEFT_DRIVING_CAN_ID = 7;
+        // Driving motors CAN IDs (EVEN)
+        public static final int FRONT_LEFT_DRIVING_CAN_ID = 3;
+        public static final int REAR_LEFT_DRIVING_CAN_ID = 5;
         public static final int FRONT_RIGHT_DRIVING_CAN_ID = 1;
-        public static final int REAR_RIGHT_DRIVING_CAN_ID = 10;
+        public static final int REAR_RIGHT_DRIVING_CAN_ID = 7;
 
-        // Turning motors CAN IDs
-        public static final int FRONT_LEFT_TURNING_CAN_ID = 5;
-        public static final int REAR_LEFT_TURNING_CAN_ID = 8;
+        // Turning motors CAN IDs (ODD)
+        public static final int FRONT_LEFT_TURNING_CAN_ID = 4;
+        public static final int REAR_LEFT_TURNING_CAN_ID = 6;
         public static final int FRONT_RIGHT_TURNING_CAN_ID = 2;
-        public static final int REAR_RIGHT_TURNING_CAN_ID = 11;
+        public static final int REAR_RIGHT_TURNING_CAN_ID = 8;
 
         // CANcoders CAN IDs
-        public static final int FRONT_LEFT_CANCODER_CAN_ID = 6;
-        public static final int REAR_LEFT_CANCODER_CAN_ID = 9;
-        public static final int FRONT_RIGHT_CANCODER_CAN_ID = 3;
-        public static final int REAR_RIGHT_CANCODER_CAN_ID = 12;
+        public static final int FRONT_LEFT_CANCODER_CAN_ID = 22;
+        public static final int REAR_LEFT_CANCODER_CAN_ID = 23;
+        public static final int FRONT_RIGHT_CANCODER_CAN_ID = 21;
+        public static final int REAR_RIGHT_CANCODER_CAN_ID = 24;
 
         private enum SwerveGearing {
 
@@ -407,6 +407,145 @@ public final class Constants {
             0.0,
             0.0
         );
+
+    }
+
+    public static final class ClawConstants {
+
+        public static final int CLAW_CAN_ID = 9;
+
+        public static final boolean BRAKE_MOTOR = true;
+        public static final double CURRENT_LIMIT = 40.0;
+
+        public static final double INTAKE_PERCENT = 0.2;
+        public static final double OUTTAKE_PERCENT = -0.2;
+
+    }
+
+    public static final class ElevatorConstants {
+
+        public static final int ELEVATOR_LEADER_CAN_ID = 10;
+        public static final int ELEVATOR_FOLLOWER_CAN_ID = 11;
+
+        public static final boolean BRAKE_MOTOR = true;
+        public static final double CURRENT_LIMIT = 60.0;
+
+        public static final double GEAR_RATIO = 7.75;
+        public static final double ELEVATOR_BASE_HEIGHT_METERS = 0.5;
+        public static final double MAX_DISPLACEMENT_METERS = 1.177036;
+        public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
+
+        public static final double ELEVATOR_P = 0.5;
+        public static final double ELEVATOR_I = 0.0;
+        public static final double ELEVATOR_D = 0.0;
+        public static final double ELEVATOR_S = 0.0;
+        public static final double ELEVATOR_G = 0.0;
+
+        public static final GainConstants ELEVATOR_GAINS = new GainConstants(
+            ELEVATOR_P,
+            ELEVATOR_I,
+            ELEVATOR_D,
+            ELEVATOR_S,
+            0.0,
+            ELEVATOR_G
+        );
+
+        public static final double STOW_POSITION_METERS = 0.0;
+        public static final double INTAKE_POSITION_METERS = 0.0;
+        public static final double L1_POSITION_METERS = 0.0;
+        public static final double L2_POSITION_METERS = 0.0;
+        public static final double L3_POSITION_METERS = 0.0;
+        public static final double L4_POSITION_METERS = 0.0;
+
+        public static final double ELEVATOR_DEADBAND_METERS = 0.01;
+
+    }
+
+    public static final class WristConstants {
+
+        public static final int WRIST_CAN_ID = 12;
+        public static final int WRIST_ENCODER_DIO_PIN = 0;
+
+        public static final double WRIST_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
+        public static final boolean WRIST_ENCODER_INVERTED = false;
+
+        public static final boolean BRAKE_MOTOR = true;
+
+        public static final double WRIST_P = 0.5;
+        public static final double WRIST_I = 0.0;
+        public static final double WRIST_D = 0.0;
+        public static final double WRIST_S = 0.0;
+        public static final double WRIST_G = 0.0;
+        public static final GainConstants WRIST_GAINS = new GainConstants(
+            WRIST_P,
+            WRIST_I,
+            WRIST_D,
+            WRIST_S,
+            0.0,
+            WRIST_G
+        );
+
+        public static final double GEAR_RATIO = 2.5;
+        public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
+        public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
+        public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
+
+        public static final double WRIST_LENGTH_METERS = 0.2;
+
+        public static final double CURRENT_LIMIT = 60.0;
+
+        public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
+
+        public static final double STOW_POSITION_RADIANS = 0.0;
+        public static final double INTAKE_POSITION_RADIANS = 0.0;
+        public static final double L1_POSITION_RADIANS = 0.0;
+        public static final double L2_POSITION_RADIANS = 0.0;
+        public static final double L3_POSITION_RADIANS = 0.0;
+        public static final double L4_POSITION_RADIANS = 0.0;
+
+    }
+
+    public static final class ClimbConstants {
+
+        public static final int CLIMB_LEADER_CAN_ID = 13;
+        public static final int CLIMB_FOLLOWER_CAN_ID = 14;
+        public static final int CLIMB_ENCODER_DIO_PIN = 1;
+
+        public static final boolean CLIMB_ENCODER_INVERTED = false;
+        public static final double CLIMB_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
+
+        public static final double CLIMB_GEAR_RATIO = 36.09375;
+
+        public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
+        public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
+        public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
+
+        public static final double CLIMB_LENGTH_METERS = 0.5;
+
+        public static final double CURRENT_LIMIT = 80.0;
+        public static final boolean BRAKE_MOTOR = true;
+
+        public static final double CLIMB_P = 0.5;
+        public static final double CLIMB_I = 0.0;
+        public static final double CLIMB_D = 0.0;
+        public static final double CLIMB_S = 0.0;
+        public static final double CLIMB_G = 0.0;
+        public static final GainConstants CLIMB_GAINS = new GainConstants(
+            CLIMB_P,
+            CLIMB_I,
+            CLIMB_D,
+            CLIMB_S,
+            0.0,
+            CLIMB_G
+        );
+        
+        public static final double STOW_POSITION_RADIANS = 0.0;
+        public static final double READY_POSITION_RADIANS = 0.0;
+        public static final double LATCH_POSITION_RADIANS = 0.0;
+        public static final double FINAL_POSITION_RADIANS = 0.0;
+
+        public static final double CLIMB_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
     }
 
@@ -495,6 +634,17 @@ public final class Constants {
                 add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.FRONT_RIGHT_TURNING_CAN_ID));
                 add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_LEFT_TURNING_CAN_ID));
                 add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_RIGHT_TURNING_CAN_ID));
+            }});
+            KRAKEN_MOTOR_GROUPS.put("Elevator", new ArrayList<Kraken>() {{
+                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.ELEVATOR_LEADER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.ELEVATOR_FOLLOWER_CAN_ID));
+            }});
+            KRAKEN_MOTOR_GROUPS.put("Wrist", new ArrayList<Kraken>() {{
+                add(KRAKEN_MOTOR_MAP.get(WristConstants.WRIST_CAN_ID));
+            }});
+            KRAKEN_MOTOR_GROUPS.put("Climb", new ArrayList<Kraken>() {{
+                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.CLIMB_LEADER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.CLIMB_FOLLOWER_CAN_ID));
             }});
 
             return KRAKEN_MOTOR_GROUPS;

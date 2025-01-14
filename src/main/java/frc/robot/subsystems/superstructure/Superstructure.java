@@ -1,0 +1,117 @@
+package frc.robot.subsystems.superstructure;
+
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.superstructure.claw.Claw;
+import frc.robot.subsystems.superstructure.elevator.Elevator;
+import frc.robot.subsystems.superstructure.wrist.Wrist;
+import frc.robot.util.Constants.ElevatorConstants;
+import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.custom.LoggedTunableNumber;
+import frc.robot.subsystems.superstructure.climb.Climb;
+
+public class Superstructure {
+    
+    private Claw claw;
+    private Elevator elevator;
+    private Wrist wrist;
+    private Climb climb;
+
+    private final LoggedTunableNumber elevatorStow = new LoggedTunableNumber("Elevator/StowPostion", ElevatorConstants.STOW_POSITION_METERS);
+    private final LoggedTunableNumber elevatorIntake = new LoggedTunableNumber("Elevator/IntakePosition", ElevatorConstants.INTAKE_POSITION_METERS);
+    private final LoggedTunableNumber elevatorL1 = new LoggedTunableNumber("Elevator/L1Postition", ElevatorConstants.L1_POSITION_METERS);
+    private final LoggedTunableNumber elevatorL2 = new LoggedTunableNumber("Elevator/L2Postition", ElevatorConstants.L2_POSITION_METERS);
+    private final LoggedTunableNumber elevatorL3 = new LoggedTunableNumber("Elevator/L3Postition", ElevatorConstants.L3_POSITION_METERS);
+    private final LoggedTunableNumber elevatorL4 = new LoggedTunableNumber("Elevator/L4Postition", ElevatorConstants.L4_POSITION_METERS);
+
+    private final LoggedTunableNumber wristStow = new LoggedTunableNumber("Wrist/StowPostion", WristConstants.STOW_POSITION_RADIANS);
+    private final LoggedTunableNumber wristIntake = new LoggedTunableNumber("Wrist/IntakePosition", WristConstants.INTAKE_POSITION_RADIANS);
+    private final LoggedTunableNumber wristL1 = new LoggedTunableNumber("Wrist/L1Postition", WristConstants.L1_POSITION_RADIANS);
+    private final LoggedTunableNumber wristL2 = new LoggedTunableNumber("Wrist/L2Postition", WristConstants.L2_POSITION_RADIANS);
+    private final LoggedTunableNumber wristL3 = new LoggedTunableNumber("Wrist/L3Postition", WristConstants.L3_POSITION_RADIANS);
+    private final LoggedTunableNumber wristL4 = new LoggedTunableNumber("Wrist/L4Postition", WristConstants.L4_POSITION_RADIANS);
+
+    public Superstructure(Claw claw, Elevator elevator, Wrist wrist, Climb climb) {
+        this.claw = claw;
+        this.elevator = elevator;
+        this.wrist = wrist;
+        this.climb = climb;
+
+        elevatorStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.elevatorPose = elevatorStow.get()));
+        elevatorIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.elevatorPose = elevatorIntake.get()));
+        elevatorL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.elevatorPose = elevatorL1.get()));
+        elevatorL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.elevatorPose = elevatorL2.get()));
+        elevatorL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.elevatorPose = elevatorL3.get()));
+        elevatorL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.elevatorPose = elevatorL4.get()));
+
+        wristStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.wristPose = wristStow.get()));
+        wristIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.wristPose = wristIntake.get()));
+        wristL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.wristPose = wristL1.get()));
+        wristL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.wristPose = wristL2.get()));
+        wristL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.wristPose = wristL3.get()));
+        wristL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.wristPose = wristL4.get()));
+    }
+
+    public enum ArmPosition {
+        INTAKE (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS),
+        STOW   (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS),
+        L1     (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS),
+        L2     (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS),
+        L3     (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
+        L4     (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS);
+
+        private double elevatorPose, wristPose;
+
+        ArmPosition(double elevatorPose, double wristPose) {
+            this.elevatorPose = elevatorPose;
+            this.wristPose = wristPose;
+        }
+    }
+
+    public Command setArmPosition(ArmPosition position) {
+        return 
+            elevator.setPositionCommand(() -> position.elevatorPose)
+                .alongWith(wrist.setPositionCommand(() -> position.wristPose));
+    }
+
+    public boolean armAtTargetPosition() {
+        return elevator.atTargetPosition() && wrist.atTargetPosition();
+    }
+
+    public Command stowCommand() {
+        return
+            Commands.sequence(
+                claw.stopCommand(),
+                setArmPosition(ArmPosition.STOW)
+            );
+    }
+
+    public Command intakeCommand(BooleanSupplier continueIntakingSupplier) {
+        return 
+            Commands.sequence(
+                setArmPosition(ArmPosition.INTAKE),
+                claw.intakeCommand().until(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+                stowCommand()
+            );
+    }
+
+    public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
+        return
+            Commands.sequence(
+                Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
+                claw.outtakeCommand().until(() -> !continueOuttakingSupplier.getAsBoolean()),
+                stowCommand()
+            );
+    }
+
+    public Command outtakeCommand(BooleanSupplier continueOuttakingSupplier) {
+        return
+            Commands.sequence(
+                setArmPosition(ArmPosition.L1),
+                placeCommand(continueOuttakingSupplier)
+            );
+    }
+
+}

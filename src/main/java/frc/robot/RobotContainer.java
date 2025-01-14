@@ -3,6 +3,9 @@ package frc.robot;
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
+import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
+import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -27,8 +30,21 @@ import frc.robot.commands.drive.Drive;
 import frc.robot.commands.logging.NTGainTuner;
 import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
+import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
+import frc.robot.subsystems.superstructure.claw.Claw;
+import frc.robot.subsystems.superstructure.claw.ClawIOKraken;
+import frc.robot.subsystems.superstructure.elevator.Elevator;
+import frc.robot.subsystems.superstructure.elevator.ElevatorIOKraken;
+import frc.robot.subsystems.superstructure.wrist.Wrist;
+import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
+import frc.robot.subsystems.superstructure.climb.Climb;
+import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.ClimbConstants;
+import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.OIConstants;
+import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
 
@@ -39,13 +55,17 @@ public class RobotContainer {
     private EventLoop testButtonBindingLoop = new EventLoop();
 
     private final PatriBoxController driver;
-    @SuppressWarnings("unused")
     private final PatriBoxController operator;
 
     private boolean fieldRelativeToggle = true;
     private final BooleanSupplier robotRelativeSupplier;
 
     private final Swerve swerve;
+    private final Claw claw;
+    private final Elevator elevator;
+    private final Wrist wrist;
+    private final Climb climb;
+    private final Superstructure superstructure;
 
     public static Field2d field2d = new Field2d();
 
@@ -65,6 +85,14 @@ public class RobotContainer {
     public static SwerveModuleState[] swerveDesiredStates;
     @AutoLogOutput (key = "Draggables/GameModeStart")
     public static double gameModeStart = 0;
+
+    @AutoLogOutput (key = "Draggables/Mech2d")
+    private LoggedMechanism2d mech;
+    private LoggedMechanismRoot2d elevatorRoot;
+    private LoggedMechanismRoot2d climbRoot;
+    public static LoggedMechanismLigament2d elevatorMech;
+    public static LoggedMechanismLigament2d wristMech;
+    public static LoggedMechanismLigament2d climbMech;
     
     public RobotContainer() {
 
@@ -77,8 +105,21 @@ public class RobotContainer {
         pdh.setSwitchableChannel(false);
 
         swerve = new Swerve();
+        claw = new Claw(new ClawIOKraken());
+        elevator = new Elevator(new ElevatorIOKraken());
+        wrist = new Wrist(new WristIOKraken());
+        climb = new Climb(new ClimbIOKraken());
+
+        superstructure = new Superstructure(claw, elevator, wrist, climb);
 
         SmartDashboard.putData(field2d);
+
+        mech = new LoggedMechanism2d(3, 3);
+        elevatorRoot = mech.getRoot("placer", 1.8, 0.1524);
+        climbRoot = mech.getRoot("climber", 1.2, 0.1524);
+        elevatorMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevator", ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS, 90.0));
+        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", WristConstants.WRIST_LENGTH_METERS, 0.0));
+        climbMech = climbRoot.append(new LoggedMechanismLigament2d("climb", ClimbConstants.CLIMB_LENGTH_METERS, 0.0));
 
         driver.back().toggleOnTrue(
             Commands.runOnce(() -> fieldRelativeToggle = !fieldRelativeToggle)
@@ -154,26 +195,26 @@ public class RobotContainer {
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        // controller.povUp()
-        //     .whileTrue(krakenTest.setPosition(() -> krakenTest.getPosition() + 0.2));
+        controller.povUp()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
 
-        // controller.povDown()
-        //     .whileTrue(krakenTest.setPosition(() -> krakenTest.getPosition() - 0.2));
+        controller.povLeft()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
 
-        // controller.a()
-        //     .onTrue(krakenTest.setPosition(() -> 0));
+        controller.povRight()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
+        
+        controller.povDown()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
 
-        // controller.b()
-        //     .whileTrue(krakenTest.setVelocity(() -> 500)
-        //         .finallyDo(() -> krakenTest.setVelocity(() -> 0)));
+        controller.leftTrigger()
+            .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
 
-        // controller.x()
-        //     .whileTrue(krakenTest.setVelocity(() -> -500)
-        //         .finallyDo(() -> krakenTest.setVelocity(() -> 0)));
+        controller.rightTrigger()
+            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
 
-        // controller.rightTrigger()
-        //     .whileTrue(krakenTest.setPercent(controller::getRightY)
-        //         .finallyDo(() -> krakenTest.setPercent(() -> 0)));
+        controller.rightBumper()
+            .onTrue(superstructure.outtakeCommand(controller::getRightBumper));
 
     }
 
