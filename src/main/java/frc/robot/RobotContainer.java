@@ -175,18 +175,6 @@ public class RobotContainer {
         //     .whileTrue(krakenTest.setPercent(controller::getRightY)
         //         .finallyDo(() -> krakenTest.setPercent(() -> 0)));
 
-        controller.povUp()
-            .onTrue().povUp()
-            .onTrue().povDown()
-            .onTrue().povDown()
-            .onTrue().povLeft()
-            .onTrue().povRight()
-            .onTrue().povLeft()
-            .onTrue().povRight()
-            .onTrue().b()
-            .onTrue().a()
-            .onTrue(System.out.println("Hi"));
-
     }
 
     public void updateNTGains() {
