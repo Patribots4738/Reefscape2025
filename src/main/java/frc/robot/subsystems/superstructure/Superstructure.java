@@ -4,6 +4,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
@@ -14,10 +15,10 @@ import frc.robot.subsystems.superstructure.climb.Climb;
 
 public class Superstructure {
     
-    private Claw claw;
-    private Elevator elevator;
-    private Wrist wrist;
-    private Climb climb;
+    private final Claw claw;
+    private final Elevator elevator;
+    private final Wrist wrist;
+    private final Climb climb;
 
     private final LoggedTunableNumber elevatorStow = new LoggedTunableNumber("Elevator/StowPostion", ElevatorConstants.STOW_POSITION_METERS);
     private final LoggedTunableNumber elevatorIntake = new LoggedTunableNumber("Elevator/IntakePosition", ElevatorConstants.INTAKE_POSITION_METERS);
@@ -100,7 +101,6 @@ public class Superstructure {
     public Command stowCommand() {
         return
             Commands.sequence(
-                claw.stopCommand(),
                 setArmPosition(ArmPosition.STOW, MovementOrder.WRIST_FIRST)
             );
     }
@@ -109,7 +109,8 @@ public class Superstructure {
         return 
             Commands.sequence(
                 setArmPosition(ArmPosition.INTAKE, MovementOrder.ELEVATOR_FIRST),
-                claw.intakeCommand().until(() -> !continueIntakingSupplier.getAsBoolean()),
+                claw.intakeCommand().until(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+                new ScheduleCommand(claw.holdCommand()),
                 stowCommand()
             );
     }
@@ -119,6 +120,7 @@ public class Superstructure {
             Commands.sequence(
                 Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
                 claw.outtakeCommand().until(() -> !continueOuttakingSupplier.getAsBoolean()),
+                claw.stopCommand(),
                 stowCommand()
             );
     }
