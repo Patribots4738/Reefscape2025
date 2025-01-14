@@ -521,36 +521,36 @@ public final class Constants {
     public static final class FieldConstants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
-        public static final pose2d BLUE_PROCESSER = new pose2d(11.54, 8.06, 0);
-        public static final pose2d RED_PROCESSER = new pose2d(5.50, 0.00, 0);
+        public static final Pose2d BLUE_PROCESSER = new Pose2d(11.54, 8.06, 0);
+        public static final Pose2d RED_PROCESSER = new Pose2d(5.50, 0.00, 0);
 
-        public static final pose3d CORALSTATION_1 = new pose3d();
-        public static final pose3d CORALSTATION_2 = new pose3d();
+        public static final Pose3d CORALSTATION_1 = new Pose3d();
+        public static final Pose3d CORALSTATION_2 = new Pose3d();
 
-        public static final pose2d REEF_A = new pose2d();
-        public static final pose2d REEF_B = new pose2d();
-        public static final pose2d REEF_C = new pose2d();
-        public static final pose2d REEF_D = new pose2d();
-        public static final pose2d REEF_E = new pose2d();
-        public static final pose2d REEF_F = new pose2d();
-        public static final pose2d REEF_G = new pose2d();
-        public static final pose2d REEF_H = new pose2d();
-        public static final pose2d REEF_I = new pose2d();
-        public static final pose2d REEF_J = new pose2d();
-        public static final pose2d REEF_K = new pose2d();
-        public static final pose2d REEF_L = new pose2d();
+        public static final Pose2d REEF_A = new Pose2d();
+        public static final Pose2d REEF_B = new Pose2d();
+        public static final Pose2d REEF_C = new Pose2d();
+        public static final Pose2d REEF_D = new Pose2d();
+        public static final Pose2d REEF_E = new Pose2d();
+        public static final Pose2d REEF_F = new Pose2d();
+        public static final Pose2d REEF_G = new Pose2d();
+        public static final Pose2d REEF_H = new Pose2d();
+        public static final Pose2d REEF_I = new Pose2d();
+        public static final Pose2d REEF_J = new Pose2d();
+        public static final Pose2d REEF_K = new Pose2d();
+        public static final Pose2d REEF_L = new Pose2d();
 
-        public static final double HEIGHT_L1 = 0.0;
-        public static final double HEIGHT_L2 = 0.0;
-        public static final double HEIGHT_L3 = 0.0;
-        public static final double HEIGHT_L4 = 0.0;
+        public static final double HEIGHT_L1 = 0.40;
+        public static final double HEIGHT_L2 = 0.77;
+        public static final double HEIGHT_L3 = 1.18;
+        public static final double HEIGHT_L4 = 1.82;
 
-        public static final pose2d CAGE_1 = new pose2d(8.67, 7.32, 0);
-        public static final pose2d CAGE_2 = new pose2d(8.67, 6.22, 0);
-        public static final pose2d CAGE_3 = new pose2d(8.67, 5.13, 0);
-        public static final pose2d CAGE_4 = new pose2d(8.67, 3.03, 0);
-        public static final pose2d CAGE_5 = new pose2d(8.67, 1.94, 0);
-        public static final pose2d CAGE_6 = new pose2d(8.67, 0.85, 0);
+        public static final Pose2d CAGE_1 = new Pose2d(8.67, 7.32, 0);
+        public static final Pose2d CAGE_2 = new Pose2d(8.67, 6.22, 0);
+        public static final Pose2d CAGE_3 = new Pose2d(8.67, 5.13, 0);
+        public static final Pose2d CAGE_4 = new Pose2d(8.67, 3.03, 0);
+        public static final Pose2d CAGE_5 = new Pose2d(8.67, 1.94, 0);
+        public static final Pose2d CAGE_6 = new Pose2d(8.67, 0.85, 0);
     }
 
 }
