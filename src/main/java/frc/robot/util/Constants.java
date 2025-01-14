@@ -527,8 +527,8 @@ public final class Constants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
 
-        public static final Pose2d BLUE_PROCESSER = new Pose2d(11.54, 8.06, Rotation2d.fromDegrees(0));
-        public static final Pose2d RED_PROCESSER = new Pose2d(5.50, 0.00, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_PROCESSOR = new Pose2d(11.54, 8.06, Rotation2d.fromDegrees(0));
+        public static final Pose2d RED_PROCESSOR = new Pose2d(5.50, 0.00, Rotation2d.fromDegrees(0));
 
         public static final Pose2d CORAL_STATION_1 = new Pose2d(0.85, 7.36, Rotation2d.fromDegrees(0));  //cords of april tag on top side of field for blue
         public static final Pose2d CORAL_STATION_2 = new Pose2d(0.85, 7.97, Rotation2d.fromDegrees(0));
