@@ -534,18 +534,18 @@ public final class Constants {
         public static final Pose2d CORALSTATION_2 = new Pose2d(0.85, 7.97, Rotation2d.fromDegrees(0));
         public static final double CORAL_STATION_HEIGHT = 0.95;
 
-        public static final Pose2d REEF_A = new Pose2d();
-        public static final Pose2d REEF_B = new Pose2d();
-        public static final Pose2d REEF_C = new Pose2d();
-        public static final Pose2d REEF_D = new Pose2d();
-        public static final Pose2d REEF_E = new Pose2d();
-        public static final Pose2d REEF_F = new Pose2d();
-        public static final Pose2d REEF_G = new Pose2d();
-        public static final Pose2d REEF_H = new Pose2d();
-        public static final Pose2d REEF_I = new Pose2d();
-        public static final Pose2d REEF_J = new Pose2d();
-        public static final Pose2d REEF_K = new Pose2d();
-        public static final Pose2d REEF_L = new Pose2d();
+        public static final Pose2d REEF_A = new Pose2d(3.72, 4.26, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_B = new Pose2d(3.72, 3.93, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_C = new Pose2d(3.95, 3.50, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_D = new Pose2d(4.46, 3.34, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_E = new Pose2d(4.75, 3.34, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_F = new Pose2d(5.04, 3.50, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_G = new Pose2d(5.28, 3.93, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_H = new Pose2d(5.29, 4.26, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_I = new Pose2d(5.04, 4.61, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_J = new Pose2d(4.57, 4.85, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_K = new Pose2d(4.26, 4.85, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_L = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
 
         public static final double HEIGHT_L1 = 0.40;
         public static final double HEIGHT_L2 = 0.77;
