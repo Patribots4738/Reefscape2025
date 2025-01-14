@@ -39,19 +39,19 @@ public class Superstructure {
         this.wrist = wrist;
         this.climb = climb;
 
-        elevatorStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.elevatorPose = elevatorStow.get()));
-        elevatorIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.elevatorPose = elevatorIntake.get()));
-        elevatorL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.elevatorPose = elevatorL1.get()));
-        elevatorL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.elevatorPose = elevatorL2.get()));
-        elevatorL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.elevatorPose = elevatorL3.get()));
-        elevatorL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.elevatorPose = elevatorL4.get()));
+        elevatorStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.elevatorPose = elevatorStow.get(), elevator));
+        elevatorIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.elevatorPose = elevatorIntake.get(), elevator));
+        elevatorL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.elevatorPose = elevatorL1.get(), elevator));
+        elevatorL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.elevatorPose = elevatorL2.get(), elevator));
+        elevatorL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.elevatorPose = elevatorL3.get(), elevator));
+        elevatorL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.elevatorPose = elevatorL4.get(), elevator));
 
-        wristStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.wristPose = wristStow.get()));
-        wristIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.wristPose = wristIntake.get()));
-        wristL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.wristPose = wristL1.get()));
-        wristL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.wristPose = wristL2.get()));
-        wristL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.wristPose = wristL3.get()));
-        wristL4.onChanged(Commands.runOnce(() -> {ArmPosition.L4.wristPose = wristL4.get();}));
+        wristStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.wristPose = wristStow.get(), wrist));
+        wristIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.wristPose = wristIntake.get(), wrist));
+        wristL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.wristPose = wristL1.get(), wrist));
+        wristL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.wristPose = wristL2.get(), wrist));
+        wristL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.wristPose = wristL3.get(), wrist));
+        wristL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.wristPose = wristL4.get(), wrist));
     }
 
     public enum OrderedMovement {
