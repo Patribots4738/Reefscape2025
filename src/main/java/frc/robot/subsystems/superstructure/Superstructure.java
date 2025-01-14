@@ -80,13 +80,13 @@ public class Superstructure {
     public Command setArmPosition(ArmPosition position, OrderedMovement order) {
         return 
             Commands.either(
-                elevator.setPositionCommand(position.elevatorPose)
-                    .alongWith(wrist.setPositionCommand(position.wristPose)),
+                elevator.setPositionCommand(() -> position.elevatorPose)
+                    .alongWith(wrist.setPositionCommand(() -> position.wristPose)),
                 Commands.either(
-                    elevator.setPositionCommand(position.elevatorPose)
-                        .andThen(wrist.setPositionCommand(position.wristPose)),
-                    wrist.setPositionCommand(position.wristPose)
-                        .andThen(elevator.setPositionCommand(position.elevatorPose)),
+                    elevator.setPositionCommand(() -> position.elevatorPose)
+                        .andThen(wrist.setPositionCommand(() -> position.wristPose)),
+                    wrist.setPositionCommand(() -> position.wristPose)
+                        .andThen(elevator.setPositionCommand(() -> position.elevatorPose)),
                     () -> order == OrderedMovement.ELEVATOR_FIRST
                 ), 
                 () -> order == OrderedMovement.POWER_OF_FRIENDSHIP
