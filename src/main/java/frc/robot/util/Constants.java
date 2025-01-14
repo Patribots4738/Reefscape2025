@@ -552,9 +552,9 @@ public final class Constants {
         public static final Pose2d CAGE_5 = new Pose2d(8.67, 1.94, 0);
         public static final Pose2d CAGE_6 = new Pose2d(8.67, 0.85, 0);
 
-        public static final Pose2d STAGED_TREE_1 = new Pose2d();
-        public static final Pose2d STAGED_TREE_2 = new Pose2d();
-        public static final Pose2d STAGED_TREE_3 = new Pose2d();
+        public static final Pose2d STAGED_TREE_1 = new Pose2d(1.28, 1.46, 0);
+        public static final Pose2d STAGED_TREE_2 = new Pose2d(1.32, 4.22, 0);
+        public static final Pose2d STAGED_TREE_3 = new Pose2d(1.28, 2.37, 0);
 
     }
 
