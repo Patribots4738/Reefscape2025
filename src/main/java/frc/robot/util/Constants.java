@@ -13,6 +13,9 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.revrobotics.spark.SparkBase;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -521,9 +524,9 @@ public final class Constants {
     public static final class FieldConstants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
-        
-        public static final Pose2d BLUE_PROCESSER = new Pose2d(11.54, 8.06, 0);
-        public static final Pose2d RED_PROCESSER = new Pose2d(5.50, 0.00, 0);
+
+        public static final Pose2d BLUE_PROCESSER = new Pose2d(11.54, 8.06, Rotation2d.fromDegrees(0));
+        public static final Pose2d RED_PROCESSER = new Pose2d(5.50, 0.00, Rotation2d.fromDegrees(0));
 
         public static final Pose3d CORALSTATION_1 = new Pose3d();
         public static final Pose3d CORALSTATION_2 = new Pose3d();
@@ -546,16 +549,16 @@ public final class Constants {
         public static final double HEIGHT_L3 = 1.18;
         public static final double HEIGHT_L4 = 1.82;
 
-        public static final Pose2d CAGE_1 = new Pose2d(8.67, 7.32, 0);
-        public static final Pose2d CAGE_2 = new Pose2d(8.67, 6.22, 0);
-        public static final Pose2d CAGE_3 = new Pose2d(8.67, 5.13, 0);
-        public static final Pose2d CAGE_4 = new Pose2d(8.67, 3.03, 0);
-        public static final Pose2d CAGE_5 = new Pose2d(8.67, 1.94, 0);
-        public static final Pose2d CAGE_6 = new Pose2d(8.67, 0.85, 0);
+        public static final Pose2d CAGE_1 = new Pose2d(8.67, 7.32, Rotation2d.fromDegrees(0));
+        public static final Pose2d CAGE_2 = new Pose2d(8.67, 6.22, Rotation2d.fromDegrees(0));
+        public static final Pose2d CAGE_3 = new Pose2d(8.67, 5.13, Rotation2d.fromDegrees(0));
+        public static final Pose2d CAGE_4 = new Pose2d(8.67, 3.03, Rotation2d.fromDegrees(0));
+        public static final Pose2d CAGE_5 = new Pose2d(8.67, 1.94, Rotation2d.fromDegrees(0));
+        public static final Pose2d CAGE_6 = new Pose2d(8.67, 0.85, Rotation2d.fromDegrees(0));
 
-        public static final Pose2d STAGED_TREE_1 = new Pose2d(1.28, 1.46, 0);
-        public static final Pose2d STAGED_TREE_2 = new Pose2d(1.32, 4.22, 0);
-        public static final Pose2d STAGED_TREE_3 = new Pose2d(1.28, 2.37, 0);
+        public static final Pose2d STAGED_TREE_1 = new Pose2d(1.28, 1.46, Rotation2d.fromDegrees(0));
+        public static final Pose2d STAGED_TREE_2 = new Pose2d(1.32, 4.22, Rotation2d.fromDegrees(0));
+        public static final Pose2d STAGED_TREE_3 = new Pose2d(1.28, 2.37, Rotation2d.fromDegrees(0));
 
     }
 
