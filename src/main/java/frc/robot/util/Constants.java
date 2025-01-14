@@ -521,7 +521,36 @@ public final class Constants {
     public static final class FieldConstants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
+        public static final pose2d BLUE_PROCESSER = new pose2d(11.54, 8.06, 0);
+        public static final pose2d RED_PROCESSER = new pose2d(5.50, 0.00, 0);
 
+        public static final pose3d CORALSTATION_1 = new pose3d();
+        public static final pose3d CORALSTATION_2 = new pose3d();
+
+        public static final pose2d REEF_A = new pose2d();
+        public static final pose2d REEF_B = new pose2d();
+        public static final pose2d REEF_C = new pose2d();
+        public static final pose2d REEF_D = new pose2d();
+        public static final pose2d REEF_E = new pose2d();
+        public static final pose2d REEF_F = new pose2d();
+        public static final pose2d REEF_G = new pose2d();
+        public static final pose2d REEF_H = new pose2d();
+        public static final pose2d REEF_I = new pose2d();
+        public static final pose2d REEF_J = new pose2d();
+        public static final pose2d REEF_K = new pose2d();
+        public static final pose2d REEF_L = new pose2d();
+
+        public static final double HEIGHT_L1 = 0.0;
+        public static final double HEIGHT_L2 = 0.0;
+        public static final double HEIGHT_L3 = 0.0;
+        public static final double HEIGHT_L4 = 0.0;
+
+        public static final pose2d CAGE_1 = new pose2d();
+        public static final pose2d CAGE_2 = new pose2d();
+        public static final pose2d CAGE_3 = new pose2d();
+        public static final pose2d CAGE_4 = new pose2d();
+        public static final pose2d CAGE_5 = new pose2d();
+        public static final pose2d CAGE_6 = new pose2d();
     }
 
 }
