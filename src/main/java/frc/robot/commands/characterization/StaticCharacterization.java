@@ -20,7 +20,7 @@ public class StaticCharacterization extends Command {
   private final DoubleConsumer inputConsumer;
   private final DoubleSupplier velocitySupplier;
   private final Timer timer = new Timer();
-  private double currentInput = 0.0;
+  private double input = 0.0;
 
   public StaticCharacterization(
       Subsystem subsystem,
@@ -38,9 +38,9 @@ public class StaticCharacterization extends Command {
 
   @Override
   public void execute() {
-    currentInput = timer.get() * currentRampFactor;
-    System.err.println(currentInput);
-    inputConsumer.accept(currentInput);
+    input = timer.get() * currentRampFactor;
+    System.err.println(input);
+    inputConsumer.accept(input);
   }
 
   @Override
@@ -50,7 +50,7 @@ public class StaticCharacterization extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Static Characterization output: " + currentInput + " amps");
+    System.out.println("Static Characterization output: " + input + " amps");
     inputConsumer.accept(0);
   }
 }

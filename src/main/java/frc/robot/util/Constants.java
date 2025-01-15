@@ -488,8 +488,8 @@ public final class Constants {
         );
 
         public static final double GEAR_RATIO = 2.5;
-        public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
-        public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
         public static final double WRIST_LENGTH_METERS = 0.2;
@@ -518,8 +518,8 @@ public final class Constants {
 
         public static final double CLIMB_GEAR_RATIO = 36.09375;
 
-        public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
-        public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
 
         public static final double CLIMB_LENGTH_METERS = 0.5;
@@ -530,7 +530,7 @@ public final class Constants {
         public static final double CLIMB_P = 0.5;
         public static final double CLIMB_I = 0.0;
         public static final double CLIMB_D = 0.0;
-        public static final double CLIMB_S = 0.0;
+        public static final double CLIMB_S = 0.0; // TODO: find this using characterization
         public static final double CLIMB_G = 0.0;
         public static final GainConstants CLIMB_GAINS = new GainConstants(
             CLIMB_P,

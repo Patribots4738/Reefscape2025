@@ -53,4 +53,12 @@ public class Wrist extends SubsystemBase {
     public boolean atTargetPosition() {
         return MathUtil.isNear(inputs.targetPositionRads, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
     }
+
+    public double getCharacterizationVelocity() {
+        return inputs.internalVelocityRadsPerSec / WristConstants.VELOCITY_CONVERSION_FACTOR;
+    }
+
+    public void runCharacterization(double input) {
+        io.runCharacterization(input);
+    }
 }

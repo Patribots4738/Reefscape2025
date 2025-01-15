@@ -26,8 +26,8 @@ public class ClimbIOKraken implements ClimbIO {
     }
 
     private void configMotor(Kraken motor) {
-        motor.setPositionConversionFactor(ClimbConstants.MOTOR_POSITION_CONVERSION_FACTOR);
-        motor.setVelocityConversionFactor(ClimbConstants.MOTOR_VELOCITY_CONVERSION_FACTOR);
+        motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
+        motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR);
         motor.resetEncoder(encoder.getPosition());
         motor.setGains(ClimbConstants.CLIMB_GAINS);
         motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);

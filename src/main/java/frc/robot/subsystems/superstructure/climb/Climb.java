@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ClimbConstants;
+import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
 import frc.robot.util.custom.LoggedTunableNumber;
 
@@ -76,4 +77,11 @@ public class Climb extends SubsystemBase {
         return MathUtil.isNear(inputs.leaderTargetPositionRads, inputs.encoderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
     }
 
+    public double getCharacterizationVelocity() {
+        return inputs.leaderVelocityRadsPerSec / ClimbConstants.VELOCITY_CONVERSION_FACTOR;
+    }
+
+    public void runCharacterization(double input) {
+        io.runCharacterization(input);
+    }
 }

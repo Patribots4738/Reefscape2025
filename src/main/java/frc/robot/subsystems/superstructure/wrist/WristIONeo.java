@@ -14,8 +14,8 @@ public class WristIONeo implements WristIO {
 
     private void configMotor() {
         motor.setPID(WristConstants.WRIST_GAINS);
-        motor.setPositionConversionFactor(WristConstants.MOTOR_POSITION_CONVERSION_FACTOR);
-        motor.setVelocityConversionFactor(WristConstants.MOTOR_VELOCITY_CONVERSION_FACTOR / 60.0);
+        motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
+        motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setSmartCurrentLimit((int) WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
     }
