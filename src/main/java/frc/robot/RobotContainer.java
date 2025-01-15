@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot.GameMode;
@@ -90,10 +92,10 @@ public class RobotContainer {
     @AutoLogOutput (key = "Draggables/Mech2d")
     private LoggedMechanism2d mech;
     private LoggedMechanismRoot2d elevatorRoot;
-    private LoggedMechanismRoot2d climbRoot;
+    private LoggedMechanismLigament2d elevatorBaseMech;
     public static LoggedMechanismLigament2d elevatorMech;
     public static LoggedMechanismLigament2d wristMech;
-    public static LoggedMechanismLigament2d climbMech;
+    private LoggedMechanismLigament2d clawMech;
     
     public RobotContainer() {
 
@@ -117,10 +119,10 @@ public class RobotContainer {
 
         mech = new LoggedMechanism2d(3, 3);
         elevatorRoot = mech.getRoot("placer", 1.8, 0.1524);
-        climbRoot = mech.getRoot("climber", 1.2, 0.1524);
-        elevatorMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevator", ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS, 90.0));
-        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", WristConstants.WRIST_LENGTH_METERS, 0.0));
-        climbMech = climbRoot.append(new LoggedMechanismLigament2d("climb", ClimbConstants.CLIMB_LENGTH_METERS, 0.0));
+        elevatorBaseMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevatorBase", ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS, 90.0));
+        elevatorMech = elevatorBaseMech.append(new LoggedMechanismLigament2d("elevator", ElevatorConstants.ELEVATOR_EXTENSION_BASE_HEIGHT_METERS, 0, 8, new Color8Bit(Color.kRed)));
+        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", WristConstants.WRIST_LENGTH_METERS, 0.0, 6, new Color8Bit(Color.kGreen)));
+        clawMech = wristMech.append(new LoggedMechanismLigament2d("claw", WristConstants.WRIST_LENGTH_METERS, -90, 6, new Color8Bit(Color.kGreen)));
 
         driver.back().toggleOnTrue(
             Commands.runOnce(() -> fieldRelativeToggle = !fieldRelativeToggle)

@@ -24,6 +24,8 @@ public class Wrist extends SubsystemBase {
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
 
+    private double targetPosition = 0.0;
+
     public Wrist(WristIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
@@ -39,11 +41,12 @@ public class Wrist extends SubsystemBase {
     }
 
     public void setPosition(double position) {
+        targetPosition = position;
         io.setPosition(position);
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
+        return run(() -> setPosition(positionSupplier.getAsDouble())).until(this::atTargetPosition);
     }
 
     public Command setPositionCommand(double position) {
@@ -51,6 +54,6 @@ public class Wrist extends SubsystemBase {
     }   
 
     public boolean atTargetPosition() {
-        return MathUtil.isNear(inputs.targetPositionRads, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
+        return MathUtil.isNear(targetPosition, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
     }
 }

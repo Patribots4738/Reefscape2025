@@ -433,14 +433,15 @@ public final class Constants {
 
         public static final double GEAR_RATIO = 7.75;
         public static final double ELEVATOR_BASE_HEIGHT_METERS = 0.5;
+        public static final double ELEVATOR_EXTENSION_BASE_HEIGHT_METERS = 0.1;
         public static final double MAX_DISPLACEMENT_METERS = 1.177036;
         public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
 
-        public static final double ELEVATOR_P = 0.5;
+        public static final double ELEVATOR_P = 2.0;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.0;
-        public static final double ELEVATOR_S = 0.0;
+        public static final double ELEVATOR_D = 0.1;
+        public static final double ELEVATOR_S = 0.1;
         public static final double ELEVATOR_G = 0.0;
 
         public static final GainConstants ELEVATOR_GAINS = new GainConstants(
@@ -454,12 +455,12 @@ public final class Constants {
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
-        public static final double L1_POSITION_METERS = 0.0;
-        public static final double L2_POSITION_METERS = 0.0;
-        public static final double L3_POSITION_METERS = 0.0;
-        public static final double L4_POSITION_METERS = 0.0;
+        public static final double L1_POSITION_METERS = 0.25;
+        public static final double L2_POSITION_METERS = 0.5;
+        public static final double L3_POSITION_METERS = 0.75;
+        public static final double L4_POSITION_METERS = 1.0;
 
-        public static final double ELEVATOR_DEADBAND_METERS = 0.01;
+        public static final double ELEVATOR_DEADBAND_METERS = 0.005;
 
     }
 
@@ -473,10 +474,10 @@ public final class Constants {
 
         public static final boolean BRAKE_MOTOR = true;
 
-        public static final double WRIST_P = 0.5;
+        public static final double WRIST_P = 1.74;
         public static final double WRIST_I = 0.0;
-        public static final double WRIST_D = 0.0;
-        public static final double WRIST_S = 0.0;
+        public static final double WRIST_D = 0.1;
+        public static final double WRIST_S = 0.1;
         public static final double WRIST_G = 0.0;
         public static final GainConstants WRIST_GAINS = new GainConstants(
             WRIST_P,

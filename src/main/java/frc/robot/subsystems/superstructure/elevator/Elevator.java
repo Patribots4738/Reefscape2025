@@ -13,7 +13,6 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
@@ -22,6 +21,8 @@ public class Elevator extends SubsystemBase {
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
     
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Elevator/BrakeMotor", ElevatorConstants.BRAKE_MOTOR);
+
+    private double targetPosition = 0.0;
     
     public Elevator(ElevatorIO io) {
         this.io = io;
@@ -34,16 +35,17 @@ public class Elevator extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Elevator", inputs);
         Logger.recordOutput("Subsystems/Elevator/AtTargetPosition", atTargetPosition());
 
-        RobotContainer.elevatorMech.setLength(ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS + inputs.leaderPositionMeters);
+        RobotContainer.elevatorMech.setLength(ElevatorConstants.ELEVATOR_EXTENSION_BASE_HEIGHT_METERS + inputs.leaderPositionMeters);
     }
 
     public void setPosition(double position) {
         position = MathUtil.clamp(position, 0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
+        targetPosition = position;
         io.setPosition(position);
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
+        return run(() -> setPosition(positionSupplier.getAsDouble())).until(this::atTargetPosition);
     }
 
     public Command setPositionCommand(double position) {
@@ -51,7 +53,7 @@ public class Elevator extends SubsystemBase {
     }   
 
     public boolean atTargetPosition() {
-        return MathUtil.isNear(inputs.leaderTargetPositionMeters, inputs.leaderPositionMeters, ElevatorConstants.ELEVATOR_DEADBAND_METERS);
+        return MathUtil.isNear(targetPosition, inputs.leaderPositionMeters, ElevatorConstants.ELEVATOR_DEADBAND_METERS);
     }
 
 }
