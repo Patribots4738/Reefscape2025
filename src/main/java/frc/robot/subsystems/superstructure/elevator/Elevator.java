@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
@@ -35,7 +36,7 @@ public class Elevator extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Elevator", inputs);
         Logger.recordOutput("Subsystems/Elevator/AtTargetPosition", atTargetPosition());
 
-        RobotContainer.elevatorMech.setLength(ElevatorConstants.ELEVATOR_EXTENSION_BASE_HEIGHT_METERS + inputs.leaderPositionMeters);
+        RobotContainer.elevatorMech.setLength(inputs.leaderPositionMeters);
     }
 
     public void setPosition(double position) {
@@ -45,7 +46,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return run(() -> setPosition(positionSupplier.getAsDouble())).until(this::atTargetPosition);
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
     public Command setPositionCommand(double position) {

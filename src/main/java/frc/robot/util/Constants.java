@@ -421,6 +421,8 @@ public final class Constants {
         public static final double HOLD_PERCENT = 0.1;
         public static final double OUTTAKE_PERCENT = -0.2;
 
+        public static final double CLAW_LENGTH_METERS = Units.inchesToMeters(11.0);
+
     }
 
     public static final class ElevatorConstants {
@@ -432,8 +434,7 @@ public final class Constants {
         public static final double CURRENT_LIMIT = 60.0;
 
         public static final double GEAR_RATIO = 7.75;
-        public static final double ELEVATOR_BASE_HEIGHT_METERS = 0.5;
-        public static final double ELEVATOR_EXTENSION_BASE_HEIGHT_METERS = 0.1;
+        public static final double ELEVATOR_BASE_HEIGHT_METERS = Units.inchesToMeters(31.25);
         public static final double MAX_DISPLACEMENT_METERS = 1.177036;
         public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
@@ -454,11 +455,11 @@ public final class Constants {
         );
 
         public static final double STOW_POSITION_METERS = 0.0;
-        public static final double INTAKE_POSITION_METERS = 0.0;
-        public static final double L1_POSITION_METERS = 0.25;
-        public static final double L2_POSITION_METERS = 0.5;
-        public static final double L3_POSITION_METERS = 0.75;
-        public static final double L4_POSITION_METERS = 1.0;
+        public static final double INTAKE_POSITION_METERS = 0.18;
+        public static final double L1_POSITION_METERS = 0.0;
+        public static final double L2_POSITION_METERS = 0.0;
+        public static final double L3_POSITION_METERS = 0.15;
+        public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double ELEVATOR_DEADBAND_METERS = 0.005;
 
@@ -468,6 +469,8 @@ public final class Constants {
 
         public static final int WRIST_CAN_ID = 12;
         public static final int WRIST_ENCODER_DIO_PIN = 0;
+
+        public static final boolean INVERT_MOTOR = false;
 
         public static final double WRIST_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
         public static final boolean WRIST_ENCODER_INVERTED = false;
@@ -493,18 +496,18 @@ public final class Constants {
         public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
-        public static final double WRIST_LENGTH_METERS = 0.2;
+        public static final double WRIST_LENGTH_METERS = Units.inchesToMeters(15.0);
 
         public static final double CURRENT_LIMIT = 60.0;
 
         public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = 0.0;
-        public static final double L1_POSITION_RADIANS = 0.0;
-        public static final double L2_POSITION_RADIANS = 0.0;
-        public static final double L3_POSITION_RADIANS = 0.0;
-        public static final double L4_POSITION_RADIANS = 0.0;
+        public static final double INTAKE_POSITION_RADIANS = -0.6;
+        public static final double L1_POSITION_RADIANS = -3.0 * Math.PI / 2.0;
+        public static final double L2_POSITION_RADIANS = -4.0;
+        public static final double L3_POSITION_RADIANS = -7.0 * Math.PI / 6.0;
+        public static final double L4_POSITION_RADIANS = -4.3;
 
     }
 

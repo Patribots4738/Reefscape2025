@@ -109,8 +109,9 @@ public class Superstructure {
         return 
             Commands.sequence(
                 setArmPosition(ArmPosition.INTAKE, MovementOrder.ELEVATOR_FIRST),
-                claw.intakeCommand().until(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-                new ScheduleCommand(claw.holdCommand()),
+                claw.intakeCommand(),
+                Commands.waitUntil(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+                claw.holdCommand(),
                 stowCommand()
             );
     }
@@ -119,7 +120,8 @@ public class Superstructure {
         return
             Commands.sequence(
                 Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
-                claw.outtakeCommand().until(() -> !continueOuttakingSupplier.getAsBoolean()),
+                claw.outtakeCommand(),
+                Commands.waitUntil(() -> continueOuttakingSupplier.getAsBoolean()),
                 claw.stopCommand(),
                 stowCommand()
             );

@@ -13,6 +13,7 @@ public class WristIONeo implements WristIO {
     }
 
     private void configMotor() {
+        motor.setInverted(WristConstants.INVERT_MOTOR);
         motor.setPID(WristConstants.WRIST_GAINS);
         motor.setPositionConversionFactor(WristConstants.MOTOR_POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(WristConstants.MOTOR_VELOCITY_CONVERSION_FACTOR / 60.0);

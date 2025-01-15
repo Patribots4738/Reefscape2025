@@ -40,7 +40,7 @@ public class Climb extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Climb", inputs);
-        Logger.recordOutput("Subsystems/Climb/AtDesiredPosition", atDesiredPosition());
+        Logger.recordOutput("Subsystems/Climb/AtDesiredPosition", atTargetPosition());
     }
 
     public void setPosition(double position) {
@@ -49,7 +49,7 @@ public class Climb extends SubsystemBase {
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return run(() -> setPosition(positionSupplier.getAsDouble())).until(this::atDesiredPosition);
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
     public Command setPositionCommand(double position) {
@@ -72,7 +72,7 @@ public class Climb extends SubsystemBase {
         return setPositionCommand(finalPosition::get);
     }
 
-    public boolean atDesiredPosition() {
+    public boolean atTargetPosition() {
         return MathUtil.isNear(targetPosition, inputs.encoderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
     }
 

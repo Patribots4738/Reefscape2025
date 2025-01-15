@@ -37,7 +37,7 @@ public class Wrist extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
 
-        RobotContainer.wristMech.setAngle(Units.radiansToDegrees(inputs.encoderPositionRads));
+        RobotContainer.wristMech.setAngle(180 + Units.radiansToDegrees(inputs.encoderPositionRads));
     }
 
     public void setPosition(double position) {
@@ -46,7 +46,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return run(() -> setPosition(positionSupplier.getAsDouble())).until(this::atTargetPosition);
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
     public Command setPositionCommand(double position) {
