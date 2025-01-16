@@ -699,7 +699,6 @@ public final class Constants {
 
         public static final double CORAL_STATION_HEIGHT = 0.95;
 
-
         public static final Pose2d BLUE_REEF_A = new Pose2d(3.72, 4.26, Rotation2d.fromDegrees(0));
         public static final Pose2d BLUE_REEF_B = new Pose2d(3.72, 3.93, Rotation2d.fromDegrees(0));
         public static final Pose2d BLUE_REEF_C = new Pose2d(3.95, 3.50, Rotation2d.fromDegrees(0));
@@ -713,7 +712,7 @@ public final class Constants {
         public static final Pose2d BLUE_REEF_K = new Pose2d(4.26, 4.85, Rotation2d.fromDegrees(0));
         public static final Pose2d BLUE_REEF_L = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
 
-        public static final List<Pose2d> REEF_POSITIONS = new ArrayList<Pose2d>() {{
+        public static final List<Pose2d> REEF_FACE_POSITIONS = new ArrayList<Pose2d>() {{
             // All points are in meters and radians
             // All relative to the blue origin
             // Positions go from blueReef1 (the farthest from blue driverstation) clockwise around
@@ -740,6 +739,11 @@ public final class Constants {
             add(PoseCalculations.flipPose(blueReef5));
             add(PoseCalculations.flipPose(blueReef6));
         }};
+
+        public static final List<Pose2d> GET_REEF_FACE_POSITIONS() {
+            int startIndex = Robot.isRedAlliance() ? 6 : 0;
+            return REEF_FACE_POSITIONS.subList(startIndex, startIndex + 6);
+        }
 
         public static final List<Pose2d> CAGE_POSITIONS = new ArrayList<Pose2d>() {{
             // blueCage1 starts as the highest from field origin and goes down from there
