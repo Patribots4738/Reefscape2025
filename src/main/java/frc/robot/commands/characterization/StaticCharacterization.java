@@ -50,7 +50,7 @@ public class StaticCharacterization extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Static Characterization output: " + input + " amps");
+    System.out.println("Static Characterization output: " + input + " amps/volts");
     inputConsumer.accept(0);
   }
 }

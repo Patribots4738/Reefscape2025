@@ -1119,8 +1119,4 @@ public class Kraken extends TalonFX {
         return getG(0);
     }
 
-    public void runStaticCharacterization() {
-        
-    }
-
 }
