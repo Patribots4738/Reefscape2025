@@ -1,18 +1,22 @@
 package frc.robot.util.hardware.limelight;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import frc.robot.util.hardware.limelight.LimelightHelpers.LimelightResults;
+import frc.robot.util.hardware.limelight.LimelightHelpers.PoseEstimate;
+import frc.robot.util.hardware.limelight.LimelightHelpers.RawFiducial;
 
 public class Limelight {
     
     private final String name;
+    private final boolean useMT2;
 
-    private LimelightResults results;
+    private PoseEstimate latestPoseEstimate;
 
-    public Limelight(String name) {
+    public Limelight(String name, boolean useMT2) {
         this.name = name;
-        results = LimelightHelpers.getLatestResults(name);
+        this.useMT2 = useMT2;
+        
     }
 
     public void setPipelineIndex(int newIndex) {
@@ -55,9 +59,47 @@ public class Limelight {
         );
     }
 
-    public LimelightResults getJSONData() {
-        results = LimelightHelpers.getLatestResults(name);
-        return results;
+    public void setRobotOrientation(double yaw) {
+        LimelightHelpers.SetRobotOrientation(
+            name, 
+            yaw, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0
+        );
+    }
+
+    public PoseEstimate getRobotPoseEstimate() {
+        latestPoseEstimate = useMT2 
+                ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name) 
+                : LimelightHelpers.getBotPoseEstimate_wpiBlue(name);
+        return latestPoseEstimate;
+    }
+
+    public Pose2d getRobotPose() {
+        return latestPoseEstimate.pose;
+    }
+
+    public double getTimestamp() {
+        return latestPoseEstimate.timestampSeconds;
+    }
+
+    public double getAverageTA() {
+        return latestPoseEstimate.avgTagArea;
+    }
+
+    public double getAverageTD() {
+        return latestPoseEstimate.avgTagDist;
+    }
+
+    public int getTagCount() {
+        return latestPoseEstimate.tagCount;
+    }
+
+    public RawFiducial[] getRawFiducials() {
+        return latestPoseEstimate.rawFiducials;
     }
 
 }
