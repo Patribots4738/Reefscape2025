@@ -441,7 +441,7 @@ public final class Constants {
 
         public static final double ELEVATOR_P = 2.0;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.1;
+        public static final double ELEVATOR_D = 0.15;
         public static final double ELEVATOR_S = 0.1;
         public static final double ELEVATOR_G = 0.0;
 
@@ -458,7 +458,7 @@ public final class Constants {
         public static final double INTAKE_POSITION_METERS = 0.18;
         public static final double L1_POSITION_METERS = 0.0;
         public static final double L2_POSITION_METERS = 0.0;
-        public static final double L3_POSITION_METERS = 0.15;
+        public static final double L3_POSITION_METERS = 0.1;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double ELEVATOR_DEADBAND_METERS = 0.005;
@@ -502,12 +502,12 @@ public final class Constants {
 
         public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
-        public static final double STOW_POSITION_RADIANS = 0.0;
+        public static final double STOW_POSITION_RADIANS = -0.6;
         public static final double INTAKE_POSITION_RADIANS = -0.6;
-        public static final double L1_POSITION_RADIANS = -3.0 * Math.PI / 2.0;
-        public static final double L2_POSITION_RADIANS = -4.0;
-        public static final double L3_POSITION_RADIANS = -7.0 * Math.PI / 6.0;
-        public static final double L4_POSITION_RADIANS = -4.3;
+        public static final double L1_POSITION_RADIANS = Math.PI / 2.0;
+        public static final double L2_POSITION_RADIANS = 2.15;
+        public static final double L3_POSITION_RADIANS = 2.55;
+        public static final double L4_POSITION_RADIANS = 1.9;
 
     }
 
