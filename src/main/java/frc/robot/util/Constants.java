@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.GeometryUtil;
 import com.revrobotics.spark.SparkBase;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -535,9 +536,6 @@ public final class Constants {
         public static final Pose2d BLUE_CORAL_STATION_1 = new Pose2d(0.85, 7.36, Rotation2d.fromDegrees(0));
         public static final Pose2d BLUE_CORAL_STATION_2 = new Pose2d(0.85, 7.97, Rotation2d.fromDegrees(0));
 
-        public static final Pose2d RED_CORAL_STATION_1 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_CORAL_STATION_1));
-        public static final Pose2d RED_CORAL_STATION_2 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_CORAL_STATION_2));
-
         public static final double CORAL_STATION_HEIGHT = 0.95;
 
 
@@ -554,18 +552,7 @@ public final class Constants {
         public static final Pose2d BLUE_REEF_K = new Pose2d(4.26, 4.85, Rotation2d.fromDegrees(0));
         public static final Pose2d BLUE_REEF_L = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
 
-        public static final Pose2d RED_REEF_A = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_A));
-        public static final Pose2d RED_REEF_B = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_B));
-        public static final Pose2d RED_REEF_C = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_C));
-        public static final Pose2d RED_REEF_D = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_D));
-        public static final Pose2d RED_REEF_E = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_E));
-        public static final Pose2d RED_REEF_F = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_F));
-        public static final Pose2d RED_REEF_G = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_G));
-        public static final Pose2d RED_REEF_H = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_H));
-        public static final Pose2d RED_REEF_I = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_I));
-        public static final Pose2d RED_REEF_J = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_J));
-        public static final Pose2d RED_REEF_K = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_K));
-        public static final Pose2d RED_REEF_L = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_L));
+
 
         public static final double REEF_HEIGHT_L1 = 0.40;
         public static final double REEF_HEIGHT_L2 = 0.77;
@@ -585,9 +572,6 @@ public final class Constants {
         public static final Pose2d BLUE_STAGED_TREE_2 = new Pose2d(1.32, 4.22, Rotation2d.fromDegrees(0));
         public static final Pose2d BLUE_STAGED_TREE_3 = new Pose2d(1.28, 2.37, Rotation2d.fromDegrees(0));
 
-        public static final Pose2d RED_STAGED_TREE_1 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_STAGED_TREE_1));
-        public static final Pose2d RED_STAGED_TREE_2 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_STAGED_TREE_2));
-        public static final Pose2d RED_STAGED_TREE_3 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_STAGED_TREE_3));
 
     }
 
