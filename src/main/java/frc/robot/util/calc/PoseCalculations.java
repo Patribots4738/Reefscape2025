@@ -4,18 +4,23 @@
 
 package frc.robot.util.calc;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.custom.ReefSide;
 
 /** Add your docs here. */
 public class PoseCalculations {
 
 
 
-    public static Pose2d getClosestReefSide(Pose2d pos) {
-        return pos.nearest(FieldConstants.GET_REEF_FACE_POSITIONS());
+    public static ReefSide osestReefSide(Pose2d pos) {
+        return nearest(FieldConstants.GET_REEF_FACE_POSITIONS(), pos);
     }
 
     public static Pose2d getClosestCage(Pose2d pos) {
@@ -38,7 +43,23 @@ public class PoseCalculations {
         return new Translation2d(FieldConstants.FIELD_MAX_LENGTH - pos.getX(), FieldConstants.FIELD_MAX_HEIGHT - pos.getY());
     }
 
+    public static ReefSide flipAlliance(ReefSide side) {
+        side.flipAlliance();
+        return side;
+    }
+
     public static Rotation2d flipFieldRotation(Rotation2d rotation) {
         return new Rotation2d(Math.PI).minus(rotation);
+    }
+    
+
+    public static ReefSide nearest(List<ReefSide> poses, Pose2d pos) {
+        return Collections.min(
+            poses,
+            Comparator.comparing(
+                    (ReefSide other) -> pos.getTranslation().getDistance(other.getCenter().getTranslation()))
+                .thenComparing(
+                    (ReefSide other) ->
+                        Math.abs(pos.getRotation().minus(other.getRotation()).getRadians())));
     }
 }
