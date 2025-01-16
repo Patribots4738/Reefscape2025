@@ -16,7 +16,6 @@ public class Limelight {
     public Limelight(String name, boolean useMT2) {
         this.name = name;
         this.useMT2 = useMT2;
-        
     }
 
     public void setPipelineIndex(int newIndex) {
@@ -71,7 +70,7 @@ public class Limelight {
         );
     }
 
-    public PoseEstimate getRobotPoseEstimate() {
+    public PoseEstimate refreshPoseEstimate() {
         latestPoseEstimate = useMT2 
                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name) 
                 : LimelightHelpers.getBotPoseEstimate_wpiBlue(name);
