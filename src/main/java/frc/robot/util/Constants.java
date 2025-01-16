@@ -421,6 +421,8 @@ public final class Constants {
         public static final double HOLD_PERCENT = 0.1;
         public static final double OUTTAKE_PERCENT = -0.2;
 
+        public static final double CLAW_LENGTH_METERS = Units.inchesToMeters(11.0);
+
     }
 
     public static final class ElevatorConstants {
@@ -432,14 +434,14 @@ public final class Constants {
         public static final double CURRENT_LIMIT = 60.0;
 
         public static final double GEAR_RATIO = 7.75;
-        public static final double ELEVATOR_BASE_HEIGHT_METERS = 0.5;
+        public static final double ELEVATOR_BASE_HEIGHT_METERS = Units.inchesToMeters(31.25);
         public static final double MAX_DISPLACEMENT_METERS = 1.177036;
         public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
 
-        public static final double ELEVATOR_P = 0.5;
+        public static final double ELEVATOR_P = 2.0;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.0;
+        public static final double ELEVATOR_D = 0.15;
         public static final double ELEVATOR_S = 0.10058799999998883;
         public static final double ELEVATOR_G = 0.0;
 
@@ -453,13 +455,13 @@ public final class Constants {
         );
 
         public static final double STOW_POSITION_METERS = 0.0;
-        public static final double INTAKE_POSITION_METERS = 0.0;
+        public static final double INTAKE_POSITION_METERS = 0.18;
         public static final double L1_POSITION_METERS = 0.0;
         public static final double L2_POSITION_METERS = 0.0;
-        public static final double L3_POSITION_METERS = 0.0;
-        public static final double L4_POSITION_METERS = 0.0;
+        public static final double L3_POSITION_METERS = 0.1;
+        public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
 
-        public static final double ELEVATOR_DEADBAND_METERS = 0.01;
+        public static final double ELEVATOR_DEADBAND_METERS = 0.005;
 
     }
 
@@ -468,14 +470,16 @@ public final class Constants {
         public static final int WRIST_CAN_ID = 12;
         public static final int WRIST_ENCODER_DIO_PIN = 0;
 
+        public static final boolean INVERT_MOTOR = false;
+
         public static final double WRIST_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
         public static final boolean WRIST_ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
 
-        public static final double WRIST_P = 0.5;
+        public static final double WRIST_P = 1.74;
         public static final double WRIST_I = 0.0;
-        public static final double WRIST_D = 0.0;
+        public static final double WRIST_D = 0.1;
         public static final double WRIST_S = 0.08005099999999947;
         public static final double WRIST_G = 0.0;
         public static final GainConstants WRIST_GAINS = new GainConstants(
@@ -492,18 +496,18 @@ public final class Constants {
         public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
-        public static final double WRIST_LENGTH_METERS = 0.2;
+        public static final double WRIST_LENGTH_METERS = Units.inchesToMeters(15.0);
 
         public static final double CURRENT_LIMIT = 60.0;
 
         public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
-        public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = 0.0;
-        public static final double L1_POSITION_RADIANS = 0.0;
-        public static final double L2_POSITION_RADIANS = 0.0;
-        public static final double L3_POSITION_RADIANS = 0.0;
-        public static final double L4_POSITION_RADIANS = 0.0;
+        public static final double STOW_POSITION_RADIANS = -0.6;
+        public static final double INTAKE_POSITION_RADIANS = -0.6;
+        public static final double L1_POSITION_RADIANS = Math.PI / 2.0;
+        public static final double L2_POSITION_RADIANS = 2.15;
+        public static final double L3_POSITION_RADIANS = 2.55;
+        public static final double L4_POSITION_RADIANS = 1.9;
 
     }
 

@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot.GameMode;
@@ -42,6 +44,7 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.ClawConstants;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.OIConstants;
@@ -90,10 +93,10 @@ public class RobotContainer {
     @AutoLogOutput (key = "Draggables/Mech2d")
     private LoggedMechanism2d mech;
     private LoggedMechanismRoot2d elevatorRoot;
-    private LoggedMechanismRoot2d climbRoot;
+    private LoggedMechanismLigament2d elevatorBaseMech;
     public static LoggedMechanismLigament2d elevatorMech;
     public static LoggedMechanismLigament2d wristMech;
-    public static LoggedMechanismLigament2d climbMech;
+    private LoggedMechanismLigament2d clawMech;
     
     public RobotContainer() {
 
@@ -117,10 +120,10 @@ public class RobotContainer {
 
         mech = new LoggedMechanism2d(3, 3);
         elevatorRoot = mech.getRoot("placer", 1.8, 0.1524);
-        climbRoot = mech.getRoot("climber", 1.2, 0.1524);
-        elevatorMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevator", ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS, 90.0));
-        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", WristConstants.WRIST_LENGTH_METERS, 0.0));
-        climbMech = climbRoot.append(new LoggedMechanismLigament2d("climb", ClimbConstants.CLIMB_LENGTH_METERS, 0.0));
+        elevatorBaseMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevatorBase", ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS, 90.0));
+        elevatorMech = elevatorBaseMech.append(new LoggedMechanismLigament2d("elevator", 0.0, 0, 8, new Color8Bit(Color.kRed)));
+        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", WristConstants.WRIST_LENGTH_METERS, 180, 6, new Color8Bit(Color.kGreen)));
+        clawMech = wristMech.append(new LoggedMechanismLigament2d("claw", ClawConstants.CLAW_LENGTH_METERS, -90, 6, new Color8Bit(Color.kGreen)));
 
         driver.back().toggleOnTrue(
             Commands.runOnce(() -> fieldRelativeToggle = !fieldRelativeToggle)
@@ -212,16 +215,16 @@ public class RobotContainer {
     private void configureOperatorBindings(PatriBoxController controller) {
 
         controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4, MovementOrder.SIMULTANEOUS));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
 
         controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3, MovementOrder.SIMULTANEOUS));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
 
         controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2, MovementOrder.SIMULTANEOUS));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
         
         controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1, MovementOrder.SIMULTANEOUS));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
 
         controller.leftTrigger()
             .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
@@ -231,6 +234,9 @@ public class RobotContainer {
 
         controller.rightBumper()
             .onTrue(superstructure.outtakeCommand(controller::getRightBumper));
+
+        controller.leftBumper()
+            .onTrue(superstructure.stowCommand().alongWith(claw.stopCommand()));
 
     }
 
