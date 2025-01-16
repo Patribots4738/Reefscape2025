@@ -94,6 +94,10 @@ public class Superstructure {
             );
     }
 
+    public Command setArmPosition(ArmPosition position) {
+        return setArmPosition(position, MovementOrder.SIMULTANEOUS);
+    }
+
     public boolean armAtTargetPosition() {
         return elevator.atTargetPosition() && wrist.atTargetPosition();
     }
@@ -101,14 +105,14 @@ public class Superstructure {
     public Command stowCommand() {
         return
             Commands.sequence(
-                setArmPosition(ArmPosition.STOW, MovementOrder.WRIST_FIRST)
+                setArmPosition(ArmPosition.STOW)
             );
     }
 
     public Command intakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
-                setArmPosition(ArmPosition.INTAKE, MovementOrder.ELEVATOR_FIRST),
+                setArmPosition(ArmPosition.INTAKE),
                 claw.intakeCommand(),
                 Commands.waitUntil(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
                 claw.holdCommand(),
@@ -130,7 +134,7 @@ public class Superstructure {
     public Command outtakeCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
-                setArmPosition(ArmPosition.L1, MovementOrder.WRIST_FIRST),
+                setArmPosition(ArmPosition.L1),
                 placeCommand(continueOuttakingSupplier)
             );
     }

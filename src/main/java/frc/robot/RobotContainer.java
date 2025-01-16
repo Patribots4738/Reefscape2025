@@ -200,16 +200,16 @@ public class RobotContainer {
     private void configureOperatorBindings(PatriBoxController controller) {
 
         controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4, MovementOrder.SIMULTANEOUS));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
 
         controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3, MovementOrder.SIMULTANEOUS));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
 
         controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2, MovementOrder.SIMULTANEOUS));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
         
         controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1, MovementOrder.SIMULTANEOUS));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
 
         controller.leftTrigger()
             .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
