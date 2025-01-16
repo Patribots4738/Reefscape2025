@@ -19,7 +19,7 @@ public class PoseCalculations {
 
 
 
-    public static ReefSide osestReefSide(Pose2d pos) {
+    public static ReefSide getClosestReefSide(Pose2d pos) {
         return nearest(FieldConstants.GET_REEF_FACE_POSITIONS(), pos);
     }
 
