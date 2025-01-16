@@ -527,30 +527,51 @@ public final class Constants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
 
-        public static final Pose2d BLUE_PROCESSOR = new Pose2d(11.54, 8.06, Rotation2d.fromDegrees(0));
-        public static final Pose2d RED_PROCESSOR = new Pose2d(5.50, 0.00, Rotation2d.fromDegrees(0));
 
-        public static final Pose2d CORAL_STATION_1 = new Pose2d(0.85, 7.36, Rotation2d.fromDegrees(0));  //cords of april tag on top side of field for blue
-        public static final Pose2d CORAL_STATION_2 = new Pose2d(0.85, 7.97, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_PROCESSER = new Pose2d(11.54, 8.06, Rotation2d.fromDegrees(0));
+        public static final Pose2d RED_PROCESSER = new Pose2d(5.50, 0.00, Rotation2d.fromDegrees(0));
+
+
+        public static final Pose2d BLUE_CORAL_STATION_1 = new Pose2d(0.85, 7.36, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_CORAL_STATION_2 = new Pose2d(0.85, 7.97, Rotation2d.fromDegrees(0));
+
+        public static final Pose2d RED_CORAL_STATION_1 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_CORAL_STATION_1));
+        public static final Pose2d RED_CORAL_STATION_2 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_CORAL_STATION_2));
+
         public static final double CORAL_STATION_HEIGHT = 0.95;
 
-        public static final Pose2d REEF_A = new Pose2d(3.72, 4.26, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_B = new Pose2d(3.72, 3.93, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_C = new Pose2d(3.95, 3.50, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_D = new Pose2d(4.46, 3.34, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_E = new Pose2d(4.75, 3.34, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_F = new Pose2d(5.04, 3.50, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_G = new Pose2d(5.28, 3.93, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_H = new Pose2d(5.29, 4.26, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_I = new Pose2d(5.04, 4.61, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_J = new Pose2d(4.57, 4.85, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_K = new Pose2d(4.26, 4.85, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_L = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
 
-        public static final double HEIGHT_L1 = 0.40;
-        public static final double HEIGHT_L2 = 0.77;
-        public static final double HEIGHT_L3 = 1.18;
-        public static final double HEIGHT_L4 = 1.82;
+        public static final Pose2d BLUE_REEF_A = new Pose2d(3.72, 4.26, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_B = new Pose2d(3.72, 3.93, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_C = new Pose2d(3.95, 3.50, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_D = new Pose2d(4.46, 3.34, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_E = new Pose2d(4.75, 3.34, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_F = new Pose2d(5.04, 3.50, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_G = new Pose2d(5.28, 3.93, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_H = new Pose2d(5.29, 4.26, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_I = new Pose2d(5.04, 4.61, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_J = new Pose2d(4.57, 4.85, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_K = new Pose2d(4.26, 4.85, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_L = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
+
+        public static final Pose2d RED_REEF_A = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_A));
+        public static final Pose2d RED_REEF_B = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_B));
+        public static final Pose2d RED_REEF_C = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_C));
+        public static final Pose2d RED_REEF_D = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_D));
+        public static final Pose2d RED_REEF_E = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_E));
+        public static final Pose2d RED_REEF_F = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_F));
+        public static final Pose2d RED_REEF_G = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_G));
+        public static final Pose2d RED_REEF_H = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_H));
+        public static final Pose2d RED_REEF_I = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_I));
+        public static final Pose2d RED_REEF_J = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_J));
+        public static final Pose2d RED_REEF_K = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_K));
+        public static final Pose2d RED_REEF_L = new Pose2d(GeometryUtil.flipFieldPose(BLUE_REEF_L));
+
+        public static final double REEF_HEIGHT_L1 = 0.40;
+        public static final double REEF_HEIGHT_L2 = 0.77;
+        public static final double REEF_HEIGHT_L3 = 1.18;
+        public static final double REEF_HEIGHT_L4 = 1.82;
+
 
         public static final Pose2d CAGE_1 = new Pose2d(8.67, 7.32, Rotation2d.fromDegrees(0));
         public static final Pose2d CAGE_2 = new Pose2d(8.67, 6.22, Rotation2d.fromDegrees(0));
@@ -559,9 +580,14 @@ public final class Constants {
         public static final Pose2d CAGE_5 = new Pose2d(8.67, 1.94, Rotation2d.fromDegrees(0));
         public static final Pose2d CAGE_6 = new Pose2d(8.67, 0.85, Rotation2d.fromDegrees(0));
 
-        public static final Pose2d STAGED_TREE_1 = new Pose2d(1.28, 1.46, Rotation2d.fromDegrees(0));
-        public static final Pose2d STAGED_TREE_2 = new Pose2d(1.32, 4.22, Rotation2d.fromDegrees(0));
-        public static final Pose2d STAGED_TREE_3 = new Pose2d(1.28, 2.37, Rotation2d.fromDegrees(0));
+
+        public static final Pose2d BLUE_STAGED_TREE_1 = new Pose2d(1.28, 1.46, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_STAGED_TREE_2 = new Pose2d(1.32, 4.22, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_STAGED_TREE_3 = new Pose2d(1.28, 2.37, Rotation2d.fromDegrees(0));
+
+        public static final Pose2d RED_STAGED_TREE_1 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_STAGED_TREE_1));
+        public static final Pose2d RED_STAGED_TREE_2 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_STAGED_TREE_2));
+        public static final Pose2d RED_STAGED_TREE_3 = new Pose2d(GeometryUtil.flipFieldPose(BLUE_STAGED_TREE_3));
 
     }
 
