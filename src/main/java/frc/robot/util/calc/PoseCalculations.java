@@ -15,7 +15,7 @@ public class PoseCalculations {
 
 
     public static Pose2d getClosestReefSide(Pose2d pos) {
-        return pos.nearest(FieldConstants.REEF_POSITIONS);
+        return pos.nearest(FieldConstants.GET_REEF_FACE_POSITIONS());
     }
 
     public static Pose2d getClosestCage(Pose2d pos) {
