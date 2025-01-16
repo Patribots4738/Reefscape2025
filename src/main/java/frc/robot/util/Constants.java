@@ -529,6 +529,9 @@ public final class Constants {
         public static final boolean IS_SIMULATION = Robot.isSimulation();
 
 
+        public static final double FIELD_MAX_LENGTH = 17.55;
+
+
         public static final Pose2d BLUE_PROCESSER = new Pose2d(11.54, 8.06, Rotation2d.fromDegrees(0));
         public static final Pose2d RED_PROCESSER = new Pose2d(5.50, 0.00, Rotation2d.fromDegrees(0));
 
