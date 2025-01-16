@@ -440,7 +440,7 @@ public final class Constants {
         public static final double ELEVATOR_P = 0.5;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
-        public static final double ELEVATOR_S = 0.0;
+        public static final double ELEVATOR_S = 0.10058799999998883;
         public static final double ELEVATOR_G = 0.0;
 
         public static final GainConstants ELEVATOR_GAINS = new GainConstants(
@@ -476,7 +476,7 @@ public final class Constants {
         public static final double WRIST_P = 0.5;
         public static final double WRIST_I = 0.0;
         public static final double WRIST_D = 0.0;
-        public static final double WRIST_S = 0.0;
+        public static final double WRIST_S = 0.08005099999999947;
         public static final double WRIST_G = 0.0;
         public static final GainConstants WRIST_GAINS = new GainConstants(
             WRIST_P,
@@ -530,7 +530,7 @@ public final class Constants {
         public static final double CLIMB_P = 0.5;
         public static final double CLIMB_I = 0.0;
         public static final double CLIMB_D = 0.0;
-        public static final double CLIMB_S = 0.0; // TODO: find this using characterization
+        public static final double CLIMB_S = 0.10020999999999185; 
         public static final double CLIMB_G = 0.0;
         public static final GainConstants CLIMB_GAINS = new GainConstants(
             CLIMB_P,
