@@ -163,6 +163,21 @@ public class RobotContainer {
                 swerve, 
                 swerve::runTurnCharacterization, 
                 swerve::getTurnCharacterizationVelocity));
+        pathPlannerStorage.getAutoChooser().addOption("WristStaticCharacterization", // TODO: use these in sim and store the values in constants
+            new StaticCharacterization(
+                wrist, 
+                wrist::runCharacterization, 
+                wrist::getCharacterizationVelocity));
+        pathPlannerStorage.getAutoChooser().addOption("ElevatorStaticCharacterization",
+            new StaticCharacterization(
+                elevator, 
+                elevator::runCharacterization, 
+                elevator::getCharacterizationVelocity));
+        pathPlannerStorage.getAutoChooser().addOption("ClimbStaticCharacterization",
+            new StaticCharacterization(
+                climb, 
+                climb::runCharacterization, 
+                climb::getCharacterizationVelocity));
 
         new NTGainTuner().schedule();
         

@@ -442,7 +442,7 @@ public final class Constants {
         public static final double ELEVATOR_P = 2.0;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.15;
-        public static final double ELEVATOR_S = 0.1;
+        public static final double ELEVATOR_S = 0.10058799999998883;
         public static final double ELEVATOR_G = 0.0;
 
         public static final GainConstants ELEVATOR_GAINS = new GainConstants(
@@ -480,7 +480,7 @@ public final class Constants {
         public static final double WRIST_P = 1.74;
         public static final double WRIST_I = 0.0;
         public static final double WRIST_D = 0.1;
-        public static final double WRIST_S = 0.1;
+        public static final double WRIST_S = 0.08005099999999947;
         public static final double WRIST_G = 0.0;
         public static final GainConstants WRIST_GAINS = new GainConstants(
             WRIST_P,
@@ -492,8 +492,8 @@ public final class Constants {
         );
 
         public static final double GEAR_RATIO = 2.5;
-        public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
-        public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
         public static final double WRIST_LENGTH_METERS = Units.inchesToMeters(15.0);
@@ -522,8 +522,8 @@ public final class Constants {
 
         public static final double CLIMB_GEAR_RATIO = 36.09375;
 
-        public static final double MOTOR_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
-        public static final double MOTOR_VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
 
         public static final double CLIMB_LENGTH_METERS = 0.5;
@@ -534,7 +534,7 @@ public final class Constants {
         public static final double CLIMB_P = 0.5;
         public static final double CLIMB_I = 0.0;
         public static final double CLIMB_D = 0.0;
-        public static final double CLIMB_S = 0.0;
+        public static final double CLIMB_S = 0.10020999999999185; 
         public static final double CLIMB_G = 0.0;
         public static final GainConstants CLIMB_GAINS = new GainConstants(
             CLIMB_P,

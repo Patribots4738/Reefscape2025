@@ -6,6 +6,8 @@ package frc.robot.subsystems.superstructure.elevator;
 
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ElevatorConstants;
+import frc.robot.util.Constants.WristConstants;
+
 import java.util.function.DoubleSupplier;
 import frc.robot.util.custom.LoggedTunableBoolean;
 
@@ -57,4 +59,11 @@ public class Elevator extends SubsystemBase {
         return MathUtil.isNear(targetPosition, inputs.leaderPositionMeters, ElevatorConstants.ELEVATOR_DEADBAND_METERS);
     }
 
+    public double getCharacterizationVelocity() {
+        return inputs.leaderVelocityMetersPerSecond / ElevatorConstants.VELOCITY_CONVERSION_FACTOR;
+    }
+
+    public void runCharacterization(double input) {
+        io.runCharacterization(input);
+    }
 }
