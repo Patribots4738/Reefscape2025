@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
 import frc.robot.RobotContainer;
+import frc.robot.util.Constants.FieldConstants;
 
 public class Vision extends SubsystemBase {
 
@@ -32,7 +33,9 @@ public class Vision extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Vision", inputs);
 
-        updatePoseEstimator();
+        if (!FieldConstants.IS_SIMULATION) {
+            updatePoseEstimator();
+        }
     }
 
     private void updatePoseEstimator() {
@@ -57,6 +60,7 @@ public class Vision extends SubsystemBase {
 
         double xyStds = 0.0;
         double radStds = 0.0;
+
         if ((Robot.gameMode == GameMode.DISABLED || 
             Robot.gameMode == GameMode.AUTONOMOUS
                 && Robot.currentTimestamp - RobotContainer.gameModeStart < 1.75)
