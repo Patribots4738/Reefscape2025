@@ -24,6 +24,8 @@ public class Wrist extends SubsystemBase {
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
 
+    private double targetPosition = 0.0;
+
     public Wrist(WristIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
@@ -35,10 +37,11 @@ public class Wrist extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
 
-        RobotContainer.wristMech.setAngle(Units.radiansToDegrees(inputs.encoderPositionRads));
+        RobotContainer.wristMech.setAngle(180 + Units.radiansToDegrees(inputs.encoderPositionRads));
     }
 
     public void setPosition(double position) {
+        targetPosition = position;
         io.setPosition(position);
     }
 
@@ -51,7 +54,7 @@ public class Wrist extends SubsystemBase {
     }   
 
     public boolean atTargetPosition() {
-        return MathUtil.isNear(inputs.targetPositionRads, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
+        return MathUtil.isNear(targetPosition, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
     }
 
     public double getCharacterizationVelocity() {

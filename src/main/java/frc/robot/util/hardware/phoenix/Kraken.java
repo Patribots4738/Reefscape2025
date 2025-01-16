@@ -143,13 +143,13 @@ public class Kraken extends TalonFX {
         this.useFOC = useFOC;
         this.useTorqueControl = useTorqueControl;
 
-        positionRequest = new PositionVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(0);
-        velocityRequest = new VelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(0);
-        positionTorqueRequest = new PositionTorqueCurrentFOC(0).withUpdateFreqHz(0);
-        velocityTorqueRequest = new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(0);
-        voltageRequest = new VoltageOut(0).withEnableFOC(useFOC).withUpdateFreqHz(0);
-        percentRequest = new DutyCycleOut(0).withEnableFOC(useFOC).withUpdateFreqHz(0);
-        torqueRequest = new TorqueCurrentFOC(0).withUpdateFreqHz(0);
+        positionRequest = new PositionVoltage(0).withEnableFOC(useFOC);
+        velocityRequest = new VelocityVoltage(0).withEnableFOC(useFOC);
+        positionTorqueRequest = new PositionTorqueCurrentFOC(0);
+        velocityTorqueRequest = new VelocityTorqueCurrentFOC(0);
+        voltageRequest = new VoltageOut(0).withEnableFOC(useFOC);
+        percentRequest = new DutyCycleOut(0).withEnableFOC(useFOC);
+        torqueRequest = new TorqueCurrentFOC(0);
 
         gains = new GainConstants[] { new GainConstants(), new GainConstants(), new GainConstants() };
 

@@ -22,7 +22,7 @@ public class Claw extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Claw/BrakeMotor", ClawConstants.BRAKE_MOTOR);
 
     private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("Claw/IntakePercent", ClawConstants.INTAKE_PERCENT);
-    private final LoggedTunableNumber holdPercent = new LoggedTunableNumber("Claw/HoldPercent", ClawConstants.INTAKE_PERCENT);
+    private final LoggedTunableNumber holdPercent = new LoggedTunableNumber("Claw/HoldPercent", ClawConstants.HOLD_PERCENT);
     private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("Claw/OuttakePercent", ClawConstants.OUTTAKE_PERCENT);
     
     public Claw(ClawIO io) {
@@ -42,7 +42,7 @@ public class Claw extends SubsystemBase {
     }
 
     public Command setPercentCommand(DoubleSupplier percentSupplier) {
-        return run(() -> setPercent(percentSupplier.getAsDouble()));
+        return runOnce(() -> setPercent(percentSupplier.getAsDouble()));
     }
 
     public Command setPercentCommand(double percent) {

@@ -29,7 +29,8 @@ public class Climb extends SubsystemBase {
     private final LoggedTunableNumber readyPosition = new LoggedTunableNumber("Climb/ReadyPosition", ClimbConstants.READY_POSITION_RADIANS);
     private final LoggedTunableNumber latchPosition = new LoggedTunableNumber("Climb/LatchPosition", ClimbConstants.LATCH_POSITION_RADIANS);
     private final LoggedTunableNumber finalPosition = new LoggedTunableNumber("Climb/FinalPosition", ClimbConstants.FINAL_POSITION_RADIANS);
-    
+
+    private double targetPosition = 0.0;
 
     public Climb(ClimbIO io) {
         this.io = io;
@@ -40,17 +41,16 @@ public class Climb extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Climb", inputs);
-        Logger.recordOutput("Subsystems/Climb/AtDesiredPosition", atDesiredPosition());
-
-        RobotContainer.climbMech.setAngle(Units.radiansToDegrees(inputs.encoderPositionRads));
+        Logger.recordOutput("Subsystems/Climb/AtDesiredPosition", atTargetPosition());
     }
 
     public void setPosition(double position) {
+        targetPosition = position;
         io.setPosition(position);
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atDesiredPosition));
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
     public Command setPositionCommand(double position) {
@@ -73,8 +73,8 @@ public class Climb extends SubsystemBase {
         return setPositionCommand(finalPosition::get);
     }
 
-    public boolean atDesiredPosition() {
-        return MathUtil.isNear(inputs.leaderTargetPositionRads, inputs.encoderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
+    public boolean atTargetPosition() {
+        return MathUtil.isNear(targetPosition, inputs.encoderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
     }
 
     public double getCharacterizationVelocity() {
