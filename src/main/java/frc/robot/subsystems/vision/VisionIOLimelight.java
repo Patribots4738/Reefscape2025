@@ -14,6 +14,7 @@ public class VisionIOLimelight implements VisionIO {
 
     public void updateInputs(VisionIOInputs inputs) {
         frontLimelight.refreshPoseEstimate();
+        inputs.frontRobotPoseValid = frontLimelight.hasValidPoseEstimate();
         inputs.frontRobotPose = frontLimelight.getRobotPose();
         inputs.frontTimestampSeconds = frontLimelight.getTimestamp();
         inputs.frontAverageTA = frontLimelight.getAverageTA();
@@ -21,11 +22,12 @@ public class VisionIOLimelight implements VisionIO {
         inputs.frontTagCount = frontLimelight.getTagCount();
 
         backLimelight.refreshPoseEstimate();
-        inputs.backRobotPose = frontLimelight.getRobotPose();
-        inputs.backTimestampSeconds = frontLimelight.getTimestamp();
-        inputs.backAverageTA = frontLimelight.getAverageTA();
-        inputs.backAverageTD = frontLimelight.getAverageTD();
-        inputs.backTagCount = frontLimelight.getTagCount();
+        inputs.backRobotPoseValid = backLimelight.hasValidPoseEstimate();
+        inputs.backRobotPose = backLimelight.getRobotPose();
+        inputs.backTimestampSeconds = backLimelight.getTimestamp();
+        inputs.backAverageTA = backLimelight.getAverageTA();
+        inputs.backAverageTD = backLimelight.getAverageTD();
+        inputs.backTagCount = backLimelight.getTagCount();
     }
 
     public void setFrontPipelineIndex(int index) {

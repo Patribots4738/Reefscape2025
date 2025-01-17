@@ -77,6 +77,10 @@ public class Limelight {
         return latestPoseEstimate;
     }
 
+    public boolean hasValidPoseEstimate() {
+        return LimelightHelpers.validPoseEstimate(latestPoseEstimate);
+    }
+
     public Pose2d getRobotPose() {
         return latestPoseEstimate.pose;
     }

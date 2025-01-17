@@ -105,7 +105,8 @@ public class Vision extends SubsystemBase {
     }
 
     private boolean hasTargetFront() {
-        if (Double.isNaN(inputs.frontRobotPose.getX()) 
+        if (!inputs.frontRobotPoseValid
+            || Double.isNaN(inputs.frontRobotPose.getX()) 
             || Double.isNaN(inputs.frontRobotPose.getY()) 
             || Double.isNaN(inputs.frontRobotPose.getRotation().getRadians()))
         {
@@ -115,7 +116,8 @@ public class Vision extends SubsystemBase {
     }
 
     private boolean hasTargetBack() {
-        if (Double.isNaN(inputs.backRobotPose.getX()) 
+        if (!inputs.backRobotPoseValid
+            || Double.isNaN(inputs.backRobotPose.getX()) 
             || Double.isNaN(inputs.backRobotPose.getY()) 
             || Double.isNaN(inputs.backRobotPose.getRotation().getRadians()))
         {
