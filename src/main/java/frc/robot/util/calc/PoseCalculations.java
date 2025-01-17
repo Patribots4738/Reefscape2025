@@ -14,7 +14,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
 
-/** Add your docs here. */
 public class PoseCalculations {
 
     public static ReefSide getClosestReefSide(Pose2d pos) {
@@ -59,5 +58,5 @@ public class PoseCalculations {
                     (ReefSide other) ->
                         Math.abs(pos.getRotation().minus(other.getRotation()).getRadians())));
     }
-    
+
 }
