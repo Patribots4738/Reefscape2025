@@ -1,6 +1,7 @@
 package frc.robot.subsystems.vision;
 
 import frc.robot.util.hardware.limelight.Limelight;
+import frc.robot.util.hardware.limelight.LimelightHelpers.RawFiducial;
 
 public class VisionIOLimelight implements VisionIO {
     
@@ -21,6 +22,13 @@ public class VisionIOLimelight implements VisionIO {
         inputs.frontAverageTD = frontLimelight.getAverageTD();
         inputs.frontTagCount = frontLimelight.getTagCount();
 
+        RawFiducial[] rawFrontFiducials = frontLimelight.getRawFiducials();
+        inputs.frontIds = new int[rawFrontFiducials.length];
+        for (int i = 0; i < rawFrontFiducials.length; i++) {
+            RawFiducial fid = rawFrontFiducials[i];
+            inputs.frontIds[i] = fid.id;
+        }
+
         backLimelight.refreshPoseEstimate();
         inputs.backRobotPoseValid = backLimelight.hasValidPoseEstimate();
         inputs.backRobotPose = backLimelight.getRobotPose();
@@ -28,6 +36,13 @@ public class VisionIOLimelight implements VisionIO {
         inputs.backAverageTA = backLimelight.getAverageTA();
         inputs.backAverageTD = backLimelight.getAverageTD();
         inputs.backTagCount = backLimelight.getTagCount();
+
+        RawFiducial[] rawBackFiducials = backLimelight.getRawFiducials();
+        inputs.backIds = new int[rawBackFiducials.length];
+        for (int i = 0; i < rawBackFiducials.length; i++) {
+            RawFiducial fid = rawBackFiducials[i];
+            inputs.backIds[i] = fid.id;
+        }
     }
 
     public void setFrontPipelineIndex(int index) {

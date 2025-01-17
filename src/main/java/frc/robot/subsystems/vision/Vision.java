@@ -21,7 +21,7 @@ public class Vision extends SubsystemBase {
     private final VisionIO io;
 
     private final SwerveDrivePoseEstimator poseEstimator;
-    
+
     public Vision(VisionIO io, SwerveDrivePoseEstimator poseEstimator) {
         this.io = io;
         this.poseEstimator = poseEstimator;
@@ -33,8 +33,8 @@ public class Vision extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Vision", inputs);
 
-        io.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
         if (!FieldConstants.IS_SIMULATION) {
+            io.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
             updatePoseEstimator();
         }
     }
@@ -125,4 +125,5 @@ public class Vision extends SubsystemBase {
         }
         return true;
     }
+
 }

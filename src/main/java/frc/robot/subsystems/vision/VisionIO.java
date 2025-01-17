@@ -15,6 +15,7 @@ public interface VisionIO {
         public double frontAverageTA = 0.0;
         public double frontAverageTD = 0.0;
         public int frontTagCount = 0;
+        public int[] frontIds = new int[0];
 
         public Pose2d backRobotPose = new Pose2d();
         public boolean backRobotPoseValid = false;
@@ -22,6 +23,7 @@ public interface VisionIO {
         public double backAverageTA = 0.0;
         public double backAverageTD = 0.0;
         public int backTagCount = 0;
+        public int[] backIds = new int[0];
 
     }
 
