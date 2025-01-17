@@ -27,7 +27,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
+import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.GainConstants;
+import frc.robot.util.custom.ReefSide;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
 
@@ -685,6 +687,8 @@ public final class Constants {
 
 
         public static final double FIELD_MAX_LENGTH = 17.55;
+        // 2d height
+        public static final double FIELD_MAX_HEIGHT = 8.067;
 
 
         public static final Pose2d BLUE_PROCESSER = new Pose2d(11.54, 8.06, Rotation2d.fromDegrees(0));
@@ -695,7 +699,6 @@ public final class Constants {
         public static final Pose2d BLUE_CORAL_STATION_2 = new Pose2d(0.85, 7.97, Rotation2d.fromDegrees(0));
 
         public static final double CORAL_STATION_HEIGHT = 0.95;
-
 
         public static final Pose2d BLUE_REEF_A = new Pose2d(3.72, 4.26, Rotation2d.fromDegrees(0));
         public static final Pose2d BLUE_REEF_B = new Pose2d(3.72, 3.93, Rotation2d.fromDegrees(0));
@@ -710,6 +713,64 @@ public final class Constants {
         public static final Pose2d BLUE_REEF_K = new Pose2d(4.26, 4.85, Rotation2d.fromDegrees(0));
         public static final Pose2d BLUE_REEF_L = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
 
+        // Centers of each reef side, letters are ordered from driver station POV (left than right)
+        public static final Pose2d BLUE_REEF_AB = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_CD = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_FE = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_HG = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_JI = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_KL = new Pose2d(3.97, 4.69, Rotation2d.fromDegrees(0));
+
+        public static final List<ReefSide> REEF_POSITIONS = new ArrayList<ReefSide>() {{
+            // All points are in meters and radians
+            // All relative to the blue origin
+            // Positions go from blueReef1 (the farthest from blue driverstation) clockwise around
+
+            // TODO: make correct
+            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B);
+            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D);
+            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E);
+            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G);
+            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I);
+            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L);
+            add(blueReef1);
+            add(blueReef2);
+            add(blueReef3);
+            add(blueReef4);
+            add(blueReef5);
+            add(blueReef6);
+
+            // Red Reef
+            add(blueReef1.otherAlliance()); 
+            add(blueReef2.otherAlliance());
+            add(blueReef3.otherAlliance());
+            add(blueReef4.otherAlliance());
+            add(blueReef5.otherAlliance());
+            add(blueReef6.otherAlliance());
+        }};
+
+        public static final List<ReefSide> GET_REEF_FACE_POSITIONS() {
+            int startIndex = Robot.isRedAlliance() ? 6 : 0;
+            return REEF_POSITIONS.subList(startIndex, startIndex + 6);
+        }
+
+        public static final List<Pose2d> CAGE_POSITIONS = new ArrayList<Pose2d>() {{
+            // blueCage1 starts as the highest from field origin and goes down from there
+            // TODO: make correct
+            Pose2d blueCage1 = new Pose2d(4.37, 3.201, Rotation2d.fromDegrees(-120));
+            Pose2d blueCage2 = new Pose2d(5.875, 4.168, Rotation2d.fromDegrees(0));
+            Pose2d blueCage3 = new Pose2d(4.353, 4.938, Rotation2d.fromDegrees(120));
+            // 
+            add(PoseCalculations.mirrorPose(blueCage3));
+            add(PoseCalculations.mirrorPose(blueCage2));
+            add(PoseCalculations.mirrorPose(blueCage1));
+        }};
+
+
+        public static final List<Pose2d> GET_CAGE_POSITIONS() {
+            int startIndex = Robot.isRedAlliance() ? 3 : 0;
+            return CAGE_POSITIONS.subList(startIndex, startIndex + 3);
+        }
 
 
         public static final double REEF_HEIGHT_L1 = 0.40;
