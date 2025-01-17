@@ -14,7 +14,6 @@ public class ReefSide {
     private Pose2d left;
     private Pose2d right;
 
-
     public ReefSide(Pose2d center, Pose2d left, Pose2d right) {
         this.center = center;
         this.right = right;
@@ -47,11 +46,8 @@ public class ReefSide {
         return new ReefSide(
             PoseCalculations.mirrorPose(center),
             PoseCalculations.mirrorPose(left),
-            PoseCalculations.mirrorPose(right));
+            PoseCalculations.mirrorPose(right)
+        );
     }
-
-    
-
-
 
 }

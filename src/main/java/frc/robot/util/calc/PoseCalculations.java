@@ -17,8 +17,6 @@ import frc.robot.util.custom.ReefSide;
 /** Add your docs here. */
 public class PoseCalculations {
 
-
-
     public static ReefSide getClosestReefSide(Pose2d pos) {
         return nearest(FieldConstants.GET_REEF_FACE_POSITIONS(), pos);
     }
@@ -51,7 +49,6 @@ public class PoseCalculations {
     public static Rotation2d flipFieldRotation(Rotation2d rotation) {
         return new Rotation2d(Math.PI).minus(rotation);
     }
-    
 
     public static ReefSide nearest(List<ReefSide> poses, Pose2d pos) {
         return Collections.min(
@@ -62,4 +59,5 @@ public class PoseCalculations {
                     (ReefSide other) ->
                         Math.abs(pos.getRotation().minus(other.getRotation()).getRadians())));
     }
+    
 }
