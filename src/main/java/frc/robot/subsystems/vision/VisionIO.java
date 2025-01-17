@@ -28,5 +28,7 @@ public interface VisionIO {
     public default void setFrontPipelineIndex(double index) {}
 
     public default void setBackPipelineIndex(double index) {}
+
+    public default void setRobotOrientation(double yawDegrees) {}
     
 }

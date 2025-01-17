@@ -36,4 +36,9 @@ public class VisionIOLimelight implements VisionIO {
         backLimelight.setPipelineIndex(index);
     }
 
+    public void setRobotOrientation(double yaw) {
+        frontLimelight.setRobotOrientation(yaw);
+        backLimelight.setRobotOrientation(yaw);
+    }
+
 }

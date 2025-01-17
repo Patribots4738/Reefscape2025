@@ -33,6 +33,7 @@ public class Vision extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Vision", inputs);
 
+        io.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
         if (!FieldConstants.IS_SIMULATION) {
             updatePoseEstimator();
         }
