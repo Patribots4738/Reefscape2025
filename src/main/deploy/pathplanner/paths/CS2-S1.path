@@ -12,20 +12,20 @@
         "y": 0.6553209459459444
       },
       "isLocked": false,
-      "linkedName": "CR"
+      "linkedName": "CS2"
     },
     {
       "anchor": {
-        "x": 5.875042808219178,
-        "y": 3.8371789383561645
+        "x": 1.8181078767123287,
+        "y": 5.722902397260274
       },
       "prevControl": {
-        "x": 7.139907673084043,
-        "y": 3.4023816410588665
+        "x": 0.8181078767123289,
+        "y": 5.722902397260274
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "S1"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.0906195508009
+    "rotation": -13.157542740014843
   },
   "reversed": false,
   "folder": "Coral Station",
