@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CS1-K"
+            "pathName": "CL-K"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CS1-L"
+            "pathName": "CL-L"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CS1-A"
+            "pathName": "CL-A"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CS1-B"
+            "pathName": "CL-B"
           }
         }
       ]

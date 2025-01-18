@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.22385204081632626,
-        "y": 8.110299744897958
+        "x": 2.234007121139961,
+        "y": 6.841800964081014
       },
       "isLocked": false,
       "linkedName": "CL"
     },
     {
       "anchor": {
-        "x": 1.7236607142857145,
-        "y": 7.423820153061224
+        "x": 3.7113441780821916,
+        "y": 5.0617722602739725
       },
       "prevControl": {
-        "x": 2.4847576530612248,
-        "y": 6.79703443877551
+        "x": 3.062481109111974,
+        "y": 5.820229241017541
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CS1"
+      "linkedName": "L"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -52.44247457145787
+    "rotation": -61.55707137563668
   },
   "reversed": false,
-  "folder": "Reef",
+  "folder": "Coral Station",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -52.44247457145787
