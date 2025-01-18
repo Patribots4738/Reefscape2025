@@ -21,6 +21,18 @@
           "data": {
             "pathName": "CS1-A"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A-S2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "S2-P"
+          }
         }
       ]
     }
