@@ -89,7 +89,7 @@ public class ModuleIOKraken implements ModuleIO {
         // Call refreshALl() to refresh all status signals, and check in on him :)
         inputs.driverMotorConnected = driveMotor.refreshSignals().isOK();
         // 800 m is roughly the value at which the talonfx position "flips", leading to odometry bugs
-        inputs.drivePositionFlipped = (inputs.drivePositionMeters > 800 && driveMotor.getPositionAsDouble() < -800);
+        inputs.drivePositionFlipped = Math.abs(driveMotor.getPositionAsDouble() - inputs.drivePositionMeters) >= 1600d;
         inputs.drivePositionMeters = driveMotor.getPositionAsDouble();
         inputs.driveVelocityMPS = driveMotor.getVelocityAsDouble();
         inputs.driveAppliedVolts = driveMotor.getVoltageAsDouble();
