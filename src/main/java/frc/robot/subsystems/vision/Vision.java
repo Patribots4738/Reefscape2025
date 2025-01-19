@@ -21,18 +21,19 @@ public class Vision extends SubsystemBase {
     private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
     private final VisionIO io;
 
-    private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/XyStdsDisabled", 0.001);
+    private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/xyStdsDisabled", 0.001);
     private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
-    private final LoggedTunableNumber xyStds3TagTelopA = new LoggedTunableNumber("Vision/xyStds3TagTelopA", 0.002);
-    private final LoggedTunableNumber xyStds3TagTelopB = new LoggedTunableNumber("Vision/xyStds3TagTelopB", 0.003);
-    private final LoggedTunableNumber xyStds2TagTelopA = new LoggedTunableNumber("Vision/xyStds2TagTelopA", 0.005);
-    private final LoggedTunableNumber xyStds2TagTelopB = new LoggedTunableNumber("Vision/xyStds2TagTelopB", 0.008);
-    private final LoggedTunableNumber xyStds2TagAutoA = new LoggedTunableNumber("Vision/xyStds2TagAutoA", 0.014);
-    private final LoggedTunableNumber xyStds2TagAutoB = new LoggedTunableNumber("Vision/xyStds2TagAutoB", 0.016);
-    private final LoggedTunableNumber degStds2Tag = new LoggedTunableNumber("Vision/DegStds2Tag", 2);
-    private final LoggedTunableNumber xyStds1TagLargeA = new LoggedTunableNumber("Vision/xyStds1TagLargeA", 0.015);
-    private final LoggedTunableNumber xyStds1TagLargeB = new LoggedTunableNumber("Vision/xyStds1TagLargeB", 0.033);
-    private final LoggedTunableNumber degStds1TagLarge = new LoggedTunableNumber("Vision/DegStds1TagLarge", 7);
+    private final LoggedTunableNumber xyStds3TagTelopX = new LoggedTunableNumber("Vision/xyStds3TagTelopX", 0.002);
+    private final LoggedTunableNumber xyStds3TagTelopY = new LoggedTunableNumber("Vision/xyStds3TagTelopY", 0.003);
+    private final LoggedTunableNumber xyStds2TagTelopX = new LoggedTunableNumber("Vision/xyStds2TagTelopX", 0.005);
+    private final LoggedTunableNumber xyStds2TagTelopY = new LoggedTunableNumber("Vision/xyStds2TagTelopY", 0.008);
+    private final LoggedTunableNumber xyStds2TagAutoX = new LoggedTunableNumber("Vision/xyStds2TagAutoX", 0.014);
+    private final LoggedTunableNumber xyStds2TagAutoY = new LoggedTunableNumber("Vision/xyStds2TagAutoY", 0.016);
+    private final LoggedTunableNumber radStds2Tag = new LoggedTunableNumber("Vision/RadStds2Tag", Units.degreesToRadians(2));
+    private final LoggedTunableNumber xyStds1TagLargeX = new LoggedTunableNumber("Vision/xyStds1TagLargeX", 0.015);
+    private final LoggedTunableNumber xyStds1TagLargeY = new LoggedTunableNumber("Vision/xyStds1TagLargeY", 0.033);
+    private final LoggedTunableNumber radStds1TagLarge = new LoggedTunableNumber("Vision/RaStds1TagLarge", Units.degreesToRadians(7));
+    private final LoggedTunableNumber minTagArea = new LoggedTunableNumber("Vision/minTagArea", 0.14);
 
 
     private final SwerveDrivePoseEstimator poseEstimator;
@@ -81,28 +82,28 @@ public class Vision extends SubsystemBase {
             Robot.gameMode == GameMode.AUTONOMOUS
                 && Robot.currentTimestamp - RobotContainer.gameModeStart < 1.75)
                 && (updateFront || updateBack)) {
-            xyStds = 0.001;
-            radStds = 0.0002;
+            xyStds = xyStdsDisabled.get();
+            radStds = radStdsDisabled.get();
         } else if (updateFront || updateBack) {
             // Multiple targets detected
             if (tagCount > 1) {
                 if (Robot.gameMode == GameMode.TELEOP) {
                     // Trust the vision even MORE
                     if (tagCount > 2) {
-                        xyStds = Math.hypot(0.002, 0.003);
+                        xyStds = Math.hypot(xyStds3TagTelopX.get(), xyStds3TagTelopY.get());
                     } else {
                         // We can only see two tags, (still trustable)
-                        xyStds = Math.hypot(0.005, 0.008);
+                        xyStds = Math.hypot(xyStds2TagTelopX.get(), xyStds2TagTelopY.get());
                     }
                 } else {
-                    xyStds = Math.hypot(0.014, 0.016);
+                    xyStds = Math.hypot(xyStds2TagAutoX.get(), xyStds2TagAutoY.get());
                 }
-                radStds = Units.degreesToRadians(2);
+                radStds = radStds2Tag.get();
             }
             // 1 target with large area and close to estimated roxose
-            else if (tagArea > 0.14) {
-                xyStds = Math.hypot(0.015, 0.033);
-                radStds = Units.degreesToRadians(7);
+            else if (tagArea > minTagArea.get()) {
+                xyStds = Math.hypot(xyStds1TagLargeX.get(), xyStds1TagLargeY.get());
+                radStds = radStds1TagLarge.get();
             }
             // Conditions don't match to add a vision measurement
             else {
