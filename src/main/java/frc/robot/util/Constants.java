@@ -707,8 +707,8 @@ public final class Constants {
         }
 
 
-        public static final Pose2d CORAL_STATION_1 = new Pose2d(0.82, 7.39, Rotation2d.fromDegrees(0));
-        public static final Pose2d CORAL_STATION_2 = new Pose2d(0.82, 0.65, Rotation2d.fromDegrees(0));
+        public static final Pose2d CORAL_STATION_1 = new Pose2d(0.82, 7.39, Rotation2d.fromDegrees(-55));
+        public static final Pose2d CORAL_STATION_2 = new Pose2d(0.82, 0.65, Rotation2d.fromDegrees(55));
 
         public static final double CORAL_STATION_HEIGHT = 0.95;
 
@@ -722,8 +722,8 @@ public final class Constants {
             add(blueCoralStation2);
 
             // Red Coral Stations
-            add(PoseCalculations.mirrorPose(blueCoralStation1));
-            add(PoseCalculations.mirrorPose(blueCoralStation2));
+            add(PoseCalculations.flipPose(blueCoralStation1));
+            add(PoseCalculations.flipPose(blueCoralStation2));
         }};
 
         public static final List<Pose2d> GET_CORAL_STATION_POSITIONS() {

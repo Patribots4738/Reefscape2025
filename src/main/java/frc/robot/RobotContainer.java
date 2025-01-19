@@ -49,6 +49,7 @@ import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
 
@@ -70,6 +71,7 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Climb climb;
     private final Superstructure superstructure;
+    private final Alignment alignment;
 
     public static Field2d field2d = new Field2d();
 
@@ -113,8 +115,8 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-
         superstructure = new Superstructure(claw, elevator, wrist, climb);
+        alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
 
@@ -205,11 +207,9 @@ public class RobotContainer {
             ), swerve)
         );
 
-        controller.leftBumper().whileTrue(swerve.getSetWheelsX());
-        controller.rightBumper().whileTrue(swerve.getSetWheelsO());
-        controller.b().whileTrue(swerve.driveCharacterization());
-        controller.y().whileTrue(swerve.getSetWheelsZero());
-        controller.a().whileTrue(swerve.tuneTurnVelocityCommand());
+        controller.a()
+            .whileTrue(
+                alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {

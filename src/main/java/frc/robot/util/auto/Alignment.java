@@ -43,15 +43,19 @@ public class Alignment {
     }
 
     public ChassisSpeeds getAutoRotationalSpeeds(Rotation2d rotation) {
-        Pose2d currentPose = swerve.getPose();
-        return getAutoSpeeds(new Pose2d(currentPose.getX(), currentPose.getY(), rotation));
+        return 
+            new ChassisSpeeds(
+                0,
+                0,
+                AutoConstants.TELE_HDC.getThetaController().calculate(swerve.getPose().getRotation().getRadians(), rotation.getRadians())
+            );
     }
 
     public ChassisSpeeds getControllerSpeeds(double controllerX, double controllerY) {
         return
             ChassisSpeeds.fromFieldRelativeSpeeds(
                 controllerY * (Robot.isRedAlliance() ? -1 : 1), 
-                controllerX * (Robot.isRedAlliance() ? -1 : 1), 
+                controllerX * (Robot.isRedAlliance() ? 1 : -1), 
                 0, 
                 swerve.getPose().getRotation());
     }

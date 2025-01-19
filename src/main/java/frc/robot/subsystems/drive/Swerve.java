@@ -52,6 +52,7 @@ import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
+import frc.robot.util.auto.Alignment;
 import frc.robot.util.custom.LoggedTunableNumber;
 
 public class Swerve extends SubsystemBase {
@@ -65,17 +66,17 @@ public class Swerve extends SubsystemBase {
 
     private final Module[] swerveModules;
 
-    private SwerveDrivePoseEstimator poseEstimator;
+    private final SwerveDrivePoseEstimator poseEstimator;
 
     private RobotConfig config;
 
     private final SwerveSetpointGenerator setpointGenerator;
     private SwerveSetpoint previousSetpoint;
 
-    private LoggedTunableNumber driveMultiplier = new LoggedTunableNumber("Drive/DriveMultiplier", 1.0);
-    private LoggedTunableNumber driveMaxLinearVelocity = new LoggedTunableNumber("Drive/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
-    private LoggedTunableNumber driveMaxAngularVelocity = new LoggedTunableNumber("Drive/DriveAngularVelocity", DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND);
-    private LoggedTunableNumber turnMaxVelocity = new LoggedTunableNumber("Drive/MaxTurnVelocity", MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC);
+    private final LoggedTunableNumber driveMultiplier = new LoggedTunableNumber("Drive/DriveMultiplier", 1.0);
+    private final LoggedTunableNumber driveMaxLinearVelocity = new LoggedTunableNumber("Drive/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
+    private final LoggedTunableNumber driveMaxAngularVelocity = new LoggedTunableNumber("Drive/DriveAngularVelocity", DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND);
+    private final LoggedTunableNumber turnMaxVelocity = new LoggedTunableNumber("Drive/MaxTurnVelocity", MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC);
 
     /**
      * Creates a new DriveSubsystem.
