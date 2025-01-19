@@ -14,6 +14,7 @@ import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.custom.LoggedTunableNumber;
 
 public class Vision extends SubsystemBase {
 
