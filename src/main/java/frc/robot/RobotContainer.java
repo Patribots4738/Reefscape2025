@@ -209,7 +209,13 @@ public class RobotContainer {
 
         controller.a()
             .whileTrue(
-                alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
+                alignment.cageAlignmentCommand(controller::getLeftY));
+
+        controller.povLeft()
+            .onTrue(alignment.updateIndexCommand(-1));
+
+        controller.povRight()
+            .onTrue(alignment.updateIndexCommand(1));
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {

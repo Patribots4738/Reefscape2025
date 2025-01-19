@@ -16,6 +16,20 @@ import frc.robot.util.custom.ReefSide;
 
 public class PoseCalculations {
 
+    public static int nearestIndex(Pose2d pos, List<Pose2d> compareTo) {
+        double minDistance = pos.getTranslation().getDistance(compareTo.get(0).getTranslation());
+        int nearest = 0;
+        for (int i = 0; i < compareTo.size(); i++) {
+            Pose2d comparing = compareTo.get(i);
+            double dist = pos.getTranslation().getDistance(comparing.getTranslation());
+            if (dist < minDistance) {
+                minDistance = dist;
+                nearest = i;
+            }
+        }
+        return nearest;
+    }
+
     public static ReefSide getClosestReefSide(Pose2d pos) {
         return nearest(FieldConstants.GET_REEF_FACE_POSITIONS(), pos);
     }

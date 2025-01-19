@@ -252,7 +252,6 @@ public class Swerve extends SubsystemBase {
             // Something in our pose was NaN...
             resetOdometry(RobotContainer.robotPose2d);
             resetEncoders();
-            resetHDC();
         } else {
             RobotContainer.robotPose2d = currentPose;
         }
@@ -586,14 +585,6 @@ public class Swerve extends SubsystemBase {
     
     public DriveHDC getDriveHDCCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelative) {
         return new DriveHDC(this, speeds, fieldRelative, () -> false);
-    }
-
-    public void resetHDC() {
-        AutoConstants.TELE_HDC.getThetaController().reset(getPose().getRotation().getRadians());
-    }
-
-    public Command resetHDCCommand() {
-        return Commands.runOnce(() -> resetHDC());
     }
 
     public boolean atPose(Pose2d position) {
