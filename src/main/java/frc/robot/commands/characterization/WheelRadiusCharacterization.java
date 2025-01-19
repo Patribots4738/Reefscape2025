@@ -46,15 +46,15 @@ public class WheelRadiusCharacterization extends Command {
 
     @Override
     public void execute() {
-        
+
         swerve.drive(new ChassisSpeeds(0.0, 0.0, .5));
-        
+
         accumGyroYawRads += MathUtil.angleModulus(gyroYawRadsSupplier.getAsDouble() - lastGyroYawRads);
         lastGyroYawRads = gyroYawRadsSupplier.getAsDouble();
-        
+
         double averageWheelPosition = 0.0;
         double[] wheelPositions = swerve.getWheelRadiusCharacterizationPosition();
-        
+
         for (int i = 0; i < 4; i++) {
             averageWheelPosition += Math.abs(wheelPositions[i] - startWheelPositions[i]);
         }
@@ -62,9 +62,9 @@ public class WheelRadiusCharacterization extends Command {
         System.out.println(averageWheelPosition);
 
         averageWheelPosition /= 4.0;
-        
+
         double driveRadius = Math.hypot(DriveConstants.WHEEL_BASE, DriveConstants.TRACK_WIDTH) / 2.0;
-        
+
         currentEffectiveWheelRadius = (accumGyroYawRads * driveRadius) / averageWheelPosition;
     }
 
@@ -75,9 +75,9 @@ public class WheelRadiusCharacterization extends Command {
             System.out.println("\nNot enough data for characterization\n" + accumGyroYawRads);
         } else {
             System.out.println(
-                "\nEffective Wheel Radius: "
-                    + Units.metersToInches(currentEffectiveWheelRadius)
-                    + " inches\n");
+                    "\nEffective Wheel Radius: "
+                            + Units.metersToInches(currentEffectiveWheelRadius)
+                            + " inches\n");
         }
     }
 
