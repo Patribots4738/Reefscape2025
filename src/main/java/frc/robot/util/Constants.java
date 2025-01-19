@@ -787,6 +787,10 @@ public final class Constants {
             return REEF_POSITIONS.subList(startIndex, startIndex + 6);
         }
 
+        public static final Pose2d CAGE_1 = new Pose2d(8.77, 7.26, Rotation2d.fromDegrees(0));
+        public static final Pose2d CAGE_2 = new Pose2d(8.77, 6.16, Rotation2d.fromDegrees(0));
+        public static final Pose2d CAGE_3 = new Pose2d(8.77, 5.07, Rotation2d.fromDegrees(0));
+        
         public static final List<Pose2d> CAGE_POSITIONS = new ArrayList<Pose2d>() {{
             // blueCage1 starts as the highest from field origin and goes down from there
 
@@ -815,11 +819,6 @@ public final class Constants {
         public static final double REEF_HEIGHT_L2 = 0.77;
         public static final double REEF_HEIGHT_L3 = 1.18;
         public static final double REEF_HEIGHT_L4 = 1.82;
-
-
-        public static final Pose2d CAGE_1 = new Pose2d(8.77, 7.26, Rotation2d.fromDegrees(0));
-        public static final Pose2d CAGE_2 = new Pose2d(8.77, 6.16, Rotation2d.fromDegrees(0));
-        public static final Pose2d CAGE_3 = new Pose2d(8.77, 5.07, Rotation2d.fromDegrees(0));
 
 
         public static final Pose2d STAGED_TREE_1 = new Pose2d(1.21, 5.86, Rotation2d.fromDegrees(0));
