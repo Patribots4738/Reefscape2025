@@ -693,18 +693,17 @@ public final class Constants {
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 
         public static final Pose2d BLUE_PROCESSER = new Pose2d(6.00, 0.00, Rotation2d.fromDegrees(0));
-        public static final Pose2d RED_PROCESSER = new Pose2d(11.56, 8.05, Rotation2d.fromDegrees(0));
 
         public static final List<Pose2d> PROCESSER_POSITIONS = new ArrayList<Pose2d>() {{
             // Blue Processer
             add(BLUE_PROCESSER);
             // Red Processer
-            add(RED_PROCESSER);
+            add(PoseCalculations.mirrorPose(BLUE_PROCESSER));
         }};
 
-        public static final List<Pose2d> GET_PROCESSER_POSITIONS() {
-            int startIndex = Robot.isRedAlliance() ? 1 : 0;
-            return PROCESSER_POSITIONS.subList(startIndex, startIndex + 1);
+        public static final Pose2d GET_PROCESSER_POSITION() {
+            int index = Robot.isRedAlliance() ? 1 : 0;
+            return PROCESSER_POSITIONS.get(index);
         }
 
 
@@ -723,8 +722,8 @@ public final class Constants {
             add(blueCoralStation2);
 
             // Red Coral Stations
-            add(PoseCalculations.flipPose(blueCoralStation1));
-            add(PoseCalculations.flipPose(blueCoralStation2));
+            add(PoseCalculations.mirrorPose(blueCoralStation1));
+            add(PoseCalculations.mirrorPose(blueCoralStation2));
         }};
 
         public static final List<Pose2d> GET_CORAL_STATION_POSITIONS() {
@@ -812,28 +811,6 @@ public final class Constants {
             return CAGE_POSITIONS.subList(startIndex, startIndex + 3);
         }
 
-        public static final List<Pose2d> STAGED_POSITIONS = new ArrayList<Pose2d>() {{
-
-            Pose2d blueStagedTree1 = STAGED_TREE_1;
-            Pose2d blueStagedTree2 = STAGED_TREE_2;
-            Pose2d blueStagedTree3 = STAGED_TREE_3;
-
-            // Blue Staged Trees
-            add(blueStagedTree1);
-            add(blueStagedTree2);
-            add(blueStagedTree3);
-
-            // Red Staged Trees
-            add(PoseCalculations.flipPose(blueStagedTree1));
-            add(PoseCalculations.flipPose(blueStagedTree2));
-            add(PoseCalculations.flipPose(blueStagedTree3));
-        }};
-
-        public static final List<Pose2d> GET_STAGED_POSITIONS() {
-            int startIndex = Robot.isRedAlliance() ? 3 : 0;
-            return STAGED_POSITIONS.subList(startIndex, startIndex +3);
-        }
-
         public static final double REEF_HEIGHT_L1 = 0.40;
         public static final double REEF_HEIGHT_L2 = 0.77;
         public static final double REEF_HEIGHT_L3 = 1.18;
@@ -848,6 +825,28 @@ public final class Constants {
         public static final Pose2d STAGED_TREE_1 = new Pose2d(1.21, 5.86, Rotation2d.fromDegrees(0));
         public static final Pose2d STAGED_TREE_2 = new Pose2d(1.21, 4.03, Rotation2d.fromDegrees(0));
         public static final Pose2d STAGED_TREE_3 = new Pose2d(1.21, 2.20, Rotation2d.fromDegrees(0));
+
+        public static final List<Pose2d> STAGED_POSITIONS = new ArrayList<Pose2d>() {{
+
+            Pose2d blueStagedTree1 = STAGED_TREE_1;
+            Pose2d blueStagedTree2 = STAGED_TREE_2;
+            Pose2d blueStagedTree3 = STAGED_TREE_3;
+
+            // Blue Staged Trees
+            add(blueStagedTree1);
+            add(blueStagedTree2);
+            add(blueStagedTree3);
+
+            // Red Staged Trees
+            add(PoseCalculations.mirrorPose(blueStagedTree1));
+            add(PoseCalculations.mirrorPose(blueStagedTree2));
+            add(PoseCalculations.mirrorPose(blueStagedTree3));
+        }};
+
+        public static final List<Pose2d> GET_STAGED_POSITIONS() {
+            int startIndex = Robot.isRedAlliance() ? 3 : 0;
+            return STAGED_POSITIONS.subList(startIndex, startIndex +3);
+        }
 
     }
 
