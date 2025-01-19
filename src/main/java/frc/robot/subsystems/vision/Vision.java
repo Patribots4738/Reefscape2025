@@ -20,6 +20,20 @@ public class Vision extends SubsystemBase {
     private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
     private final VisionIO io;
 
+    private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/XyStdsDisabled", 0.001);
+    private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
+    private final LoggedTunableNumber xyStds3TagTelopA = new LoggedTunableNumber("Vision/xyStds3TagTelopA", 0.002);
+    private final LoggedTunableNumber xyStds3TagTelopB = new LoggedTunableNumber("Vision/xyStds3TagTelopB", 0.003);
+    private final LoggedTunableNumber xyStds2TagTelopA = new LoggedTunableNumber("Vision/xyStds2TagTelopA", 0.005);
+    private final LoggedTunableNumber xyStds2TagTelopB = new LoggedTunableNumber("Vision/xyStds2TagTelopB", 0.008);
+    private final LoggedTunableNumber xyStds2TagAutoA = new LoggedTunableNumber("Vision/xyStds2TagAutoA", 0.014);
+    private final LoggedTunableNumber xyStds2TagAutoB = new LoggedTunableNumber("Vision/xyStds2TagAutoB", 0.016);
+    private final LoggedTunableNumber degStds2Tag = new LoggedTunableNumber("Vision/DegStds2Tag", 2);
+    private final LoggedTunableNumber xyStds1TagLargeA = new LoggedTunableNumber("Vision/xyStds1TagLargeA", 0.015);
+    private final LoggedTunableNumber xyStds1TagLargeB = new LoggedTunableNumber("Vision/xyStds1TagLargeB", 0.033);
+    private final LoggedTunableNumber degStds1TagLarge = new LoggedTunableNumber("Vision/DegStds1TagLarge", 7);
+
+
     private final SwerveDrivePoseEstimator poseEstimator;
 
     public Vision(VisionIO io, SwerveDrivePoseEstimator poseEstimator) {
