@@ -23,17 +23,17 @@ public class Vision extends SubsystemBase {
 
     private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/xyStdsDisabled", 0.001);
     private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
-    private final LoggedTunableNumber xyStds3TagTelopX = new LoggedTunableNumber("Vision/xyStds3TagTelopX", 0.002);
-    private final LoggedTunableNumber xyStds3TagTelopY = new LoggedTunableNumber("Vision/xyStds3TagTelopY", 0.003);
+    private final LoggedTunableNumber xyStdsMultiTagTelopX = new LoggedTunableNumber("Vision/xyStdsMultiTagTelopX", 0.002);
+    private final LoggedTunableNumber xyStdsMultiTagTelopY = new LoggedTunableNumber("Vision/xyStdsMultiTagTelopY", 0.003);
     private final LoggedTunableNumber xyStds2TagTelopX = new LoggedTunableNumber("Vision/xyStds2TagTelopX", 0.005);
     private final LoggedTunableNumber xyStds2TagTelopY = new LoggedTunableNumber("Vision/xyStds2TagTelopY", 0.008);
     private final LoggedTunableNumber xyStds2TagAutoX = new LoggedTunableNumber("Vision/xyStds2TagAutoX", 0.014);
     private final LoggedTunableNumber xyStds2TagAutoY = new LoggedTunableNumber("Vision/xyStds2TagAutoY", 0.016);
-    private final LoggedTunableNumber radStds2Tag = new LoggedTunableNumber("Vision/RadStds2Tag", Units.degreesToRadians(2));
+    private final LoggedTunableNumber radStdsMultiTag = new LoggedTunableNumber("Vision/RadStdsMultiTag", Units.degreesToRadians(2));
     private final LoggedTunableNumber xyStds1TagLargeX = new LoggedTunableNumber("Vision/xyStds1TagLargeX", 0.015);
     private final LoggedTunableNumber xyStds1TagLargeY = new LoggedTunableNumber("Vision/xyStds1TagLargeY", 0.033);
     private final LoggedTunableNumber radStds1TagLarge = new LoggedTunableNumber("Vision/RaStds1TagLarge", Units.degreesToRadians(7));
-    private final LoggedTunableNumber minTagArea = new LoggedTunableNumber("Vision/minTagArea", 0.14);
+    private final LoggedTunableNumber minSingleTagArea = new LoggedTunableNumber("Vision/minSingleTagArea", 0.14);
 
 
     private final SwerveDrivePoseEstimator poseEstimator;
@@ -90,7 +90,7 @@ public class Vision extends SubsystemBase {
                 if (Robot.gameMode == GameMode.TELEOP) {
                     // Trust the vision even MORE
                     if (tagCount > 2) {
-                        xyStds = Math.hypot(xyStds3TagTelopX.get(), xyStds3TagTelopY.get());
+                        xyStds = Math.hypot(xyStdsMultiTagTelopX.get(), xyStdsMultiTagTelopY.get());
                     } else {
                         // We can only see two tags, (still trustable)
                         xyStds = Math.hypot(xyStds2TagTelopX.get(), xyStds2TagTelopY.get());
@@ -98,10 +98,10 @@ public class Vision extends SubsystemBase {
                 } else {
                     xyStds = Math.hypot(xyStds2TagAutoX.get(), xyStds2TagAutoY.get());
                 }
-                radStds = radStds2Tag.get();
+                radStds = radStdsMultiTag.get();
             }
             // 1 target with large area and close to estimated roxose
-            else if (tagArea > minTagArea.get()) {
+            else if (tagArea > minSingleTagArea.get()) {
                 xyStds = Math.hypot(xyStds1TagLargeX.get(), xyStds1TagLargeY.get());
                 radStds = radStds1TagLarge.get();
             }
