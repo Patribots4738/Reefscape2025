@@ -14,6 +14,7 @@ import frc.robot.subsystems.drive.Swerve;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.calc.PoseCalculations;
+import frc.robot.util.custom.ReefSide;
 
 public class Alignment {
 
@@ -34,6 +35,8 @@ public class Alignment {
 
     public void resetHDC() {
         AutoConstants.TELE_HDC.getThetaController().reset(swerve.getPose().getRotation().getRadians());
+        AutoConstants.TELE_HDC.getXController().reset();
+        AutoConstants.TELE_HDC.getYController().reset();
     }
 
     public Command resetHDCCommand() {
@@ -101,11 +104,48 @@ public class Alignment {
         return getAutoSpeeds(desiredPose);
     }
 
+    public ChassisSpeeds getReefAutoSpeeds() {
+        Pose2d currentPose = swerve.getPose();
+        ReefSide reefSide = PoseCalculations.getClosestReefSide(swerve.getPose());
+        Pose2d left = reefSide.getLeft();
+        Pose2d right = reefSide.getRight();
+        Pose2d node;
+        if (alignmentIndex == -1) {
+            double leftDist = currentPose.getTranslation().getDistance(left.getTranslation());
+            double rightDist = currentPose.getTranslation().getDistance(right.getTranslation());
+            boolean leftCloser = leftDist < rightDist;
+            node = leftCloser ? left : right;
+            alignmentIndex = leftCloser ? 0 : 1;
+        } else {
+            node = alignmentIndex == 0 ? left : right;
+        }
+        double centerX = FieldConstants.GET_REEF_POSITION().relativeTo(reefSide.getCenter()).getX();
+        double centerY = FieldConstants.GET_REEF_POSITION().relativeTo(reefSide.getCenter()).getY();
+        Pose2d centerPose = new Pose2d(node.getX() + centerX, node.getY() + centerY, node.getRotation());
+        double distance = currentPose.getTranslation().getDistance(centerPose.getTranslation());
+        double x = centerPose.getX() - distance * node.getRotation().getCos();
+        double y = centerPose.getY() - distance * node.getRotation().getSin();
+        Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
+        return getAutoSpeeds(desiredPose);
+    }
+
+    public ChassisSpeeds getReefControllerSpeeds(double driverX, double driverY) {
+        ReefSide reefPosition = PoseCalculations.getClosestReefSide(swerve.getPose());
+        double axis;
+        if (reefPosition.getCenter().getY() == 4.02) {
+            axis = driverY;
+        } else {
+            axis = driverX;
+        }
+        return getControllerSpeeds(-axis * reefPosition.getRotation().getSin(), axis * reefPosition.getRotation().getCos());
+    }
+
     public void updateIndex(int increment) {
         alignmentIndex += increment;
         alignmentIndex = 
             switch (mode) {
                 case CAGE -> MathUtil.clamp(alignmentIndex, 0, FieldConstants.GET_CAGE_POSITIONS().size() - 1);
+                case REEF -> MathUtil.clamp(alignmentIndex, 0, 1);
                 default -> alignmentIndex = -1;
             };
     }
@@ -128,6 +168,7 @@ public class Alignment {
                 )
             ).finallyDo(() -> {
                 resetHDC();
+                swerve.setDesiredPose(new Pose2d());
                 this.mode = AlignmentMode.NONE;
                 this.alignmentIndex = -1;
             });
@@ -139,6 +180,10 @@ public class Alignment {
 
     public Command cageAlignmentCommand(DoubleSupplier driverY) {
         return autoAlignmentCommand(AlignmentMode.CAGE, this::getCageAutoSpeeds, () -> getControllerSpeeds(0, driverY.getAsDouble()));
+    }
+
+    public Command reefAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
+        return autoAlignmentCommand(AlignmentMode.REEF, this::getReefAutoSpeeds, () -> getReefControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble()));
     }
 
 }

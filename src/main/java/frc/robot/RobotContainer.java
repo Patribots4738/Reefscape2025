@@ -34,7 +34,6 @@ import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
-import frc.robot.subsystems.superstructure.Superstructure.MovementOrder;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.claw.ClawIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -45,7 +44,6 @@ import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClawConstants;
-import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.Constants.WristConstants;
@@ -209,7 +207,7 @@ public class RobotContainer {
 
         controller.a()
             .whileTrue(
-                alignment.cageAlignmentCommand(controller::getLeftY));
+                alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
         controller.povLeft()
             .onTrue(alignment.updateIndexCommand(-1));
