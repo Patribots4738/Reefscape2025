@@ -829,7 +829,6 @@ public final class Constants {
         public static final double REEF_HEIGHT_L3 = 1.18;
         public static final double REEF_HEIGHT_L4 = 1.82;
 
-
         public static final Pose2d STAGED_TREE_1 = new Pose2d(1.21, 5.86, Rotation2d.fromDegrees(0));
         public static final Pose2d STAGED_TREE_2 = new Pose2d(1.21, 4.03, Rotation2d.fromDegrees(0));
         public static final Pose2d STAGED_TREE_3 = new Pose2d(1.21, 2.20, Rotation2d.fromDegrees(0));
