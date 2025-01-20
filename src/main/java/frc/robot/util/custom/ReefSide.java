@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.util.calc.PoseCalculations;
 
-/** Add your docs here. */
 public class ReefSide {
     private Pose2d center;
     private Pose2d left;
@@ -37,16 +36,16 @@ public class ReefSide {
     }
 
     public void flipAlliance() {
-        center = PoseCalculations.flipPose(center);
-        right = PoseCalculations.flipPose(left);
-        left = PoseCalculations.flipPose(right);
+        center = PoseCalculations.mirrorPose(center);
+        left = PoseCalculations.mirrorPose(left);
+        right = PoseCalculations.mirrorPose(right);
     }
 
     public ReefSide otherAlliance() {
         return new ReefSide(
-            PoseCalculations.flipPose(center),
-            PoseCalculations.flipPose(right),
-            PoseCalculations.flipPose(left)
+            PoseCalculations.mirrorPose(center),
+            PoseCalculations.mirrorPose(left),
+            PoseCalculations.mirrorPose(right)
         );
     }
 

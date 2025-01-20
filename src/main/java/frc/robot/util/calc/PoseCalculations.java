@@ -43,7 +43,7 @@ public class PoseCalculations {
     }
 
     public static Pose2d mirrorPose(Pose2d pos) {
-        return new Pose2d(mirrorTranslation(pos.getTranslation()), flipFieldRotation(pos.getRotation()));
+        return new Pose2d(mirrorTranslation(pos.getTranslation()), mirrorFieldRotation(pos.getRotation()));
     }
 
     public static Translation2d flipTranslation(Translation2d pos) {
@@ -61,6 +61,10 @@ public class PoseCalculations {
 
     public static Rotation2d flipFieldRotation(Rotation2d rotation) {
         return new Rotation2d(Math.PI).minus(rotation);
+    }
+
+    public static Rotation2d mirrorFieldRotation(Rotation2d rotation) {
+        return new Rotation2d(Math.PI).plus(rotation);
     }
 
     public static ReefSide nearest(Pose2d pos, List<ReefSide> poses) {
