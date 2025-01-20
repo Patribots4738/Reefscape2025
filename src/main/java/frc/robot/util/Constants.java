@@ -528,7 +528,7 @@ public final class Constants {
         public static final boolean CLIMB_ENCODER_INVERTED = false;
         public static final double CLIMB_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
 
-        public static final double CLIMB_GEAR_RATIO = 36.09375;
+        public static final double CLIMB_GEAR_RATIO = 16.0 + 1.0/3.0;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
