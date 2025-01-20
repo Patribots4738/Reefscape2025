@@ -132,7 +132,7 @@ public class Alignment {
     public ChassisSpeeds getReefControllerSpeeds(double driverX, double driverY) {
         ReefSide reefPosition = PoseCalculations.getClosestReefSide(swerve.getPose());
         double axis;
-        if (reefPosition.getCenter().getY() == 4.02) {
+        if (reefPosition.getCenter().getY() == FieldConstants.FIELD_MAX_HEIGHT / 2.0) {
             axis = driverY;
         } else {
             axis = driverX;
