@@ -136,7 +136,8 @@ public class RobotContainer {
             driver::getLeftX,
             () -> -driver.getRightX()/1.6,
             robotRelativeSupplier,
-            () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
+            () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance()),
+            () -> false
         ));
 
         HDCTuner = new HDCTuner(
@@ -205,14 +206,22 @@ public class RobotContainer {
             ), swerve)
         );
 
+        controller.rightStick()
+            .toggleOnTrue(
+                alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
+
+        controller.y()
+            .whileTrue(
+                alignment.cageAlignmentCommand(controller::getLeftY));
+
         controller.a()
             .whileTrue(
                 alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
-        controller.povLeft()
+        controller.leftBumper()
             .onTrue(alignment.updateIndexCommand(-1));
 
-        controller.povRight()
+        controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
     }
 
@@ -331,7 +340,7 @@ public class RobotContainer {
     }
 
     public void onDisabled() {
-        swerve.stopDriving();
+        swerve.stopDriving(false);
         pathPlannerStorage.updatePathViewerCommand().schedule();
         pathPlannerStorage.configureAutoChooser();
 

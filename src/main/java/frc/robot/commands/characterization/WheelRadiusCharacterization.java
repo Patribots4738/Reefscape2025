@@ -70,7 +70,7 @@ public class WheelRadiusCharacterization extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        swerve.stopDriving();
+        swerve.stopDriving(false);
         if (accumGyroYawRads <= Math.PI * 2.0) {
             System.out.println("\nNot enough data for characterization\n" + accumGyroYawRads);
         } else {

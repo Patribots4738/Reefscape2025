@@ -1,9 +1,8 @@
 package frc.robot.util.auto;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
-
-import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,6 +35,7 @@ public class Alignment {
     }
 
     public void resetHDC() {
+        // Reset error and integral terms of HDC's PID controller
         AutoConstants.TELE_HDC.getThetaController().reset(swerve.getPose().getRotation().getRadians());
         AutoConstants.TELE_HDC.getXController().reset();
         AutoConstants.TELE_HDC.getYController().reset();
@@ -46,12 +46,15 @@ public class Alignment {
     }
 
     public double normalizeTwoSpeeds(double controllerInput, double autoInput) {
+        // Normalize HDC input between -1 and 1
         autoInput /= swerve.getMaxLinearVelocity();
 
+        // Combine speeds and normalize them between -1 and 1
         return MathUtil.clamp(
             controllerInput + autoInput,
             -1,
-            1);
+            1
+        );
     }
     
     public ChassisSpeeds normalizeChassisSpeeds(ChassisSpeeds autoSpeeds, ChassisSpeeds controllerSpeeds) {
@@ -96,10 +99,12 @@ public class Alignment {
     public ChassisSpeeds getCageAutoSpeeds() {
         Pose2d cagePose;
         if (alignmentIndex == -1) {
+            // First alignment, use nearest pose and set alignmentIndex
             int index = PoseCalculations.nearestIndex(swerve.getPose(), FieldConstants.GET_CAGE_POSITIONS());
             cagePose = FieldConstants.GET_CAGE_POSITIONS().get(index);
             alignmentIndex = index;
         } else {
+            // Post-alignment, use current alignmentIndex
             cagePose = FieldConstants.GET_CAGE_POSITIONS().get(alignmentIndex);
         }
         Pose2d desiredPose = new Pose2d(swerve.getPose().getX(), cagePose.getY(), cagePose.getRotation());
@@ -113,17 +118,26 @@ public class Alignment {
         Pose2d right = reefSide.getRight();
         Pose2d node;
         if (alignmentIndex == -1) {
+            // First alignment, find closest reef node
             double leftDist = currentPose.getTranslation().getDistance(left.getTranslation());
             double rightDist = currentPose.getTranslation().getDistance(right.getTranslation());
             boolean leftCloser = leftDist < rightDist;
             node = leftCloser ? left : right;
             alignmentIndex = leftCloser ? 0 : 1;
         } else {
+            // Post-alignment, use current alignmentIndex
             node = alignmentIndex == 0 ? left : right;
         }
+        // Get distance from reef center to reef face center
         Pose2d relativeCenter = reefSide.getCenter().relativeTo(FieldConstants.GET_REEF_POSITION());
-        Pose2d centerPose = new Pose2d(node.getX() - (relativeCenter.getX() * (Robot.isRedAlliance() ? -1 : 1)), node.getY() - relativeCenter.getY() * (Robot.isRedAlliance() ? -1 : 1), node.getRotation());
+        // "Recenter" alignment off of the left or right node
+        Pose2d centerPose = 
+            new Pose2d(
+                node.getX() - (relativeCenter.getX() * (Robot.isRedAlliance() ? -1 : 1)), 
+                node.getY() - relativeCenter.getY() * (Robot.isRedAlliance() ? -1 : 1), 
+                node.getRotation());
         double distance = currentPose.getTranslation().getDistance(centerPose.getTranslation());
+        // Get desired position from face angle
         double x = centerPose.getX() - distance * node.getRotation().getCos();
         double y = centerPose.getY() - distance * node.getRotation().getSin();
         Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
@@ -131,20 +145,26 @@ public class Alignment {
     }
 
     public ChassisSpeeds getReefControllerSpeeds(double driverX, double driverY) {
-        ReefSide reefPosition = PoseCalculations.getClosestReefSide(swerve.getPose());
-        double axis;
-        if (reefPosition.getCenter().getY() == FieldConstants.FIELD_MAX_HEIGHT / 2.0) {
-            axis = driverY;
-        } else {
-            axis = driverX;
-        }
-        double x = axis * reefPosition.getRotation().getCos();
-        double y = axis * reefPosition.getRotation().getSin();
-        double reefX = reefPosition.getCenter().getX();
-        double reefY = reefPosition.getCenter().getY();
+        ReefSide reefFace = PoseCalculations.getClosestReefSide(swerve.getPose());
+        // Use either driverX or driverY axis depending on reef face (driverY faces are on the Y center of the field)
+        double axis = 
+            (reefFace.getCenter().getY() == FieldConstants.FIELD_MAX_HEIGHT / 2.0 
+                ? driverY 
+                : driverX) * AutoConstants.REEF_ALIGNMENT_MULTIPLIER;
+        // Get velocity vector components via face angle
+        double x = axis * reefFace.getRotation().getCos();
+        double y = axis * reefFace.getRotation().getSin();
+        double reefX = reefFace.getCenter().getX();
+        double reefY = reefFace.getCenter().getY();
+        Pose2d reefPosition = FieldConstants.GET_REEF_POSITION();
+        // Invert calculated speeds depending on reef face
         if ((reefY == FieldConstants.FIELD_MAX_HEIGHT / 2.0 
-            && (Robot.isRedAlliance() ? reefX < FieldConstants.GET_REEF_POSITION().getX() : reefX > FieldConstants.GET_REEF_POSITION().getX())) 
-            || (Robot.isRedAlliance() ? reefY > FieldConstants.GET_REEF_POSITION().getY() : reefY < FieldConstants.FIELD_MAX_HEIGHT / 2.0)) 
+            && (Robot.isRedAlliance() 
+                ? reefX < reefPosition.getX() 
+                : reefX > reefPosition.getX())) 
+            || (Robot.isRedAlliance() 
+                ? reefY > reefPosition.getY() 
+                : reefY < FieldConstants.FIELD_MAX_HEIGHT / 2.0)) 
         {
             x *= -1;
             y *= -1;
@@ -160,6 +180,7 @@ public class Alignment {
 
     public void updateIndex(int increment) {
         alignmentIndex += increment;
+        // Clamp index based on number of alignment poses in the current mode
         alignmentIndex = 
             switch (mode) {
                 case CAGE -> MathUtil.clamp(alignmentIndex, 0, FieldConstants.GET_CAGE_POSITIONS().size() - 1);
@@ -172,7 +193,7 @@ public class Alignment {
         return Commands.runOnce(() -> updateIndex(increment));
     }
 
-    public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds, Supplier<ChassisSpeeds> controllerSpeeds) {
+    public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds, Supplier<ChassisSpeeds> controllerSpeeds, BooleanSupplier useSetpoints) {
         return 
             Commands.sequence(
                 Commands.runOnce(() -> this.mode = mode),
@@ -182,7 +203,8 @@ public class Alignment {
                         autoSpeeds.get(), 
                         controllerSpeeds.get()
                     ), 
-                    () -> false
+                    () -> false,
+                    useSetpoints
                 )
             ).finallyDo(() -> {
                 resetHDC();
@@ -193,15 +215,31 @@ public class Alignment {
     }
 
     public Command intakeAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
-        return autoAlignmentCommand(AlignmentMode.INTAKE, this::getIntakeAutoSpeeds, () -> getControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble()));
+        return 
+            autoAlignmentCommand(
+                AlignmentMode.INTAKE, 
+                this::getIntakeAutoSpeeds, 
+                () -> getControllerSpeeds(driverX.getAsDouble(), 
+                driverY.getAsDouble()), 
+                () -> false);
     }
 
     public Command cageAlignmentCommand(DoubleSupplier driverY) {
-        return autoAlignmentCommand(AlignmentMode.CAGE, this::getCageAutoSpeeds, () -> getControllerSpeeds(0, driverY.getAsDouble()));
+        return 
+            autoAlignmentCommand(
+                AlignmentMode.CAGE, 
+                this::getCageAutoSpeeds, 
+                () -> getControllerSpeeds(0, driverY.getAsDouble() * AutoConstants.CAGE_ALIGNMENT_MULTIPLIER), 
+                () -> true);
     }
 
     public Command reefAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
-        return autoAlignmentCommand(AlignmentMode.REEF, this::getReefAutoSpeeds, () -> getReefControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble()));
+        return 
+            autoAlignmentCommand(
+                AlignmentMode.REEF, 
+                this::getReefAutoSpeeds, 
+                () -> getReefControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble()), 
+                () -> true);
     }
 
 }

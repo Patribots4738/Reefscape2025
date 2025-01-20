@@ -11,7 +11,6 @@ import java.util.Map;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.util.GeometryUtil;
 import com.revrobotics.spark.SparkBase;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,9 +19,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -204,6 +200,9 @@ public final class Constants {
             "3-J4-CS1-A3-S1-P",
             "4-J4-CS1-K4-CS1-L4-CS1-A4-CS1-B4"
         };
+
+        public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
+        public static final double CAGE_ALIGNMENT_MULTIPLIER = 0.5;
 
     }
 
@@ -814,9 +813,9 @@ public final class Constants {
             add(blueCage3);
 
             // Red Cages
-            add(PoseCalculations.mirrorPose(blueCage3));
-            add(PoseCalculations.mirrorPose(blueCage2));
             add(PoseCalculations.mirrorPose(blueCage1));
+            add(PoseCalculations.mirrorPose(blueCage2));
+            add(PoseCalculations.mirrorPose(blueCage3));
         }};
 
 

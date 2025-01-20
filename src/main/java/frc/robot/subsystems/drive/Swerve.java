@@ -315,14 +315,12 @@ public class Swerve extends SubsystemBase {
         return poseEstimator;
     }
 
-    // Drive method used in teleop
     public void drive(ChassisSpeeds robotRelativeSpeeds) {
         setModuleStates(DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
             ChassisSpeeds.discretize(robotRelativeSpeeds, (Timer.getFPGATimestamp() - Robot.previousTimestamp)))
         );
     }
 
-    // Drive method used in auto
     public void driveWithSetpoints(ChassisSpeeds robotRelativeSpeeds) {
         previousSetpoint = setpointGenerator.generateSetpoint(
             previousSetpoint,
@@ -333,7 +331,7 @@ public class Swerve extends SubsystemBase {
     }
 
     // Drive method used in teleop
-    public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) {
+    public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative, boolean useSetpoints) {
         ChassisSpeeds robotRelativeSpeeds;
 
         if (fieldRelative) {
@@ -342,11 +340,15 @@ public class Swerve extends SubsystemBase {
             robotRelativeSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rotSpeed);
         }
 
-        drive(robotRelativeSpeeds);
+        if (useSetpoints) {
+            driveWithSetpoints(robotRelativeSpeeds);
+        } else {
+            drive(robotRelativeSpeeds);
+        }
     }
 
-    public void stopDriving() {
-        drive(0, 0, 0, false);
+    public void stopDriving(boolean useSetpoints) {
+        drive(0, 0, 0, false, useSetpoints);
     }
 
     public void runDriveCharacterization(double input) {
@@ -394,8 +396,8 @@ public class Swerve extends SubsystemBase {
         return driveMultiplier.get();
     }
 
-    public void toggleDriveMultiplier() {
-        driveMultiplier.set((driveMultiplier.get() == 1.0) ? 0.5 : 1);
+    public void setDriveMultiplier(double newMultiplier) {
+        driveMultiplier.set(newMultiplier);
     }
     
     @AutoLogOutput (key = "Subsystems/Swerve/DesiredHDCPose")
@@ -579,8 +581,8 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    public Command getDriveCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelative) {
-        return new Drive(this, speeds, fieldRelative, () -> false);
+    public Command getDriveCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelative, BooleanSupplier useSetpoints) {
+        return new Drive(this, speeds, fieldRelative, () -> false, useSetpoints);
     }
     
     public DriveHDC getDriveHDCCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelative) {
