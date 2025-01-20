@@ -37,16 +37,16 @@ public class ReefSide {
     }
 
     public void flipAlliance() {
-        PoseCalculations.mirrorPose(left);
-        PoseCalculations.mirrorPose(center);
-        PoseCalculations.mirrorPose(right);
+        center = PoseCalculations.flipPose(center);
+        right = PoseCalculations.flipPose(left);
+        left = PoseCalculations.flipPose(right);
     }
 
     public ReefSide otherAlliance() {
         return new ReefSide(
-            PoseCalculations.mirrorPose(center),
-            PoseCalculations.mirrorPose(left),
-            PoseCalculations.mirrorPose(right)
+            PoseCalculations.flipPose(center),
+            PoseCalculations.flipPose(right),
+            PoseCalculations.flipPose(left)
         );
     }
 

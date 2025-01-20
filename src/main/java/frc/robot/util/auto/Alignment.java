@@ -3,6 +3,8 @@ package frc.robot.util.auto;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -119,9 +121,8 @@ public class Alignment {
         } else {
             node = alignmentIndex == 0 ? left : right;
         }
-        double centerX = FieldConstants.GET_REEF_POSITION().relativeTo(reefSide.getCenter()).getX();
-        double centerY = FieldConstants.GET_REEF_POSITION().relativeTo(reefSide.getCenter()).getY();
-        Pose2d centerPose = new Pose2d(node.getX() + centerX, node.getY() + centerY, node.getRotation());
+        Pose2d relativeCenter = reefSide.getCenter().relativeTo(FieldConstants.GET_REEF_POSITION());
+        Pose2d centerPose = new Pose2d(node.getX() - (relativeCenter.getX() * (Robot.isRedAlliance() ? -1 : 1)), node.getY() - relativeCenter.getY() * (Robot.isRedAlliance() ? -1 : 1), node.getRotation());
         double distance = currentPose.getTranslation().getDistance(centerPose.getTranslation());
         double x = centerPose.getX() - distance * node.getRotation().getCos();
         double y = centerPose.getY() - distance * node.getRotation().getSin();
@@ -137,7 +138,24 @@ public class Alignment {
         } else {
             axis = driverX;
         }
-        return getControllerSpeeds(-axis * reefPosition.getRotation().getSin(), axis * reefPosition.getRotation().getCos());
+        double x = axis * reefPosition.getRotation().getCos();
+        double y = axis * reefPosition.getRotation().getSin();
+        double reefX = reefPosition.getCenter().getX();
+        double reefY = reefPosition.getCenter().getY();
+        if ((reefY == FieldConstants.FIELD_MAX_HEIGHT / 2.0 
+            && (Robot.isRedAlliance() ? reefX < FieldConstants.GET_REEF_POSITION().getX() : reefX > FieldConstants.GET_REEF_POSITION().getX())) 
+            || (Robot.isRedAlliance() ? reefY > FieldConstants.GET_REEF_POSITION().getY() : reefY < FieldConstants.FIELD_MAX_HEIGHT / 2.0)) 
+        {
+            x *= -1;
+            y *= -1;
+        }
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            x,
+            y,
+            0,
+            swerve.getPose().getRotation()
+        );
+        return speeds;
     }
 
     public void updateIndex(int increment) {

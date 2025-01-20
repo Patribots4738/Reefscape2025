@@ -184,10 +184,10 @@ public final class Constants {
             }};
 
         public static HolonomicDriveController TELE_HDC = new HolonomicDriveController(
-                XY_PID,
-                XY_PID,
-                THETA_PID
-            );
+            XY_PID,
+            XY_PID,
+            THETA_PID
+        );
 
         public static PPHolonomicDriveController AUTO_HDC = new PPHolonomicDriveController(
             new PIDConstants(
