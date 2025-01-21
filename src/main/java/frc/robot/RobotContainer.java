@@ -60,7 +60,6 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Climb climb;
     private final Superstructure superstructure;
-    private final Alignment alignment;
 
     public static Field2d field2d = new Field2d();
 
@@ -102,7 +101,6 @@ public class RobotContainer {
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
         superstructure = new Superstructure(claw, elevator, wrist, climb);
-        alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
 
@@ -185,24 +183,6 @@ public class RobotContainer {
                         : 180))
             ), swerve)
         );
-
-        controller.rightStick()
-            .toggleOnTrue(
-                alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
-
-        controller.y()
-            .whileTrue(
-                alignment.cageAlignmentCommand(controller::getLeftY));
-
-        controller.a()
-            .whileTrue(
-                alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
-
-        controller.leftBumper()
-            .onTrue(alignment.updateIndexCommand(-1));
-
-        controller.rightBumper()
-            .onTrue(alignment.updateIndexCommand(1));
       
     }
 
