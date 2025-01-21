@@ -40,7 +40,11 @@ public class Drive extends Command {
         addRequirements(swerve);
     }
 
-    public Drive(Swerve swerve, Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelativeSupplier, BooleanSupplier shouldMirror) {
+    public Drive(
+            Swerve swerve, 
+            Supplier<ChassisSpeeds> speeds, 
+            BooleanSupplier fieldRelativeSupplier, 
+            BooleanSupplier shouldMirror) {
 
         this.swerve = swerve;
 

@@ -60,6 +60,7 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Climb climb;
     private final Superstructure superstructure;
+    private final Alignment alignment;
 
     public static Field2d field2d = new Field2d();
 
@@ -100,8 +101,8 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-
         superstructure = new Superstructure(claw, elevator, wrist, climb);
+        alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
 
@@ -185,15 +186,24 @@ public class RobotContainer {
             ), swerve)
         );
 
-        controller.y()
-            .onTrue(climb.readyPositionCommand());
+        controller.rightStick()
+            .toggleOnTrue(
+                alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
-        controller.b()
-            .onTrue(climb.finalPositionCommand());
+        controller.y()
+            .whileTrue(
+                alignment.cageAlignmentCommand(controller::getLeftY));
 
         controller.a()
-            .onTrue(climb.stowPositionCommand());
+            .whileTrue(
+                alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
+        controller.leftBumper()
+            .onTrue(alignment.updateIndexCommand(-1));
+
+        controller.rightBumper()
+            .onTrue(alignment.updateIndexCommand(1));
+      
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
