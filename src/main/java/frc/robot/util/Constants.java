@@ -11,18 +11,15 @@ import java.util.Map;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.util.GeometryUtil;
 import com.revrobotics.spark.SparkBase;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -81,6 +78,29 @@ public final class Constants {
             COMPBOT,
             SIMBOT
         }
+
+        public static final int CLIMB_INDEX = 0;
+        public static final int ELEVATOR_FIRST_STAGE_INDEX = 1;
+        public static final int ELEVATOR_SECOND_STAGE_INDEX = 2;
+        public static final int WRIST_INDEX = 3;
+
+        public static final Translation3d ROBOT_OFFSET = new Translation3d(
+            0.2655697,
+            0.0933069,
+            0.2824708
+        );
+
+        public static final Translation3d CLIMB_OFFSET = new Translation3d(
+            ROBOT_OFFSET.getX() - 0.215, 
+            ROBOT_OFFSET.getY() + 0.205, 
+            ROBOT_OFFSET.getZ() - 0.1075
+        );
+
+        public static final Translation3d WRIST_OFFSET = new Translation3d(
+            ROBOT_OFFSET.getX() - 0.4368, 
+            ROBOT_OFFSET.getY() - 0.0933069, 
+            ROBOT_OFFSET.getZ() + 0.504
+        );
 
     }
 
@@ -443,7 +463,7 @@ public final class Constants {
 
         public static final double GEAR_RATIO = 7.75;
         public static final double ELEVATOR_BASE_HEIGHT_METERS = Units.inchesToMeters(31.25);
-        public static final double MAX_DISPLACEMENT_METERS = 1.177036;
+        public static final double MAX_DISPLACEMENT_METERS = 1.177036 / 2.0;
         public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
 
@@ -463,7 +483,7 @@ public final class Constants {
         );
 
         public static final double STOW_POSITION_METERS = 0.0;
-        public static final double INTAKE_POSITION_METERS = 0.18;
+        public static final double INTAKE_POSITION_METERS = 0.0;
         public static final double L1_POSITION_METERS = 0.0;
         public static final double L2_POSITION_METERS = 0.0;
         public static final double L3_POSITION_METERS = 0.1;
@@ -510,7 +530,7 @@ public final class Constants {
 
         public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
-        public static final double STOW_POSITION_RADIANS = -0.6;
+        public static final double STOW_POSITION_RADIANS = 0;
         public static final double INTAKE_POSITION_RADIANS = -0.6;
         public static final double L1_POSITION_RADIANS = Math.PI / 2.0;
         public static final double L2_POSITION_RADIANS = 2.15;
@@ -554,8 +574,7 @@ public final class Constants {
         );
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 0.0;
-        public static final double LATCH_POSITION_RADIANS = 0.0;
+        public static final double READY_POSITION_RADIANS = Math.PI / 2.0;
         public static final double FINAL_POSITION_RADIANS = 0.0;
 
         public static final double CLIMB_DEADBAND_RADIANS = Units.degreesToRadians(3.0);

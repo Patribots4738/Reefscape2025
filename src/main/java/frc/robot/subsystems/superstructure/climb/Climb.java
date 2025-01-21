@@ -9,10 +9,14 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ClimbConstants;
+import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
 import frc.robot.util.custom.LoggedTunableNumber;
 
@@ -24,7 +28,6 @@ public class Climb extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Climb/BrakeMotor", ClimbConstants.BRAKE_MOTOR);
     private final LoggedTunableNumber stowPosition = new LoggedTunableNumber("Climb/StowPosition", ClimbConstants.STOW_POSITION_RADIANS);
     private final LoggedTunableNumber readyPosition = new LoggedTunableNumber("Climb/ReadyPosition", ClimbConstants.READY_POSITION_RADIANS);
-    private final LoggedTunableNumber latchPosition = new LoggedTunableNumber("Climb/LatchPosition", ClimbConstants.LATCH_POSITION_RADIANS);
     private final LoggedTunableNumber finalPosition = new LoggedTunableNumber("Climb/FinalPosition", ClimbConstants.FINAL_POSITION_RADIANS);
 
     private double targetPosition = 0.0;
@@ -39,11 +42,21 @@ public class Climb extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Climb", inputs);
         Logger.recordOutput("Subsystems/Climb/AtDesiredPosition", atTargetPosition());
+
+        RobotContainer.components3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
+            LoggingConstants.CLIMB_OFFSET, 
+            new Rotation3d(-inputs.leaderPositionRads, 0, 0)
+        );
     }
 
     public void setPosition(double position) {
         targetPosition = position;
         io.setPosition(position);
+
+        RobotContainer.desiredComponents3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
+            LoggingConstants.CLIMB_OFFSET,
+            new Rotation3d(-position, 0, 0)
+        );
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
@@ -62,16 +75,12 @@ public class Climb extends SubsystemBase {
         return setPositionCommand(readyPosition::get);
     }
 
-    public Command latchPositionCommand() {
-        return setPositionCommand(latchPosition::get);
-    }
-
     public Command finalPositionCommand() {
         return setPositionCommand(finalPosition::get);
     }
 
     public boolean atTargetPosition() {
-        return MathUtil.isNear(targetPosition, inputs.encoderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
+        return MathUtil.isNear(targetPosition, inputs.leaderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
     }
 
     public double getCharacterizationVelocity() {

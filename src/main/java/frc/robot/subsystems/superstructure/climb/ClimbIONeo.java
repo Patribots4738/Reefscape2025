@@ -15,6 +15,7 @@ public class ClimbIONeo implements ClimbIO {
     }
 
     private void configMotor(Neo motor) {
+        motor.setInverted(true);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setPID(ClimbConstants.CLIMB_GAINS);
@@ -43,9 +44,6 @@ public class ClimbIONeo implements ClimbIO {
         inputs.followerAppliedOutputVolts = follower.getBusVoltage();
         inputs.followerSupplyCurrentAmps = follower.getOutputCurrent();
         inputs.followerTemperatureCelcius = follower.getMotorTemperature();
-
-        inputs.encoderConnected = true;
-        inputs.encoderPositionRads = leader.getPosition();
     }
 
     public void setPosition(double position) {
