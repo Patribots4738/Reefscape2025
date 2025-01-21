@@ -34,7 +34,6 @@ import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
-import frc.robot.subsystems.superstructure.Superstructure.MovementOrder;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.claw.ClawIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -45,10 +44,10 @@ import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClawConstants;
-import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
 
@@ -70,6 +69,7 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Climb climb;
     private final Superstructure superstructure;
+    private final Alignment alignment;
 
     public static Field2d field2d = new Field2d();
 
@@ -113,8 +113,8 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-
         superstructure = new Superstructure(claw, elevator, wrist, climb);
+        alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
 
@@ -205,11 +205,23 @@ public class RobotContainer {
             ), swerve)
         );
 
-        controller.leftBumper().whileTrue(swerve.getSetWheelsX());
-        controller.rightBumper().whileTrue(swerve.getSetWheelsO());
-        controller.b().whileTrue(swerve.driveCharacterization());
-        controller.y().whileTrue(swerve.getSetWheelsZero());
-        controller.a().whileTrue(swerve.tuneTurnVelocityCommand());
+        controller.rightStick()
+            .toggleOnTrue(
+                alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
+
+        controller.y()
+            .whileTrue(
+                alignment.cageAlignmentCommand(controller::getLeftY));
+
+        controller.a()
+            .whileTrue(
+                alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+
+        controller.leftBumper()
+            .onTrue(alignment.updateIndexCommand(-1));
+
+        controller.rightBumper()
+            .onTrue(alignment.updateIndexCommand(1));
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
