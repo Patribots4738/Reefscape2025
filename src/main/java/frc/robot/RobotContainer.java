@@ -136,8 +136,7 @@ public class RobotContainer {
             driver::getLeftX,
             () -> -driver.getRightX()/1.6,
             robotRelativeSupplier,
-            () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance()),
-            () -> false
+            () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
         ));
 
         HDCTuner = new HDCTuner(
@@ -340,7 +339,7 @@ public class RobotContainer {
     }
 
     public void onDisabled() {
-        swerve.stopDriving(false);
+        swerve.stopDriving();
         pathPlannerStorage.updatePathViewerCommand().schedule();
         pathPlannerStorage.configureAutoChooser();
 

@@ -331,7 +331,7 @@ public class Swerve extends SubsystemBase {
     }
 
     // Drive method used in teleop
-    public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative, boolean useSetpoints) {
+    public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) {
         ChassisSpeeds robotRelativeSpeeds;
 
         if (fieldRelative) {
@@ -340,15 +340,11 @@ public class Swerve extends SubsystemBase {
             robotRelativeSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rotSpeed);
         }
 
-        if (useSetpoints) {
-            driveWithSetpoints(robotRelativeSpeeds);
-        } else {
-            drive(robotRelativeSpeeds);
-        }
+        drive(robotRelativeSpeeds);
     }
 
-    public void stopDriving(boolean useSetpoints) {
-        drive(0, 0, 0, false, useSetpoints);
+    public void stopDriving() {
+        drive(0, 0, 0, false);
     }
 
     public void runDriveCharacterization(double input) {
@@ -581,8 +577,8 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    public Command getDriveCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelative, BooleanSupplier useSetpoints) {
-        return new Drive(this, speeds, fieldRelative, () -> false, useSetpoints);
+    public Command getDriveCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelative) {
+        return new Drive(this, speeds, fieldRelative, () -> false);
     }
     
     public DriveHDC getDriveHDCCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelative) {

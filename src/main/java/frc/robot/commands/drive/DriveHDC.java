@@ -99,7 +99,7 @@ public class DriveHDC extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        swerve.drive(0, 0, 0, false, false);
+        swerve.drive(0, 0, 0, false);
     }
 
     @Override

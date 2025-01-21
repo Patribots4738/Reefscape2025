@@ -19,7 +19,6 @@ public class Drive extends Command {
     private final DoubleSupplier rotationSupplier;
     private final BooleanSupplier fieldRelativeSupplier;
     private final BooleanSupplier shouldMirror;
-    private final BooleanSupplier useSetpoints;
 
     public Drive(
             Swerve swerve,
@@ -27,8 +26,7 @@ public class Drive extends Command {
             DoubleSupplier ySupplier,
             DoubleSupplier rotationsSupplier,
             BooleanSupplier fieldRelativeSupplier,
-            BooleanSupplier shouldMirror,
-            BooleanSupplier useSetpoints) {
+            BooleanSupplier shouldMirror) {
 
         this.swerve = swerve;
 
@@ -38,7 +36,6 @@ public class Drive extends Command {
 
         this.fieldRelativeSupplier = fieldRelativeSupplier;
         this.shouldMirror = shouldMirror;
-        this.useSetpoints = useSetpoints;
 
         addRequirements(swerve);
     }
@@ -47,8 +44,7 @@ public class Drive extends Command {
             Swerve swerve, 
             Supplier<ChassisSpeeds> speeds, 
             BooleanSupplier fieldRelativeSupplier, 
-            BooleanSupplier shouldMirror,
-            BooleanSupplier useSetpoints) {
+            BooleanSupplier shouldMirror) {
 
         this.swerve = swerve;
 
@@ -58,7 +54,6 @@ public class Drive extends Command {
 
         this.fieldRelativeSupplier = fieldRelativeSupplier;
         this.shouldMirror = shouldMirror;
-        this.useSetpoints = useSetpoints;
 
         addRequirements(swerve);
     }
@@ -89,14 +84,13 @@ public class Drive extends Command {
                 x * linearVelocity * multiplier,
                 y * linearVelocity * multiplier,
                 rotation * angularVelocity * multiplier,
-                fieldRelativeSupplier.getAsBoolean(),
-                useSetpoints.getAsBoolean());
+                fieldRelativeSupplier.getAsBoolean());
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        swerve.drive(0, 0, 0, false, false);
+        swerve.drive(0, 0, 0, false);
     }
 
     @Override

@@ -151,13 +151,10 @@ public class Alignment {
             (reefFace.getCenter().getY() == FieldConstants.FIELD_MAX_HEIGHT / 2.0 
                 ? driverY 
                 : driverX) * AutoConstants.REEF_ALIGNMENT_MULTIPLIER;
-        // Get velocity vector components via face angle
-        double x = axis * reefFace.getRotation().getCos();
-        double y = axis * reefFace.getRotation().getSin();
         double reefX = reefFace.getCenter().getX();
         double reefY = reefFace.getCenter().getY();
         Pose2d reefPosition = FieldConstants.GET_REEF_POSITION();
-        // Invert calculated speeds depending on reef face
+        // Invert axis depending on reef face
         if ((reefY == FieldConstants.FIELD_MAX_HEIGHT / 2.0 
             && (Robot.isRedAlliance() 
                 ? reefX < reefPosition.getX() 
@@ -166,12 +163,12 @@ public class Alignment {
                 ? reefY > reefPosition.getY() 
                 : reefY < FieldConstants.FIELD_MAX_HEIGHT / 2.0)) 
         {
-            x *= -1;
-            y *= -1;
+            axis *= -1;
         }
+        // Get velocity vector components via face angle
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-            x,
-            y,
+            axis * reefFace.getRotation().getCos(),
+            axis * reefFace.getRotation().getSin(),
             0,
             swerve.getPose().getRotation()
         );
@@ -193,7 +190,7 @@ public class Alignment {
         return Commands.runOnce(() -> updateIndex(increment));
     }
 
-    public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds, Supplier<ChassisSpeeds> controllerSpeeds, BooleanSupplier useSetpoints) {
+    public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds, Supplier<ChassisSpeeds> controllerSpeeds) {
         return 
             Commands.sequence(
                 Commands.runOnce(() -> this.mode = mode),
@@ -203,8 +200,7 @@ public class Alignment {
                         autoSpeeds.get(), 
                         controllerSpeeds.get()
                     ), 
-                    () -> false,
-                    useSetpoints
+                    () -> false
                 )
             ).finallyDo(() -> {
                 resetHDC();
@@ -220,8 +216,7 @@ public class Alignment {
                 AlignmentMode.INTAKE, 
                 this::getIntakeAutoSpeeds, 
                 () -> getControllerSpeeds(driverX.getAsDouble(), 
-                driverY.getAsDouble()), 
-                () -> false);
+                driverY.getAsDouble()));
     }
 
     public Command cageAlignmentCommand(DoubleSupplier driverY) {
@@ -229,8 +224,7 @@ public class Alignment {
             autoAlignmentCommand(
                 AlignmentMode.CAGE, 
                 this::getCageAutoSpeeds, 
-                () -> getControllerSpeeds(0, driverY.getAsDouble() * AutoConstants.CAGE_ALIGNMENT_MULTIPLIER), 
-                () -> true);
+                () -> getControllerSpeeds(0, driverY.getAsDouble() * AutoConstants.CAGE_ALIGNMENT_MULTIPLIER));
     }
 
     public Command reefAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
@@ -238,8 +232,7 @@ public class Alignment {
             autoAlignmentCommand(
                 AlignmentMode.REEF, 
                 this::getReefAutoSpeeds, 
-                () -> getReefControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble()), 
-                () -> true);
+                () -> getReefControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble()));
     }
 
 }
