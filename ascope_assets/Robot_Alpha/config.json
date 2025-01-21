@@ -1,0 +1,20 @@
+{
+    "name": "Alpha",
+    "rotations": [
+        {
+            "axis": "x", 
+            "degrees": 90
+        },
+        {
+            "axis": "z", 
+            "degrees": 90
+        }
+    ],
+    "position": [
+        0.2655697,
+        0.0933069,
+        0.28247086
+    ],
+    "cameras": [],
+    "components": []
+}
