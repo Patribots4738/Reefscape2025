@@ -69,11 +69,18 @@ public class Drive extends Command {
         // on the field's axis
         double y = -ySupplier.getAsDouble();
         double rotation = rotationSupplier.getAsDouble();
+        double xSpeed = swerve.getRobotRelativeVelocity().vxMetersPerSecond;
+        double ySpeed = swerve.getRobotRelativeVelocity().vyMetersPerSecond;
+        double thetaSpeed = swerve.getRobotRelativeVelocity().omegaRadiansPerSecond;
         if (shouldMirror.getAsBoolean() || !fieldRelativeSupplier.getAsBoolean()) {
             x *= -1;
             y *= -1;
         }
-        if (x + y + rotation == 0 && Robot.gameMode == GameMode.TELEOP) {
+        if (x + y + rotation == 0 
+            && xSpeed == 0
+            && ySpeed == 0
+            && thetaSpeed == 0 
+            && Robot.gameMode == GameMode.TELEOP) {
             swerve.setWheelsX();
         }
         else {
