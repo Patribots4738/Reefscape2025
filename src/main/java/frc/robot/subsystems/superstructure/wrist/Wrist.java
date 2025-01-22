@@ -49,6 +49,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public void setPosition(double position) {
+        position = MathUtil.clamp(position, WristConstants.WRIST_MIN_ANGLE_RADIANS, WristConstants.WRIST_MAX_ANGLE_RADIANS);
         targetPosition = position;
         io.setPosition(position);
 

@@ -101,6 +101,10 @@ public class Elevator extends SubsystemBase {
         return atPosition(targetPosition);
     }
 
+    public double getPosition() {
+        return inputs.leaderPositionMeters;
+    }
+
     public double getCharacterizationVelocity() {
         return inputs.leaderVelocityMetersPerSecond / ElevatorConstants.VELOCITY_CONVERSION_FACTOR;
     }
