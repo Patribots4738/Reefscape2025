@@ -68,8 +68,16 @@ public class Wrist extends SubsystemBase {
         return setPositionCommand(() -> position);
     }   
 
+    public boolean atPosition(double position) {
+        return MathUtil.isNear(position, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
+    }
+
     public boolean atTargetPosition() {
-        return MathUtil.isNear(targetPosition, inputs.encoderPositionRads, WristConstants.WRIST_DEADBAND_RADIANS);
+        return atPosition(targetPosition);
+    }
+
+    public double getPosition() {
+        return inputs.encoderPositionRads;
     }
 
     public double getCharacterizationVelocity() {

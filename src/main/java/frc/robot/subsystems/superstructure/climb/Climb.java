@@ -79,8 +79,12 @@ public class Climb extends SubsystemBase {
         return setPositionCommand(finalPosition::get);
     }
 
+    public boolean atPosition(double position) {
+        return MathUtil.isNear(position, inputs.leaderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
+    }
+
     public boolean atTargetPosition() {
-        return MathUtil.isNear(targetPosition, inputs.leaderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
+        return atPosition(targetPosition);
     }
 
     public double getCharacterizationVelocity() {

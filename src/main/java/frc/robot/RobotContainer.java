@@ -39,6 +39,7 @@ import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.OIConstants;
+import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
 
@@ -60,6 +61,7 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Climb climb;
     private final Superstructure superstructure;
+    private final Alignment alignment;
 
     public static Field2d field2d = new Field2d();
 
@@ -101,6 +103,8 @@ public class RobotContainer {
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
         superstructure = new Superstructure(claw, elevator, wrist, climb);
+
+        alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
 
@@ -183,22 +187,25 @@ public class RobotContainer {
                         : 180))
             ), swerve)
         );
+
+        controller.a()
+            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
       
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
         controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L4_PREP));
 
         controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L3_PREP));
 
         controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2_PREP));
         
         controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+            .onTrue(superstructure.setArmPosition(ArmPosition.L1_PREP));
 
         controller.leftTrigger()
             .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));

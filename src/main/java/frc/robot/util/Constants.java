@@ -487,10 +487,14 @@ public final class Constants {
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
-        public static final double L1_POSITION_METERS = 0.0;
-        public static final double L2_POSITION_METERS = 0.0;
-        public static final double L3_POSITION_METERS = 0.1;
-        public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
+        public static final double L1_PREP_POSITION_METERS = 0.0;
+        public static final double L2_PREP_POSITION_METERS = 0.0;
+        public static final double L3_PREP_POSITION_METERS = 0.1;
+        public static final double L4_PREP_POSITION_METERS = MAX_DISPLACEMENT_METERS;
+        public static final double L1_PREP_PLACE_POSITION_METERS = 0.0;
+        public static final double L2_PREP_PLACE_POSITION_METERS = 0.0;
+        public static final double L3_PREP_PLACE_POSITION_METERS = 0.1;
+        public static final double L4_PREP_PLACE_POSITION_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double ELEVATOR_DEADBAND_METERS = 0.005;
 
@@ -532,7 +536,7 @@ public final class Constants {
         public static final double CURRENT_LIMIT = 60.0;
 
         public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
-
+        public static final double TRANSITION_POSITION_RADIANS = Math.PI / 2.0;
         public static final double STOW_POSITION_RADIANS = 0;
         public static final double INTAKE_POSITION_RADIANS = -0.6;
         public static final double L1_POSITION_RADIANS = Math.PI / 2.0;
@@ -764,26 +768,26 @@ public final class Constants {
             return REEF_POSITIONS.get(Robot.isRedAlliance() ? 1 : 0);
         }
 
-        public static final Pose2d BLUE_REEF_A = new Pose2d(3.72, 4.19, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_B = new Pose2d(3.72, 3.86, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_C = new Pose2d(3.94, 3.44, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_D = new Pose2d(4.24, 3.27, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_E = new Pose2d(4.73, 3.27, Rotation2d.fromDegrees(120));
-        public static final Pose2d BLUE_REEF_F = new Pose2d(5.02, 3.44, Rotation2d.fromDegrees(120));
-        public static final Pose2d BLUE_REEF_G = new Pose2d(5.26, 3.86, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_H = new Pose2d(5.26, 4.19, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_I = new Pose2d(5.02, 4.61, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_J = new Pose2d(4.73, 4.78, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_K = new Pose2d(4.24, 4.78, Rotation2d.fromDegrees(300));
-        public static final Pose2d BLUE_REEF_L = new Pose2d(3.94, 4.61, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_A = new Pose2d(3.72, 4.19, Rotation2d.fromDegrees(180));
+        public static final Pose2d BLUE_REEF_B = new Pose2d(3.72, 3.86, Rotation2d.fromDegrees(180));
+        public static final Pose2d BLUE_REEF_C = new Pose2d(3.94, 3.44, Rotation2d.fromDegrees(240));
+        public static final Pose2d BLUE_REEF_D = new Pose2d(4.24, 3.27, Rotation2d.fromDegrees(240));
+        public static final Pose2d BLUE_REEF_E = new Pose2d(4.73, 3.27, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_F = new Pose2d(5.02, 3.44, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_G = new Pose2d(5.26, 3.86, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_H = new Pose2d(5.26, 4.19, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_I = new Pose2d(5.02, 4.61, Rotation2d.fromDegrees(60));
+        public static final Pose2d BLUE_REEF_J = new Pose2d(4.73, 4.78, Rotation2d.fromDegrees(60));
+        public static final Pose2d BLUE_REEF_K = new Pose2d(4.24, 4.78, Rotation2d.fromDegrees(120));
+        public static final Pose2d BLUE_REEF_L = new Pose2d(3.94, 4.61, Rotation2d.fromDegrees(120));
 
         // Centers of each reef side, letters are ordered from driver station POV (left than right)
-        public static final Pose2d BLUE_REEF_AB = new Pose2d(3.67, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_CD = new Pose2d(4.09, 3.37, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_FE = new Pose2d(4.91, 3.34, Rotation2d.fromDegrees(120));
-        public static final Pose2d BLUE_REEF_HG = new Pose2d(5.30, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_JI = new Pose2d(4.88, 4.74, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_KL = new Pose2d(4.06, 4.72, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_AB = new Pose2d(3.67, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(180));
+        public static final Pose2d BLUE_REEF_CD = new Pose2d(4.09, 3.37, Rotation2d.fromDegrees(240));
+        public static final Pose2d BLUE_REEF_FE = new Pose2d(4.91, 3.34, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_HG = new Pose2d(5.30, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_JI = new Pose2d(4.88, 4.74, Rotation2d.fromDegrees(60));
+        public static final Pose2d BLUE_REEF_KL = new Pose2d(4.06, 4.72, Rotation2d.fromDegrees(120));
 
         public static final List<ReefSide> REEF_FACE_POSITIONS = new ArrayList<ReefSide>() {{
             // All points are in meters and radians
