@@ -41,6 +41,7 @@ import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
+import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.PatriBoxController;
 
 public class RobotContainer {
@@ -102,7 +103,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-        superstructure = new Superstructure(claw, elevator, wrist, climb);
+        superstructure = new Superstructure(claw, elevator, wrist, climb, () -> PoseCalculations.nearReef(swerve.getPose()));
 
         alignment = new Alignment(swerve);
 

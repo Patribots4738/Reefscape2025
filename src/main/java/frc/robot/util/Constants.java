@@ -566,7 +566,7 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double CLIMB_MIN_ANGLE_RADIANS = 0.0;
-        public static final double CLIMB_MAX_ANGLE_RADIANS = 0.0;
+        public static final double CLIMB_MAX_ANGLE_RADIANS = Math.PI / 2.0;
 
         public static final double CLIMB_P = 0.5;
         public static final double CLIMB_I = 0.0;
