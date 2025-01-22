@@ -4,11 +4,13 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
 import frc.robot.subsystems.drive.Swerve;
+import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 
 public class Drive extends Command {
 
@@ -76,10 +78,9 @@ public class Drive extends Command {
             x *= -1;
             y *= -1;
         }
-        if (x + y + rotation == 0 
-            && xSpeed == 0
-            && ySpeed == 0
-            && thetaSpeed == 0 
+        if (x + y + rotation == 0
+            && MathUtil.isNear(xSpeed + ySpeed, 0.0, MK4cSwerveModuleConstants.LINEAR_VELOCITY_DEADBAND)
+            && MathUtil.isNear(thetaSpeed, 0.0, MK4cSwerveModuleConstants.ANGULAR_VELOCITY_DEADBAND)
             && Robot.gameMode == GameMode.TELEOP) {
             swerve.setWheelsX();
         }

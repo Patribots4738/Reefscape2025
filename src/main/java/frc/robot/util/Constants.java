@@ -373,9 +373,13 @@ public final class Constants {
             SwerveGearing(double gearRatio) {
                 this.gearRatio = gearRatio;
             }
+
             
         };
-
+        
+        public static final double LINEAR_VELOCITY_DEADBAND = 0.005;
+        public static final double ANGULAR_VELOCITY_DEADBAND = 0.003;
+        
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
         public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = -0.286133;
