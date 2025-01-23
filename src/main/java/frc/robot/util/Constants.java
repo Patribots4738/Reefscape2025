@@ -228,6 +228,8 @@ public final class Constants {
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double CAGE_ALIGNMENT_MULTIPLIER = 0.5;
 
+        public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
+
     }
 
     public static final class MAXSwerveModuleConstants {

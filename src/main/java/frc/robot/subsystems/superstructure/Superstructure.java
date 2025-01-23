@@ -9,6 +9,7 @@ import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
@@ -119,12 +120,38 @@ public class Superstructure {
             );
     }
 
+    public Command autoIntakeStartCommand(){
+        return
+            Commands.sequence(
+                setArmPosition(ArmPosition.INTAKE),
+                claw.intakeCommand()
+            );
+    }
+
+    public Command autoIntakeStopCommand(){
+        return
+            Commands.sequence(
+                claw.stopCommand(),
+                setArmPosition(ArmPosition.STOW)
+            );
+    }
+
     public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
                 Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
                 claw.outtakeCommand(),
                 Commands.waitUntil(() -> continueOuttakingSupplier.getAsBoolean()),
+                claw.stopCommand(),
+                stowCommand()
+            );
+    }
+
+    public Command autoPlaceCommand(double time) {
+        return
+            Commands.sequence(
+                Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
+                claw.outtakeCommand(),
                 claw.stopCommand(),
                 stowCommand()
             );
@@ -137,5 +164,8 @@ public class Superstructure {
                 placeCommand(continueOuttakingSupplier)
             );
     }
+
+
+
 
 }
