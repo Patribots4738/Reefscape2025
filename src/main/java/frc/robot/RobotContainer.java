@@ -240,10 +240,10 @@ public class RobotContainer {
             .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
         controller.y()
-            .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
+            .whileTrue(superstructure.setArmPosition(ArmPosition.L3ALGAE));
 
         controller.x()
-            .onTrue(superstructure.climbStowCommand());
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2ALGAE));
 
         controller.b()
             .onTrue(superstructure.climbReadyCommand())

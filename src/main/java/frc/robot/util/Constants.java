@@ -491,6 +491,8 @@ public final class Constants {
         public static final double L2_POSITION_METERS = 0.13;
         public static final double L3_POSITION_METERS = 0.32;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
+        public static final double L3_POSITION_REMOVE_ALGAE = 0.4;
+        public static final double L2_POSITION_REMOVE_ALGAE = 0.2;
 
         public static final double ELEVATOR_DEADBAND_METERS = 0.005;
 

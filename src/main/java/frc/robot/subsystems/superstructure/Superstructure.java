@@ -33,6 +33,8 @@ public class Superstructure {
     private final LoggedTunableNumber elevatorL2 = new LoggedTunableNumber("Elevator/L2Postition", ElevatorConstants.L2_POSITION_METERS);
     private final LoggedTunableNumber elevatorL3 = new LoggedTunableNumber("Elevator/L3Postition", ElevatorConstants.L3_POSITION_METERS);
     private final LoggedTunableNumber elevatorL4 = new LoggedTunableNumber("Elevator/L4Postition", ElevatorConstants.L4_POSITION_METERS);
+    private final LoggedTunableNumber elevatorL2RemoveAlgae = new LoggedTunableNumber("Elevator/L4PostitionRemoveAlgae", ElevatorConstants.L2_POSITION_REMOVE_ALGAE);
+    private final LoggedTunableNumber elevatorL3RemoveAlgae = new LoggedTunableNumber("Elevator/L4PostitionRemoveAlgae", ElevatorConstants.L3_POSITION_REMOVE_ALGAE);
 
     private final LoggedTunableNumber wristMinSafe = new LoggedTunableNumber("Wrist/MinSafePosition", WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS);
     private final LoggedTunableNumber wristMaxSafe = new LoggedTunableNumber("Wrist/MaxSafePosition", WristConstants.WRIST_MAX_SAFE_ANGLE_RADIANS);
@@ -70,13 +72,15 @@ public class Superstructure {
     }
 
     public enum ArmPosition {
-        STOW   (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
-        INTAKE (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS, false),
-        CLIMB  (ElevatorConstants.STOW_POSITION_METERS, WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS, false),
-        L1     (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS, true),
-        L2     (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS, true),
-        L3     (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS, true),
-        L4     (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS, true);
+        STOW    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
+        INTAKE  (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS, false),
+        CLIMB   (ElevatorConstants.STOW_POSITION_METERS, WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS, false),
+        L1      (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS, true),
+        L2      (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS, true),
+        L3      (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS, true),
+        L4      (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS, true),
+        L3ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
+        L2ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false);
 
         private double elevatorPose, wristPose;
         private boolean scoring;
