@@ -407,11 +407,11 @@ public final class Constants {
         public static final double TURNING_ENCODER_POSITION_FACTOR = (2 * Math.PI); // radians
         public static final double TURNING_ENCODER_VELOCITY_FACTOR = (2 * Math.PI); // radians per second
 
-        public static final double DRIVING_MOTOR_STATOR_LIMIT_AMPS = 60.0;
-        public static final double DRIVING_MOTOR_SUPPLY_LIMIT_AMPS = 60.0;
+        public static final double DRIVING_MOTOR_STATOR_LIMIT_AMPS = 112.0;
+        public static final double DRIVING_MOTOR_SUPPLY_LIMIT_AMPS = 112.0;
         public static final double TURNING_MOTOR_STATOR_LIMIT_AMPS = 60.0;
         public static final double TURNING_MOTOR_SUPPLY_LIMIT_AMPS = 60.0;
-        public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 60.0;
+        public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 112.0;
         public static final double TURNING_MOTOR_TORQUE_LIMIT_AMPS = 40.0;
 
         public static final double DRIVING_P = Robot.isSimulation() ? 0.5 : 0.02;
