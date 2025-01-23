@@ -375,9 +375,13 @@ public final class Constants {
             SwerveGearing(double gearRatio) {
                 this.gearRatio = gearRatio;
             }
+
             
         };
-
+        
+        public static final double LINEAR_VELOCITY_DEADBAND = 0.005;
+        public static final double ANGULAR_VELOCITY_DEADBAND = 0.003;
+        
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
         public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = -0.286133;
@@ -405,11 +409,11 @@ public final class Constants {
         public static final double TURNING_ENCODER_POSITION_FACTOR = (2 * Math.PI); // radians
         public static final double TURNING_ENCODER_VELOCITY_FACTOR = (2 * Math.PI); // radians per second
 
-        public static final double DRIVING_MOTOR_STATOR_LIMIT_AMPS = 60.0;
-        public static final double DRIVING_MOTOR_SUPPLY_LIMIT_AMPS = 60.0;
+        public static final double DRIVING_MOTOR_STATOR_LIMIT_AMPS = 112.0;
+        public static final double DRIVING_MOTOR_SUPPLY_LIMIT_AMPS = 112.0;
         public static final double TURNING_MOTOR_STATOR_LIMIT_AMPS = 60.0;
         public static final double TURNING_MOTOR_SUPPLY_LIMIT_AMPS = 60.0;
-        public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 60.0;
+        public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 112.0;
         public static final double TURNING_MOTOR_TORQUE_LIMIT_AMPS = 40.0;
 
         public static final double DRIVING_P = Robot.isSimulation() ? 0.5 : 0.02;
@@ -468,7 +472,7 @@ public final class Constants {
 
         public static final double GEAR_RATIO = 7.75;
         public static final double ELEVATOR_BASE_HEIGHT_METERS = Units.inchesToMeters(31.25);
-        public static final double MAX_DISPLACEMENT_METERS = 1.177036 / 2.0;
+        public static final double MAX_DISPLACEMENT_METERS = 0.5831193316;
         public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
 
@@ -490,9 +494,11 @@ public final class Constants {
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
         public static final double L1_POSITION_METERS = 0.0;
-        public static final double L2_POSITION_METERS = 0.0;
-        public static final double L3_POSITION_METERS = 0.1;
+        public static final double L2_POSITION_METERS = 0.13;
+        public static final double L3_POSITION_METERS = 0.32;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
+        public static final double L3_POSITION_REMOVE_ALGAE = 0.4;
+        public static final double L2_POSITION_REMOVE_ALGAE = 0.2;
 
         public static final double ELEVATOR_DEADBAND_METERS = 0.005;
 
@@ -510,7 +516,7 @@ public final class Constants {
 
         public static final boolean BRAKE_MOTOR = true;
 
-        public static final double WRIST_P = 1.74;
+        public static final double WRIST_P = 1.8;
         public static final double WRIST_I = 0.0;
         public static final double WRIST_D = 0.1;
         public static final double WRIST_S = 0.08005099999999947;
@@ -533,14 +539,20 @@ public final class Constants {
 
         public static final double CURRENT_LIMIT = 60.0;
 
-        public static final double WRIST_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
+        public static final double WRIST_MIN_ANGLE_RADIANS = -0.6;
+        public static final double WRIST_MAX_ANGLE_RADIANS = 3.5;
 
+        public static final double WRIST_MIN_SAFE_ANGLE_RADIANS = 1.05;
+        public static final double WRIST_MAX_SAFE_ANGLE_RADIANS = 1.7;
+
+        public static final double WRIST_DEADBAND_RADIANS = 0.02;
+        public static final double TRANSITION_POSITION_RADIANS = Math.PI / 2.0;
         public static final double STOW_POSITION_RADIANS = 0;
-        public static final double INTAKE_POSITION_RADIANS = -0.6;
-        public static final double L1_POSITION_RADIANS = Math.PI / 2.0;
-        public static final double L2_POSITION_RADIANS = 2.15;
-        public static final double L3_POSITION_RADIANS = 2.55;
-        public static final double L4_POSITION_RADIANS = 1.9;
+        public static final double INTAKE_POSITION_RADIANS = -0.47;
+        public static final double L1_POSITION_RADIANS = 2.2;
+        public static final double L2_POSITION_RADIANS = 2.22;
+        public static final double L3_POSITION_RADIANS = 2.22;
+        public static final double L4_POSITION_RADIANS = 2.257;
 
     }
 
@@ -550,19 +562,19 @@ public final class Constants {
         public static final int CLIMB_FOLLOWER_CAN_ID = 14;
         public static final int CLIMB_ENCODER_DIO_PIN = 1;
 
-        public static final boolean CLIMB_ENCODER_INVERTED = false;
-        public static final double CLIMB_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
 
         public static final double CLIMB_GEAR_RATIO = 16.0 + 1.0/3.0;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
-        public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
 
         public static final double CLIMB_LENGTH_METERS = 0.5;
 
         public static final double CURRENT_LIMIT = 80.0;
         public static final boolean BRAKE_MOTOR = true;
+
+        public static final double CLIMB_MIN_ANGLE_RADIANS = 0.0;
+        public static final double CLIMB_MAX_ANGLE_RADIANS = Math.PI / 2.0;
 
         public static final double CLIMB_P = 0.5;
         public static final double CLIMB_I = 0.0;
@@ -599,6 +611,14 @@ public final class Constants {
         // https://docs.google.com/spreadsheets/d/1Lytrh6q9jkz4u1gmF1Sk8kTpj8DxW-uwRE_QMnTt8Lk
         public static final double CONTROLLER_CORNER_SLOPE_1 = 1 / 0.7;
         public static final double CONTROLLER_CORNER_SLOPE_2 = 0.7;
+
+        public enum DriverMode {
+            DOUBLE,
+            DEV
+        }
+
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+
     }
 
     public static final class NeoMotorConstants {
@@ -731,8 +751,8 @@ public final class Constants {
         }
 
 
-        public static final Pose2d CORAL_STATION_1 = new Pose2d(0.82, 7.39, Rotation2d.fromDegrees(-55));
-        public static final Pose2d CORAL_STATION_2 = new Pose2d(0.82, 0.65, Rotation2d.fromDegrees(55));
+        public static final Pose2d CORAL_STATION_1 = new Pose2d(0.82, 7.39, Rotation2d.fromDegrees(125));
+        public static final Pose2d CORAL_STATION_2 = new Pose2d(0.82, 0.65, Rotation2d.fromDegrees(-125));
 
         public static final double CORAL_STATION_HEIGHT = 0.95;
 
@@ -766,26 +786,26 @@ public final class Constants {
             return REEF_POSITIONS.get(Robot.isRedAlliance() ? 1 : 0);
         }
 
-        public static final Pose2d BLUE_REEF_A = new Pose2d(3.72, 4.19, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_B = new Pose2d(3.72, 3.86, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_C = new Pose2d(3.94, 3.44, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_D = new Pose2d(4.24, 3.27, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_E = new Pose2d(4.73, 3.27, Rotation2d.fromDegrees(120));
-        public static final Pose2d BLUE_REEF_F = new Pose2d(5.02, 3.44, Rotation2d.fromDegrees(120));
-        public static final Pose2d BLUE_REEF_G = new Pose2d(5.26, 3.86, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_H = new Pose2d(5.26, 4.19, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_I = new Pose2d(5.02, 4.61, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_J = new Pose2d(4.73, 4.78, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_K = new Pose2d(4.24, 4.78, Rotation2d.fromDegrees(300));
-        public static final Pose2d BLUE_REEF_L = new Pose2d(3.94, 4.61, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_A = new Pose2d(3.72, 4.19, Rotation2d.fromDegrees(180));
+        public static final Pose2d BLUE_REEF_B = new Pose2d(3.72, 3.86, Rotation2d.fromDegrees(180));
+        public static final Pose2d BLUE_REEF_C = new Pose2d(3.94, 3.44, Rotation2d.fromDegrees(240));
+        public static final Pose2d BLUE_REEF_D = new Pose2d(4.24, 3.27, Rotation2d.fromDegrees(240));
+        public static final Pose2d BLUE_REEF_E = new Pose2d(4.73, 3.27, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_F = new Pose2d(5.02, 3.44, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_G = new Pose2d(5.26, 3.86, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_H = new Pose2d(5.26, 4.19, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_I = new Pose2d(5.02, 4.61, Rotation2d.fromDegrees(60));
+        public static final Pose2d BLUE_REEF_J = new Pose2d(4.73, 4.78, Rotation2d.fromDegrees(60));
+        public static final Pose2d BLUE_REEF_K = new Pose2d(4.24, 4.78, Rotation2d.fromDegrees(120));
+        public static final Pose2d BLUE_REEF_L = new Pose2d(3.94, 4.61, Rotation2d.fromDegrees(120));
 
         // Centers of each reef side, letters are ordered from driver station POV (left than right)
-        public static final Pose2d BLUE_REEF_AB = new Pose2d(3.67, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_CD = new Pose2d(4.09, 3.37, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_FE = new Pose2d(4.91, 3.34, Rotation2d.fromDegrees(120));
-        public static final Pose2d BLUE_REEF_HG = new Pose2d(5.30, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_JI = new Pose2d(4.88, 4.74, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_KL = new Pose2d(4.06, 4.72, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_AB = new Pose2d(3.67, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(180));
+        public static final Pose2d BLUE_REEF_CD = new Pose2d(4.09, 3.37, Rotation2d.fromDegrees(240));
+        public static final Pose2d BLUE_REEF_FE = new Pose2d(4.91, 3.34, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_HG = new Pose2d(5.30, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_JI = new Pose2d(4.88, 4.74, Rotation2d.fromDegrees(60));
+        public static final Pose2d BLUE_REEF_KL = new Pose2d(4.06, 4.72, Rotation2d.fromDegrees(120));
 
         public static final List<ReefSide> REEF_FACE_POSITIONS = new ArrayList<ReefSide>() {{
             // All points are in meters and radians
@@ -821,9 +841,9 @@ public final class Constants {
             return REEF_FACE_POSITIONS.subList(startIndex, startIndex + 6);
         }
 
-        public static final Pose2d CAGE_1 = new Pose2d(8.77, 7.26, Rotation2d.fromDegrees(0));
-        public static final Pose2d CAGE_2 = new Pose2d(8.77, 6.16, Rotation2d.fromDegrees(0));
-        public static final Pose2d CAGE_3 = new Pose2d(8.77, 5.07, Rotation2d.fromDegrees(0));
+        public static final Pose2d CAGE_1 = new Pose2d(8.77, 7.26, Rotation2d.fromDegrees(270));
+        public static final Pose2d CAGE_2 = new Pose2d(8.77, 6.16, Rotation2d.fromDegrees(270));
+        public static final Pose2d CAGE_3 = new Pose2d(8.77, 5.07, Rotation2d.fromDegrees(270));
         
         public static final List<Pose2d> CAGE_POSITIONS = new ArrayList<Pose2d>() {{
             // blueCage1 starts as the highest from field origin and goes down from there
