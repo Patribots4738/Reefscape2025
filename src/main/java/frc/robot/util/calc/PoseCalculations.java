@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.ejml.sparse.csc.factory.FillReductionFactory_DSCC;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -75,6 +77,10 @@ public class PoseCalculations {
                 .thenComparing(
                     (ReefSide other) ->
                         Math.abs(pos.getRotation().minus(other.getRotation()).getRadians())));
+    }
+
+    public static boolean nearReef(Pose2d pos) {
+        return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 2.0;
     }
 
 }
