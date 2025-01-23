@@ -41,7 +41,6 @@ import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
-import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.PatriBoxController;
 
 public class RobotContainer {
@@ -103,8 +102,8 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-        superstructure = new Superstructure(claw, elevator, wrist, climb, () -> PoseCalculations.nearReef(swerve.getPose()));
 
+        superstructure = new Superstructure(claw, elevator, wrist, climb, swerve::getPose);
         alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
@@ -147,7 +146,7 @@ public class RobotContainer {
                 swerve, 
                 swerve::runTurnCharacterization, 
                 swerve::getTurnCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("WristStaticCharacterization", // TODO: use these in sim and store the values in constants
+        pathPlannerStorage.getAutoChooser().addOption("WristStaticCharacterization",
             new StaticCharacterization(
                 wrist, 
                 wrist::runCharacterization, 
@@ -335,6 +334,7 @@ public class RobotContainer {
         return pathPlannerStorage.getSelectedAuto();
     }
 
+    @SuppressWarnings("unused")
     private void configureHDCBindings(PatriBoxController controller) {
         controller.pov(0, 270, testButtonBindingLoop)
             .onTrue(HDCTuner.controllerDecrementCommand());

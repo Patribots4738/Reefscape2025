@@ -233,32 +233,26 @@ public final class Constants {
     public static final class MAXSwerveModuleConstants {
         // https://www.revrobotics.com/rev-21-3005/
         private enum SwerveGearing {
-            LOW         (12, 22, 4.12, 4.92),
-            MEDIUM      (13, 22, 4.46, 5.33),
-            HIGH        (14, 22, 4.8, 5.5/*5.74*/),
+            LOW         (12, 22),
+            MEDIUM      (13, 22),
+            HIGH        (14, 22),
 
-            EXTRA_HIGH_1(14, 21, 5.03, 6.01),
-            EXTRA_HIGH_2(14, 20, 5.28, 6.32),
-            EXTRA_HIGH_3(15, 20, 5.66, 6.77),
-            EXTRA_HIGH_4(16, 20, 6.04, 7.22),
-            EXTRA_HIGH_5(16, 19, 6.36, 7.60);
+            EXTRA_HIGH_1(14, 21),
+            EXTRA_HIGH_2(14, 20),
+            EXTRA_HIGH_3(15, 20),
+            EXTRA_HIGH_4(16, 20),
+            EXTRA_HIGH_5(16, 19);
 
             private final double 
                 pinionTeeth, 
-                spurTeeth, 
-                maxSpeedNeo,
-                maxSpeedVortex;
+                spurTeeth;
 
             SwerveGearing(
                 int pinionTeeth, 
-                int spurTeeth, 
-                double maxSpeedNeo,
-                double maxSpeedVortex)
+                int spurTeeth)
             {
                 this.pinionTeeth = pinionTeeth;
                 this.spurTeeth = spurTeeth;
-                this.maxSpeedNeo = maxSpeedNeo;
-                this.maxSpeedVortex = maxSpeedVortex;
             }
             
         }

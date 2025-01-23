@@ -4,11 +4,15 @@ import edu.wpi.first.math.system.plant.DCMotor;
 
 class NeoSimProfile extends NeoPhysicsSim.SimProfile {
     private final Neo neo;
+    @SuppressWarnings("unused")
     private double stallTorque = 0.0;
+    @SuppressWarnings("unused")
     private double freeSpeed = 0.0;
+    @SuppressWarnings("unused")
     private DCMotor DCMotor = null;
-    private double velocity = 0.0;
+    @SuppressWarnings("unused")
     private double RPM_CONVERSION = 9.5493;
+    private double velocity = 0.0;
 
     public NeoSimProfile(Neo neo, double stallTorque, double freeSpeed) {
         this.neo = neo;

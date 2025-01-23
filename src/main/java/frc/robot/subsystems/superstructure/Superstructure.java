@@ -2,9 +2,11 @@ package frc.robot.subsystems.superstructure;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.superstructure.claw.Claw;
@@ -12,6 +14,7 @@ import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
@@ -22,7 +25,7 @@ public class Superstructure {
     private final Wrist wrist;
     private final Climb climb;
     
-    private final BooleanSupplier nearReefSupplier;
+    private final Supplier<Pose2d> robotPoseSupplier;
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ArmPosition")
     private ArmPosition armPosition = ArmPosition.STOW;
@@ -46,13 +49,13 @@ public class Superstructure {
     private final LoggedTunableNumber wristL3 = new LoggedTunableNumber("Wrist/L3Postition", WristConstants.L3_POSITION_RADIANS);
     private final LoggedTunableNumber wristL4 = new LoggedTunableNumber("Wrist/L4Postition", WristConstants.L4_POSITION_RADIANS);
 
-    public Superstructure(Claw claw, Elevator elevator, Wrist wrist, Climb climb, BooleanSupplier nearReefSupplier) {
+    public Superstructure(Claw claw, Elevator elevator, Wrist wrist, Climb climb, Supplier<Pose2d> robotPoseSupplier) {
         this.claw = claw;
         this.elevator = elevator;
         this.wrist = wrist;
         this.climb = climb;
 
-        this.nearReefSupplier = nearReefSupplier;
+        this.robotPoseSupplier = robotPoseSupplier;
 
         elevatorStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.elevatorPose = elevatorStow.get()).ignoringDisable(true));
         elevatorIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.elevatorPose = elevatorIntake.get()).ignoringDisable(true));
@@ -103,7 +106,7 @@ public class Superstructure {
                 Commands.either(
                     transitionWrist(() -> position.wristPose), 
                     wrist.setPositionCommand(() -> position.wristPose), 
-                    () -> (nearReefSupplier.getAsBoolean() || position.wristPose < wristMinSafe.get()) && !elevator.atPosition(position.elevatorPose)
+                    () -> (PoseCalculations.nearReef(robotPoseSupplier.get()) || position.wristPose < wristMinSafe.get()) && !elevator.atPosition(position.elevatorPose)
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> position.elevatorPose),
                 wrist.setPositionCommand(() -> position.wristPose)
