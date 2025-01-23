@@ -60,7 +60,7 @@ public class Alignment {
         return new ChassisSpeeds(
             MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vyMetersPerSecond, autoSpeeds.vyMetersPerSecond)), 0.01),
             -MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vxMetersPerSecond, autoSpeeds.vxMetersPerSecond)), 0.01),
-            MathUtil.applyDeadband((autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity()), 0.01)
+            MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond, 0.01) / MathUtil.applyDeadband(swerve.getMaxAngularVelocity(), 0.01)
         );
     }
 
