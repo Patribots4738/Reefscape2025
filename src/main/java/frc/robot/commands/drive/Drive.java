@@ -73,14 +73,14 @@ public class Drive extends Command {
         double rotation = rotationSupplier.getAsDouble();
         double trueX = swerve.getRobotRelativeVelocity().vxMetersPerSecond;
         double trueY = swerve.getRobotRelativeVelocity().vyMetersPerSecond;
-        double thetaSpeed = swerve.getRobotRelativeVelocity().omegaRadiansPerSecond;
+        double trueTheta = swerve.getRobotRelativeVelocity().omegaRadiansPerSecond;
         if (shouldMirror.getAsBoolean() || !fieldRelativeSupplier.getAsBoolean()) {
             x *= -1;
             y *= -1;
         }
         if (x + y + rotation == 0
             && MathUtil.isNear(trueX + trueY, 0.0, MK4cSwerveModuleConstants.LINEAR_VELOCITY_DEADBAND)
-            && MathUtil.isNear(thetaSpeed, 0.0, MK4cSwerveModuleConstants.ANGULAR_VELOCITY_DEADBAND)
+            && MathUtil.isNear(trueTheta, 0.0, MK4cSwerveModuleConstants.ANGULAR_VELOCITY_DEADBAND)
             && Robot.gameMode == GameMode.TELEOP) {
             swerve.setWheelsX();
         }
