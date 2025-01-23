@@ -12,7 +12,6 @@ import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
-import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
@@ -170,7 +169,7 @@ public class Superstructure {
                 Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
                 claw.outtakeCommand(),
                 claw.stopCommand(),
-                stowCommand()
+                setArmPosition(ArmPosition.STOW)
             );
     }
 
