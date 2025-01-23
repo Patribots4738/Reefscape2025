@@ -60,6 +60,8 @@ public class Superstructure {
         elevatorL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.elevatorPose = elevatorL2.get()).ignoringDisable(true));
         elevatorL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.elevatorPose = elevatorL3.get()).ignoringDisable(true));
         elevatorL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.elevatorPose = elevatorL4.get()).ignoringDisable(true));
+        elevatorL2RemoveAlgae.onChanged(Commands.runOnce(() -> ArmPosition.L2_ALGAE.elevatorPose = elevatorL2RemoveAlgae.get()).ignoringDisable(true));
+        elevatorL3RemoveAlgae.onChanged(Commands.runOnce(() -> ArmPosition.L3_ALGAE.elevatorPose = elevatorL3RemoveAlgae.get()).ignoringDisable(true));
 
         wristStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.wristPose = wristStow.get()).ignoringDisable(true));
         wristClimb.onChanged(Commands.runOnce(() -> ArmPosition.CLIMB.wristPose = wristClimb.get()).ignoringDisable(true));
@@ -72,15 +74,15 @@ public class Superstructure {
     }
 
     public enum ArmPosition {
-        STOW    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
-        INTAKE  (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS, false),
-        CLIMB   (ElevatorConstants.STOW_POSITION_METERS, WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS, false),
-        L1      (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS, true),
-        L2      (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS, true),
-        L3      (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS, true),
-        L4      (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS, true),
-        L3ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
-        L2ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false);
+        STOW     (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
+        INTAKE   (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS, false),
+        CLIMB    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS, false),
+        L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
+        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
+        L1       (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS, true),
+        L2       (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS, true),
+        L3       (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS, true),
+        L4       (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS, true);
 
         private double elevatorPose, wristPose;
         private boolean scoring;
