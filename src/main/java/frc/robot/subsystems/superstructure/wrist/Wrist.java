@@ -8,11 +8,13 @@ import java.util.function.DoubleSupplier;
 
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,12 +39,25 @@ public class Wrist extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
 
-        RobotContainer.wristMech.setAngle(180 + Units.radiansToDegrees(inputs.encoderPositionRads));
+        RobotContainer.components3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
+            RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getX(), 
+            RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getY(),
+            RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getZ(),
+            new Rotation3d(0, inputs.encoderPositionRads, 0)
+        );
+
     }
 
     public void setPosition(double position) {
         targetPosition = position;
         io.setPosition(position);
+
+        RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
+            RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getX(), 
+            RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getY(),
+            RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getZ(),
+            new Rotation3d(0, position, 0)
+        );
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {

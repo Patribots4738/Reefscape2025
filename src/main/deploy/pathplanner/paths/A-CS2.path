@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.140368150684932,
-        "y": 4.175256849315068
+        "x": 2.529405737704918,
+        "y": 3.083965163934426
       },
       "isLocked": false,
       "linkedName": "A"
@@ -20,8 +20,9 @@
         "y": 0.6553209459459447
       },
       "prevControl": {
+         mass-properties
         "x": 0.6426381812140001,
-        "y": 0.5114684869295512
+        "y": 0.511468486929551
       },
       "nextControl": null,
       "isLocked": false,

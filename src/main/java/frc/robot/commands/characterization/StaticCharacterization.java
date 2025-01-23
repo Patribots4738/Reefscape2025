@@ -14,43 +14,43 @@ import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
 public class StaticCharacterization extends Command {
-  private static final double currentRampFactor = 1.0;
-  private static final double minVelocity = 0.1;
+    private static final double currentRampFactor = 1.0;
+    private static final double minVelocity = 0.1;
 
-  private final DoubleConsumer inputConsumer;
-  private final DoubleSupplier velocitySupplier;
-  private final Timer timer = new Timer();
-  private double input = 0.0;
+    private final DoubleConsumer inputConsumer;
+    private final DoubleSupplier velocitySupplier;
+    private final Timer timer = new Timer();
+    private double input = 0.0;
 
-  public StaticCharacterization(
-      Subsystem subsystem,
-      DoubleConsumer characterizationInputConsumer,
-      DoubleSupplier velocitySupplier) {
-    inputConsumer = characterizationInputConsumer;
-    this.velocitySupplier = velocitySupplier;
-    addRequirements(subsystem);
-  }
+    public StaticCharacterization(
+            Subsystem subsystem,
+            DoubleConsumer characterizationInputConsumer,
+            DoubleSupplier velocitySupplier) {
+        inputConsumer = characterizationInputConsumer;
+        this.velocitySupplier = velocitySupplier;
+        addRequirements(subsystem);
+    }
 
-  @Override
-  public void initialize() {
-    timer.restart();
-  }
+    @Override
+    public void initialize() {
+        timer.restart();
+    }
 
-  @Override
-  public void execute() {
-    input = timer.get() * currentRampFactor;
-    System.err.println(input);
-    inputConsumer.accept(input);
-  }
+    @Override
+    public void execute() {
+        input = timer.get() * currentRampFactor;
+        System.err.println(input);
+        inputConsumer.accept(input);
+    }
 
-  @Override
-  public boolean isFinished() {
-    return velocitySupplier.getAsDouble() >= minVelocity;
-  }
+    @Override
+    public boolean isFinished() {
+        return velocitySupplier.getAsDouble() >= minVelocity;
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    System.out.println("Static Characterization output: " + input + " amps/volts");
-    inputConsumer.accept(0);
-  }
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("Static Characterization output: " + input + " amps/volts");
+        inputConsumer.accept(0);
+    }
 }

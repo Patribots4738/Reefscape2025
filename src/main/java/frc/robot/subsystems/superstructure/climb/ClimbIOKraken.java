@@ -1,34 +1,24 @@
 package frc.robot.subsystems.superstructure.climb;
 
 import frc.robot.util.hardware.phoenix.Kraken;
-import frc.robot.util.hardware.rev.ThroughBoreEncoder;
 import frc.robot.util.Constants.ClimbConstants;
-import frc.robot.util.Constants.FieldConstants;
 
 public class ClimbIOKraken implements ClimbIO {
     
     private final Kraken leader;
     private final Kraken follower;
-    private final ThroughBoreEncoder encoder;
 
     public ClimbIOKraken() {
         leader = new Kraken(ClimbConstants.CLIMB_LEADER_CAN_ID, true, false);
         follower = new Kraken(ClimbConstants.CLIMB_FOLLOWER_CAN_ID, true, false);
-        encoder = new ThroughBoreEncoder(ClimbConstants.CLIMB_ENCODER_DIO_PIN);
-        configEncoder();
         configMotors();
     }
 
-    private void configEncoder() {
-        encoder.setInverted(ClimbConstants.CLIMB_ENCODER_INVERTED);
-        encoder.setPositionOffsetRotations(ClimbConstants.CLIMB_ENCODER_POSITION_OFFSET_ROTATIONS);
-        encoder.setPositionConversionFactor(ClimbConstants.ENCODER_POSITION_CONVERSION_FACTOR);
-    }
-
     private void configMotor(Kraken motor) {
+        motor.setMotorInverted(true);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR);
-        motor.resetEncoder(encoder.getPosition());
+        motor.resetEncoder(0);
         motor.setGains(ClimbConstants.CLIMB_GAINS);
         motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
@@ -61,11 +51,6 @@ public class ClimbIOKraken implements ClimbIO {
         inputs.followerStatorCurrentAmps = follower.getStatorCurrentAsDouble();
         inputs.followerTorqueCurrentAmps = follower.getTorqueCurrentAsDouble();
         inputs.followerTemperatureCelcius = follower.getTemperatureAsDouble();
-
-        if (!FieldConstants.IS_SIMULATION) {
-            inputs.encoderConnected = encoder.isConnected();
-        }
-        inputs.encoderPositionRads = inputs.encoderConnected ? encoder.getPosition() : leader.getPositionAsDouble();
     }
 
     public void setPosition(double position) {

@@ -3,9 +3,6 @@ package frc.robot;
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
-import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
-import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -20,8 +17,6 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot.GameMode;
@@ -34,7 +29,6 @@ import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
-import frc.robot.subsystems.superstructure.Superstructure.MovementOrder;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.claw.ClawIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -44,11 +38,7 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
-import frc.robot.util.Constants.ClawConstants;
-import frc.robot.util.Constants.ClimbConstants;
-import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.OIConstants;
-import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
 
@@ -77,6 +67,10 @@ public class RobotContainer {
     private static HDCTuner HDCTuner;
 
     // Draggables
+    @AutoLogOutput (key = "Draggables/Components3d")
+    public static Pose3d[] components3d = {new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d()};
+    @AutoLogOutput (key = "Draggables/DesiredComponents3d")
+    public static Pose3d[] desiredComponents3d = {new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d()};
     @AutoLogOutput (key = "Draggables/FreshCode")
     public static boolean freshCode = true;
     @AutoLogOutput (key = "Draggables/RobotPose2d")
@@ -90,13 +84,6 @@ public class RobotContainer {
     @AutoLogOutput (key = "Draggables/GameModeStart")
     public static double gameModeStart = 0;
 
-    @AutoLogOutput (key = "Draggables/Mech2d")
-    private LoggedMechanism2d mech;
-    private LoggedMechanismRoot2d elevatorRoot;
-    private LoggedMechanismLigament2d elevatorBaseMech;
-    public static LoggedMechanismLigament2d elevatorMech;
-    public static LoggedMechanismLigament2d wristMech;
-    private LoggedMechanismLigament2d clawMech;
     
     public RobotContainer() {
 
@@ -113,17 +100,9 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-
         superstructure = new Superstructure(claw, elevator, wrist, climb);
 
         SmartDashboard.putData(field2d);
-
-        mech = new LoggedMechanism2d(3, 3);
-        elevatorRoot = mech.getRoot("placer", 1.8, 0.1524);
-        elevatorBaseMech = elevatorRoot.append(new LoggedMechanismLigament2d("elevatorBase", ElevatorConstants.ELEVATOR_BASE_HEIGHT_METERS, 90.0));
-        elevatorMech = elevatorBaseMech.append(new LoggedMechanismLigament2d("elevator", 0.0, 0, 8, new Color8Bit(Color.kRed)));
-        wristMech = elevatorMech.append(new LoggedMechanismLigament2d("wrist", WristConstants.WRIST_LENGTH_METERS, 180, 6, new Color8Bit(Color.kGreen)));
-        clawMech = wristMech.append(new LoggedMechanismLigament2d("claw", ClawConstants.CLAW_LENGTH_METERS, -90, 6, new Color8Bit(Color.kGreen)));
 
         driver.back().toggleOnTrue(
             Commands.runOnce(() -> fieldRelativeToggle = !fieldRelativeToggle)
@@ -204,12 +183,7 @@ public class RobotContainer {
                         : 180))
             ), swerve)
         );
-
-        controller.leftBumper().whileTrue(swerve.getSetWheelsX());
-        controller.rightBumper().whileTrue(swerve.getSetWheelsO());
-        controller.b().whileTrue(swerve.driveCharacterization());
-        controller.y().whileTrue(swerve.getSetWheelsZero());
-        controller.a().whileTrue(swerve.tuneTurnVelocityCommand());
+      
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
