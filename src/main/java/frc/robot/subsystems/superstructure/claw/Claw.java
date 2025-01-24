@@ -62,10 +62,10 @@ public class Claw extends SubsystemBase {
         return setPercentCommand(outtakePercent::get);
     }
 
-    public Command outtakeTimeCommand(){
+    public Command outtakeTimeCommand(double time){
         return Commands.sequence(
             outtakeCommand(),
-            Commands.waitSeconds(ClawConstants.OUTTAKE_TIME),
+            Commands.waitSeconds(time),
             stopCommand()
         );
     }

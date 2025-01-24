@@ -450,10 +450,6 @@ public final class Constants {
         public static final double HOLD_PERCENT = 0.1;
         public static final double OUTTAKE_PERCENT = -0.2;
 
-        public static final double OUTTAKE_TIME = 0.5;
-
-        public static final double CLAW_LENGTH_METERS = Units.inchesToMeters(11.0);
-
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
 

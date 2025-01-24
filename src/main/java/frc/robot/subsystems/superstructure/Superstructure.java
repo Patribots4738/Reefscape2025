@@ -167,7 +167,10 @@ public class Superstructure {
                     () -> this.armPosition.scoring
                 ),
                 claw.outtakeCommand(),
-                Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
+                Commands.race(
+                    Commands.waitSeconds(clawPlaceTime.get()), 
+                    Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean())
+                ),
                 claw.stopCommand(),
                 setArmPosition(ArmPosition.STOW)
             );
@@ -176,8 +179,8 @@ public class Superstructure {
     public Command autoPlaceCommand() {
         return
             Commands.sequence(
-                Commands.waitSeconds(clawPlaceTime.get()),
-                claw.outtakeTimeCommand(),
+                Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
+                claw.outtakeTimeCommand(clawPlaceTime.get()),
                 setArmPosition(ArmPosition.STOW)
             );
     }
