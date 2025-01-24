@@ -4,6 +4,7 @@ import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -38,10 +39,13 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.ClawConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
+
+import frc.robot.util.Constants.ElevatorConstants;
 
 public class RobotContainer {
 
@@ -382,6 +386,15 @@ public class RobotContainer {
         freshCode = false;
     }
 
-    private void prepareNamedCommands() {}
+    private void prepareNamedCommands() {
+        NamedCommands.registerCommand("Intake Start", superstructure.autoIntakeStartCommand());
+        NamedCommands.registerCommand("Intake Stop", superstructure.autoIntakeStopCommand());
+        NamedCommands.registerCommand("L1", superstructure.setArmPosition(ArmPosition.L1));
+        NamedCommands.registerCommand("L2", superstructure.setArmPosition(ArmPosition.L2));
+        NamedCommands.registerCommand("L3", superstructure.setArmPosition(ArmPosition.L3));
+        NamedCommands.registerCommand("L4", superstructure.setArmPosition(ArmPosition.L4));
+        NamedCommands.registerCommand("Placing", superstructure.autoPlaceCommand());
+    }
 
+        
 }

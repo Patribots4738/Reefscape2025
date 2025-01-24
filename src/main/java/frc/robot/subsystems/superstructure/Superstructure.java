@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
+import frc.robot.util.Constants.ClawConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.calc.PoseCalculations;
@@ -48,6 +49,8 @@ public class Superstructure {
     private final LoggedTunableNumber wristL2 = new LoggedTunableNumber("Wrist/L2Postition", WristConstants.L2_POSITION_RADIANS);
     private final LoggedTunableNumber wristL3 = new LoggedTunableNumber("Wrist/L3Postition", WristConstants.L3_POSITION_RADIANS);
     private final LoggedTunableNumber wristL4 = new LoggedTunableNumber("Wrist/L4Postition", WristConstants.L4_POSITION_RADIANS);
+  
+    private final LoggedTunableNumber clawPlaceTime = new LoggedTunableNumber("Claw/PlaceTime", ClawConstants.PLACING_NAMED_COMMAND_TIME);
 
     public Superstructure(Claw claw, Elevator elevator, Wrist wrist, Climb climb, Supplier<Pose2d> robotPoseSupplier) {
         this.claw = claw;
@@ -139,6 +142,22 @@ public class Superstructure {
             );
     }
 
+    public Command autoIntakeStartCommand(){
+        return
+            Commands.sequence(
+                setArmPosition(ArmPosition.INTAKE),
+                claw.intakeCommand()
+            );
+    }
+
+    public Command autoIntakeStopCommand(){
+        return
+            Commands.sequence(
+                claw.stopCommand(),
+                setArmPosition(ArmPosition.STOW)
+            );
+    }
+
     public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
@@ -150,6 +169,15 @@ public class Superstructure {
                 claw.outtakeCommand(),
                 Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
                 claw.stopCommand(),
+                setArmPosition(ArmPosition.STOW)
+            );
+    }
+
+    public Command autoPlaceCommand() {
+        return
+            Commands.sequence(
+                Commands.waitSeconds(clawPlaceTime.get()),
+                claw.outtakeTimeCommand(),
                 setArmPosition(ArmPosition.STOW)
             );
     }
