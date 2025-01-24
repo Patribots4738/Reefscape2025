@@ -65,6 +65,7 @@ public class Claw extends SubsystemBase {
         return setPercentCommand(0.0);
     }
 
+
     public boolean hasPiece() {
         // TODO: IMPLEMENT DETECTION LOGIC
         return false;

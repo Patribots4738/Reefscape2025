@@ -39,6 +39,7 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.ClawConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.custom.PatriBoxController;
@@ -328,7 +329,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("L2", superstructure.setArmPosition(ArmPosition.L2));
         NamedCommands.registerCommand("L3", superstructure.setArmPosition(ArmPosition.L3));
         NamedCommands.registerCommand("L4", superstructure.setArmPosition(ArmPosition.L4));
-        NamedCommands.registerCommand("Placing", superstructure.autoPlaceCommand(AutoConstants.PLACING_NAMED_COMMAND_TIME));
+        NamedCommands.registerCommand("Placing", superstructure.autoPlaceCommand(ClawConstants.PLACING_NAMED_COMMAND_TIME));
     }
 
         

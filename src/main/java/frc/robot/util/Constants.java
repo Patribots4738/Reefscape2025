@@ -228,8 +228,6 @@ public final class Constants {
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double CAGE_ALIGNMENT_MULTIPLIER = 0.5;
 
-        public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
-
     }
 
     public static final class MAXSwerveModuleConstants {
@@ -455,6 +453,8 @@ public final class Constants {
         public static final double OUTTAKE_PERCENT = -0.2;
 
         public static final double CLAW_LENGTH_METERS = Units.inchesToMeters(11.0);
+
+        public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
     }
 
