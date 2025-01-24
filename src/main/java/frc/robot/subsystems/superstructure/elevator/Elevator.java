@@ -93,8 +93,16 @@ public class Elevator extends SubsystemBase {
         return setPositionCommand(() -> position);
     }   
 
+    public boolean atPosition(double position) {
+        return MathUtil.isNear(position, inputs.leaderPositionMeters, ElevatorConstants.ELEVATOR_DEADBAND_METERS);
+    }
+
     public boolean atTargetPosition() {
-        return MathUtil.isNear(targetPosition, inputs.leaderPositionMeters, ElevatorConstants.ELEVATOR_DEADBAND_METERS);
+        return atPosition(targetPosition);
+    }
+
+    public double getPosition() {
+        return inputs.leaderPositionMeters;
     }
 
     public double getCharacterizationVelocity() {

@@ -41,7 +41,9 @@ import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClawConstants;
 import frc.robot.util.Constants.OIConstants;
+import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
+import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.PatriBoxController;
 
 import frc.robot.util.Constants.ElevatorConstants;
@@ -64,6 +66,7 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Climb climb;
     private final Superstructure superstructure;
+    private final Alignment alignment;
 
     public static Field2d field2d = new Field2d();
 
@@ -104,7 +107,9 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-        superstructure = new Superstructure(claw, elevator, wrist, climb);
+        superstructure = new Superstructure(claw, elevator, wrist, climb, () -> PoseCalculations.nearReef(swerve.getPose()));
+
+        alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
 
@@ -169,8 +174,15 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings(){
-        configureDriverBindings(driver);
-        configureOperatorBindings(operator);
+        switch(OIConstants.DRIVER_MODE) {
+            case DEV:
+                configureDevBindings(driver);
+                break;
+            default:
+                configureDriverBindings(driver);
+                configureOperatorBindings(operator);
+                break;
+        }
     }
 
     private void configureTimedEvents() {}
@@ -187,6 +199,9 @@ public class RobotContainer {
                         : 180))
             ), swerve)
         );
+
+        controller.a()
+            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
       
     }
 
@@ -195,10 +210,10 @@ public class RobotContainer {
         controller.povUp()
             .onTrue(superstructure.setArmPosition(ArmPosition.L4));
 
-        controller.povLeft()
+        controller.povRight()
             .onTrue(superstructure.setArmPosition(ArmPosition.L3));
 
-        controller.povRight()
+        controller.povLeft()
             .onTrue(superstructure.setArmPosition(ArmPosition.L2));
         
         controller.povDown()
@@ -210,11 +225,60 @@ public class RobotContainer {
         controller.rightTrigger()
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
 
-        controller.rightBumper()
-            .onTrue(superstructure.outtakeCommand(controller::getRightBumper));
+    }
+
+    private void configureDevBindings(PatriBoxController controller) {
+
+        controller.start().onTrue(
+            Commands.runOnce(() -> swerve.resetOdometry(
+                new Pose2d(
+                    swerve.getPose().getTranslation(), 
+                    Rotation2d.fromDegrees(
+                        Robot.isRedAlliance() 
+                        ? 0 
+                        : 180))
+            ), swerve)
+        );
+
+        controller.a()
+            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+
+        controller.y()
+            .whileTrue(superstructure.setArmPosition(ArmPosition.L3ALGAE));
+
+        controller.x()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2ALGAE));
+
+        controller.b()
+            .onTrue(superstructure.climbReadyCommand())
+            .onFalse(superstructure.climbFinalCommand());
+
+        controller.rightStick()
+            .toggleOnTrue(alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
         controller.leftBumper()
-            .onTrue(superstructure.stowCommand().alongWith(claw.stopCommand()));
+            .onTrue(alignment.updateIndexCommand(-1));
+
+        controller.rightBumper()
+            .onTrue(alignment.updateIndexCommand(1));
+
+        controller.povUp()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+
+        controller.povRight()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
+
+        controller.povLeft()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
+        
+        controller.povDown()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+
+        controller.leftTrigger()
+            .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
+
+        controller.rightTrigger()
+            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
 
     }
 

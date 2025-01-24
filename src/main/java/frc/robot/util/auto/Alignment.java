@@ -1,6 +1,5 @@
 package frc.robot.util.auto;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -138,8 +137,8 @@ public class Alignment {
                 node.getRotation());
         double distance = currentPose.getTranslation().getDistance(centerPose.getTranslation());
         // Get desired position from face angle
-        double x = centerPose.getX() - distance * node.getRotation().getCos();
-        double y = centerPose.getY() - distance * node.getRotation().getSin();
+        double x = centerPose.getX() + distance * node.getRotation().getCos();
+        double y = centerPose.getY() + distance * node.getRotation().getSin();
         Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
         return getAutoSpeeds(desiredPose);
     }
@@ -167,8 +166,8 @@ public class Alignment {
         }
         // Get velocity vector components via face angle
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-            axis * reefFace.getRotation().getCos(),
-            axis * reefFace.getRotation().getSin(),
+            -axis * reefFace.getRotation().getCos(),
+            -axis * reefFace.getRotation().getSin(),
             0,
             swerve.getPose().getRotation()
         );

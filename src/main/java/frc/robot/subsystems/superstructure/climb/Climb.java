@@ -50,6 +50,7 @@ public class Climb extends SubsystemBase {
     }
 
     public void setPosition(double position) {
+        position = MathUtil.clamp(position, ClimbConstants.CLIMB_MIN_ANGLE_RADIANS, ClimbConstants.CLIMB_MAX_ANGLE_RADIANS);
         targetPosition = position;
         io.setPosition(position);
 
@@ -79,8 +80,16 @@ public class Climb extends SubsystemBase {
         return setPositionCommand(finalPosition::get);
     }
 
+    public boolean atPosition(double position) {
+        return MathUtil.isNear(position, inputs.leaderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
+    }
+
     public boolean atTargetPosition() {
-        return MathUtil.isNear(targetPosition, inputs.leaderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
+        return atPosition(targetPosition);
+    }
+
+    public double getPosition() {
+        return inputs.leaderPositionRads;
     }
 
     public double getCharacterizationVelocity() {
