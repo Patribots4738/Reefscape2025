@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.7239,
-  "robotLength": 0.7239,
+  "robotWidth": 0.788,
+  "robotLength": 0.788,
   "holonomicMode": true,
   "pathFolders": [
     "Starting",
@@ -10,8 +10,8 @@
     "Coral Station"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 4.85,
-  "defaultMaxAccel": 14.0,
+  "defaultMaxVel": 3.5,
+  "defaultMaxAccel": 9.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 817.0,
   "defaultNominalVoltage": 12.0,

@@ -9,6 +9,8 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Robot;
+import frc.robot.Robot.GameMode;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
@@ -110,7 +112,9 @@ public class Superstructure {
                     transitionWrist(() -> position.wristPose), 
                     wrist.setPositionCommand(() -> position.wristPose), 
                     () -> 
-                        (PoseCalculations.nearReef(robotPoseSupplier.get()) || position.wristPose < wristMinSafe.get()) 
+                        (PoseCalculations.nearReef(robotPoseSupplier.get()) 
+                            || position.wristPose < wristMinSafe.get()
+                            || Robot.gameMode == GameMode.AUTONOMOUS) 
                         && !elevator.atPosition(position.elevatorPose)
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> position.elevatorPose),
@@ -180,8 +184,7 @@ public class Superstructure {
         return
             Commands.sequence(
                 Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
-                claw.outtakeTimeCommand(clawPlaceTime.get()),
-                setArmPosition(ArmPosition.STOW)
+                claw.outtakeTimeCommand(clawPlaceTime.get())
             );
     }
 
