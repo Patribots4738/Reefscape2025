@@ -106,7 +106,9 @@ public class Superstructure {
                 Commands.either(
                     transitionWrist(() -> position.wristPose), 
                     wrist.setPositionCommand(() -> position.wristPose), 
-                    () -> (PoseCalculations.nearReef(robotPoseSupplier.get()) || position.wristPose < wristMinSafe.get()) && !elevator.atPosition(position.elevatorPose)
+                    () -> 
+                        (PoseCalculations.nearReef(robotPoseSupplier.get()) || position.wristPose < wristMinSafe.get()) 
+                        && !elevator.atPosition(position.elevatorPose)
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> position.elevatorPose),
                 wrist.setPositionCommand(() -> position.wristPose)

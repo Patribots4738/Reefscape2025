@@ -467,9 +467,9 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(5.5) / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 60.0 * Units.inchesToMeters(5.5) / GEAR_RATIO;
 
-        public static final double ELEVATOR_P = 0.7;
+        public static final double ELEVATOR_P = 0.82;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.05;
+        public static final double ELEVATOR_D = 0.075;
         public static final double ELEVATOR_S = 0.10058799999998883;
         public static final double ELEVATOR_G = 0.0;
 
