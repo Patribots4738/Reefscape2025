@@ -167,7 +167,7 @@ public final class Constants {
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
         public static final double XY_CORRECTION_P = 4;
-        public static final double XY_CORRECTION_I = 0.0125;
+        public static final double XY_CORRECTION_I = 0.0;
         public static final double XY_CORRECTION_D = 0.0125;
 
         public static final double ROTATION_CORRECTION_P = 3.725;
@@ -233,32 +233,26 @@ public final class Constants {
     public static final class MAXSwerveModuleConstants {
         // https://www.revrobotics.com/rev-21-3005/
         private enum SwerveGearing {
-            LOW         (12, 22, 4.12, 4.92),
-            MEDIUM      (13, 22, 4.46, 5.33),
-            HIGH        (14, 22, 4.8, 5.5/*5.74*/),
+            LOW         (12, 22),
+            MEDIUM      (13, 22),
+            HIGH        (14, 22),
 
-            EXTRA_HIGH_1(14, 21, 5.03, 6.01),
-            EXTRA_HIGH_2(14, 20, 5.28, 6.32),
-            EXTRA_HIGH_3(15, 20, 5.66, 6.77),
-            EXTRA_HIGH_4(16, 20, 6.04, 7.22),
-            EXTRA_HIGH_5(16, 19, 6.36, 7.60);
+            EXTRA_HIGH_1(14, 21),
+            EXTRA_HIGH_2(14, 20),
+            EXTRA_HIGH_3(15, 20),
+            EXTRA_HIGH_4(16, 20),
+            EXTRA_HIGH_5(16, 19);
 
             private final double 
                 pinionTeeth, 
-                spurTeeth, 
-                maxSpeedNeo,
-                maxSpeedVortex;
+                spurTeeth;
 
             SwerveGearing(
                 int pinionTeeth, 
-                int spurTeeth, 
-                double maxSpeedNeo,
-                double maxSpeedVortex)
+                int spurTeeth)
             {
                 this.pinionTeeth = pinionTeeth;
                 this.spurTeeth = spurTeeth;
-                this.maxSpeedNeo = maxSpeedNeo;
-                this.maxSpeedVortex = maxSpeedVortex;
             }
             
         }
@@ -474,14 +468,13 @@ public final class Constants {
         public static final double CURRENT_LIMIT = 60.0;
 
         public static final double GEAR_RATIO = 7.75;
-        public static final double ELEVATOR_BASE_HEIGHT_METERS = Units.inchesToMeters(31.25);
         public static final double MAX_DISPLACEMENT_METERS = 0.5831193316;
-        public static final double POSITION_CONVERSION_FACTOR = 1.0 / GEAR_RATIO;
-        public static final double VELOCITY_CONVERSION_FACTOR = 60.0 / GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(5.5) / GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 60.0 * Units.inchesToMeters(5.5) / GEAR_RATIO;
 
-        public static final double ELEVATOR_P = 2.0;
+        public static final double ELEVATOR_P = 0.82;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.15;
+        public static final double ELEVATOR_D = 0.075;
         public static final double ELEVATOR_S = 0.10058799999998883;
         public static final double ELEVATOR_G = 0.0;
 
