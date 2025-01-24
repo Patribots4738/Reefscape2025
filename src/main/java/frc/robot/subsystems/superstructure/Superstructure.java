@@ -155,11 +155,7 @@ public class Superstructure {
     }
 
     public Command autoIntakeStopCommand(){
-        return
-            Commands.sequence(
-                claw.stopCommand(),
-                setArmPosition(ArmPosition.STOW)
-            );
+        return claw.stopCommand();
     }
 
     public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
