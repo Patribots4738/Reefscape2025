@@ -393,7 +393,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("L2", superstructure.setArmPosition(ArmPosition.L2));
         NamedCommands.registerCommand("L3", superstructure.setArmPosition(ArmPosition.L3));
         NamedCommands.registerCommand("L4", superstructure.setArmPosition(ArmPosition.L4));
-        NamedCommands.registerCommand("Placing", superstructure.autoPlaceCommand(ClawConstants.PLACING_NAMED_COMMAND_TIME));
+        NamedCommands.registerCommand("Placing", superstructure.autoPlaceCommand());
     }
 
         

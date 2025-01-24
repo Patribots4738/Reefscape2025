@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Constants.ClawConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
@@ -59,6 +60,14 @@ public class Claw extends SubsystemBase {
 
     public Command outtakeCommand() {
         return setPercentCommand(outtakePercent::get);
+    }
+
+    public Command outtakeTimeCommand(){
+        return Commands.sequence(
+            outtakeCommand(),
+            Commands.waitSeconds(ClawConstants.OUTTAKE_TIME),
+            stopCommand()
+        );
     }
 
     public Command stopCommand() {

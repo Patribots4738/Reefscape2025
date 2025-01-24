@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.superstructure.claw.Claw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
+import frc.robot.util.Constants.ClawConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
@@ -45,6 +46,9 @@ public class Superstructure {
     private final LoggedTunableNumber wristL2 = new LoggedTunableNumber("Wrist/L2Postition", WristConstants.L2_POSITION_RADIANS);
     private final LoggedTunableNumber wristL3 = new LoggedTunableNumber("Wrist/L3Postition", WristConstants.L3_POSITION_RADIANS);
     private final LoggedTunableNumber wristL4 = new LoggedTunableNumber("Wrist/L4Postition", WristConstants.L4_POSITION_RADIANS);
+
+    private final LoggedTunableNumber clawPlaceTime = new LoggedTunableNumber("Claw/PlaceTime", ClawConstants.PLACING_NAMED_COMMAND_TIME);
+
 
     public Superstructure(Claw claw, Elevator elevator, Wrist wrist, Climb climb, BooleanSupplier nearReefSupplier) {
         this.claw = claw;
@@ -163,12 +167,11 @@ public class Superstructure {
             );
     }
 
-    public Command autoPlaceCommand(double time) {
+    public Command autoPlaceCommand() {
         return
             Commands.sequence(
-                Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
-                claw.outtakeCommand(),
-                claw.stopCommand(),
+                Commands.waitSeconds(clawPlaceTime.get()),
+                claw.outtakeTimeCommand(),
                 setArmPosition(ArmPosition.STOW)
             );
     }
