@@ -35,7 +35,6 @@ public class Vision extends SubsystemBase {
     private final LoggedTunableNumber radStds1TagLarge = new LoggedTunableNumber("Vision/RaStds1TagLarge", Units.degreesToRadians(7));
     private final LoggedTunableNumber minSingleTagArea = new LoggedTunableNumber("Vision/minSingleTagArea", 0.14);
 
-
     private final SwerveDrivePoseEstimator poseEstimator;
 
     public Vision(VisionIO io, SwerveDrivePoseEstimator poseEstimator) {
@@ -49,8 +48,13 @@ public class Vision extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Vision", inputs);
 
+        if (shouldUseMT1()) {
+            io.setMegaTag2(false);
+        } else {
+            io.setMegaTag2(true);
+        }
+
         if (!FieldConstants.IS_SIMULATION) {
-            io.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
             updatePoseEstimator();
         }
     }
@@ -140,6 +144,10 @@ public class Vision extends SubsystemBase {
             return false;
         }
         return true;
+    }
+
+    private boolean shouldUseMT1() {
+        return Robot.gameMode == GameMode.DISABLED;
     }
 
 }

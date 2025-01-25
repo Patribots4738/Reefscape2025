@@ -9,7 +9,7 @@ import frc.robot.util.hardware.limelight.LimelightHelpers.RawFiducial;
 public class Limelight {
     
     private final String name;
-    private final boolean useMT2;
+    private boolean useMT2;
 
     private PoseEstimate latestPoseEstimate;
 
@@ -105,4 +105,11 @@ public class Limelight {
         return latestPoseEstimate.rawFiducials;
     }
 
+    public boolean getUseMT2() {
+        return useMT2;
+    }
+    
+    public void setUseMT2(boolean megaTag2) {
+        useMT2 = megaTag2;
+    }
 }
