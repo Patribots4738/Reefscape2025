@@ -221,7 +221,7 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "4-J4-CS1-K4-CS1-L4-CS1-A4"
+            "4-J4-CS1-K4-CS1-L4-CS1-A4-CS1"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
