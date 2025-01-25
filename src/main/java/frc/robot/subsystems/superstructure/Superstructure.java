@@ -167,10 +167,7 @@ public class Superstructure {
                     () -> this.armPosition.scoring
                 ),
                 claw.outtakeCommand(),
-                Commands.race(
-                    Commands.waitSeconds(clawPlaceTime.get()), 
-                    Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean())
-                ),
+                Commands.waitSeconds(clawPlaceTime.get()),
                 claw.stopCommand(),
                 setArmPosition(ArmPosition.STOW)
             );

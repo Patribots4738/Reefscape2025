@@ -166,9 +166,9 @@ public final class Constants {
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
-        public static final double XY_CORRECTION_P = 4;
+        public static final double XY_CORRECTION_P = 9.0;
         public static final double XY_CORRECTION_I = 0.0;
-        public static final double XY_CORRECTION_D = 0.0125;
+        public static final double XY_CORRECTION_D = 0.2;
 
         public static final double ROTATION_CORRECTION_P = 3.725;
         public static final double ROTATION_CORRECTION_I = 0;
