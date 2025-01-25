@@ -33,8 +33,6 @@ public interface VisionIO {
 
     public default void setBackPipelineIndex(double index) {}
 
-    public default void setRobotOrientation(double yawDegrees) {}
-
     public default void setMegaTag2(boolean megaTag2) {}
     
 }

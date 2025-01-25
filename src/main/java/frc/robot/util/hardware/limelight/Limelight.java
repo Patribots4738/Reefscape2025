@@ -108,6 +108,7 @@ public class Limelight {
     public boolean getUseMT2() {
         return useMT2;
     }
+    
     public void setUseMT2(boolean megaTag2) {
         useMT2 = megaTag2;
     }

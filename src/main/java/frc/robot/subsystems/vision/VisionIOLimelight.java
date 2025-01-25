@@ -1,5 +1,8 @@
 package frc.robot.subsystems.vision;
 
+import java.util.function.Supplier;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.util.hardware.limelight.Limelight;
 import frc.robot.util.hardware.limelight.LimelightHelpers.RawFiducial;
 
@@ -8,12 +11,19 @@ public class VisionIOLimelight implements VisionIO {
     private final Limelight frontLimelight;
     private final Limelight backLimelight;
 
-    public VisionIOLimelight() {
+    private final Supplier<Pose2d> robotPoseSupplier;
+
+    public VisionIOLimelight(Supplier<Pose2d> robotPoseSupplier) {
         frontLimelight = new Limelight("Front3G", false);
         backLimelight = new Limelight("Back3G", false);
+
+        this.robotPoseSupplier = robotPoseSupplier;
     }
 
     public void updateInputs(VisionIOInputs inputs) {
+        if (frontLimelight.getUseMT2()) {
+            frontLimelight.setRobotOrientation(robotPoseSupplier.get().getRotation().getDegrees());
+        }
         frontLimelight.refreshPoseEstimate();
         inputs.frontRobotPoseValid = frontLimelight.hasValidPoseEstimate();
         inputs.frontRobotPose = frontLimelight.getRobotPose();
@@ -29,6 +39,9 @@ public class VisionIOLimelight implements VisionIO {
             inputs.frontIds[i] = fid.id;
         }
 
+        if (backLimelight.getUseMT2()) {
+            backLimelight.setRobotOrientation(robotPoseSupplier.get().getRotation().getDegrees());
+        }
         backLimelight.refreshPoseEstimate();
         inputs.backRobotPoseValid = backLimelight.hasValidPoseEstimate();
         inputs.backRobotPose = backLimelight.getRobotPose();
@@ -51,11 +64,6 @@ public class VisionIOLimelight implements VisionIO {
 
     public void setBackPipelineIndex(int index) {
         backLimelight.setPipelineIndex(index);
-    }
-
-    public void setRobotOrientation(double yaw) {
-        frontLimelight.setRobotOrientation(yaw);
-        backLimelight.setRobotOrientation(yaw);
     }
 
     public void setMegaTag2(boolean megaTag2) {
