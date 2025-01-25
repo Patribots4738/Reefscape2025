@@ -166,36 +166,41 @@ public final class Constants {
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
-        public static final double XY_CORRECTION_P = 9.0;
-        public static final double XY_CORRECTION_I = 0.0;
-        public static final double XY_CORRECTION_D = 0.2;
 
-        public static final double ROTATION_CORRECTION_P = 3.725;
-        public static final double ROTATION_CORRECTION_I = 0;
-        public static final double ROTATION_CORRECTION_D = 0;
-
-        public static final GainConstants XY_GAINS = new GainConstants(
-            AutoConstants.XY_CORRECTION_P, 
-            AutoConstants.XY_CORRECTION_I, 
-            AutoConstants.XY_CORRECTION_D
+        public static final GainConstants AUTO_XY_GAINS = new GainConstants(
+            9.0, 
+            0.0, 
+            0.2
         );
 
-        public static final GainConstants THETA_GAINS = new GainConstants(
-            AutoConstants.ROTATION_CORRECTION_P, 
-            AutoConstants.ROTATION_CORRECTION_I, 
-            AutoConstants.ROTATION_CORRECTION_D
+        public static final GainConstants TELE_XY_GAINS = new GainConstants(
+            4.0, 
+            0, 
+            0.0
+        );
+
+        public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
+            3.725, 
+            0, 
+            0
+        );
+
+        public static final GainConstants TELE_THETA_GAINS = new GainConstants(
+            3.725, 
+            0, 
+            0
         );
 
         public static final PIDController XY_PID = new PIDController(
-            AutoConstants.XY_GAINS.getP(),
-            AutoConstants.XY_GAINS.getI(),
-            AutoConstants.XY_GAINS.getD()
+            AutoConstants.TELE_XY_GAINS.getP(),
+            AutoConstants.TELE_XY_GAINS.getI(),
+            AutoConstants.TELE_XY_GAINS.getD()
         );
 
         public static final ProfiledPIDController THETA_PID = new ProfiledPIDController(
-            AutoConstants.THETA_GAINS.getP(),
-            AutoConstants.THETA_GAINS.getI(),
-            AutoConstants.THETA_GAINS.getD(),
+            AutoConstants.TELE_THETA_GAINS.getP(),
+            AutoConstants.TELE_THETA_GAINS.getI(),
+            AutoConstants.TELE_THETA_GAINS.getD(),
             new TrapezoidProfile.Constraints(
                 AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
                 AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)) 
@@ -211,13 +216,13 @@ public final class Constants {
 
         public static PPHolonomicDriveController AUTO_HDC = new PPHolonomicDriveController(
             new PIDConstants(
-                AutoConstants.XY_GAINS.getP(),
-                AutoConstants.XY_GAINS.getI(),
-                AutoConstants.XY_GAINS.getD()),
+                AutoConstants.AUTO_XY_GAINS.getP(),
+                AutoConstants.AUTO_XY_GAINS.getI(),
+                AutoConstants.AUTO_XY_GAINS.getD()),
             new PIDConstants(
-                AutoConstants.THETA_GAINS.getP(),
-                AutoConstants.THETA_GAINS.getI(),
-                AutoConstants.THETA_GAINS.getD(),
+                AutoConstants.AUTO_THETA_GAINS.getP(),
+                AutoConstants.AUTO_THETA_GAINS.getI(),
+                AutoConstants.AUTO_THETA_GAINS.getD(),
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
