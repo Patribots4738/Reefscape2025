@@ -1,6 +1,8 @@
 package frc.robot.subsystems.superstructure.wrist;
 
 import frc.robot.util.Constants.WristConstants;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.ThroughBoreEncoder;
@@ -33,6 +35,7 @@ public class WristIOKraken implements WristIO {
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-WristConstants.CURRENT_LIMIT, WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
+        WristConstants.wristLogged.onChanged(Commands.run(() -> motor.setGains(WristConstants.wristLogged.get())));
     }
 
     @Override

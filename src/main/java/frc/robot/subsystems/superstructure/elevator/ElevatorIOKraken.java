@@ -1,5 +1,7 @@
 package frc.robot.subsystems.superstructure.elevator;
 
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 
@@ -21,6 +23,7 @@ public class ElevatorIOKraken implements ElevatorIO {
         motor.setSupplyCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-ElevatorConstants.CURRENT_LIMIT, ElevatorConstants.CURRENT_LIMIT);
+        ElevatorConstants.elevatorLogged.onChanged(Commands.run(() -> motor.setGains(ElevatorConstants.elevatorLogged.get())));
     }
 
     private void configMotors() {

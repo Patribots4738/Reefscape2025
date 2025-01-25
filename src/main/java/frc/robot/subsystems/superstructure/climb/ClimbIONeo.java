@@ -1,6 +1,7 @@
 package frc.robot.subsystems.superstructure.climb;
 
 import frc.robot.util.hardware.rev.Neo;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.util.Constants.ClimbConstants;
 
 public class ClimbIONeo implements ClimbIO {
@@ -20,6 +21,7 @@ public class ClimbIONeo implements ClimbIO {
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setPID(ClimbConstants.CLIMB_GAINS);
         motor.setSmartCurrentLimit((int) ClimbConstants.CURRENT_LIMIT);
+        ClimbConstants.climbLogged.onChanged(Commands.run(() -> motor.setPID(ClimbConstants.climbLogged.get())));
     }
 
     private void configMotors() {

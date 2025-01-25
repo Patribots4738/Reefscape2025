@@ -24,6 +24,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
+import frc.robot.commands.logging.NTLoggedGainConstants;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.custom.ReefSide;
@@ -461,6 +462,9 @@ public final class Constants {
 
     public static final class ElevatorConstants {
 
+        public static final NTLoggedGainConstants elevatorLogged = new NTLoggedGainConstants(ElevatorConstants.ELEVATOR_GAINS, "Elevator");
+
+
         public static final int ELEVATOR_LEADER_CAN_ID = 10;
         public static final int ELEVATOR_FOLLOWER_CAN_ID = 11;
 
@@ -504,6 +508,7 @@ public final class Constants {
 
         public static final int WRIST_CAN_ID = 12;
         public static final int WRIST_ENCODER_DIO_PIN = 0;
+        public static final NTLoggedGainConstants wristLogged = new NTLoggedGainConstants(WristConstants.WRIST_GAINS, "Wrist");
 
         public static final boolean INVERT_MOTOR = false;
 
@@ -553,6 +558,8 @@ public final class Constants {
     }
 
     public static final class ClimbConstants {
+
+        public static final NTLoggedGainConstants climbLogged = new NTLoggedGainConstants(ClimbConstants.CLIMB_GAINS, "Climb");
 
         public static final int CLIMB_LEADER_CAN_ID = 13;
         public static final int CLIMB_FOLLOWER_CAN_ID = 14;

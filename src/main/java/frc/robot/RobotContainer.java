@@ -26,6 +26,7 @@ import frc.robot.commands.characterization.StaticCharacterization;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.logging.NTGainTuner;
+import frc.robot.commands.logging.NTLoggedGainConstants;
 import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
@@ -163,7 +164,8 @@ public class RobotContainer {
                 climb::runCharacterization, 
                 climb::getCharacterizationVelocity));
 
-        new NTGainTuner().schedule();
+        new NTGainTuner().schedule(); // kill this
+        //new NTLoggedGainConstants().schedule(); // make this work
         
         prepareNamedCommands();
 

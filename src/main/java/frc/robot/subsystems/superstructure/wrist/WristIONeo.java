@@ -1,5 +1,7 @@
 package frc.robot.subsystems.superstructure.wrist;
 
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.hardware.rev.Neo;
 
@@ -19,6 +21,7 @@ public class WristIONeo implements WristIO {
         motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setSmartCurrentLimit((int) WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
+        WristConstants.wristLogged.onChanged(Commands.run(() -> motor.setPID(WristConstants.wristLogged.get())));
     }
 
     @Override

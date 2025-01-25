@@ -2,19 +2,24 @@ package frc.robot.subsystems.superstructure.climb;
 
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.Constants.ClimbConstants;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class ClimbIOKraken implements ClimbIO {
     
     private final Kraken leader;
     private final Kraken follower;
+    
+    
+    
 
     public ClimbIOKraken() {
         leader = new Kraken(ClimbConstants.CLIMB_LEADER_CAN_ID, true, false);
         follower = new Kraken(ClimbConstants.CLIMB_FOLLOWER_CAN_ID, true, false);
+        
         configMotors();
     }
 
-    private void configMotor(Kraken motor) {
+    private void configMotor(Kraken motor){
         motor.setMotorInverted(true);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR);
@@ -23,6 +28,7 @@ public class ClimbIOKraken implements ClimbIO {
         motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-ClimbConstants.CURRENT_LIMIT, ClimbConstants.CURRENT_LIMIT);
+     ClimbConstants.climbLogged.onChanged(Commands.run(() -> motor.setGains(ClimbConstants.climbLogged.get())));
     }
 
     private void configMotors() {
@@ -67,5 +73,7 @@ public class ClimbIOKraken implements ClimbIO {
         leader.setBrakeMode(brake);
         follower.setBrakeMode(brake);
     }
+
+   
 
 }
