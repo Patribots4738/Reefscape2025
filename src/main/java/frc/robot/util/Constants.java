@@ -728,7 +728,7 @@ public final class Constants {
 
         public static final double FIELD_MAX_LENGTH = 17.55;
         // 2d height
-        public static final double FIELD_MAX_HEIGHT = 8.067;
+        public static final double FIELD_MAX_HEIGHT = 8.0518;
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 
