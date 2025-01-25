@@ -44,15 +44,15 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if (shouldUseMT1()) {
+            io.setUseMegaTag2(false);
+        } else {
+            io.setUseMegaTag2(true);
+            io.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+        }
 
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Vision", inputs);
-
-        if (shouldUseMT1()) {
-            io.setMegaTag2(false);
-        } else {
-            io.setMegaTag2(true);
-        }
 
         if (!FieldConstants.IS_SIMULATION) {
             updatePoseEstimator();

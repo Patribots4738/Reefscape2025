@@ -29,10 +29,12 @@ public interface VisionIO {
 
     public default void updateInputs(VisionIOInputs inputs) {}
     
-    public default void setFrontPipelineIndex(double index) {}
+    public default void setFrontPipelineIndex(int index) {}
 
-    public default void setBackPipelineIndex(double index) {}
+    public default void setBackPipelineIndex(int index) {}
 
-    public default void setMegaTag2(boolean megaTag2) {}
+    public default void setRobotOrientation(double yawDegrees) {}
+
+    public default void setUseMegaTag2(boolean megaTag2) {}
     
 }
