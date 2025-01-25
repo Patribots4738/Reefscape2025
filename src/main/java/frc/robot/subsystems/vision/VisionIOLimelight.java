@@ -9,8 +9,8 @@ public class VisionIOLimelight implements VisionIO {
     private final Limelight backLimelight;
 
     public VisionIOLimelight() {
-        frontLimelight = new Limelight("Front3G", true);
-        backLimelight = new Limelight("Back3G", true);
+        frontLimelight = new Limelight("Front3G", false);
+        backLimelight = new Limelight("Back3G", false);
     }
 
     public void updateInputs(VisionIOInputs inputs) {
@@ -58,4 +58,8 @@ public class VisionIOLimelight implements VisionIO {
         backLimelight.setRobotOrientation(yaw);
     }
 
+    public void setMegaTag2(boolean megaTag2) {
+        frontLimelight.setUseMT2(megaTag2);
+        backLimelight.setUseMT2(megaTag2);
+    }
 }

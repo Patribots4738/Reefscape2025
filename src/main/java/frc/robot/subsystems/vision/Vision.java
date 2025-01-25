@@ -49,6 +49,10 @@ public class Vision extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Vision", inputs);
 
+        if (Robot.gameMode == Robot.GameMode.DISABLED) {
+            io.setMegaTag2(false);
+        } else io.setMegaTag2(true);
+
         if (!FieldConstants.IS_SIMULATION) {
             io.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
             updatePoseEstimator();
