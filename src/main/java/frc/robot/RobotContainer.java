@@ -68,7 +68,6 @@ public class RobotContainer {
     public static Field2d field2d = new Field2d();
 
     private PathPlannerStorage pathPlannerStorage;
-    private static HDCTuner HDCTuner;
 
     // Draggables
     @AutoLogOutput (key = "Draggables/Components3d")
@@ -124,9 +123,9 @@ public class RobotContainer {
             () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
         ));
 
-        HDCTuner = new HDCTuner(
-            AutoConstants.TELE_HDC.getXController(),
-            AutoConstants.TELE_HDC.getThetaController());
+        // HDCTuner = new HDCTuner(
+        //     AutoConstants.TELE_HDC.getXController(),
+        //     AutoConstants.TELE_HDC.getThetaController());
 
         configureButtonBindings();
         configureTimedEvents();
@@ -337,35 +336,35 @@ public class RobotContainer {
         return pathPlannerStorage.getSelectedAuto();
     }
 
-    @SuppressWarnings("unused")
-    private void configureHDCBindings(PatriBoxController controller) {
-        controller.pov(0, 270, testButtonBindingLoop)
-            .onTrue(HDCTuner.controllerDecrementCommand());
+    // @SuppressWarnings("unused")
+    // private void configureHDCBindings(PatriBoxController controller) {
+    //     controller.pov(0, 270, testButtonBindingLoop)
+    //         .onTrue(HDCTuner.controllerDecrementCommand());
 
-        controller.pov(0, 90, testButtonBindingLoop)
-            .onTrue(HDCTuner.controllerIncrementCommand());
+    //     controller.pov(0, 90, testButtonBindingLoop)
+    //         .onTrue(HDCTuner.controllerIncrementCommand());
 
-        controller.pov(0, 0, testButtonBindingLoop)
-            .onTrue(HDCTuner.increaseCurrentConstantCommand(.1));
+    //     controller.pov(0, 0, testButtonBindingLoop)
+    //         .onTrue(HDCTuner.increaseCurrentConstantCommand(.1));
 
-        controller.pov(0, 180, testButtonBindingLoop)
-            .onTrue(HDCTuner.increaseCurrentConstantCommand(-.1));
+    //     controller.pov(0, 180, testButtonBindingLoop)
+    //         .onTrue(HDCTuner.increaseCurrentConstantCommand(-.1));
 
-        controller.rightBumper(testButtonBindingLoop)
-            .onTrue(HDCTuner.constantIncrementCommand());
+    //     controller.rightBumper(testButtonBindingLoop)
+    //         .onTrue(HDCTuner.constantIncrementCommand());
 
-        controller.leftBumper(testButtonBindingLoop)
-            .onTrue(HDCTuner.constantDecrementCommand());
+    //     controller.leftBumper(testButtonBindingLoop)
+    //         .onTrue(HDCTuner.constantDecrementCommand());
 
-        controller.a(testButtonBindingLoop)
-            .onTrue(HDCTuner.logCommand());
+    //     controller.a(testButtonBindingLoop)
+    //         .onTrue(HDCTuner.logCommand());
 
-        controller.x(testButtonBindingLoop)
-            .onTrue(HDCTuner.multiplyPIDCommand(2));
+    //     controller.x(testButtonBindingLoop)
+    //         .onTrue(HDCTuner.multiplyPIDCommand(2));
 
-        controller.b(testButtonBindingLoop)
-            .onTrue(HDCTuner.multiplyPIDCommand(.5));
-    }
+    //     controller.b(testButtonBindingLoop)
+    //         .onTrue(HDCTuner.multiplyPIDCommand(.5));
+    // }
 
     public void onDisabled() {
         swerve.stopDriving();

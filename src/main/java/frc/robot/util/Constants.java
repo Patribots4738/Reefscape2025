@@ -180,6 +180,8 @@ public final class Constants {
             0.0
         );
 
+        public static final NTLoggedGainConstants TeleXYLogged = new NTLoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
+
         public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
             3.725, 
             0, 
@@ -192,11 +194,14 @@ public final class Constants {
             0
         );
 
+        public static final NTLoggedGainConstants TeleThetaLogged = new NTLoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
+
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.TELE_XY_GAINS.getP(),
             AutoConstants.TELE_XY_GAINS.getI(),
             AutoConstants.TELE_XY_GAINS.getD()
         );
+
 
         public static final ProfiledPIDController THETA_PID = new ProfiledPIDController(
             AutoConstants.TELE_THETA_GAINS.getP(),
