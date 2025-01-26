@@ -163,7 +163,7 @@ public class RobotContainer {
                 climb::runCharacterization, 
                 climb::getCharacterizationVelocity));
 
-        new NTGainTuner().schedule(); // kill this
+        //new NTGainTuner().schedule(); // kill this
         //new NTLoggedGainConstants().schedule(); // make this work
         
         prepareNamedCommands();
