@@ -24,15 +24,12 @@ public class WristIONeo implements WristIO {
     @Override
     public void updateInputs(WristIOInputs inputs) {
         inputs.motorConnected = true;
-        inputs.internalPositionRads = motor.getPosition();
-        inputs.internalVelocityRadsPerSec = motor.getVelocity();
+        inputs.positionRads = motor.getPosition();
+        inputs.velocityRadsPerSec = motor.getVelocity();
         inputs.targetPositionRads = motor.getTargetPosition();
         inputs.appliedOutputVolts = motor.getBusVoltage();
         inputs.supplyCurrentAmps = motor.getOutputCurrent();
         inputs.temperatureCelsius = motor.getMotorTemperature();
-
-        inputs.encoderConnected = true;
-        inputs.encoderPositionRads = motor.getPosition();
     }
 
     @Override
