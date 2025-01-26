@@ -8,9 +8,6 @@ public class ClimbIOKraken implements ClimbIO {
     
     private final Kraken leader;
     private final Kraken follower;
-    
-    
-    
 
     public ClimbIOKraken() {
         leader = new Kraken(ClimbConstants.CLIMB_LEADER_CAN_ID, true, false);
@@ -24,11 +21,11 @@ public class ClimbIOKraken implements ClimbIO {
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR);
         motor.resetEncoder(0);
-        motor.setGains(ClimbConstants.CLIMB_GAINS);
+        motor.setGains(ClimbConstants.CLIMB_LOGGED_GAINS);
         motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-ClimbConstants.CURRENT_LIMIT, ClimbConstants.CURRENT_LIMIT);
-     ClimbConstants.climbLogged.onChanged(Commands.run(() -> motor.setGains(ClimbConstants.climbLogged.get())));
+        ClimbConstants.climbLogged.onChanged(Commands.run(() -> motor.setGains(ClimbConstants.climbLogged.get())));
     }
 
     private void configMotors() {

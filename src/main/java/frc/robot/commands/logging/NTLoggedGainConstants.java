@@ -36,10 +36,16 @@ public class NTLoggedGainConstants {
     }
 
     public Trigger onChanged() {
-        return pValue.onChanged().or(iValue.onChanged()).or(dValue.onChanged())
-        .or(ffValue.onChanged()).or(iZoneValue.onChanged())
-        .or(minOutputValue.onChanged()).or(maxOutputValue.onChanged())
-        .or(sValue.onChanged()).or(vValue.onChanged()).or(gValue.onChanged());
+        return pValue.onChanged()
+        .or(iValue.onChanged())
+        .or(dValue.onChanged())
+        .or(ffValue.onChanged())
+        .or(iZoneValue.onChanged())
+        .or(minOutputValue.onChanged())
+        .or(maxOutputValue.onChanged())
+        .or(sValue.onChanged())
+        .or(vValue.onChanged()).
+        or(gValue.onChanged());
     }
 
     public Trigger onChanged(Command command) {
