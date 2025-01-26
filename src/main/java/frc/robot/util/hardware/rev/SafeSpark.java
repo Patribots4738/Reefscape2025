@@ -160,7 +160,7 @@ public class SafeSpark extends SparkBase {
     @Override
     public RelativeEncoder getEncoder() {
         if (relativeEncoder == null) {
-            relativeEncoder = getEncoder();
+            relativeEncoder = super.getEncoder();
         }
         return relativeEncoder;
     }

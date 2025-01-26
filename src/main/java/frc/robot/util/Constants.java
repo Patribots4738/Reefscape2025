@@ -645,16 +645,16 @@ public final class Constants {
 
         public static Map<String, List<Neo>> initializeMotorGroupMap() {
             // NEO_MOTOR_GROUPS.put("Drive", new ArrayList<Neo>() {{
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.FRONT_LEFT_DRIVING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.FRONT_RIGHT_DRIVING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.REAR_LEFT_DRIVING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.REAR_RIGHT_DRIVING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.FRONT_LEFT_DRIVING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.FRONT_RIGHT_DRIVING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.REAR_LEFT_DRIVING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.REAR_RIGHT_DRIVING_CAN_ID));
             // }});
             // NEO_MOTOR_GROUPS.put("Turn", new ArrayList<Neo>() {{
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.FRONT_LEFT_TURNING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.FRONT_RIGHT_TURNING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.REAR_LEFT_TURNING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.REAR_RIGHT_TURNING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.FRONT_LEFT_TURNING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.FRONT_RIGHT_TURNING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.REAR_LEFT_TURNING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.REAR_RIGHT_TURNING_CAN_ID));
             // }});
 
             return NEO_MOTOR_GROUPS;
