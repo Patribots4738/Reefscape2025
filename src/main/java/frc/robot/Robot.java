@@ -19,7 +19,6 @@ import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.Constants.NeoMotorConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
-import frc.robot.util.hardware.rev.NeoPhysicsSim;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -181,7 +180,6 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void simulationPeriodic() {
-        NeoPhysicsSim.getInstance().run();
         Robot.alliance = DriverStation.getAlliance();
 
         for (Neo neo : NeoMotorConstants.NEO_MOTOR_MAP.values()) {
