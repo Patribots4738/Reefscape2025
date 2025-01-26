@@ -2,6 +2,8 @@ package frc.robot.subsystems.superstructure.climb;
 
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.Constants.ClimbConstants;
+import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.custom.GainConstants;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class ClimbIOKraken implements ClimbIO {
@@ -25,7 +27,6 @@ public class ClimbIOKraken implements ClimbIO {
         motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-ClimbConstants.CURRENT_LIMIT, ClimbConstants.CURRENT_LIMIT);
-        ClimbConstants.climbLogged.onChanged(Commands.run(() -> motor.setGains(ClimbConstants.climbLogged.get())));
     }
 
     private void configMotors() {
@@ -71,6 +72,10 @@ public class ClimbIOKraken implements ClimbIO {
         follower.setBrakeMode(brake);
     }
 
-   
+    @Override
+    public void setGains(GainConstants constants) {
+        leader.setGains(ClimbConstants.climbLogged.get());
+        follower.setGains(ClimbConstants.climbLogged.get());
+    }
 
 }

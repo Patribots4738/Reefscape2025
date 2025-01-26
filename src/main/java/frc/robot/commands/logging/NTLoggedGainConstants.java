@@ -53,7 +53,16 @@ public class NTLoggedGainConstants {
     }
 
     public GainConstants get(){
-        this.gainConstants = new GainConstants(pValue.get(), iValue.get(), dValue.get(), ffValue.get(), iZoneValue.get(), minOutputValue.get(), maxOutputValue.get(), sValue.get(), dValue.get(), gValue.get());
+        this.gainConstants = new GainConstants(pValue.get(), 
+        iValue.get(),
+        dValue.get(), 
+        ffValue.get(), 
+        iZoneValue.get(), 
+        minOutputValue.get(), 
+        maxOutputValue.get(), 
+        sValue.get(), 
+        dValue.get(), 
+        gValue.get());
         return gainConstants;
     }
 

@@ -2,6 +2,9 @@ package frc.robot.subsystems.superstructure.wrist;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import frc.robot.commands.logging.NTLoggedGainConstants;
+import frc.robot.util.custom.GainConstants;
+
 public interface WristIO {
     
     @AutoLog
@@ -27,5 +30,7 @@ public interface WristIO {
     public default void runCharacterization(double input) {}
 
     public default void setBrakeMode(boolean brake) {}
+
+    public default void setGains(GainConstants constants) {}
 
 }

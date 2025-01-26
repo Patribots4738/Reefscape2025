@@ -1,7 +1,9 @@
 package frc.robot.subsystems.superstructure.wrist;
 
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.custom.GainConstants;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.commands.logging.NTLoggedGainConstants;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
@@ -35,7 +37,7 @@ public class WristIOKraken implements WristIO {
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-WristConstants.CURRENT_LIMIT, WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
-        WristConstants.wristLogged.onChanged(Commands.run(() -> motor.setGains(WristConstants.wristLogged.get())));
+
     }
 
     @Override
@@ -70,6 +72,11 @@ public class WristIOKraken implements WristIO {
     @Override
     public void setBrakeMode(boolean brake) {
         motor.setBrakeMode(brake);
+    }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        motor.setGains(WristConstants.wristLogged.get());
     }
 
 }

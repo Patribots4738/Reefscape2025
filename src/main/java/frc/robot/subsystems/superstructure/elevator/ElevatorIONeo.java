@@ -3,6 +3,8 @@ package frc.robot.subsystems.superstructure.elevator;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.ElevatorConstants;
+import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.rev.Neo;
 
 public class ElevatorIONeo implements ElevatorIO {
@@ -21,7 +23,7 @@ public class ElevatorIONeo implements ElevatorIO {
         motor.setPositionConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ElevatorConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setSmartCurrentLimit((int) ElevatorConstants.CURRENT_LIMIT);
-        ElevatorConstants.elevatorLogged.onChanged(Commands.run(() -> motor.setPID(ElevatorConstants.elevatorLogged.get())));
+
         
     }
 
@@ -79,5 +81,12 @@ public class ElevatorIONeo implements ElevatorIO {
         leader.resetEncoder(position);
         follower.resetEncoder(position);
     }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        leader.setPID(ElevatorConstants.elevatorLogged.get());
+        follower.setPID(ElevatorConstants.elevatorLogged.get());
+    }
+
     
 }

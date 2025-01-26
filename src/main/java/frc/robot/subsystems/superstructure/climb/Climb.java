@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.LoggingConstants;
+import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
 import frc.robot.util.custom.LoggedTunableNumber;
 
@@ -35,6 +36,7 @@ public class Climb extends SubsystemBase {
     public Climb(ClimbIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
+        ClimbConstants.climbLogged.onChanged(Commands.run(() -> io.setGains(ClimbConstants.climbLogged.get())));
     }
 
     @Override
