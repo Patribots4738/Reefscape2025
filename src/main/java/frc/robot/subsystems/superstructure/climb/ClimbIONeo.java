@@ -69,7 +69,7 @@ public class ClimbIONeo implements ClimbIO {
         }
     }
 
-        @Override
+    @Override
     public void setGains(GainConstants constants) {
         leader.setPID(ClimbConstants.climbLogged.get());
         follower.setPID(ClimbConstants.climbLogged.get());

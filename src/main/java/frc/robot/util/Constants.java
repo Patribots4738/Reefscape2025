@@ -419,7 +419,7 @@ public final class Constants {
         public static final double DRIVING_S = Robot.isSimulation() ? 0.01453 : 0.07193;
         public static final double DRIVING_V = Robot.isSimulation() ? 0.12362 : 0.11441;
 
-        public static final GainConstants DRIVING_GAINS = new GainConstants(
+        public static final GainConstants DRIVING_LOGGED_GAINS = new GainConstants(
             DRIVING_P,
             DRIVING_I,
             DRIVING_D,
@@ -427,6 +427,8 @@ public final class Constants {
             DRIVING_V,
             0.0
         );
+
+        public static final NTLoggedGainConstants ModuleLogged = new NTLoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_LOGGED_GAINS, "Module");
 
         public static final double TURNING_P = Robot.isSimulation() ? 10.0 : 23.0;
         public static final double TURNING_I = 0.0;

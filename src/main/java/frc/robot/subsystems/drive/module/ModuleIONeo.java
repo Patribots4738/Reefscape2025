@@ -3,7 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems.drive.module;
+import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.MAXSwerveModuleConstants;
+import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.rev.Neo;
 
@@ -138,4 +140,11 @@ public class ModuleIONeo implements ModuleIO {
         driveMotor.setPID(driveGains);
         turnMotor.setPID(turnGains);
     }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        driveMotor.setPID(MK4cSwerveModuleConstants.ModuleLogged.get());
+        turnMotor.setPID(MK4cSwerveModuleConstants.ModuleLogged.get());
+    }
+
 }

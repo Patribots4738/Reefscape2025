@@ -2,6 +2,7 @@ package frc.robot.subsystems.drive.module;
 
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
+import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.CANCoderCustom;
 import frc.robot.util.hardware.phoenix.Kraken;
@@ -61,7 +62,7 @@ public class ModuleIOKraken implements ModuleIO {
 
         turnMotor.setPositionClosedLoopWrappingEnabled(true);
 
-        setGains(MK4cSwerveModuleConstants.DRIVING_GAINS, MK4cSwerveModuleConstants.TURNING_GAINS);
+        setGains(MK4cSwerveModuleConstants.DRIVING_LOGGED_GAINS, MK4cSwerveModuleConstants.TURNING_GAINS);
 
         driveMotor.setTorqueCurrentLimits(
             -MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS,
@@ -166,5 +167,12 @@ public class ModuleIOKraken implements ModuleIO {
         driveMotor.setGains(driveGains);
         turnMotor.setGains(turnGains);
     }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        driveMotor.setGains(MK4cSwerveModuleConstants.ModuleLogged.get());
+        turnMotor.setGains(MK4cSwerveModuleConstants.ModuleLogged.get());
+    }
+
     
 }
