@@ -536,7 +536,7 @@ public final class Constants {
         public static final double CURRENT_LIMIT = 60.0;
 
         public static final double WRIST_MIN_ANGLE_RADIANS = -0.6;
-        public static final double WRIST_MAX_ANGLE_RADIANS = 3.5;
+        public static final double WRIST_MAX_ANGLE_RADIANS = 3.75;
 
         public static final double WRIST_MIN_SAFE_ANGLE_RADIANS = 1.05;
         public static final double WRIST_MAX_SAFE_ANGLE_RADIANS = 1.7;
@@ -558,8 +558,7 @@ public final class Constants {
         public static final int CLIMB_FOLLOWER_CAN_ID = 14;
         public static final int CLIMB_ENCODER_DIO_PIN = 1;
 
-
-        public static final double CLIMB_GEAR_RATIO = 16.0 + 1.0/3.0;
+        public static final double CLIMB_GEAR_RATIO = 16.0 + 1.0 / 3.0;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
