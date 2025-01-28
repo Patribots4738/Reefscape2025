@@ -386,7 +386,7 @@ public class RobotContainer {
     private void prepareNamedCommands() {
         NamedCommands.registerCommand("IntakeStart", superstructure.autoIntakeStartCommand());
         NamedCommands.registerCommand("IntakeStop", superstructure.autoIntakeStopCommand());
-        NamedCommands.registerCommand("ArmStow", superstructure.setArmPosition(ArmPosition.STOW));
+        NamedCommands.registerCommand("ArmStow", superstructure.setArmPosition(ArmPosition.LOW_STOW));
         NamedCommands.registerCommand("ArmL1", superstructure.setArmPosition(ArmPosition.L1));
         NamedCommands.registerCommand("ArmL2", superstructure.setArmPosition(ArmPosition.L2));
         NamedCommands.registerCommand("ArmL3", superstructure.setArmPosition(ArmPosition.L3));

@@ -14,7 +14,9 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.revrobotics.spark.SparkBase;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -226,8 +228,7 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "4-J4-CS1-K4-CS1-L4-CS1-A4-CS1",
-            "6-F4-CS2-E4-CS2-B4-CS2-A4-CS2",
+            "2-J4-CS1-K4-CS1-L4-CS1-A4-CS1",
             "1-K4-CS1-L4-CS1-A4-CS1-B4-CS1",
             "2-I4-CS1-J4-CS1-K4-CS1-L4-CS1",
             "4-H4-CS2-G4-CS2-B4-CS2-A4-CS2",
@@ -519,9 +520,9 @@ public final class Constants {
 
         public static final boolean BRAKE_MOTOR = true;
 
-        public static final double WRIST_P = 1.8;
+        public static final double WRIST_P = 2.5;
         public static final double WRIST_I = 0.0;
-        public static final double WRIST_D = 0.1;
+        public static final double WRIST_D = 0.15;
         public static final double WRIST_S = 0.08005099999999947;
         public static final double WRIST_G = 0.0;
         public static final GainConstants WRIST_GAINS = new GainConstants(
@@ -620,6 +621,12 @@ public final class Constants {
         }
 
         public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+
+    }
+
+    public static final class CameraConstants {
+
+        
 
     }
 
