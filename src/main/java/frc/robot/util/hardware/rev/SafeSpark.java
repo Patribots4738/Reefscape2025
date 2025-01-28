@@ -228,11 +228,9 @@ public class SafeSpark extends SparkBase {
     }
 
     /**
-     * Invert the motor
-     * 
+     * Invert the motor, or abs encoder if used.
      */
-    @Override
-    public void setInverted(boolean inverted) {
+    public void setOutputInverted(boolean inverted) {
         invertMotor(inverted);
     }
     

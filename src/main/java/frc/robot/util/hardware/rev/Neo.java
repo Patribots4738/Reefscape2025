@@ -60,7 +60,7 @@ public class Neo extends SafeSpark {
     public Neo(int id, boolean isSparkFlex, boolean inverted, boolean useAbsoluteEncoder) {
         super(id, useAbsoluteEncoder, SparkLowLevel.MotorType.kBrushless, isSparkFlex);
         
-        setInverted(inverted);
+        setOutputInverted(inverted);
         
         // Turn off alternate and analog encoders
         // we never use them
