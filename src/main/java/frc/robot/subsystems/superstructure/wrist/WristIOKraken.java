@@ -20,7 +20,6 @@ public class WristIOKraken implements WristIO {
         motor.setGains(WristConstants.WRIST_GAINS);
         motor.setSupplyCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
-        motor.setTorqueCurrentLimits(-WristConstants.CURRENT_LIMIT, WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
     }
 

@@ -20,7 +20,6 @@ public class ElevatorIOKraken implements ElevatorIO {
         motor.setVelocityConversionFactor(ElevatorConstants.VELOCITY_CONVERSION_FACTOR);
         motor.setSupplyCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
-        motor.setTorqueCurrentLimits(-ElevatorConstants.CURRENT_LIMIT, ElevatorConstants.CURRENT_LIMIT);
     }
 
     private void configMotors() {

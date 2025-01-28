@@ -232,6 +232,7 @@ public class Neo extends SafeSpark {
      * If the simulation is active and the control type is position, 
      * it simulates movement on the motor
      */
+    @Deprecated
     public void tick() {
 
     }

@@ -22,7 +22,6 @@ public class ClimbIOKraken implements ClimbIO {
         motor.setGains(ClimbConstants.CLIMB_GAINS);
         motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
-        motor.setTorqueCurrentLimits(-ClimbConstants.CURRENT_LIMIT, ClimbConstants.CURRENT_LIMIT);
     }
 
     private void configMotors() {

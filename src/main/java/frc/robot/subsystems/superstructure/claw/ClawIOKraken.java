@@ -17,7 +17,6 @@ public class ClawIOKraken implements ClawIO {
         motor.setTelemetryPreference(TelemetryPreference.NO_ENCODER);
         motor.setSupplyCurrentLimit(ClawConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClawConstants.CURRENT_LIMIT);
-        motor.setTorqueCurrentLimits(-ClawConstants.CURRENT_LIMIT, ClawConstants.CURRENT_LIMIT);
         setBrakeMode(ClawConstants.BRAKE_MOTOR);
     }
 
