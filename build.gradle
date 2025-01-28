@@ -112,6 +112,7 @@ wpi.java.configureTestTasks(test)
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
+    options.compilerArgs <<"-Xlint:deprecation"
 }
 
 project.compileJava.dependsOn(createVersionFile)
@@ -123,10 +124,4 @@ gversion {
     timeZone     = "America/Los_Angeles"
     language     = "java"
     indent       = "    "
-}
-
-allprojects {
-    tasks.withType(JavaCompile){
-        options.compilerArgs <<"-Xlint:deprecation"
-    }
 }
