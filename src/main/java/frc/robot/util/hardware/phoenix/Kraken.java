@@ -459,14 +459,11 @@ public class Kraken extends TalonFX {
     }
 
     /**
-     * Sets the supply current limit for the Kraken hardware component.
+     * Sets the supply current limit for the Kraken.
      * 
      * It is worth noting that supply current is effectively limited by the 
      * stator current limit, as Supply Current = Duty Cycle * Stator Current,
      * where Duty Cycle never exceeds a magnitude of 1.0.
-     * 
-     * This limit also does not affect motors that are being controlled via
-     * TorqueCurrentFOC control requests.
      * 
      * @param currentLimit the desired current limit in amperes
      * @return the status code indicating the success or failure of the operation
@@ -485,13 +482,10 @@ public class Kraken extends TalonFX {
     }
 
     /**
-     * Sets the stator current limit for the Kraken motor controller.
+     * Sets the stator current limit for the Kraken.
      * 
      * This current limit will also affect the supply current,
      * as supply current cannot excede the stator current.
-     * 
-     * This current limit applies to any control requests, and behaves
-     * similarly to torque current limits.
      * 
      * @param currentLimit the desired stator current limit
      * @return the status code indicating the success or failure of the operation
@@ -510,9 +504,6 @@ public class Kraken extends TalonFX {
 
     /**
      * Sets the torque current limits for the Kraken.
-     * 
-     * This current limit only affects motors that are being controlled via
-     * TorqueCurrentFOC control requests.
      * 
      * @param reverseLimit The reverse torque current limit.
      * @param forwardLimit The forward torque current limit.
