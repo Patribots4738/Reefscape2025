@@ -557,7 +557,7 @@ public class Kraken extends TalonFX {
     /**
      * Resets the encoder to the specified position.
      * 
-     * @param position the desired position to reset the encoder to
+     * @param position the desired position to reset the encoder to (with the PCF applied)
      * @return the status code indicating the result of the operation
      */
     public StatusCode resetEncoder(double position) {
