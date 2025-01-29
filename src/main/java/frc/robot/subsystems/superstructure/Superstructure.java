@@ -148,7 +148,11 @@ public class Superstructure {
                 setArmPosition(ArmPosition.INTAKE),
                 claw.intakeCommand(),
                 Commands.waitUntil(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-                setArmPosition(ArmPosition.UP_STOW)
+                Commands.either(
+                    setArmPosition(ArmPosition.LOW_STOW), 
+                    setArmPosition(ArmPosition.UP_STOW), 
+                    this::shouldEvadeReef
+                )
             );
     }
 

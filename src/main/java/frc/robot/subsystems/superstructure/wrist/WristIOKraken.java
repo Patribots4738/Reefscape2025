@@ -13,7 +13,7 @@ public class WristIOKraken implements WristIO {
     }
 
     private void configMotor() {
-        motor.setMotorInverted(WristConstants.INVERT_MOTOR);
+        motor.setMotorInverted(WristConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR);
         motor.resetEncoder(0.0);

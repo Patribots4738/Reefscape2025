@@ -456,15 +456,15 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 40.0;
 
+        public static final boolean MOTOR_INVERTED = false;
+
         public static final double INTAKE_PERCENT = 0.2;
         public static final double HOLD_PERCENT = 0.1;
         public static final double OUTTAKE_PERCENT = -0.2;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
-
     }
-
     public static final class ElevatorConstants {
 
         public static final int ELEVATOR_LEADER_CAN_ID = 10;
@@ -473,7 +473,9 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 60.0;
 
-        public static final double GEAR_RATIO = 7.75;
+        public static final boolean MOTOR_INVERTED = true;
+
+        public static final double GEAR_RATIO = 6.0 + 8.0 / 9.0;
         public static final double MAX_DISPLACEMENT_METERS = 0.5831193316;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(5.5) / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 60.0 * Units.inchesToMeters(5.5) / GEAR_RATIO;
@@ -511,12 +513,12 @@ public final class Constants {
         public static final int WRIST_CAN_ID = 12;
         public static final int WRIST_ENCODER_DIO_PIN = 0;
 
-        public static final boolean INVERT_MOTOR = false;
-
         public static final double WRIST_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
         public static final boolean WRIST_ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
+
+        public static final boolean MOTOR_INVERTED = false;
 
         public static final double WRIST_P = 2.5;
         public static final double WRIST_I = 0.0;
@@ -563,6 +565,8 @@ public final class Constants {
         public static final int CLIMB_LEADER_CAN_ID = 13;
         public static final int CLIMB_FOLLOWER_CAN_ID = 14;
         public static final int CLIMB_ENCODER_DIO_PIN = 1;
+
+        public static final boolean MOTOR_INVERTED = true;
 
         public static final double CLIMB_GEAR_RATIO = 16.0 + 1.0 / 3.0;
 
