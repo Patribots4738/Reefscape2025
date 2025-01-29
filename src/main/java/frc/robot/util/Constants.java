@@ -92,8 +92,8 @@ public final class Constants {
 
         public static final Translation3d CLIMB_OFFSET = new Translation3d(
             ROBOT_OFFSET.getX() - 0.215, 
-            ROBOT_OFFSET.getY() + 0.205, 
-            ROBOT_OFFSET.getZ() - 0.1075
+            ROBOT_OFFSET.getY() + 0.1442, 
+            ROBOT_OFFSET.getZ() - 0.0946
         );
 
         public static final Translation3d WRIST_OFFSET = new Translation3d(
@@ -471,7 +471,7 @@ public final class Constants {
         public static final int ELEVATOR_FOLLOWER_CAN_ID = 11;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 60.0;
+        public static final double CURRENT_LIMIT = 80.0;
 
         public static final boolean MOTOR_INVERTED = true;
 
@@ -482,7 +482,7 @@ public final class Constants {
 
         public static final double ELEVATOR_P = 0.82;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.075;
+        public static final double ELEVATOR_D = 0.05;
         public static final double ELEVATOR_S = 0.10058799999998883;
         public static final double ELEVATOR_G = 0.0;
 
@@ -543,8 +543,8 @@ public final class Constants {
 
         public static final double CURRENT_LIMIT = 60.0;
 
-        public static final double WRIST_MIN_ANGLE_RADIANS = -0.6;
-        public static final double WRIST_MAX_ANGLE_RADIANS = 3.75;
+        public static final double WRIST_MIN_ANGLE_RADIANS = -1.08231258091;
+        public static final double WRIST_MAX_ANGLE_RADIANS = 3.655594491941;
 
         public static final double WRIST_MIN_SAFE_ANGLE_RADIANS = 1.05;
         public static final double WRIST_MAX_SAFE_ANGLE_RADIANS = 1.7;
@@ -573,13 +573,11 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
 
-        public static final double CLIMB_LENGTH_METERS = 0.5;
-
         public static final double CURRENT_LIMIT = 80.0;
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double CLIMB_MIN_ANGLE_RADIANS = 0.0;
-        public static final double CLIMB_MAX_ANGLE_RADIANS = Math.PI / 2.0;
+        public static final double CLIMB_MAX_ANGLE_RADIANS = 1.897590170231;
 
         public static final double CLIMB_P = 0.5;
         public static final double CLIMB_I = 0.0;
@@ -596,7 +594,7 @@ public final class Constants {
         );
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = Math.PI / 2.0;
+        public static final double READY_POSITION_RADIANS = 1.897590170231;
         public static final double FINAL_POSITION_RADIANS = 0.0;
 
         public static final double CLIMB_Y_OFFSET = 0.0508;

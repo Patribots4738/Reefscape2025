@@ -1,0 +1,171 @@
+{
+    "name": "Pibble",
+    "rotations": [
+        {
+            "axis": "x", 
+            "degrees": 90
+        },
+        {
+            "axis": "z", 
+            "degrees": 90
+        }
+    ],
+    "position": [
+        0.2655697,
+        0.0933069,
+        0.28247086
+    ],
+    "cameras": [
+        {
+            "name": "BackLL4_1",
+            "fov": 82,
+            "resolution": [
+                1280, 
+                560
+            ],
+            "position": [
+                -0.19685,
+                0.31115,
+                0.5842
+            ],
+            "rotations": [
+                {
+                    "axis": "x",
+                    "degrees": 0
+                },
+                {
+                    "axis": "y",
+                    "degrees": 17.5
+                },
+                {
+                    "axis": "z",
+                    "degrees": 180
+                }
+            ]
+        },
+        {
+            "name": "BackLL4_2",
+            "fov": 82,
+            "resolution": [
+                1280, 
+                560
+            ],
+            "position": [
+                -0.33655,
+                0,
+                0.0762
+            ],
+            "rotations": [
+                {
+                    "axis": "x",
+                    "degrees": 0
+                },
+                {
+                    "axis": "y",
+                    "degrees": -14
+                },
+                {
+                    "axis": "z",
+                    "degrees": 180
+                }
+            ]
+        },
+        {
+            "name": "FrontLL3G_1",
+            "fov": 56.2,
+            "resolution": [
+                1280, 
+                560
+            ],
+            "position": [
+                -0.14605,
+                0.31115,
+                0.59944
+            ],
+            "rotations": [
+                {
+                    "axis": "x",
+                    "degrees": 0
+                },
+                {
+                    "axis": "y",
+                    "degrees": -22
+                },
+                {
+                    "axis": "z",
+                    "degrees": 0
+                }
+            ]
+        }
+    ],
+    "components": [
+        {
+            "zeroedRotations": [
+                {
+                    "axis": "x", 
+                    "degrees": 90
+                },
+                {
+                    "axis": "z", 
+                    "degrees": 90
+                }
+            ],
+            "zeroedPosition": [
+                0.215,
+                -0.1442,
+                0.0946
+            ]
+        },
+        {
+            "zeroedRotations": [
+                {
+                    "axis": "x", 
+                    "degrees": 90
+                },
+                {
+                    "axis": "z", 
+                    "degrees": 90
+                }
+            ],
+            "zeroedPosition": [
+                0.2655697,
+                0.0933069,
+                0.28247086
+            ]
+        },
+        {
+            "zeroedRotations": [
+                {
+                    "axis": "x", 
+                    "degrees": 90
+                },
+                {
+                    "axis": "z", 
+                    "degrees": 90
+                }
+            ],
+            "zeroedPosition": [
+                0.2655697,
+                0.0933069,
+                0.28247086
+            ]
+        },
+        {
+            "zeroedRotations": [
+                {
+                    "axis": "x", 
+                    "degrees": 90
+                },
+                {
+                    "axis": "z", 
+                    "degrees": 90
+                }
+            ],
+            "zeroedPosition": [
+                0.4368,
+                0.0933069,
+                -0.504
+            ]
+        }
+    ]
+}
