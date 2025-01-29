@@ -21,7 +21,7 @@ public class ClimbIOKraken implements ClimbIO {
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR);
         motor.resetEncoder(0);
-        motor.setGains(ClimbConstants.CLIMB_LOGGED_GAINS);
+        motor.setGains(ClimbConstants.CLIMB_GAINS);
         motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
     }
@@ -71,8 +71,8 @@ public class ClimbIOKraken implements ClimbIO {
 
     @Override
     public void setGains(GainConstants constants) {
-        leader.setGains(ClimbConstants.climbLogged.get());
-        follower.setGains(ClimbConstants.climbLogged.get());
+        leader.setGains(ClimbConstants.LOGGED_CLIMB_GAINS.get());
+        follower.setGains(ClimbConstants.LOGGED_CLIMB_GAINS.get());
     }
 
 }

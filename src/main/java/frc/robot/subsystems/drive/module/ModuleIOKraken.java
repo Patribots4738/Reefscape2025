@@ -61,7 +61,7 @@ public class ModuleIOKraken implements ModuleIO {
 
         turnMotor.setPositionClosedLoopWrappingEnabled(true);
 
-        setGains(MK4cSwerveModuleConstants.DRIVING_LOGGED_GAINS, MK4cSwerveModuleConstants.TURNING_GAINS);
+        setGains(MK4cSwerveModuleConstants.DRIVING_GAINS, MK4cSwerveModuleConstants.TURNING_GAINS);
 
         setDriveBrakeMode(true);
         setTurnBrakeMode(true);
@@ -162,8 +162,8 @@ public class ModuleIOKraken implements ModuleIO {
 
     @Override
     public void setGains(GainConstants constants) {
-        driveMotor.setGains(MK4cSwerveModuleConstants.ModuleLogged.get());
-        turnMotor.setGains(MK4cSwerveModuleConstants.ModuleLogged.get());
+        driveMotor.setGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get());
+        turnMotor.setGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get());
     }
 
     

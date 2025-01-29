@@ -33,7 +33,7 @@ public class Wrist extends SubsystemBase {
     public Wrist(WristIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
-        WristConstants.wristLogged.onChanged(Commands.run(() -> io.setGains(WristConstants.wristLogged.get())));
+        WristConstants.LOGGED_WRIST_GAINS.onChanged(Commands.run(() -> io.setGains(WristConstants.LOGGED_WRIST_GAINS.get())));
     }
 
     @Override

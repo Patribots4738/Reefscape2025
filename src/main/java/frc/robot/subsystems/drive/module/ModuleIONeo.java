@@ -142,8 +142,8 @@ public class ModuleIONeo implements ModuleIO {
 
     @Override
     public void setGains(GainConstants constants) {
-        driveMotor.setPID(MK4cSwerveModuleConstants.ModuleLogged.get());
-        turnMotor.setPID(MK4cSwerveModuleConstants.ModuleLogged.get());
+        driveMotor.setPID(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get());
+        turnMotor.setPID(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get());
     }
 
 }

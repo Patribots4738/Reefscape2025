@@ -180,7 +180,7 @@ public final class Constants {
             0.0
         );
 
-        public static final NTLoggedGainConstants TeleXYLogged = new NTLoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
+        public static final NTLoggedGainConstants LOGGED_TELE_XY_GAINS = new NTLoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
 
         public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
             3.725, 
@@ -194,7 +194,7 @@ public final class Constants {
             0
         );
 
-        public static final NTLoggedGainConstants TeleThetaLogged = new NTLoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
+        public static final NTLoggedGainConstants LOGGED_TELE_THETA_GAINS = new NTLoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
 
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.TELE_XY_GAINS.getP(),
@@ -430,7 +430,7 @@ public final class Constants {
         public static final double DRIVING_S = Robot.isSimulation() ? 0.01453 : 0.07193;
         public static final double DRIVING_V = Robot.isSimulation() ? 0.12362 : 0.11441;
 
-        public static final GainConstants DRIVING_LOGGED_GAINS = new GainConstants(
+        public static final GainConstants DRIVING_GAINS = new GainConstants(
             DRIVING_P,
             DRIVING_I,
             DRIVING_D,
@@ -439,7 +439,7 @@ public final class Constants {
             0.0
         );
 
-        public static final NTLoggedGainConstants ModuleLogged = new NTLoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_LOGGED_GAINS, "Module");
+        public static final NTLoggedGainConstants LOGGED_DRIVING_GAINS = new NTLoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "DrivingModule");
 
         public static final double TURNING_P = Robot.isSimulation() ? 10.0 : 23.0;
         public static final double TURNING_I = 0.0;
@@ -454,6 +454,8 @@ public final class Constants {
             0.0,
             0.0
         );
+
+        public static final NTLoggedGainConstants LOGGED_TURNING_GAINS = new NTLoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "TurningModule");
 
     }
 
@@ -535,7 +537,7 @@ public final class Constants {
         public static final double WRIST_D = 0.15;
         public static final double WRIST_S = 0.08005099999999947;
         public static final double WRIST_G = 0.0;
-        public static final GainConstants WRIST_LOGGED_GAINS = new GainConstants(
+        public static final GainConstants WRIST_GAINS = new GainConstants(
             WRIST_P,
             WRIST_I,
             WRIST_D,
@@ -544,7 +546,7 @@ public final class Constants {
             WRIST_G
         );
 
-        public static final NTLoggedGainConstants wristLogged = new NTLoggedGainConstants(WristConstants.WRIST_LOGGED_GAINS, "Wrist");
+        public static final NTLoggedGainConstants LOGGED_WRIST_GAINS = new NTLoggedGainConstants(WristConstants.WRIST_GAINS, "Wrist");
 
         public static final double GEAR_RATIO = 1.3;
       
@@ -599,7 +601,7 @@ public final class Constants {
         public static final double CLIMB_D = 0.0;
         public static final double CLIMB_S = 0.10020999999999185; 
         public static final double CLIMB_G = 0.0;
-        public static final GainConstants CLIMB_LOGGED_GAINS = new GainConstants(
+        public static final GainConstants CLIMB_GAINS = new GainConstants(
             CLIMB_P,
             CLIMB_I,
             CLIMB_D,
@@ -608,7 +610,7 @@ public final class Constants {
             CLIMB_G
         );
 
-        public static final NTLoggedGainConstants climbLogged = new NTLoggedGainConstants(ClimbConstants.CLIMB_LOGGED_GAINS, "Climb");
+        public static final NTLoggedGainConstants LOGGED_CLIMB_GAINS = new NTLoggedGainConstants(ClimbConstants.CLIMB_GAINS, "Climb");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = Math.PI / 2.0;
