@@ -14,7 +14,7 @@ public class ClawIOKraken implements ClawIO {
     }
 
     private void configMotor() {
-        motor.setMotorInverted(false);
+        motor.setMotorInverted(ClawConstants.MOTOR_INVERTED);
         motor.setTelemetryPreference(TelemetryPreference.NO_ENCODER);
         motor.setSupplyCurrentLimit(ClawConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClawConstants.CURRENT_LIMIT);

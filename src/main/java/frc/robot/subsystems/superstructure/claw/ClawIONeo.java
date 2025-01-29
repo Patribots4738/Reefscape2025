@@ -14,6 +14,7 @@ public class ClawIONeo implements ClawIO {
     }
 
     private void configMotor() {
+        motor.setOutputInverted(ClawConstants.MOTOR_INVERTED);
         motor.setTelemetryPreference(TelemetryPreference.NO_ENCODER);
         motor.setSmartCurrentLimit((int) ClawConstants.CURRENT_LIMIT);
         setBrakeMode(ClawConstants.BRAKE_MOTOR);
