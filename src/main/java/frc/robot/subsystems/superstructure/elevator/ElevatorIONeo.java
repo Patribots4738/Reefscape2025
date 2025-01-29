@@ -16,7 +16,7 @@ public class ElevatorIONeo implements ElevatorIO {
     }
 
     private void configMotor(Neo motor) {
-        motor.setPID(ElevatorConstants.ELEVATOR_LOGGED_GAINS);
+        motor.setOutputInverted(ElevatorConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ElevatorConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setSmartCurrentLimit((int) ElevatorConstants.CURRENT_LIMIT);

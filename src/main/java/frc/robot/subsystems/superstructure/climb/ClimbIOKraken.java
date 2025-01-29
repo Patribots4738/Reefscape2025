@@ -16,8 +16,8 @@ public class ClimbIOKraken implements ClimbIO {
         configMotors();
     }
 
-    private void configMotor(Kraken motor){
-        motor.setMotorInverted(true);
+    private void configMotor(Kraken motor) {
+        motor.setMotorInverted(ClimbConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR);
         motor.resetEncoder(0);

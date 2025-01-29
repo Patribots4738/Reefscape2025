@@ -17,6 +17,7 @@ public class ElevatorIOKraken implements ElevatorIO {
 
     private void configMotor(Kraken motor) {
         motor.setGains(ElevatorConstants.ELEVATOR_LOGGED_GAINS);
+        motor.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ElevatorConstants.VELOCITY_CONVERSION_FACTOR);
         motor.setSupplyCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
