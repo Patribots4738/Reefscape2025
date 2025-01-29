@@ -232,7 +232,13 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "4-J4-CS1-K4-CS1-L4-CS1-A4-CS1"
+            "2-J4-CS1-K4-CS1-L4-CS1-A4-CS1",
+            "1-K4-CS1-L4-CS1-A4-CS1-B4-CS1",
+            "2-I4-CS1-J4-CS1-K4-CS1-L4-CS1",
+            "4-H4-CS2-G4-CS2-B4-CS2-A4-CS2",
+            "6-E4-CS2-D4-CS2-C4-CS2-B4-CS2"
+
+
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
@@ -522,9 +528,9 @@ public final class Constants {
 
         public static final boolean BRAKE_MOTOR = true;
 
-        public static final double WRIST_P = 1.8;
+        public static final double WRIST_P = 2.5;
         public static final double WRIST_I = 0.0;
-        public static final double WRIST_D = 0.1;
+        public static final double WRIST_D = 0.15;
         public static final double WRIST_S = 0.08005099999999947;
         public static final double WRIST_G = 0.0;
         public static final GainConstants WRIST_LOGGED_GAINS = new GainConstants(
@@ -539,6 +545,7 @@ public final class Constants {
         public static final NTLoggedGainConstants wristLogged = new NTLoggedGainConstants(WristConstants.WRIST_LOGGED_GAINS, "Wrist");
 
         public static final double GEAR_RATIO = 2.5;
+
         public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
@@ -548,7 +555,7 @@ public final class Constants {
         public static final double CURRENT_LIMIT = 60.0;
 
         public static final double WRIST_MIN_ANGLE_RADIANS = -0.6;
-        public static final double WRIST_MAX_ANGLE_RADIANS = 3.5;
+        public static final double WRIST_MAX_ANGLE_RADIANS = 3.75;
 
         public static final double WRIST_MIN_SAFE_ANGLE_RADIANS = 1.05;
         public static final double WRIST_MAX_SAFE_ANGLE_RADIANS = 1.7;
@@ -570,8 +577,7 @@ public final class Constants {
         public static final int CLIMB_FOLLOWER_CAN_ID = 14;
         public static final int CLIMB_ENCODER_DIO_PIN = 1;
 
-
-        public static final double CLIMB_GEAR_RATIO = 16.0 + 1.0/3.0;
+        public static final double CLIMB_GEAR_RATIO = 16.0 + 1.0 / 3.0;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
@@ -604,6 +610,8 @@ public final class Constants {
         public static final double READY_POSITION_RADIANS = Math.PI / 2.0;
         public static final double FINAL_POSITION_RADIANS = 0.0;
 
+        public static final double CLIMB_Y_OFFSET = 0.0508;
+
         public static final double CLIMB_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
     }
@@ -628,6 +636,12 @@ public final class Constants {
         }
 
         public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+
+    }
+
+    public static final class CameraConstants {
+
+        
 
     }
 
@@ -659,16 +673,16 @@ public final class Constants {
 
         public static Map<String, List<Neo>> initializeMotorGroupMap() {
             // NEO_MOTOR_GROUPS.put("Drive", new ArrayList<Neo>() {{
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.FRONT_LEFT_DRIVING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.FRONT_RIGHT_DRIVING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.REAR_LEFT_DRIVING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.REAR_RIGHT_DRIVING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.FRONT_LEFT_DRIVING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.FRONT_RIGHT_DRIVING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.REAR_LEFT_DRIVING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.REAR_RIGHT_DRIVING_CAN_ID));
             // }});
             // NEO_MOTOR_GROUPS.put("Turn", new ArrayList<Neo>() {{
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.FRONT_LEFT_TURNING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.FRONT_RIGHT_TURNING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.REAR_LEFT_TURNING_CAN_ID));
-            //     add(NEO_MOTOR_MAP.get(DriveConstants.REAR_RIGHT_TURNING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.FRONT_LEFT_TURNING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.FRONT_RIGHT_TURNING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.REAR_LEFT_TURNING_CAN_ID));
+            //     add(NEO_MOTOR_MAP.get(MAXSwerveModuleConstants.REAR_RIGHT_TURNING_CAN_ID));
             // }});
 
             return NEO_MOTOR_GROUPS;
@@ -742,7 +756,7 @@ public final class Constants {
 
         public static final double FIELD_MAX_LENGTH = 17.55;
         // 2d height
-        public static final double FIELD_MAX_HEIGHT = 8.067;
+        public static final double FIELD_MAX_HEIGHT = 8.0518;
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 

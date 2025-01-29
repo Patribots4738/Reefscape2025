@@ -64,13 +64,6 @@ public class ModuleIOKraken implements ModuleIO {
 
         setGains(MK4cSwerveModuleConstants.DRIVING_LOGGED_GAINS, MK4cSwerveModuleConstants.TURNING_GAINS);
 
-        driveMotor.setTorqueCurrentLimits(
-            -MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS,
-            MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS);
-        turnMotor.setTorqueCurrentLimits(
-            -MK4cSwerveModuleConstants.TURNING_MOTOR_TORQUE_LIMIT_AMPS,
-            MK4cSwerveModuleConstants.TURNING_MOTOR_TORQUE_LIMIT_AMPS);
-
         setDriveBrakeMode(true);
         setTurnBrakeMode(true);
     }

@@ -160,7 +160,7 @@ public class SafeSpark extends SparkBase {
     @Override
     public RelativeEncoder getEncoder() {
         if (relativeEncoder == null) {
-            relativeEncoder = getEncoder();
+            relativeEncoder = super.getEncoder();
         }
         return relativeEncoder;
     }
@@ -228,11 +228,9 @@ public class SafeSpark extends SparkBase {
     }
 
     /**
-     * Invert the motor
-     * 
+     * Invert the motor, or abs encoder if used.
      */
-    @Override
-    public void setInverted(boolean inverted) {
+    public void setOutputInverted(boolean inverted) {
         invertMotor(inverted);
     }
     
