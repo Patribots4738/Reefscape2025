@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems.drive.module;
-import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.MAXSwerveModuleConstants;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 import frc.robot.util.custom.GainConstants;

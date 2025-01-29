@@ -2,7 +2,6 @@ package frc.robot.subsystems.drive.module;
 
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
-import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.CANCoderCustom;
 import frc.robot.util.hardware.phoenix.Kraken;

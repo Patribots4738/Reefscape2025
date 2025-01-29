@@ -24,6 +24,7 @@ public class Neo extends SafeSpark {
     private double targetVelocity = 0;
     private double targetPercent = 0;
 
+    @SuppressWarnings("unused")
     private DCMotorSim motorSimModel;
 
     /**

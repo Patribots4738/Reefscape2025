@@ -1,9 +1,6 @@
 package frc.robot.subsystems.superstructure.elevator;
 
-import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.ElevatorConstants;
-import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 

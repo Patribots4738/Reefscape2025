@@ -2,7 +2,6 @@ package frc.robot.subsystems.superstructure.wrist;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.commands.logging.NTLoggedGainConstants;
 import frc.robot.util.custom.GainConstants;
 
 public interface WristIO {

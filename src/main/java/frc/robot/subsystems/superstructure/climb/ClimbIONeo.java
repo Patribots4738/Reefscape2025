@@ -1,9 +1,7 @@
 package frc.robot.subsystems.superstructure.climb;
 
 import frc.robot.util.hardware.rev.Neo;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.util.Constants.ClimbConstants;
-import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.GainConstants;
 
 public class ClimbIONeo implements ClimbIO {

@@ -1,8 +1,5 @@
 package frc.robot.subsystems.superstructure.wrist;
 
-import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.logging.NTLoggedGainConstants;
-import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.rev.Neo;
@@ -17,7 +14,7 @@ public class WristIONeo implements WristIO {
     }
 
     private void configMotor() {
-        motor.setInverted(WristConstants.INVERT_MOTOR);
+        motor.setOutputInverted(WristConstants.INVERT_MOTOR);
         motor.setPID(WristConstants.WRIST_LOGGED_GAINS);
         motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR / 60.0);

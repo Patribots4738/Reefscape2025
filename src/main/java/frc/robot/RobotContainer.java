@@ -25,9 +25,6 @@ import frc.robot.commands.characterization.FeedForwardCharacterization;
 import frc.robot.commands.characterization.StaticCharacterization;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
-import frc.robot.commands.logging.NTGainTuner;
-import frc.robot.commands.logging.NTLoggedGainConstants;
-import frc.robot.commands.managers.HDCTuner;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
@@ -49,6 +46,7 @@ public class RobotContainer {
 
     private PowerDistribution pdh;
 
+    @SuppressWarnings("unused")
     private EventLoop testButtonBindingLoop = new EventLoop();
 
     private final PatriBoxController driver;
