@@ -78,7 +78,7 @@ public class PoseCalculations {
     }
 
     public static boolean nearReef(Pose2d pos) {
-        return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 2.0;
+        return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 1.4;
     }
 
 }
