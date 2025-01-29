@@ -111,19 +111,25 @@ public class Superstructure {
     public Command setArmPosition(ArmPosition position) {
         return 
             Commands.sequence(
+                // Set arm state for logging
                 Commands.runOnce(() -> {
                     this.armPosition = position;
                 }),
                 Commands.either(
+                    // Move wrist to nearest transition pose, unless the arm was previously stowed up (which is a safe spot)
                     transitionWrist(() -> position.wristPose).onlyIf(() -> !wrist.atPosition(wristUpStow.get())), 
+                    // Move wrist straight to target position
                     wrist.setPositionCommand(() -> position.wristPose), 
                     () -> 
+                        // Only transition wrist if elevator needs to move in addition to other conditions
                         (shouldEvadeReef()
                             || position.wristPose < wristMinSafe.get()
                             || Robot.gameMode == GameMode.AUTONOMOUS) 
                         && !elevator.atPosition(position.elevatorPose)
+                // Stop blocking sequence when wrist is in a safe position
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> position.elevatorPose),
+                // Only effectual if wrist just transitioned
                 wrist.setPositionCommand(() -> position.wristPose)
             );
     }
@@ -132,10 +138,13 @@ public class Superstructure {
         return wrist.setPositionCommand(() -> {
             double wristTransition;
             if (targetWristPosition.getAsDouble() >= wristMaxSafe.get()) {
+                // Target pos is greater than safe range, transition in high end of safe range
                 wristTransition = wristMaxSafe.get();
             } else if (targetWristPosition.getAsDouble() <= wristMinSafe.get()) {
+                // Target pos is lower than safe range, transition in low end of safe range
                 wristTransition = wristMinSafe.get();
             } else {
+                // Target pos is in safe range, transition with target pos
                 wristTransition = targetWristPosition.getAsDouble();
             }
             return wristTransition;
@@ -172,7 +181,9 @@ public class Superstructure {
         return
             Commands.sequence(
                 Commands.either(
-                    Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()), 
+                    // Wait until arm stopped
+                    Commands.waitUntil(this::armAtTargetPosition), 
+                    // If arm not currently at scoring pos, go to L1
                     setArmPosition(ArmPosition.L1), 
                     () -> this.armPosition.scoring
                 ),
@@ -186,7 +197,7 @@ public class Superstructure {
     public Command autoPlaceCommand() {
         return
             Commands.sequence(
-                Commands.waitUntil(() -> elevator.atTargetPosition() && wrist.atTargetPosition()),
+                Commands.waitUntil(this::armAtTargetPosition),
                 claw.outtakeTimeCommand(clawPlaceTime.get())
             );
     }
@@ -194,7 +205,9 @@ public class Superstructure {
     public Command climbStowCommand() {
         return
             Commands.sequence(
+                // Move arm out of way for clearance
                 setArmPosition(ArmPosition.CLIMB),
+                // Bring climb down to hard-stop
                 climb.stowPositionCommand(),
                 setArmPosition(ArmPosition.LOW_STOW)
             );
@@ -203,7 +216,9 @@ public class Superstructure {
     public Command climbReadyCommand() {
         return
             Commands.sequence(
+                // Move arm down for low CG and out of way for clearance
                 setArmPosition(ArmPosition.CLIMB),
+                // Move climb to foot hard-stop
                 climb.readyPositionCommand()
             );
     }
@@ -211,7 +226,9 @@ public class Superstructure {
     public Command climbFinalCommand() {
         return
             Commands.sequence(
+                // Move arm down for low CG and out of way for clearance
                 setArmPosition(ArmPosition.CLIMB),
+                // Move climb & cage to flat position
                 climb.finalPositionCommand()
             );
     }
@@ -224,6 +241,7 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
         return 
+            // Wrist pos inside of safe range or at the edges within error bound
             wrist.getPosition() > wristMinSafe.get() && (wrist.getPosition() < wristMaxSafe.get() || !shouldEvadeReef()) 
             || wrist.atPosition(wristMinSafe.get())
             || wrist.atPosition(wristMaxSafe.get());

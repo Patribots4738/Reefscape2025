@@ -595,9 +595,9 @@ public final class Constants {
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = 1.897590170231;
-        public static final double FINAL_POSITION_RADIANS = 0.0;
+        public static final double FINAL_POSITION_RADIANS = 0.16508729055;
 
-        public static final double CLIMB_Y_OFFSET = 0.0508;
+        public static final double CLIMB_Y_CHASSIS_OFFSET = 0.0508;
 
         public static final double CLIMB_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 

@@ -110,8 +110,8 @@ public class Alignment {
         Pose2d desiredPose = new Pose2d(
             swerve.getPose().getX(), 
             Robot.isRedAlliance() 
-                ? cagePose.getY() - ClimbConstants.CLIMB_Y_OFFSET 
-                : cagePose.getY() + ClimbConstants.CLIMB_Y_OFFSET, 
+                ? cagePose.getY() - ClimbConstants.CLIMB_Y_CHASSIS_OFFSET 
+                : cagePose.getY() + ClimbConstants.CLIMB_Y_CHASSIS_OFFSET, 
             cagePose.getRotation()
         );
         return getAutoSpeeds(desiredPose);
