@@ -511,8 +511,6 @@ public final class Constants {
         public static final int WRIST_CAN_ID = 12;
         public static final int WRIST_ENCODER_DIO_PIN = 0;
 
-        public static final boolean INVERT_MOTOR = false;
-
         public static final double WRIST_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
         public static final boolean WRIST_ENCODER_INVERTED = false;
 
