@@ -18,7 +18,7 @@ public class ClimbIONeo implements ClimbIO {
     }
 
     private void configMotor(Neo motor) {
-        motor.setInverted(true);
+        motor.setOutputInverted(true);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setPID(ClimbConstants.CLIMB_LOGGED_GAINS);

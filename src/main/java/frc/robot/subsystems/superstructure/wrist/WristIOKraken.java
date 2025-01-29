@@ -7,35 +7,24 @@ import frc.robot.commands.logging.NTLoggedGainConstants;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
-import frc.robot.util.hardware.rev.ThroughBoreEncoder;
 
 public class WristIOKraken implements WristIO {
     
     private final Kraken motor;
-    private final ThroughBoreEncoder encoder;
 
     public WristIOKraken() {
         motor = new Kraken(WristConstants.WRIST_CAN_ID, true, false);
-        encoder = new ThroughBoreEncoder(WristConstants.WRIST_ENCODER_DIO_PIN);
-        configEncoder();
         configMotor();
     }
 
-    private void configEncoder() {
-        encoder.setInverted(WristConstants.WRIST_ENCODER_INVERTED);
-        encoder.setPositionOffsetRotations(WristConstants.WRIST_ENCODER_POSITION_OFFSET_ROTATIONS);
-        encoder.setPositionConversionFactor(WristConstants.ENCODER_POSITION_CONVERSION_FACTOR);
-    }
- 
     private void configMotor() {
         motor.setMotorInverted(WristConstants.INVERT_MOTOR);
         motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR);
-        motor.resetEncoder(encoder.getPosition());
+        motor.resetEncoder(0.0);
         motor.setGains(WristConstants.WRIST_LOGGED_GAINS);
         motor.setSupplyCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
-        motor.setTorqueCurrentLimits(-WristConstants.CURRENT_LIMIT, WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
 
     }
@@ -43,19 +32,14 @@ public class WristIOKraken implements WristIO {
     @Override
     public void updateInputs(WristIOInputs inputs) {
         inputs.motorConnected = motor.refreshSignals().isOK();
-        inputs.internalPositionRads = motor.getPositionAsDouble();
-        inputs.internalVelocityRadsPerSec = motor.getVelocityAsDouble();
+        inputs.positionRads = motor.getPositionAsDouble();
+        inputs.velocityRadsPerSec = motor.getVelocityAsDouble();
         inputs.targetPositionRads = motor.getTargetPosition();
         inputs.appliedOutputVolts = motor.getVoltageAsDouble();
         inputs.supplyCurrentAmps = motor.getSupplyCurrentAsDouble();
         inputs.statorCurrentAmps = motor.getStatorCurrentAsDouble();
         inputs.torqueCurrentAmps = motor.getTorqueCurrentAsDouble();
         inputs.temperatureCelsius = motor.getTemperatureAsDouble();
-
-        if (!FieldConstants.IS_SIMULATION) {
-            inputs.encoderConnected = encoder.isConnected();
-        }
-        inputs.encoderPositionRads = inputs.encoderConnected ? encoder.getPosition() : motor.getPositionAsDouble();
     }
 
     @Override

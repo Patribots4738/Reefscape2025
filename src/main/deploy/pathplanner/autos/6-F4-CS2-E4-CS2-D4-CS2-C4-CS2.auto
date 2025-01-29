@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "4-J"
+                  "pathName": "6-F"
                 }
               },
               {
@@ -59,7 +59,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "J-CS1"
+                        "pathName": "F-CS2"
                       }
                     }
                   ]
@@ -87,7 +87,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CS1-K"
+                  "pathName": "CS2-E"
                 }
               },
               {
@@ -135,7 +135,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "K-CS1"
+                        "pathName": "E-CS2"
                       }
                     }
                   ]
@@ -163,7 +163,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CS1-L"
+                  "pathName": "CS2-D"
                 }
               },
               {
@@ -211,7 +211,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "L-CS1"
+                        "pathName": "D-CS2"
                       }
                     }
                   ]
@@ -239,7 +239,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CS1-A"
+                  "pathName": "CS2-C"
                 }
               },
               {
@@ -287,7 +287,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "A-CS1"
+                        "pathName": "C-CS2"
                       }
                     }
                   ]

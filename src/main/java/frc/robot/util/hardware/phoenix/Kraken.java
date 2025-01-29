@@ -459,7 +459,11 @@ public class Kraken extends TalonFX {
     }
 
     /**
-     * Sets the supply current limit for the Kraken hardware component.
+     * Sets the supply current limit for the Kraken.
+     * 
+     * It is worth noting that supply current is effectively limited by the 
+     * stator current limit, as Supply Current = Duty Cycle * Stator Current,
+     * where Duty Cycle never exceeds a magnitude of 1.0.
      * 
      * @param currentLimit the desired current limit in amperes
      * @return the status code indicating the success or failure of the operation
@@ -478,7 +482,10 @@ public class Kraken extends TalonFX {
     }
 
     /**
-     * Sets the stator current limit for the Kraken motor controller.
+     * Sets the stator current limit for the Kraken.
+     * 
+     * This current limit will also affect the supply current,
+     * as supply current cannot excede the stator current.
      * 
      * @param currentLimit the desired stator current limit
      * @return the status code indicating the success or failure of the operation
@@ -541,7 +548,7 @@ public class Kraken extends TalonFX {
     /**
      * Resets the encoder to the specified position.
      * 
-     * @param position the desired position to reset the encoder to
+     * @param position the desired position to reset the encoder to (with the PCF applied)
      * @return the status code indicating the result of the operation
      */
     public StatusCode resetEncoder(double position) {
@@ -730,7 +737,7 @@ public class Kraken extends TalonFX {
     /**
      * Represents current supplied to the stator of the Kraken as a double.
      * 
-     * @return supply of current to stator in amps
+     * @return stator current in amps, directly proportional to applied torque
      */
     public double getStatorCurrentAsDouble() {
         return statorCurrentSignal.getValue().in(Amps);
@@ -739,7 +746,7 @@ public class Kraken extends TalonFX {
     /**
      * Represents the current creating torque as a double.
      * 
-     * @return torque current in amps
+     * @return torque current in amps, directly proportional to applied torque
      */
     public double getTorqueCurrentAsDouble() {
         return torqueCurrentSignal.getValue().in(Amps);
