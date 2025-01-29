@@ -46,24 +46,6 @@ public class DriveHDC extends Command {
         this.shouldMirror = shouldMirror;
 
         addRequirements(swerve);
-
-
-        AutoConstants.TeleXYLogged.onChanged(Commands.parallel(
-            Commands.run(() -> AutoConstants.TELE_HDC.getXController().setPID(
-                AutoConstants.TeleXYLogged.get().getP(),
-                AutoConstants.TeleXYLogged.get().getI(),
-                AutoConstants.TeleXYLogged.get().getD())),
-            Commands.run(() -> AutoConstants.TELE_HDC.getYController().setPID(
-                AutoConstants.TeleXYLogged.get().getP(),
-                AutoConstants.TeleXYLogged.get().getI(),
-                AutoConstants.TeleXYLogged.get().getD()))));
-
-        AutoConstants.TeleThetaLogged.onChanged(Commands.parallel(
-            Commands.run(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
-                AutoConstants.TeleThetaLogged.get().getP(),
-                AutoConstants.TeleThetaLogged.get().getI(),
-                AutoConstants.TeleThetaLogged.get().getD()))));
-        
     }
 
     public DriveHDC(Swerve swerve, Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelativeSupplier, BooleanSupplier shouldMirror) {
@@ -90,7 +72,7 @@ public class DriveHDC extends Command {
         double y = -ySupplier.getAsDouble();
         if (shouldMirror.getAsBoolean()) {
             x *= -1;
-        y *= -1;
+            y *= -1;
         }
 
         ChassisSpeeds desiredSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rotationSupplier.getAsDouble(), swerve.getPose().getRotation());
@@ -116,7 +98,7 @@ public class DriveHDC extends Command {
         );
 
         swerve.setDesiredPose(desiredPose);
-}
+    }
 
     @Override
     public void end(boolean interrupted) {
