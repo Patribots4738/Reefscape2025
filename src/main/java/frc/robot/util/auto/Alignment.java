@@ -9,7 +9,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.util.Constants.AutoConstants;
@@ -59,9 +58,9 @@ public class Alignment {
     
     public ChassisSpeeds normalizeChassisSpeeds(ChassisSpeeds autoSpeeds, ChassisSpeeds controllerSpeeds) {
         return new ChassisSpeeds(
-            MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vyMetersPerSecond, autoSpeeds.vyMetersPerSecond)), 0.001),
-            -MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vxMetersPerSecond, autoSpeeds.vxMetersPerSecond)), 0.001),
-            MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.001)
+            normalizeTwoSpeeds(controllerSpeeds.vyMetersPerSecond, autoSpeeds.vyMetersPerSecond),
+            -normalizeTwoSpeeds(controllerSpeeds.vxMetersPerSecond, autoSpeeds.vxMetersPerSecond),
+            autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity()
         );
     }
 
@@ -107,13 +106,7 @@ public class Alignment {
             // Post-alignment, use current alignmentIndex
             cagePose = FieldConstants.GET_CAGE_POSITIONS().get(alignmentIndex);
         }
-        Pose2d desiredPose = new Pose2d(
-            swerve.getPose().getX(), 
-            Robot.isRedAlliance() 
-                ? cagePose.getY() - ClimbConstants.CLIMB_Y_OFFSET 
-                : cagePose.getY() + ClimbConstants.CLIMB_Y_OFFSET, 
-            cagePose.getRotation()
-        );
+        Pose2d desiredPose = new Pose2d(swerve.getPose().getX(), cagePose.getY(), cagePose.getRotation());
         return getAutoSpeeds(desiredPose);
     }
 

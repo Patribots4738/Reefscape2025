@@ -7,8 +7,6 @@ import com.revrobotics.spark.SparkLowLevel;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.NeoMotorConstants;
 import frc.robot.util.custom.GainConstants;
@@ -23,8 +21,6 @@ public class Neo extends SafeSpark {
     private double targetPosition = 0;
     private double targetVelocity = 0;
     private double targetPercent = 0;
-
-    private DCMotorSim motorSimModel;
 
     /**
      * Creates a new Neo motor with the default settings.
@@ -60,7 +56,7 @@ public class Neo extends SafeSpark {
     public Neo(int id, boolean isSparkFlex, boolean inverted, boolean useAbsoluteEncoder) {
         super(id, useAbsoluteEncoder, SparkLowLevel.MotorType.kBrushless, isSparkFlex);
         
-        setOutputInverted(inverted);
+        setInverted(inverted);
         
         // Turn off alternate and analog encoders
         // we never use them
@@ -232,9 +228,14 @@ public class Neo extends SafeSpark {
      * If the simulation is active and the control type is position, 
      * it simulates movement on the motor
      */
-    @Deprecated
     public void tick() {
-
+        if ((FieldConstants.IS_SIMULATION) && controlType == ControlLoopType.POSITION) {
+            double error = (targetPosition - getPosition());
+            if (getPIDWrappingEnabled()) {
+                error = MathUtil.angleModulus(error);
+            }
+            setVoltage(getP() * error);
+        }
     }
 
     /**
@@ -248,15 +249,7 @@ public class Neo extends SafeSpark {
         
         if (FieldConstants.IS_SIMULATION) {
             DCMotor motor = isSparkFlex ? DCMotor.getNeoVortex(1) : DCMotor.getNeo550(1);
-            // NeoPhysicsSim.getInstance().addNeo(this, motor);
-            motorSimModel = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(
-                    motor, 
-                    0.001, 
-                    1
-                ), 
-                motor
-            );
+            NeoPhysicsSim.getInstance().addNeo(this, motor);  
         }
     }
 
@@ -279,7 +272,7 @@ public class Neo extends SafeSpark {
      * @return The instantaneous velocity of the Neo in rotations per minute.
      */
     public double getVelocity() {
-        return super.getVelocity();
+        return super.getVelocity(); 
     }
 
     /**

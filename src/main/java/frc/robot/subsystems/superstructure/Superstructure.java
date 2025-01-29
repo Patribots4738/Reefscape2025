@@ -31,7 +31,7 @@ public class Superstructure {
     private final Supplier<Pose2d> robotPoseSupplier;
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ArmPosition")
-    private ArmPosition armPosition = ArmPosition.LOW_STOW;
+    private ArmPosition armPosition = ArmPosition.STOW;
 
     private final LoggedTunableNumber elevatorStow = new LoggedTunableNumber("Elevator/StowPostion", ElevatorConstants.STOW_POSITION_METERS);
     private final LoggedTunableNumber elevatorIntake = new LoggedTunableNumber("Elevator/IntakePosition", ElevatorConstants.INTAKE_POSITION_METERS);
@@ -45,8 +45,7 @@ public class Superstructure {
     private final LoggedTunableNumber wristMinSafe = new LoggedTunableNumber("Wrist/MinSafePosition", WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS);
     private final LoggedTunableNumber wristMaxSafe = new LoggedTunableNumber("Wrist/MaxSafePosition", WristConstants.WRIST_MAX_SAFE_ANGLE_RADIANS);
     private final LoggedTunableNumber wristClimb = new LoggedTunableNumber("Wrist/ClimbPosition", WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS);
-    private final LoggedTunableNumber wristLowStow = new LoggedTunableNumber("Wrist/LowStowPostion", WristConstants.STOW_POSITION_RADIANS);
-    private final LoggedTunableNumber wristUpStow = new LoggedTunableNumber("Wrist/UpStowPostion", WristConstants.WRIST_MAX_ANGLE_RADIANS);
+    private final LoggedTunableNumber wristStow = new LoggedTunableNumber("Wrist/StowPostion", WristConstants.STOW_POSITION_RADIANS);
     private final LoggedTunableNumber wristIntake = new LoggedTunableNumber("Wrist/IntakePosition", WristConstants.INTAKE_POSITION_RADIANS);
     private final LoggedTunableNumber wristL1 = new LoggedTunableNumber("Wrist/L1Postition", WristConstants.L1_POSITION_RADIANS);
     private final LoggedTunableNumber wristL2 = new LoggedTunableNumber("Wrist/L2Postition", WristConstants.L2_POSITION_RADIANS);
@@ -63,10 +62,7 @@ public class Superstructure {
 
         this.robotPoseSupplier = robotPoseSupplier;
 
-        elevatorStow.onChanged(Commands.runOnce(() -> {
-            ArmPosition.LOW_STOW.elevatorPose = elevatorStow.get();
-            ArmPosition.UP_STOW.elevatorPose = elevatorStow.get();
-        }).ignoringDisable(true));
+        elevatorStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.elevatorPose = elevatorStow.get()).ignoringDisable(true));
         elevatorIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.elevatorPose = elevatorIntake.get()).ignoringDisable(true));
         elevatorL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.elevatorPose = elevatorL1.get()).ignoringDisable(true));
         elevatorL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.elevatorPose = elevatorL2.get()).ignoringDisable(true));
@@ -75,8 +71,7 @@ public class Superstructure {
         elevatorL2RemoveAlgae.onChanged(Commands.runOnce(() -> ArmPosition.L2_ALGAE.elevatorPose = elevatorL2RemoveAlgae.get()).ignoringDisable(true));
         elevatorL3RemoveAlgae.onChanged(Commands.runOnce(() -> ArmPosition.L3_ALGAE.elevatorPose = elevatorL3RemoveAlgae.get()).ignoringDisable(true));
 
-        wristUpStow.onChanged(Commands.runOnce(() -> ArmPosition.UP_STOW.wristPose = wristUpStow.get()).ignoringDisable(true));
-        wristLowStow.onChanged(Commands.runOnce(() -> ArmPosition.LOW_STOW.wristPose = wristLowStow.get()).ignoringDisable(true));
+        wristStow.onChanged(Commands.runOnce(() -> ArmPosition.STOW.wristPose = wristStow.get()).ignoringDisable(true));
         wristClimb.onChanged(Commands.runOnce(() -> ArmPosition.CLIMB.wristPose = wristClimb.get()).ignoringDisable(true));
         wristIntake.onChanged(Commands.runOnce(() -> ArmPosition.INTAKE.wristPose = wristIntake.get()).ignoringDisable(true));
         wristL1.onChanged(Commands.runOnce(() -> ArmPosition.L1.wristPose = wristL1.get()).ignoringDisable(true));
@@ -87,8 +82,7 @@ public class Superstructure {
     }
 
     public enum ArmPosition {
-        UP_STOW  (ElevatorConstants.STOW_POSITION_METERS, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
-        LOW_STOW (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
+        STOW     (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
         INTAKE   (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS, false),
         CLIMB    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS, false),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
@@ -115,10 +109,10 @@ public class Superstructure {
                     this.armPosition = position;
                 }),
                 Commands.either(
-                    transitionWrist(() -> position.wristPose).onlyIf(() -> !wrist.atPosition(wristUpStow.get())), 
+                    transitionWrist(() -> position.wristPose), 
                     wrist.setPositionCommand(() -> position.wristPose), 
                     () -> 
-                        (shouldEvadeReef()
+                        (PoseCalculations.nearReef(robotPoseSupplier.get()) 
                             || position.wristPose < wristMinSafe.get()
                             || Robot.gameMode == GameMode.AUTONOMOUS) 
                         && !elevator.atPosition(position.elevatorPose)
@@ -148,7 +142,7 @@ public class Superstructure {
                 setArmPosition(ArmPosition.INTAKE),
                 claw.intakeCommand(),
                 Commands.waitUntil(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-                setArmPosition(ArmPosition.UP_STOW)
+                setArmPosition(ArmPosition.STOW)
             );
     }
 
@@ -173,9 +167,9 @@ public class Superstructure {
                     () -> this.armPosition.scoring
                 ),
                 claw.outtakeCommand(),
-                Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
+                Commands.waitSeconds(clawPlaceTime.get()),
                 claw.stopCommand(),
-                setArmPosition(ArmPosition.LOW_STOW)
+                setArmPosition(ArmPosition.STOW)
             );
     }
 
@@ -192,7 +186,7 @@ public class Superstructure {
             Commands.sequence(
                 setArmPosition(ArmPosition.CLIMB),
                 climb.stowPositionCommand(),
-                setArmPosition(ArmPosition.LOW_STOW)
+                setArmPosition(ArmPosition.STOW)
             );
     }
 
@@ -220,14 +214,9 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
         return 
-            wrist.getPosition() > wristMinSafe.get() && (wrist.getPosition() < wristMaxSafe.get() || !shouldEvadeReef()) 
-            || wrist.atPosition(wristMinSafe.get())
+            wrist.getPosition() > wristMinSafe.get() && wrist.getPosition() < wristMaxSafe.get() 
+            || wrist.atPosition(wristMinSafe.get()) 
             || wrist.atPosition(wristMaxSafe.get());
-    }
-
-    @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")
-    public boolean shouldEvadeReef() {
-        return PoseCalculations.nearReef(robotPoseSupplier.get());
     }
 
 }
