@@ -10,7 +10,7 @@ public class LoggedTunableBoolean extends LoggedNetworkBoolean {
     private boolean previousValue;
     
     public LoggedTunableBoolean(String key, boolean defaultValue) {
-        super("Tunable/Constants/" + key, defaultValue);
+        super("Constants/" + key, defaultValue);
         this.previousValue = defaultValue;
     }
 

@@ -10,7 +10,7 @@ public class LoggedTunableNumber extends LoggedNetworkNumber {
     private double previousValue;
     
     public LoggedTunableNumber(String key, double defaultValue) {
-        super("Tunable/Constants/" + key, defaultValue);
+        super("Constants/" + key, defaultValue);
         this.previousValue = defaultValue;
     }
 
