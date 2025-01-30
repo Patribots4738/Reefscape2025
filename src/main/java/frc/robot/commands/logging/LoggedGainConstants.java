@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
 
-public class NTLoggedGainConstants {
+public class LoggedGainConstants {
     
     private GainConstants gainConstants;
     private final LoggedTunableNumber pValue; 
@@ -19,7 +19,7 @@ public class NTLoggedGainConstants {
     private final LoggedTunableNumber vValue;
     private final LoggedTunableNumber gValue;
 
-    public NTLoggedGainConstants(GainConstants constants, String key){
+    public LoggedGainConstants(GainConstants constants, String key){
         this.gainConstants = constants;
         String name = key + "/Gains/";
         this.pValue = new LoggedTunableNumber(name + "P", constants.getP());

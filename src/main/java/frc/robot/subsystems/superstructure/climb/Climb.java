@@ -34,8 +34,8 @@ public class Climb extends SubsystemBase {
 
     public Climb(ClimbIO io) {
         this.io = io;
-        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
-        ClimbConstants.LOGGED_CLIMB_GAINS.onChanged(Commands.run(() -> io.setGains(ClimbConstants.LOGGED_CLIMB_GAINS.get())));
+        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
+        ClimbConstants.LOGGED_CLIMB_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_CLIMB_GAINS.get())).ignoringDisable(true));
     }
 
     @Override

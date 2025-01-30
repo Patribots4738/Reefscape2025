@@ -24,8 +24,8 @@ public class Module {
         this.io = io;
         this.index = index;
         this.chassisAngularOffset = chassisAngularOffset;
-        MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.onChanged(Commands.run(() -> io.setDriveGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get())));
-        MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.onChanged(Commands.run(() -> io.setTurnGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get())));
+        MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.onChanged(Commands.runOnce(() -> io.setDriveGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get())).ignoringDisable(true));
+        MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.onChanged(Commands.runOnce(() -> io.setTurnGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get())).ignoringDisable(true));
     }
 
     public void updateInputs() {

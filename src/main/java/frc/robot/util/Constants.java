@@ -24,7 +24,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
-import frc.robot.commands.logging.NTLoggedGainConstants;
+import frc.robot.commands.logging.LoggedGainConstants;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.custom.ReefSide;
@@ -180,7 +180,7 @@ public final class Constants {
             0.0
         );
 
-        public static final NTLoggedGainConstants LOGGED_TELE_XY_GAINS = new NTLoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
+        public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
 
         public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
             3.725, 
@@ -194,7 +194,7 @@ public final class Constants {
             0
         );
 
-        public static final NTLoggedGainConstants LOGGED_TELE_THETA_GAINS = new NTLoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
+        public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
 
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.TELE_XY_GAINS.getP(),
@@ -439,7 +439,7 @@ public final class Constants {
             0.0
         );
 
-        public static final NTLoggedGainConstants LOGGED_DRIVING_GAINS = new NTLoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Drive");
+        public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Drive");
 
         public static final double TURNING_P = Robot.isSimulation() ? 10.0 : 23.0;
         public static final double TURNING_I = 0.0;
@@ -455,7 +455,7 @@ public final class Constants {
             0.0
         );
 
-        public static final NTLoggedGainConstants LOGGED_TURNING_GAINS = new NTLoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Turn");
+        public static final LoggedGainConstants LOGGED_TURNING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Turn");
 
     }
 
@@ -505,7 +505,7 @@ public final class Constants {
             ELEVATOR_G
         );
 
-        public static final NTLoggedGainConstants LOGGED_ELEVATOR_GAINS = new NTLoggedGainConstants(ElevatorConstants.ELEVATOR_GAINS, "Elevator");
+        public static final LoggedGainConstants LOGGED_ELEVATOR_GAINS = new LoggedGainConstants(ElevatorConstants.ELEVATOR_GAINS, "Elevator");
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
@@ -546,7 +546,7 @@ public final class Constants {
             WRIST_G
         );
 
-        public static final NTLoggedGainConstants LOGGED_WRIST_GAINS = new NTLoggedGainConstants(WristConstants.WRIST_GAINS, "Wrist");
+        public static final LoggedGainConstants LOGGED_WRIST_GAINS = new LoggedGainConstants(WristConstants.WRIST_GAINS, "Wrist");
 
         public static final double GEAR_RATIO = 1.3;
       
@@ -608,7 +608,7 @@ public final class Constants {
             CLIMB_G
         );
 
-        public static final NTLoggedGainConstants LOGGED_CLIMB_GAINS = new NTLoggedGainConstants(ClimbConstants.CLIMB_GAINS, "Climb");
+        public static final LoggedGainConstants LOGGED_CLIMB_GAINS = new LoggedGainConstants(ClimbConstants.CLIMB_GAINS, "Climb");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = 1.897590170231;

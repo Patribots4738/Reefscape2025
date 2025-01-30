@@ -31,8 +31,8 @@ public class Elevator extends SubsystemBase {
     
     public Elevator(ElevatorIO io) {
         this.io = io;
-        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
-        ElevatorConstants.LOGGED_ELEVATOR_GAINS.onChanged(Commands.run(() -> io.setGains(ElevatorConstants.LOGGED_ELEVATOR_GAINS.get())));
+        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
+        ElevatorConstants.LOGGED_ELEVATOR_GAINS.onChanged(runOnce(() -> io.setGains(ElevatorConstants.LOGGED_ELEVATOR_GAINS.get())).ignoringDisable(true));
     }
 
     @Override
