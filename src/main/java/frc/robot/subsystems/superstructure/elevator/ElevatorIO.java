@@ -2,6 +2,8 @@ package frc.robot.subsystems.superstructure.elevator;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import frc.robot.util.custom.GainConstants;
+
 public interface ElevatorIO {
     
     @AutoLog
@@ -36,5 +38,7 @@ public interface ElevatorIO {
     public default void setBrakeMode(boolean brake) {}
 
     public default void resetEncoder(double position) {}
+
+    public default void setGains(GainConstants constants) {}
 
 }

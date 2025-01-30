@@ -1,6 +1,7 @@
 package frc.robot.subsystems.superstructure.elevator;
 
 import frc.robot.util.Constants.ElevatorConstants;
+import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.rev.Neo;
 
 public class ElevatorIONeo implements ElevatorIO {
@@ -16,11 +17,9 @@ public class ElevatorIONeo implements ElevatorIO {
 
     private void configMotor(Neo motor) {
         motor.setOutputInverted(ElevatorConstants.MOTOR_INVERTED);
-        motor.setPID(ElevatorConstants.ELEVATOR_GAINS);
         motor.setPositionConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ElevatorConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setSmartCurrentLimit((int) ElevatorConstants.CURRENT_LIMIT);
-        
     }
 
     private void configMotors() {
@@ -77,5 +76,12 @@ public class ElevatorIONeo implements ElevatorIO {
         leader.resetEncoder(position);
         follower.resetEncoder(position);
     }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        leader.setPID(constants);
+        follower.setPID(constants);
+    }
+
     
 }

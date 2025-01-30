@@ -159,5 +159,12 @@ public class ModuleIOKraken implements ModuleIO {
         driveMotor.setGains(driveGains);
         turnMotor.setGains(turnGains);
     }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        driveMotor.setGains(constants);
+        turnMotor.setGains(constants);
+    }
+
     
 }

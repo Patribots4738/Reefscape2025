@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 import frc.robot.util.custom.GainConstants;
@@ -24,6 +25,8 @@ public class Module {
         this.io = io;
         this.index = index;
         this.chassisAngularOffset = chassisAngularOffset;
+        MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.onChanged(Commands.run(() -> io.setGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get())));
+        MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.onChanged(Commands.run(() -> io.setGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get())));
     }
 
     public void updateInputs() {

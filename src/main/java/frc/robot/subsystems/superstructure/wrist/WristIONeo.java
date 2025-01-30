@@ -1,6 +1,7 @@
 package frc.robot.subsystems.superstructure.wrist;
 
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.rev.Neo;
 
 public class WristIONeo implements WristIO {
@@ -13,8 +14,8 @@ public class WristIONeo implements WristIO {
     }
 
     private void configMotor() {
-        motor.setOutputInverted(WristConstants.MOTOR_INVERTED);
         motor.setPID(WristConstants.WRIST_GAINS);
+        motor.setOutputInverted(WristConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setSmartCurrentLimit((int) WristConstants.CURRENT_LIMIT);
@@ -50,5 +51,11 @@ public class WristIONeo implements WristIO {
             motor.setCoastMode();
         }
     }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        motor.setPID(constants);
+    }
+
     
 }

@@ -2,6 +2,7 @@ package frc.robot.subsystems.superstructure.climb;
 
 import frc.robot.util.hardware.rev.Neo;
 import frc.robot.util.Constants.ClimbConstants;
+import frc.robot.util.custom.GainConstants;
 
 public class ClimbIONeo implements ClimbIO {
     
@@ -65,5 +66,12 @@ public class ClimbIONeo implements ClimbIO {
             follower.setBrakeMode();
         }
     }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        leader.setPID(constants);
+        follower.setPID(constants);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package frc.robot.subsystems.superstructure.elevator;
 
 import frc.robot.util.Constants.ElevatorConstants;
+import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 
 public class ElevatorIOKraken implements ElevatorIO {
@@ -15,8 +16,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     }
 
     private void configMotor(Kraken motor) {
+        motor.setGains(ElevatorConstants.ELEVATOR_LOGGED_GAINS);
         motor.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
-        motor.setGains(ElevatorConstants.ELEVATOR_GAINS);
         motor.setPositionConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ElevatorConstants.VELOCITY_CONVERSION_FACTOR);
         motor.setSupplyCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
@@ -77,4 +78,10 @@ public class ElevatorIOKraken implements ElevatorIO {
         follower.resetEncoder(position);
     }
     
+    @Override
+    public void setGains(GainConstants constants) {
+        leader.setGains(constants);
+        follower.setGains(constants);
+    }
+
 }

@@ -22,7 +22,7 @@ import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
 public class Superstructure {
-    
+     
     private final Claw claw;
     private final Elevator elevator;
     private final Wrist wrist;

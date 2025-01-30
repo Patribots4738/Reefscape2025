@@ -1,6 +1,7 @@
 package frc.robot.subsystems.superstructure.wrist;
 
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 
 public class WristIOKraken implements WristIO {
@@ -21,6 +22,7 @@ public class WristIOKraken implements WristIO {
         motor.setSupplyCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
+
     }
 
     @Override
@@ -50,6 +52,11 @@ public class WristIOKraken implements WristIO {
     @Override
     public void setBrakeMode(boolean brake) {
         motor.setBrakeMode(brake);
+    }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        motor.setGains(constants);
     }
 
 }

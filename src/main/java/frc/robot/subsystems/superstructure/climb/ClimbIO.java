@@ -2,6 +2,8 @@ package frc.robot.subsystems.superstructure.climb;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import frc.robot.util.custom.GainConstants;
+
 public interface ClimbIO {
     
     @AutoLog
@@ -34,5 +36,8 @@ public interface ClimbIO {
     public default void runCharacterization(double input) {}
 
     public default void setBrakeMode(boolean brake) {}
+
+    public default void setGains(GainConstants constants) {}
+
 
 }

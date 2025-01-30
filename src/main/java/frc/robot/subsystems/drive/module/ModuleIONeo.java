@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.drive.module;
 import frc.robot.util.Constants.MAXSwerveModuleConstants;
+import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.rev.Neo;
 
@@ -138,4 +139,11 @@ public class ModuleIONeo implements ModuleIO {
         driveMotor.setPID(driveGains);
         turnMotor.setPID(turnGains);
     }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        driveMotor.setPID(constants);
+        turnMotor.setPID(constants);
+    }
+
 }

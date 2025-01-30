@@ -2,6 +2,7 @@ package frc.robot.subsystems.superstructure.climb;
 
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.Constants.ClimbConstants;
+import frc.robot.util.custom.GainConstants;
 
 public class ClimbIOKraken implements ClimbIO {
     
@@ -11,6 +12,7 @@ public class ClimbIOKraken implements ClimbIO {
     public ClimbIOKraken() {
         leader = new Kraken(ClimbConstants.CLIMB_LEADER_CAN_ID, true, false);
         follower = new Kraken(ClimbConstants.CLIMB_FOLLOWER_CAN_ID, true, false);
+        
         configMotors();
     }
 
@@ -65,6 +67,12 @@ public class ClimbIOKraken implements ClimbIO {
     public void setBrakeMode(boolean brake) {
         leader.setBrakeMode(brake);
         follower.setBrakeMode(brake);
+    }
+
+    @Override
+    public void setGains(GainConstants constants) {
+        leader.setGains(constants);
+        follower.setGains(constants);
     }
 
 }

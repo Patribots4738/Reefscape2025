@@ -53,4 +53,6 @@ public interface ModuleIO {
 
     default void setGains(GainConstants driveGains, GainConstants turnGains) {}
 
+    default void setGains(GainConstants constants) {}
+
 }

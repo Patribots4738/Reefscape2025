@@ -10,6 +10,7 @@ import frc.robot.RobotContainer;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
@@ -25,12 +26,14 @@ public class Wrist extends SubsystemBase {
     private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
+    
 
     private double targetPosition = 0.0;
 
     public Wrist(WristIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
+        WristConstants.LOGGED_WRIST_GAINS.onChanged(Commands.run(() -> io.setGains(WristConstants.LOGGED_WRIST_GAINS.get())));
     }
 
     @Override
@@ -88,4 +91,6 @@ public class Wrist extends SubsystemBase {
     public void runCharacterization(double input) {
         io.runCharacterization(input);
     }
+
+
 }

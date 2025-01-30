@@ -1,5 +1,7 @@
 package frc.robot.util.custom;
 
+
+
 /**
  * PID constants used to create PID controllers
  * This class is special becuase of its overloaded constructors
@@ -7,6 +9,8 @@ package frc.robot.util.custom;
  */
 public class GainConstants {
 
+    
+    
     // Generic
     private double P; 
     private double I;
