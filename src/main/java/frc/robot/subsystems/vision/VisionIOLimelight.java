@@ -1,68 +1,44 @@
 package frc.robot.subsystems.vision;
+
 import frc.robot.util.hardware.limelight.Limelight;
 import frc.robot.util.hardware.limelight.LimelightHelpers.RawFiducial;
 
 public class VisionIOLimelight implements VisionIO {
     
-    private final Limelight frontLimelight;
-    private final Limelight backLimelight;
+    private final Limelight camera;
 
-    public VisionIOLimelight() {
-        frontLimelight = new Limelight("Front3G", false);
-        backLimelight = new Limelight("Back3G", false);
+    public VisionIOLimelight(String name) {
+        this.camera = new Limelight(name, false);
     }
 
     public void updateInputs(VisionIOInputs inputs) {
-        frontLimelight.refreshPoseEstimate();
-        inputs.frontRobotPoseValid = frontLimelight.hasValidPoseEstimate();
-        inputs.frontRobotPose = frontLimelight.getRobotPose();
-        inputs.frontTimestampSeconds = frontLimelight.getTimestamp();
-        inputs.frontAverageTA = frontLimelight.getAverageTA();
-        inputs.frontAverageTD = frontLimelight.getAverageTD();
-        inputs.frontTagCount = frontLimelight.getTagCount();
+        camera.refreshPoseEstimate();
+        inputs.robotPoseValid = camera.hasValidPoseEstimate();
+        inputs.robotPose = camera.getRobotPose();
+        inputs.timestampSeconds = camera.getTimestamp();
+        inputs.averageTA = camera.getAverageTA();
+        inputs.averageTD = camera.getAverageTD();
 
-        RawFiducial[] rawFrontFiducials = frontLimelight.getRawFiducials();
-        inputs.frontIds = new int[rawFrontFiducials.length];
+        RawFiducial[] rawFrontFiducials = camera.getRawFiducials();
+        inputs.tagIds = new int[rawFrontFiducials.length];
         for (int i = 0; i < rawFrontFiducials.length; i++) {
             RawFiducial fid = rawFrontFiducials[i];
-            inputs.frontIds[i] = fid.id;
-        }
-
-        backLimelight.refreshPoseEstimate();
-        inputs.backRobotPoseValid = backLimelight.hasValidPoseEstimate();
-        inputs.backRobotPose = backLimelight.getRobotPose();
-        inputs.backTimestampSeconds = backLimelight.getTimestamp();
-        inputs.backAverageTA = backLimelight.getAverageTA();
-        inputs.backAverageTD = backLimelight.getAverageTD();
-        inputs.backTagCount = backLimelight.getTagCount();
-
-        RawFiducial[] rawBackFiducials = backLimelight.getRawFiducials();
-        inputs.backIds = new int[rawBackFiducials.length];
-        for (int i = 0; i < rawBackFiducials.length; i++) {
-            RawFiducial fid = rawBackFiducials[i];
-            inputs.backIds[i] = fid.id;
+            inputs.tagIds[i] = fid.id;
         }
     }
 
     @Override
-    public void setFrontPipelineIndex(int index) {
-        frontLimelight.setPipelineIndex(index);
-    }
-
-    @Override
-    public void setBackPipelineIndex(int index) {
-        backLimelight.setPipelineIndex(index);
+    public void setPipelineIndex(int index) {
+        camera.setPipelineIndex(index);
     }
 
     @Override
     public void setRobotOrientation(double yawDegrees) {
-        frontLimelight.setRobotOrientation(yawDegrees);
-        backLimelight.setRobotOrientation(yawDegrees);
+        camera.setRobotOrientation(yawDegrees);
     }
 
     @Override
     public void setUseMegaTag2(boolean megaTag2) {
-        frontLimelight.setUseMT2(megaTag2);
-        backLimelight.setUseMT2(megaTag2);
+        camera.setUseMT2(megaTag2);
     }
 }

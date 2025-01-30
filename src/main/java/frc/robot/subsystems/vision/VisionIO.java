@@ -9,29 +9,18 @@ public interface VisionIO {
     @AutoLog
     class VisionIOInputs {
 
-        public Pose2d frontRobotPose = new Pose2d();
-        public boolean frontRobotPoseValid = false;
-        public double frontTimestampSeconds = 0.0;
-        public double frontAverageTA = 0.0;
-        public double frontAverageTD = 0.0;
-        public int frontTagCount = 0;
-        public int[] frontIds = new int[0];
-
-        public Pose2d backRobotPose = new Pose2d();
-        public boolean backRobotPoseValid = false;
-        public double backTimestampSeconds = 0.0;
-        public double backAverageTA = 0.0;
-        public double backAverageTD = 0.0;
-        public int backTagCount = 0;
-        public int[] backIds = new int[0];
+        public Pose2d robotPose = new Pose2d();
+        public boolean robotPoseValid = false;
+        public double timestampSeconds = 0.0;
+        public double averageTA = 0.0;
+        public double averageTD = 0.0;
+        public int[] tagIds = new int[0];
 
     }
 
     public default void updateInputs(VisionIOInputs inputs) {}
     
-    public default void setFrontPipelineIndex(int index) {}
-
-    public default void setBackPipelineIndex(int index) {}
+    public default void setPipelineIndex(int index) {}
 
     public default void setRobotOrientation(double yawDegrees) {}
 

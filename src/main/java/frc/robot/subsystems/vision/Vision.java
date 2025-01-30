@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems.vision;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.VecBuilder;
@@ -18,8 +21,8 @@ import frc.robot.util.custom.LoggedTunableNumber;
 
 public class Vision extends SubsystemBase {
 
-    private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
-    private final VisionIO io;
+    private final VisionIOInputsAutoLogged[] inputs;
+    private final VisionIO[] cameras;
 
     private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/xyStdsDisabled", 0.001);
     private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
@@ -37,22 +40,30 @@ public class Vision extends SubsystemBase {
 
     private final SwerveDrivePoseEstimator poseEstimator;
 
-    public Vision(VisionIO io, SwerveDrivePoseEstimator poseEstimator) {
-        this.io = io;
+    public Vision(SwerveDrivePoseEstimator poseEstimator, VisionIO... io) {
+        int cameraCount = io.length;
+        cameras = new VisionIO[cameraCount];
+        inputs = new VisionIOInputsAutoLogged[cameraCount];
+        for (int i = 0; i < cameraCount; i++) {
+            cameras[i] = io[i];
+        }
         this.poseEstimator = poseEstimator;
     }
 
     @Override
     public void periodic() {
-        if (shouldUseMT1()) {
-            io.setUseMegaTag2(false);
-        } else {
-            io.setUseMegaTag2(true);
-            io.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
-        }
+        for (int i = 0; i < cameras.length; i++) {
+            VisionIO camera = cameras[i];
+            if (shouldUseMT1()) {
+                camera.setUseMegaTag2(false);
+            } else {
+                camera.setUseMegaTag2(true);
+                camera.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+            }
 
-        io.updateInputs(inputs);
-        Logger.processInputs("SubsystemInputs/Vision", inputs);
+            camera.updateInputs(inputs[i]);
+            Logger.processInputs("SubsystemInputs/Vision/" + i, inputs[i]);
+        }
 
         if (!FieldConstants.IS_SIMULATION) {
             updatePoseEstimator();
@@ -60,23 +71,16 @@ public class Vision extends SubsystemBase {
     }
 
     private void updatePoseEstimator() {
-        boolean updateFront = hasTargetFront();
-        boolean updateBack = hasTargetBack();
         int tagCount = 0;
         double tagArea = 0;
 
-        // Use correct inputs for standard deviations
-        if (updateFront && updateBack) {
-            tagCount = inputs.frontTagCount + inputs.backTagCount;
-            tagArea = (inputs.frontAverageTA + inputs.backAverageTA) / 2.0;
-        } else if (updateFront) {
-            tagCount = inputs.frontTagCount;
-            tagArea = inputs.frontAverageTA;
-        } else if (updateBack) {
-            tagCount = inputs.backTagCount;
-            tagArea = inputs.backAverageTA;
-        } else {
-            return;
+        List<Integer> camerasToUpdate = new ArrayList<>();
+        for (int i = 0; i < cameras.length; i++) {
+            if (cameraHasTarget(i)) {
+                camerasToUpdate.add(i);
+                tagCount += inputs[i].tagIds.length;
+                tagArea = (tagArea * (camerasToUpdate.size() - 1) + inputs[i].averageTA) / camerasToUpdate.size();
+            }
         }
 
         double xyStds = 0.0;
@@ -85,10 +89,10 @@ public class Vision extends SubsystemBase {
         if ((Robot.gameMode == GameMode.DISABLED || 
             Robot.gameMode == GameMode.AUTONOMOUS
                 && Robot.currentTimestamp - RobotContainer.gameModeStart < 1.75)
-                && (updateFront || updateBack)) {
+                && camerasToUpdate.size() > 0) {
             xyStds = xyStdsDisabled.get();
             radStds = radStdsDisabled.get();
-        } else if (updateFront || updateBack) {
+        } else if (camerasToUpdate.size() > 0) {
             // Multiple targets detected
             if (tagCount > 1) {
                 if (Robot.gameMode == GameMode.TELEOP) {
@@ -115,31 +119,17 @@ public class Vision extends SubsystemBase {
             }
 
             poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, radStds));
-            if (updateFront) {
-                poseEstimator.addVisionMeasurement(inputs.frontRobotPose, inputs.frontTimestampSeconds);
-            }
-            if (updateBack) {
-                poseEstimator.addVisionMeasurement(inputs.backRobotPose, inputs.backTimestampSeconds);
+            for (int i : camerasToUpdate) {
+                poseEstimator.addVisionMeasurement(inputs[i].robotPose, inputs[i].timestampSeconds);
             }
         }
     }
 
-    private boolean hasTargetFront() {
-        if (!inputs.frontRobotPoseValid
-            || Double.isNaN(inputs.frontRobotPose.getX()) 
-            || Double.isNaN(inputs.frontRobotPose.getY()) 
-            || Double.isNaN(inputs.frontRobotPose.getRotation().getRadians()))
-        {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean hasTargetBack() {
-        if (!inputs.backRobotPoseValid
-            || Double.isNaN(inputs.backRobotPose.getX()) 
-            || Double.isNaN(inputs.backRobotPose.getY()) 
-            || Double.isNaN(inputs.backRobotPose.getRotation().getRadians()))
+    private boolean cameraHasTarget(int cameraIndex) {
+        if (!inputs[cameraIndex].robotPoseValid
+            || Double.isNaN(inputs[cameraIndex].robotPose.getX()) 
+            || Double.isNaN(inputs[cameraIndex].robotPose.getY()) 
+            || Double.isNaN(inputs[cameraIndex].robotPose.getRotation().getRadians()))
         {
             return false;
         }
