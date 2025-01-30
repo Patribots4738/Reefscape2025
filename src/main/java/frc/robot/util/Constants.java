@@ -439,7 +439,7 @@ public final class Constants {
             0.0
         );
 
-        public static final NTLoggedGainConstants LOGGED_DRIVING_GAINS = new NTLoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "DrivingModule");
+        public static final NTLoggedGainConstants LOGGED_DRIVING_GAINS = new NTLoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Drive");
 
         public static final double TURNING_P = Robot.isSimulation() ? 10.0 : 23.0;
         public static final double TURNING_I = 0.0;
@@ -455,7 +455,7 @@ public final class Constants {
             0.0
         );
 
-        public static final NTLoggedGainConstants LOGGED_TURNING_GAINS = new NTLoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "TurningModule");
+        public static final NTLoggedGainConstants LOGGED_TURNING_GAINS = new NTLoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Turn");
 
     }
 
@@ -496,7 +496,7 @@ public final class Constants {
         public static final double ELEVATOR_S = 0.10058799999998883;
         public static final double ELEVATOR_G = 0.0;
 
-        public static final GainConstants ELEVATOR_LOGGED_GAINS = new GainConstants(
+        public static final GainConstants ELEVATOR_GAINS = new GainConstants(
             ELEVATOR_P,
             ELEVATOR_I,
             ELEVATOR_D,
@@ -505,7 +505,7 @@ public final class Constants {
             ELEVATOR_G
         );
 
-        public static final NTLoggedGainConstants elevatorLogged = new NTLoggedGainConstants(ElevatorConstants.ELEVATOR_LOGGED_GAINS, "Elevator");
+        public static final NTLoggedGainConstants LOGGED_ELEVATOR_GAINS = new NTLoggedGainConstants(ElevatorConstants.ELEVATOR_GAINS, "Elevator");
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;

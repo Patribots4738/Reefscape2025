@@ -121,9 +121,6 @@ public class RobotContainer {
             () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
         ));
 
-        // HDCTuner = new HDCTuner(
-        //     AutoConstants.TELE_HDC.getXController(),
-        //     AutoConstants.TELE_HDC.getThetaController());
         AutoConstants.LOGGED_TELE_XY_GAINS.onChanged(Commands.parallel(
             Commands.run(() -> AutoConstants.TELE_HDC.getXController().setPID(
                 AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
@@ -175,9 +172,6 @@ public class RobotContainer {
                 climb, 
                 climb::runCharacterization, 
                 climb::getCharacterizationVelocity));
-
-        //new NTGainTuner().schedule(); // kill this
-        //new NTLoggedGainConstants().schedule(); // make this work
         
         prepareNamedCommands();
 
@@ -300,28 +294,13 @@ public class RobotContainer {
         double AUTO_HDC_TH_I = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/1-I").getDouble(-1);
         double AUTO_HDC_TH_D = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/2-D").getDouble(-1);
 
-        double TELE_HDC_XY_P = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Translation/0-P").getDouble(-1);
-        double TELE_HDC_XY_I = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Translation/1-I").getDouble(-1);
-        double TELE_HDC_XY_D = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Translation/2-D").getDouble(-1);
-        double TELE_HDC_TH_P = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Rotation/0-P").getDouble(-1);
-        double TELE_HDC_TH_I = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Rotation/1-I").getDouble(-1);
-        double TELE_HDC_TH_D = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Rotation/2-D").getDouble(-1);
-
-        if (AUTO_HDC_XY_P == -1 || AUTO_HDC_XY_I == -1 || AUTO_HDC_XY_D == -1 || AUTO_HDC_TH_P == -1 || AUTO_HDC_TH_I == -1 || AUTO_HDC_TH_D == -1 ||
-            TELE_HDC_XY_P == -1 || TELE_HDC_XY_I == -1 || TELE_HDC_XY_D == -1 || TELE_HDC_TH_P == -1 || TELE_HDC_TH_I == -1 || TELE_HDC_TH_D == -1) {
+        if (AUTO_HDC_XY_P == -1 || AUTO_HDC_XY_I == -1 || AUTO_HDC_XY_D == -1 || AUTO_HDC_TH_P == -1 || AUTO_HDC_TH_I == -1 || AUTO_HDC_TH_D == -1) {
             NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/0-P").setDouble(AutoConstants.AUTO_XY_GAINS.getP());
             NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/1-I").setDouble(AutoConstants.AUTO_XY_GAINS.getI());
             NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/2-D").setDouble(AutoConstants.AUTO_XY_GAINS.getD());
             NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/0-P").setDouble(AutoConstants.AUTO_THETA_GAINS.getP());
             NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/1-I").setDouble(AutoConstants.AUTO_THETA_GAINS.getI());
             NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/2-D").setDouble(AutoConstants.AUTO_THETA_GAINS.getD());
-
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Translation/0-P").setDouble(AutoConstants.TELE_XY_GAINS.getP());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Translation/1-I").setDouble(AutoConstants.TELE_XY_GAINS.getI());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Translation/2-D").setDouble(AutoConstants.TELE_XY_GAINS.getD());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Rotation/0-P").setDouble(AutoConstants.TELE_THETA_GAINS.getP());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Rotation/1-I").setDouble(AutoConstants.TELE_THETA_GAINS.getI());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("HDC/Rotation/2-D").setDouble(AutoConstants.TELE_THETA_GAINS.getD());
             return;
         } else {
 
@@ -334,50 +313,12 @@ public class RobotContainer {
                     AUTO_HDC_TH_P,
                     AUTO_HDC_TH_I,
                     AUTO_HDC_TH_D));
-
-            AutoConstants.XY_PID.setP(TELE_HDC_XY_P);
-            AutoConstants.XY_PID.setI(TELE_HDC_XY_I);
-            AutoConstants.XY_PID.setD(TELE_HDC_XY_D);
-            AutoConstants.THETA_PID.setP(TELE_HDC_TH_P);
-            AutoConstants.THETA_PID.setI(TELE_HDC_TH_I);
-            AutoConstants.THETA_PID.setD(TELE_HDC_TH_D);
-
         }
     }
 
     public Command getAutonomousCommand() {
         return pathPlannerStorage.getSelectedAuto();
     }
-
-    // @SuppressWarnings("unused")
-    // private void configureHDCBindings(PatriBoxController controller) {
-    //     controller.pov(0, 270, testButtonBindingLoop)
-    //         .onTrue(HDCTuner.controllerDecrementCommand());
-
-    //     controller.pov(0, 90, testButtonBindingLoop)
-    //         .onTrue(HDCTuner.controllerIncrementCommand());
-
-    //     controller.pov(0, 0, testButtonBindingLoop)
-    //         .onTrue(HDCTuner.increaseCurrentConstantCommand(.1));
-
-    //     controller.pov(0, 180, testButtonBindingLoop)
-    //         .onTrue(HDCTuner.increaseCurrentConstantCommand(-.1));
-
-    //     controller.rightBumper(testButtonBindingLoop)
-    //         .onTrue(HDCTuner.constantIncrementCommand());
-
-    //     controller.leftBumper(testButtonBindingLoop)
-    //         .onTrue(HDCTuner.constantDecrementCommand());
-
-    //     controller.a(testButtonBindingLoop)
-    //         .onTrue(HDCTuner.logCommand());
-
-    //     controller.x(testButtonBindingLoop)
-    //         .onTrue(HDCTuner.multiplyPIDCommand(2));
-
-    //     controller.b(testButtonBindingLoop)
-    //         .onTrue(HDCTuner.multiplyPIDCommand(.5));
-    // }
 
     public void onDisabled() {
         swerve.stopDriving();

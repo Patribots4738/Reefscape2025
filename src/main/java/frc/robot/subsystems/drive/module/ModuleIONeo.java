@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems.drive.module;
 import frc.robot.util.Constants.MAXSwerveModuleConstants;
-import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.rev.Neo;
 
@@ -51,7 +50,8 @@ public class ModuleIONeo implements ModuleIO {
             MAXSwerveModuleConstants.TURNING_ENCODER_POSITION_PID_MIN_INPUT,
             MAXSwerveModuleConstants.TURNING_ENCODER_POSITION_PID_MAX_INPUT);
 
-        setGains(MAXSwerveModuleConstants.DRIVING_PID, MAXSwerveModuleConstants.TURNING_PID);
+        setDriveGains(MAXSwerveModuleConstants.DRIVING_PID);
+        setTurnGains(MAXSwerveModuleConstants.TURNING_PID);
 
         driveMotor.setSmartCurrentLimit(MAXSwerveModuleConstants.NEO_CURRENT_LIMIT);
         turnMotor.setSmartCurrentLimit(MAXSwerveModuleConstants.TURNING_MOTOR_CURRENT_LIMIT);
@@ -135,15 +135,13 @@ public class ModuleIONeo implements ModuleIO {
     }
 
     @Override
-    public void setGains(GainConstants driveGains, GainConstants turnGains) {
-        driveMotor.setPID(driveGains);
-        turnMotor.setPID(turnGains);
+    public void setDriveGains(GainConstants gains) {
+        driveMotor.setPID(gains);
     }
 
     @Override
-    public void setGains(GainConstants constants) {
-        driveMotor.setPID(constants);
-        turnMotor.setPID(constants);
+    public void setTurnGains(GainConstants gains) {
+        turnMotor.setPID(gains);
     }
 
 }

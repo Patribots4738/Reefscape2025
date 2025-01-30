@@ -21,7 +21,7 @@ public class NTLoggedGainConstants {
 
     public NTLoggedGainConstants(GainConstants constants, String key){
         this.gainConstants = constants;
-        String name = "Tunable/Constants/" + key + "/Gains/";
+        String name = key + "/Gains/";
         this.pValue = new LoggedTunableNumber(name + "P", constants.getP());
         this.iValue = new LoggedTunableNumber(name + "I", constants.getI());
         this.dValue = new LoggedTunableNumber(name + "D", constants.getP());
@@ -37,15 +37,15 @@ public class NTLoggedGainConstants {
 
     public Trigger onChanged() {
         return pValue.onChanged()
-        .or(iValue.onChanged())
-        .or(dValue.onChanged())
-        .or(ffValue.onChanged())
-        .or(iZoneValue.onChanged())
-        .or(minOutputValue.onChanged())
-        .or(maxOutputValue.onChanged())
-        .or(sValue.onChanged())
-        .or(vValue.onChanged()).
-        or(gValue.onChanged());
+            .or(iValue.onChanged())
+            .or(dValue.onChanged())
+            .or(ffValue.onChanged())
+            .or(iZoneValue.onChanged())
+            .or(minOutputValue.onChanged())
+            .or(maxOutputValue.onChanged())
+            .or(sValue.onChanged())
+            .or(vValue.onChanged())
+            .or(gValue.onChanged());
     }
 
     public Trigger onChanged(Command command) {
@@ -53,16 +53,18 @@ public class NTLoggedGainConstants {
     }
 
     public GainConstants get(){
-        this.gainConstants = new GainConstants(pValue.get(), 
-        iValue.get(),
-        dValue.get(), 
-        ffValue.get(), 
-        iZoneValue.get(), 
-        minOutputValue.get(), 
-        maxOutputValue.get(), 
-        sValue.get(), 
-        dValue.get(), 
-        gValue.get());
+        this.gainConstants = new GainConstants(
+            pValue.get(), 
+            iValue.get(),
+            dValue.get(), 
+            ffValue.get(), 
+            iZoneValue.get(), 
+            minOutputValue.get(), 
+            maxOutputValue.get(), 
+            sValue.get(), 
+            dValue.get(), 
+            gValue.get()
+        );
         return gainConstants;
     }
 

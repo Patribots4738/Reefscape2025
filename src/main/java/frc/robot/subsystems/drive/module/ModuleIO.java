@@ -51,8 +51,8 @@ public interface ModuleIO {
 
     default void setTurnVelocity(double velocity) {}
 
-    default void setGains(GainConstants driveGains, GainConstants turnGains) {}
+    default void setDriveGains(GainConstants gains) {}
 
-    default void setGains(GainConstants constants) {}
+    default void setTurnGains(GainConstants gains) {}
 
 }
