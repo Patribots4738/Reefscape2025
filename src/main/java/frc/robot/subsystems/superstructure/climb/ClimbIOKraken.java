@@ -71,8 +71,8 @@ public class ClimbIOKraken implements ClimbIO {
 
     @Override
     public void setGains(GainConstants constants) {
-        leader.setGains(ClimbConstants.LOGGED_CLIMB_GAINS.get());
-        follower.setGains(ClimbConstants.LOGGED_CLIMB_GAINS.get());
+        leader.setGains(constants);
+        follower.setGains(constants);
     }
 
 }

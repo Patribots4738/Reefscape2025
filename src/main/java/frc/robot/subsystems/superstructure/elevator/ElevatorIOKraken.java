@@ -80,8 +80,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     
     @Override
     public void setGains(GainConstants constants) {
-        leader.setGains(ElevatorConstants.elevatorLogged.get());
-        follower.setGains(ElevatorConstants.elevatorLogged.get());
+        leader.setGains(constants);
+        follower.setGains(constants);
     }
 
 }

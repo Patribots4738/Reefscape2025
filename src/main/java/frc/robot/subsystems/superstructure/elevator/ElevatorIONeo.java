@@ -79,8 +79,8 @@ public class ElevatorIONeo implements ElevatorIO {
 
     @Override
     public void setGains(GainConstants constants) {
-        leader.setPID(ElevatorConstants.elevatorLogged.get());
-        follower.setPID(ElevatorConstants.elevatorLogged.get());
+        leader.setPID(constants);
+        follower.setPID(constants);
     }
 
     

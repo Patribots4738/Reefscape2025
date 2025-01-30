@@ -162,8 +162,8 @@ public class ModuleIOKraken implements ModuleIO {
 
     @Override
     public void setGains(GainConstants constants) {
-        driveMotor.setGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get());
-        turnMotor.setGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get());
+        driveMotor.setGains(constants);
+        turnMotor.setGains(constants);
     }
 
     

@@ -54,7 +54,7 @@ public class WristIONeo implements WristIO {
 
     @Override
     public void setGains(GainConstants constants) {
-        motor.setPID(WristConstants.LOGGED_WRIST_GAINS.get());
+        motor.setPID(constants);
     }
 
     

@@ -56,7 +56,7 @@ public class WristIOKraken implements WristIO {
 
     @Override
     public void setGains(GainConstants constants) {
-        motor.setGains(WristConstants.LOGGED_WRIST_GAINS.get());
+        motor.setGains(constants);
     }
 
 }
