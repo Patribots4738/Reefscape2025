@@ -38,17 +38,17 @@ public class ModuleIOKraken implements ModuleIO {
 
         turnMotor.setMotorInverted(MK4cSwerveModuleConstants.INVERT_TURNING_MOTOR);
 
-        // Apply position and velocity conversion factors for the driving encoder. The
-        // native units for position and velocity are rotations and RPM, respectively,
-        // but we want meters and meters per second to use with WPILib's swerve APIs.
-        driveMotor.setPositionConversionFactor(MK4cSwerveModuleConstants.DRIVING_ENCODER_POSITION_FACTOR);
-        driveMotor.setVelocityConversionFactor(MK4cSwerveModuleConstants.DRIVING_ENCODER_VELOCITY_FACTOR);
+        driveMotor.setGearRatio(MK4cSwerveModuleConstants.DRIVE_GEAR_RATIO);
 
-        // Apply position and velocity conversion factors for the turning encoder. We
+        // Apply unit conversion factors for the driving encoder. The
+        // native units for position and velocity are rotations and RPS, respectively,
+        // but we want meters and meters per second to use with WPILib's swerve APIs.
+        driveMotor.setUnitConversionFactor(MK4cSwerveModuleConstants.DRIVING_ENCODER_POSITION_FACTOR);
+
+        // Apply unit conversion factor for the turning encoder. We
         // want these in radians and radians per second to use with WPILib's swerve
         // APIs.
-        turnMotor.setPositionConversionFactor(MK4cSwerveModuleConstants.TURNING_ENCODER_POSITION_FACTOR);
-        turnMotor.setVelocityConversionFactor(MK4cSwerveModuleConstants.TURNING_ENCODER_VELOCITY_FACTOR);
+        turnMotor.setUnitConversionFactor(MK4cSwerveModuleConstants.TURNING_ENCODER_POSITION_FACTOR);
 
         // Set status signal update frequencies, optimized for swerve
         driveMotor.setTelemetryPreference(TelemetryPreference.SWERVE);

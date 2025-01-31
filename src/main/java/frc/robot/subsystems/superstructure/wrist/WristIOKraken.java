@@ -1,6 +1,5 @@
 package frc.robot.subsystems.superstructure.wrist;
 
-import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
@@ -15,8 +14,8 @@ public class WristIOKraken implements WristIO {
     }
 
     private void configMotor() {
-        motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
-        motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR);
+        motor.setGearRatio(WristConstants.GEAR_RATIO);
+        motor.setUnitConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
         motor.setSoftLimits(WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         motor.setMotorInverted(WristConstants.MOTOR_INVERTED);
         motor.resetEncoder(WristConstants.RESET_ANGLE_RADIANS);

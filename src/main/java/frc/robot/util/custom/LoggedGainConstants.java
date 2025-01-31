@@ -1,9 +1,7 @@
-package frc.robot.commands.logging;
+package frc.robot.util.custom;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.util.custom.GainConstants;
-import frc.robot.util.custom.LoggedTunableNumber;
 
 public class LoggedGainConstants {
     
@@ -22,16 +20,16 @@ public class LoggedGainConstants {
     public LoggedGainConstants(GainConstants constants, String key){
         this.gainConstants = constants;
         String name = key + "/Gains/";
-        this.pValue = new LoggedTunableNumber(name + "P", constants.getP());
-        this.iValue = new LoggedTunableNumber(name + "I", constants.getI());
-        this.dValue = new LoggedTunableNumber(name + "D", constants.getP());
-        this.ffValue = new LoggedTunableNumber(name + "FF", constants.getFF());        
-        this.iZoneValue = new LoggedTunableNumber(name + "IZone", constants.getIZone());
-        this.minOutputValue = new LoggedTunableNumber(name + "MinOutput", constants.getMinOutput());
-        this.maxOutputValue = new LoggedTunableNumber(name + "MaxOutput", constants.getMaxOutput());
-        this.sValue = new LoggedTunableNumber(name + "S", constants.getS());
-        this.vValue = new LoggedTunableNumber(name + "V", constants.getV());
-        this.gValue = new LoggedTunableNumber(name + "G", constants.getG());
+        this.pValue = new LoggedTunableNumber(name + "0-P", constants.getP());
+        this.iValue = new LoggedTunableNumber(name + "1-I", constants.getI());
+        this.dValue = new LoggedTunableNumber(name + "2-D", constants.getD());
+        this.ffValue = new LoggedTunableNumber(name + "3-FF", constants.getFF());        
+        this.iZoneValue = new LoggedTunableNumber(name + "4-IZone", constants.getIZone());
+        this.minOutputValue = new LoggedTunableNumber(name + "5-MinOutput", constants.getMinOutput());
+        this.maxOutputValue = new LoggedTunableNumber(name + "6-MaxOutput", constants.getMaxOutput());
+        this.sValue = new LoggedTunableNumber(name + "7-S", constants.getS());
+        this.vValue = new LoggedTunableNumber(name + "8-V", constants.getV());
+        this.gValue = new LoggedTunableNumber(name + "9-G", constants.getG());
 
     }
 

@@ -24,9 +24,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
-import frc.robot.commands.logging.LoggedGainConstants;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.GainConstants;
+import frc.robot.util.custom.LoggedGainConstants;
 import frc.robot.util.custom.ReefSide;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
@@ -409,10 +409,10 @@ public final class Constants {
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
-        public static final double DRIVE_GEAR_RATIO = CURRENT_GEARING.gearRatio;
+        public static final double DRIVE_GEAR_RATIO = 5.9;
 
-        public static final double DRIVING_ENCODER_POSITION_FACTOR = WHEEL_CIRCUMFERENCE_METERS / DRIVE_GEAR_RATIO; // meters
-        public static final double DRIVING_ENCODER_VELOCITY_FACTOR = WHEEL_CIRCUMFERENCE_METERS / DRIVE_GEAR_RATIO; // meters per second
+        public static final double DRIVING_ENCODER_POSITION_FACTOR = WHEEL_CIRCUMFERENCE_METERS; // meters
+        public static final double DRIVING_ENCODER_VELOCITY_FACTOR = WHEEL_CIRCUMFERENCE_METERS; // meters per second
 
         public static final double TURNING_ENCODER_POSITION_FACTOR = (2 * Math.PI); // radians
         public static final double TURNING_ENCODER_VELOCITY_FACTOR = (2 * Math.PI); // radians per second
@@ -424,11 +424,11 @@ public final class Constants {
         public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 80.0;
         public static final double TURNING_MOTOR_TORQUE_LIMIT_AMPS = 60.0;
 
-        public static final double DRIVING_P = Robot.isSimulation() ? 0.5 : 0.02;
+        public static final double DRIVING_P = 4.5;
         public static final double DRIVING_I = 0;
-        public static final double DRIVING_D = 0;
-        public static final double DRIVING_S = Robot.isSimulation() ? 0.01453 : 0.07193;
-        public static final double DRIVING_V = Robot.isSimulation() ? 0.12362 : 0.11441;
+        public static final double DRIVING_D = 0.727;
+        public static final double DRIVING_S = 0.01601;
+        public static final double DRIVING_V = 0.72941;
 
         public static final GainConstants DRIVING_GAINS = new GainConstants(
             DRIVING_P,
@@ -487,13 +487,13 @@ public final class Constants {
 
         public static final double GEAR_RATIO = 6.0 + 8.0 / 9.0;
         public static final double MAX_DISPLACEMENT_METERS = 0.5831193316;
-        public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(5.5) / GEAR_RATIO;
-        public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(5.5) / GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(5.5);
+        public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(5.5);
 
-        public static final double P = 0.82;
+        public static final double P = 15.0;
         public static final double I = 0.0;
-        public static final double D = 0.05;
-        public static final double S = 0.10058799999998883;
+        public static final double D = 2.2;
+        public static final double S = 0.20005999999999768;
         public static final double G = 0.0;
 
         public static final GainConstants GAINS = new GainConstants(
@@ -532,10 +532,10 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = 2.5;
+        public static final double P = 2.6;
         public static final double I = 0.0;
-        public static final double D = 0.15;
-        public static final double S = 0.08005099999999947;
+        public static final double D = 0.155;
+        public static final double S = 0.12047100000001956;
         public static final double G = 0.0;
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -550,8 +550,8 @@ public final class Constants {
 
         public static final double GEAR_RATIO = 1.3;
       
-        public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
-        public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
         public static final double CURRENT_LIMIT = 60.0;
@@ -584,8 +584,8 @@ public final class Constants {
 
         public static final double GEAR_RATIO = 16.0 + 1.0 / 3.0;
 
-        public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / GEAR_RATIO;
-        public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI / GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI;
 
         public static final double CURRENT_LIMIT = 80.0;
         public static final boolean BRAKE_MOTOR = true;
@@ -593,10 +593,10 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 1.897590170231;
 
-        public static final double P = 0.5;
+        public static final double P = 15.0;
         public static final double I = 0.0;
-        public static final double D = 0.0;
-        public static final double S = 0.10020999999999185; 
+        public static final double D = 0.65;
+        public static final double S = 0.3198320000000531; 
         public static final double G = 0.0;
         public static final GainConstants GAINS = new GainConstants(
             P,

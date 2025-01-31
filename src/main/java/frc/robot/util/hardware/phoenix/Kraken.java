@@ -57,8 +57,7 @@ public class Kraken extends TalonFX {
     private double targetVelocity = 0.0;
     private double targetPercent = 0.0;
 
-    private double positionConversionFactor = 1.0;
-    private double velocityConversionFactor = 1.0;
+    private double unitConversionFactor = 1.0;
 
     private final TalonFXConfigurator configurator = getConfigurator();
     private final TalonFXSimState sim = getSimState();
@@ -273,11 +272,11 @@ public class Kraken extends TalonFX {
             setControl(
                 useTorqueControl 
                     ? positionTorqueRequest
-                        .withPosition(position / positionConversionFactor)
+                        .withPosition(position / unitConversionFactor)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                     : positionRequest
-                        .withPosition(position / positionConversionFactor)
+                        .withPosition(position / unitConversionFactor)
                         .withFeedForward(feedForward)
                         .withSlot(slot));
         if (!status.isError()) {
@@ -314,11 +313,11 @@ public class Kraken extends TalonFX {
             setControl(
                 useTorqueControl 
                     ? velocityTorqueRequest
-                        .withVelocity(velocity / velocityConversionFactor)
+                        .withVelocity(velocity / unitConversionFactor)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                     : velocityRequest
-                        .withVelocity(velocity / velocityConversionFactor)
+                        .withVelocity(velocity / unitConversionFactor)
                         .withFeedForward(feedForward)
                         .withSlot(slot));
         if (!status.isError()) {
@@ -378,24 +377,13 @@ public class Kraken extends TalonFX {
     }
 
     /**
-     * Sets the position conversion factor for the Kraken.
-     * This factor is used to convert the raw position value to a meaningful unit.
+     * Sets the unit conversion factor for the Kraken.
+     * This factor is used to convert values in rotations to other units.
      *
      * @param newFactor the new position conversion factor to be set
      */
-    public void setPositionConversionFactor(double newFactor) {
-        positionConversionFactor = newFactor;
-    }
-
-    /**
-     * Sets the velocity conversion factor for the Kraken.
-     * This factor is used to convert the desired velocity value to the actual velocity value
-     * that is sent to the Kraken motor controller.
-     *
-     * @param newFactor the new velocity conversion factor to be set
-     */
-    public void setVelocityConversionFactor(double newFactor) {
-        velocityConversionFactor = newFactor;
+    public void setUnitConversionFactor(double newFactor) {
+        unitConversionFactor = newFactor;
     }
 
     /**
@@ -532,9 +520,9 @@ public class Kraken extends TalonFX {
      */
     public StatusCode setSoftLimits(double reverseLimit, double forwardLimit) {
         softLimitConfigs.ReverseSoftLimitEnable = true;
-        softLimitConfigs.ReverseSoftLimitThreshold = reverseLimit / positionConversionFactor;
+        softLimitConfigs.ReverseSoftLimitThreshold = reverseLimit / unitConversionFactor;
         softLimitConfigs.ForwardSoftLimitEnable = true;
-        softLimitConfigs.ForwardSoftLimitThreshold = forwardLimit / positionConversionFactor;
+        softLimitConfigs.ForwardSoftLimitThreshold = forwardLimit / unitConversionFactor;
         return applyParameter(
             () -> configurator.apply(softLimitConfigs, 1.0),
             () -> configurator.refresh(softLimitConfigs, 1.0),
@@ -578,7 +566,7 @@ public class Kraken extends TalonFX {
      */
     public StatusCode resetEncoder(double position) {
         return applyParameter(
-            () -> setPosition(position / positionConversionFactor, 1.0),
+            () -> setPosition(position / unitConversionFactor, 1.0),
             "Internal Encoder Reset"
         );
     }
@@ -601,6 +589,22 @@ public class Kraken extends TalonFX {
             () -> configurator.refresh(outputConfigs, 1.0),
             () -> outputConfigs.NeutralMode == neutralMode,
             "Brake Mode"
+        );
+    }
+
+    /**
+     * Sets the mechanism reduction for a mechanism that is not absolutely encoded.
+     * 
+     * @param mechanismReduction The mechanism reduction ratio.
+     * @return The status code indicating the result of the operation.
+     */
+    public StatusCode setGearRatio(double mechanismReduction) {
+        feedbackConfigs.SensorToMechanismRatio = mechanismReduction;
+        return applyParameter(
+            () -> configurator.apply(feedbackConfigs, 1.0),
+            () -> configurator.refresh(feedbackConfigs, 1.0),
+            () -> (feedbackConfigs.SensorToMechanismRatio != 0 ^ mechanismReduction == 0),
+            "Gear Ratio"
         );
     }
     
@@ -674,17 +678,8 @@ public class Kraken extends TalonFX {
      * 
      * @return position conversion factor
      */
-    public double getPositionConversionFactor() {
-        return positionConversionFactor;
-    }
-
-    /**
-     * Obtains velocity conversion factor of the Kraken.
-     * 
-     * @return velocity conversion factor
-     */
-    public double getVelocityConversionFactor() {
-        return velocityConversionFactor;
+    public double getUnitConversionFactor() {
+        return unitConversionFactor;
     }
 
     /**
@@ -720,7 +715,7 @@ public class Kraken extends TalonFX {
      * @return current position as rotations * PCF
      */
     public double getPositionAsDouble() {
-        return positionSignal.getValue().in(Rotations) * positionConversionFactor;        
+        return positionSignal.getValue().in(Rotations) * unitConversionFactor;        
     }
 
     /**
@@ -729,7 +724,7 @@ public class Kraken extends TalonFX {
      * @return current velocity as rotations per second * VCF
      */
     public double getVelocityAsDouble() {
-        return velocitySignal.getValue().in(RotationsPerSecond) * velocityConversionFactor;
+        return velocitySignal.getValue().in(RotationsPerSecond) * unitConversionFactor;
     }
 
     /**
