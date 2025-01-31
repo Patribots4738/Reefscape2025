@@ -62,7 +62,7 @@ public class Vision extends SubsystemBase {
             }
 
             camera.updateInputs(inputs[i]);
-            Logger.processInputs("SubsystemInputs/Vision/" + i, inputs[i]);
+            Logger.processInputs("SubsystemInputs/Vision/Camera" + i, inputs[i]);
         }
 
         if (!FieldConstants.IS_SIMULATION) {
