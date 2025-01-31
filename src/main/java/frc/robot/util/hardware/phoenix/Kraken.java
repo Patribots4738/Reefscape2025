@@ -19,6 +19,7 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.SlotConfigs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
@@ -69,6 +70,7 @@ public class Kraken extends TalonFX {
     private final FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
     private final TorqueCurrentConfigs torqueCurrentConfigs = new TorqueCurrentConfigs();
     private final ClosedLoopRampsConfigs closedLoopRampConfigs = new ClosedLoopRampsConfigs();
+    private final SoftwareLimitSwitchConfigs softLimitConfigs = new SoftwareLimitSwitchConfigs();
 
     private DCMotorSim motorSimModel;
 
@@ -514,10 +516,33 @@ public class Kraken extends TalonFX {
         torqueCurrentConfigs.PeakForwardTorqueCurrent = forwardLimit;
         return applyParameter(
             () -> configurator.apply(torqueCurrentConfigs, 1.0),
-            () -> configurator.apply(torqueCurrentConfigs, 1.0),
+            () -> configurator.refresh(torqueCurrentConfigs, 1.0),
             () -> (torqueCurrentConfigs.PeakReverseTorqueCurrent != 0 ^ reverseLimit == 0)
                 && (torqueCurrentConfigs.PeakForwardTorqueCurrent != 0 ^ forwardLimit == 0),
             "Torque Current Limits"
+        );
+    }
+
+    /**
+     * Sets the software limit switches for the Kraken motor.
+     * 
+     * @param reverseLimit The reverse limit, with PCF applied.
+     * @param forwardLimit The forward limit, with PCF applied.
+     * @return The status code indicating the success or failure of the operation.
+     */
+    public StatusCode setSoftLimits(double reverseLimit, double forwardLimit) {
+        softLimitConfigs.ReverseSoftLimitEnable = true;
+        softLimitConfigs.ReverseSoftLimitThreshold = reverseLimit / positionConversionFactor;
+        softLimitConfigs.ForwardSoftLimitEnable = true;
+        softLimitConfigs.ForwardSoftLimitThreshold = forwardLimit / positionConversionFactor;
+        return applyParameter(
+            () -> configurator.apply(softLimitConfigs, 1.0),
+            () -> configurator.refresh(softLimitConfigs, 1.0),
+            () -> softLimitConfigs.ReverseSoftLimitEnable
+                && (softLimitConfigs.ReverseSoftLimitThreshold != 0 ^ reverseLimit == 0)
+                && softLimitConfigs.ForwardSoftLimitEnable
+                && (softLimitConfigs.ForwardSoftLimitThreshold != 0 ^ forwardLimit == 0),
+            "Soft Limits"
         );
     }
 
