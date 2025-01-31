@@ -9,20 +9,19 @@ public class WristIOKraken implements WristIO {
     private final Kraken motor;
 
     public WristIOKraken() {
-        motor = new Kraken(WristConstants.WRIST_CAN_ID, true, false);
+        motor = new Kraken(WristConstants.CAN_ID, true, false);
         configMotor();
     }
 
     private void configMotor() {
-        motor.setMotorInverted(WristConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR);
-        motor.resetEncoder(WristConstants.WRIST_MAX_ANGLE_RADIANS);
-        motor.setGains(WristConstants.WRIST_GAINS);
+        motor.setMotorInverted(WristConstants.MOTOR_INVERTED);
+        motor.resetEncoder(WristConstants.RESET_ANGLE_RADIANS);
+        motor.setGains(WristConstants.GAINS);
         motor.setSupplyCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
-
     }
 
     @Override

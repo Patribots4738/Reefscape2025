@@ -32,7 +32,7 @@ public class Elevator extends SubsystemBase {
     public Elevator(ElevatorIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        ElevatorConstants.LOGGED_ELEVATOR_GAINS.onChanged(runOnce(() -> io.setGains(ElevatorConstants.LOGGED_ELEVATOR_GAINS.get())).ignoringDisable(true));
+        ElevatorConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(ElevatorConstants.LOGGED_GAINS.get())).ignoringDisable(true));
     }
 
     @Override
@@ -95,7 +95,7 @@ public class Elevator extends SubsystemBase {
     }   
 
     public boolean atPosition(double position) {
-        return MathUtil.isNear(position, inputs.leaderPositionMeters, ElevatorConstants.ELEVATOR_DEADBAND_METERS);
+        return MathUtil.isNear(position, inputs.leaderPositionMeters, ElevatorConstants.DEADBAND_METERS);
     }
 
     public boolean atTargetPosition() {

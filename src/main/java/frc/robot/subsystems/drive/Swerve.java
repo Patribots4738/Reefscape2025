@@ -500,7 +500,7 @@ public class Swerve extends SubsystemBase {
     }
 
     private void resetOdometryAuto(Pose2d pose) {
-        if (getPose().getTranslation().getNorm() > 1 && DriverStation.isFMSAttached()) {
+        if (pose.getTranslation().getDistance(getPose().getTranslation()) > 1.0 && DriverStation.isFMSAttached()) {
             return;
         }
         resetOdometry(pose);

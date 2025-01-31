@@ -10,18 +10,18 @@ public class ClimbIOKraken implements ClimbIO {
     private final Kraken follower;
 
     public ClimbIOKraken() {
-        leader = new Kraken(ClimbConstants.CLIMB_LEADER_CAN_ID, true, false);
-        follower = new Kraken(ClimbConstants.CLIMB_FOLLOWER_CAN_ID, true, false);
+        leader = new Kraken(ClimbConstants.LEADER_CAN_ID, true, false);
+        follower = new Kraken(ClimbConstants.FOLLOWER_CAN_ID, true, false);
         
         configMotors();
     }
 
     private void configMotor(Kraken motor) {
-        motor.setMotorInverted(ClimbConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR);
+        motor.setMotorInverted(ClimbConstants.MOTOR_INVERTED);
         motor.resetEncoder(0);
-        motor.setGains(ClimbConstants.CLIMB_GAINS);
+        motor.setGains(ClimbConstants.GAINS);
         motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
     }

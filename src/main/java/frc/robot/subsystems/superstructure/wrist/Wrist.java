@@ -33,7 +33,7 @@ public class Wrist extends SubsystemBase {
     public Wrist(WristIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        WristConstants.LOGGED_WRIST_GAINS.onChanged(runOnce(() -> io.setGains(WristConstants.LOGGED_WRIST_GAINS.get())).ignoringDisable(true));
+        WristConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(WristConstants.LOGGED_GAINS.get())).ignoringDisable(true));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public void setPosition(double position) {
-        position = MathUtil.clamp(position, WristConstants.WRIST_MIN_ANGLE_RADIANS, WristConstants.WRIST_MAX_ANGLE_RADIANS);
+        position = MathUtil.clamp(position, WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
         io.setPosition(position);
 
@@ -73,7 +73,7 @@ public class Wrist extends SubsystemBase {
     }   
 
     public boolean atPosition(double position) {
-        return MathUtil.isNear(position, inputs.positionRads, WristConstants.WRIST_DEADBAND_RADIANS);
+        return MathUtil.isNear(position, inputs.positionRads, WristConstants.DEADBAND_RADIANS);
     }
 
     public boolean atTargetPosition() {

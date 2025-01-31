@@ -409,10 +409,10 @@ public final class Constants {
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
-        public static final double DRIVING_ENCODER_POSITION_FACTOR = (WHEEL_CIRCUMFERENCE_METERS)
-                / CURRENT_GEARING.gearRatio; // meters
-        public static final double DRIVING_ENCODER_VELOCITY_FACTOR = (WHEEL_CIRCUMFERENCE_METERS
-                / CURRENT_GEARING.gearRatio); // meters per second
+        public static final double DRIVE_GEAR_RATIO = CURRENT_GEARING.gearRatio;
+
+        public static final double DRIVING_ENCODER_POSITION_FACTOR = WHEEL_CIRCUMFERENCE_METERS / DRIVE_GEAR_RATIO; // meters
+        public static final double DRIVING_ENCODER_VELOCITY_FACTOR = WHEEL_CIRCUMFERENCE_METERS / DRIVE_GEAR_RATIO; // meters per second
 
         public static final double TURNING_ENCODER_POSITION_FACTOR = (2 * Math.PI); // radians
         public static final double TURNING_ENCODER_VELOCITY_FACTOR = (2 * Math.PI); // radians per second
@@ -461,7 +461,7 @@ public final class Constants {
 
     public static final class ClawConstants {
 
-        public static final int CLAW_CAN_ID = 9;
+        public static final int CAN_ID = 9;
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 40.0;
@@ -477,8 +477,8 @@ public final class Constants {
     }
     public static final class ElevatorConstants {
 
-        public static final int ELEVATOR_LEADER_CAN_ID = 10;
-        public static final int ELEVATOR_FOLLOWER_CAN_ID = 11;
+        public static final int LEADER_CAN_ID = 10;
+        public static final int FOLLOWER_CAN_ID = 11;
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 80.0;
@@ -488,24 +488,24 @@ public final class Constants {
         public static final double GEAR_RATIO = 6.0 + 8.0 / 9.0;
         public static final double MAX_DISPLACEMENT_METERS = 0.5831193316;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(5.5) / GEAR_RATIO;
-        public static final double VELOCITY_CONVERSION_FACTOR = 60.0 * Units.inchesToMeters(5.5) / GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(5.5) / GEAR_RATIO;
 
-        public static final double ELEVATOR_P = 0.82;
-        public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.05;
-        public static final double ELEVATOR_S = 0.10058799999998883;
-        public static final double ELEVATOR_G = 0.0;
+        public static final double P = 0.82;
+        public static final double I = 0.0;
+        public static final double D = 0.05;
+        public static final double S = 0.10058799999998883;
+        public static final double G = 0.0;
 
-        public static final GainConstants ELEVATOR_GAINS = new GainConstants(
-            ELEVATOR_P,
-            ELEVATOR_I,
-            ELEVATOR_D,
-            ELEVATOR_S,
+        public static final GainConstants GAINS = new GainConstants(
+            P,
+            I,
+            D,
+            S,
             0.0,
-            ELEVATOR_G
+            G
         );
 
-        public static final LoggedGainConstants LOGGED_ELEVATOR_GAINS = new LoggedGainConstants(ElevatorConstants.ELEVATOR_GAINS, "Elevator");
+        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
@@ -516,55 +516,55 @@ public final class Constants {
         public static final double L3_POSITION_REMOVE_ALGAE = 0.4;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.2;
 
-        public static final double ELEVATOR_DEADBAND_METERS = 0.005;
+        public static final double DEADBAND_METERS = 0.005;
 
     }
 
     public static final class WristConstants {
 
-        public static final int WRIST_CAN_ID = 12;
-        public static final int WRIST_ENCODER_DIO_PIN = 0;
+        public static final int CAN_ID = 12;
+        public static final int ENCODER_DIO_PIN = 0;
 
-        public static final double WRIST_ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
-        public static final boolean WRIST_ENCODER_INVERTED = false;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
+        public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double WRIST_P = 2.5;
-        public static final double WRIST_I = 0.0;
-        public static final double WRIST_D = 0.15;
-        public static final double WRIST_S = 0.08005099999999947;
-        public static final double WRIST_G = 0.0;
-        public static final GainConstants WRIST_GAINS = new GainConstants(
-            WRIST_P,
-            WRIST_I,
-            WRIST_D,
-            WRIST_S,
+        public static final double P = 2.5;
+        public static final double I = 0.0;
+        public static final double D = 0.15;
+        public static final double S = 0.08005099999999947;
+        public static final double G = 0.0;
+        public static final GainConstants GAINS = new GainConstants(
+            P,
+            I,
+            D,
+            S,
             0.0,
-            WRIST_G
+            G
         );
 
-        public static final LoggedGainConstants LOGGED_WRIST_GAINS = new LoggedGainConstants(WristConstants.WRIST_GAINS, "Wrist");
+        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
         public static final double GEAR_RATIO = 1.3;
       
         public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
-        public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * 60.0 / GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI / GEAR_RATIO;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
-
-        public static final double WRIST_LENGTH_METERS = Units.inchesToMeters(15.0);
 
         public static final double CURRENT_LIMIT = 60.0;
 
-        public static final double WRIST_MIN_ANGLE_RADIANS = -1.08231258091;
-        public static final double WRIST_MAX_ANGLE_RADIANS = 3.655594491941;
+        public static final double MIN_ANGLE_RADIANS = -1.08231258091;
+        public static final double MAX_ANGLE_RADIANS = 3.655594491941;
 
-        public static final double WRIST_MIN_SAFE_ANGLE_RADIANS = 1.05;
-        public static final double WRIST_MAX_SAFE_ANGLE_RADIANS = 1.7;
+        public static final double RESET_ANGLE_RADIANS = 3.857;
 
-        public static final double WRIST_DEADBAND_RADIANS = 0.02;
+        public static final double MIN_SAFE_ANGLE_RADIANS = 1.05;
+        public static final double MAX_SAFE_ANGLE_RADIANS = 1.7;
+
+        public static final double DEADBAND_RADIANS = 0.02;
         public static final double TRANSITION_POSITION_RADIANS = Math.PI / 2.0;
         public static final double STOW_POSITION_RADIANS = 0;
         public static final double INTAKE_POSITION_RADIANS = -0.47;
@@ -577,46 +577,45 @@ public final class Constants {
 
     public static final class ClimbConstants {
 
-        public static final int CLIMB_LEADER_CAN_ID = 13;
-        public static final int CLIMB_FOLLOWER_CAN_ID = 14;
-        public static final int CLIMB_ENCODER_DIO_PIN = 1;
+        public static final int LEADER_CAN_ID = 13;
+        public static final int FOLLOWER_CAN_ID = 14;
 
         public static final boolean MOTOR_INVERTED = true;
 
-        public static final double CLIMB_GEAR_RATIO = 16.0 + 1.0 / 3.0;
+        public static final double GEAR_RATIO = 16.0 + 1.0 / 3.0;
 
-        public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / CLIMB_GEAR_RATIO;
-        public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI * 60.0 / CLIMB_GEAR_RATIO;
+        public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI / GEAR_RATIO;
+        public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI / GEAR_RATIO;
 
         public static final double CURRENT_LIMIT = 80.0;
         public static final boolean BRAKE_MOTOR = true;
 
-        public static final double CLIMB_MIN_ANGLE_RADIANS = 0.0;
-        public static final double CLIMB_MAX_ANGLE_RADIANS = 1.897590170231;
+        public static final double MIN_ANGLE_RADIANS = 0.0;
+        public static final double MAX_ANGLE_RADIANS = 1.897590170231;
 
-        public static final double CLIMB_P = 0.5;
-        public static final double CLIMB_I = 0.0;
-        public static final double CLIMB_D = 0.0;
-        public static final double CLIMB_S = 0.10020999999999185; 
-        public static final double CLIMB_G = 0.0;
-        public static final GainConstants CLIMB_GAINS = new GainConstants(
-            CLIMB_P,
-            CLIMB_I,
-            CLIMB_D,
-            CLIMB_S,
+        public static final double P = 0.5;
+        public static final double I = 0.0;
+        public static final double D = 0.0;
+        public static final double S = 0.10020999999999185; 
+        public static final double G = 0.0;
+        public static final GainConstants GAINS = new GainConstants(
+            P,
+            I,
+            D,
+            S,
             0.0,
-            CLIMB_G
+            G
         );
 
-        public static final LoggedGainConstants LOGGED_CLIMB_GAINS = new LoggedGainConstants(ClimbConstants.CLIMB_GAINS, "Climb");
+        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ClimbConstants.GAINS, "Climb");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = 1.897590170231;
         public static final double FINAL_POSITION_RADIANS = 0.16508729055;
 
-        public static final double CLIMB_Y_CHASSIS_OFFSET = 0.0508;
+        public static final double Y_CHASSIS_OFFSET = 0.0508;
 
-        public static final double CLIMB_DEADBAND_RADIANS = Units.degreesToRadians(3.0);
+        public static final double DEADBAND_RADIANS = Units.degreesToRadians(3.0);
 
     }
 
@@ -721,15 +720,15 @@ public final class Constants {
                 add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_RIGHT_TURNING_CAN_ID));
             }});
             KRAKEN_MOTOR_GROUPS.put("Elevator", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.ELEVATOR_LEADER_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.ELEVATOR_FOLLOWER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.LEADER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.FOLLOWER_CAN_ID));
             }});
             KRAKEN_MOTOR_GROUPS.put("Wrist", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(WristConstants.WRIST_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(WristConstants.CAN_ID));
             }});
             KRAKEN_MOTOR_GROUPS.put("Climb", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.CLIMB_LEADER_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.CLIMB_FOLLOWER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.LEADER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.FOLLOWER_CAN_ID));
             }});
 
             return KRAKEN_MOTOR_GROUPS;
@@ -925,7 +924,18 @@ public final class Constants {
 
         public static final List<Pose2d> GET_STAGED_POSITIONS() {
             int startIndex = Robot.isRedAlliance() ? 3 : 0;
-            return STAGED_POSITIONS.subList(startIndex, startIndex +3);
+            return STAGED_POSITIONS.subList(startIndex, startIndex + 3);
+        }
+
+        public static final Pose2d BLUE_RESET_ODO_POSITION = new Pose2d(3.23, 4.026, new Rotation2d(Math.PI));
+
+        public static final List<Pose2d> RESET_ODO_POSITIONS = new ArrayList<Pose2d>() {{
+            add(BLUE_RESET_ODO_POSITION);
+            add(PoseCalculations.flipPose(BLUE_RESET_ODO_POSITION));
+        }};
+
+        public static final Pose2d GET_RESET_ODO_POSITION() {
+            return RESET_ODO_POSITIONS.get(Robot.isRedAlliance() ? 1 : 0);
         }
 
     }

@@ -9,7 +9,7 @@ public class ClawIONeo implements ClawIO {
     private final Neo motor;
 
     public ClawIONeo() {
-        motor = new Neo(ClawConstants.CLAW_CAN_ID, false);
+        motor = new Neo(ClawConstants.CAN_ID, false);
         configMotor();
     }
 

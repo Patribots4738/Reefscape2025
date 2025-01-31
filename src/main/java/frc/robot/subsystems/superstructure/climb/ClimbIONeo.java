@@ -10,8 +10,8 @@ public class ClimbIONeo implements ClimbIO {
     private final Neo follower;
 
     public ClimbIONeo() {
-        leader = new Neo(ClimbConstants.CLIMB_LEADER_CAN_ID, false, false, true);
-        follower = new Neo(ClimbConstants.CLIMB_FOLLOWER_CAN_ID, false, false, false);
+        leader = new Neo(ClimbConstants.LEADER_CAN_ID, false, false, true);
+        follower = new Neo(ClimbConstants.FOLLOWER_CAN_ID, false, false, false);
         configMotors();
     }
 
@@ -19,7 +19,7 @@ public class ClimbIONeo implements ClimbIO {
         motor.setOutputInverted(ClimbConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
-        motor.setPID(ClimbConstants.CLIMB_GAINS);
+        motor.setPID(ClimbConstants.GAINS);
         motor.setSmartCurrentLimit((int) ClimbConstants.CURRENT_LIMIT);
     }
 

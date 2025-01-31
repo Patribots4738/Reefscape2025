@@ -23,12 +23,11 @@ public class Claw extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Claw/BrakeMotor", ClawConstants.BRAKE_MOTOR);
 
     private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("Claw/IntakePercent", ClawConstants.INTAKE_PERCENT);
-    private final LoggedTunableNumber holdPercent = new LoggedTunableNumber("Claw/HoldPercent", ClawConstants.HOLD_PERCENT);
     private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("Claw/OuttakePercent", ClawConstants.OUTTAKE_PERCENT);
     
     public Claw(ClawIO io) {
         this.io = io;
-        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())));
+        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
     }
 
     @Override
@@ -54,12 +53,12 @@ public class Claw extends SubsystemBase {
         return setPercentCommand(intakePercent::get);
     }
 
-    public Command holdCommand() {
-        return setPercentCommand(holdPercent::get);
-    }
-
     public Command outtakeCommand() {
         return setPercentCommand(outtakePercent::get);
+    }
+
+    public Command stopCommand() {
+        return setPercentCommand(0.0);
     }
 
     public Command outtakeTimeCommand(double time){
@@ -69,11 +68,6 @@ public class Claw extends SubsystemBase {
             stopCommand()
         );
     }
-
-    public Command stopCommand() {
-        return setPercentCommand(0.0);
-    }
-
 
     public boolean hasPiece() {
         // TODO: IMPLEMENT DETECTION LOGIC

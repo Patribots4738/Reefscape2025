@@ -10,16 +10,16 @@ public class ElevatorIOKraken implements ElevatorIO {
     private final Kraken follower;
 
     public ElevatorIOKraken() {
-        leader = new Kraken(ElevatorConstants.ELEVATOR_LEADER_CAN_ID, true, false);
-        follower = new Kraken(ElevatorConstants.ELEVATOR_FOLLOWER_CAN_ID, true, false);
+        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, false);
+        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, false);
         configMotors();
     }
 
     private void configMotor(Kraken motor) {
-        motor.setGains(ElevatorConstants.ELEVATOR_GAINS);
-        motor.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ElevatorConstants.VELOCITY_CONVERSION_FACTOR);
+        motor.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
+        motor.setGains(ElevatorConstants.GAINS);
         motor.setSupplyCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
     }

@@ -448,7 +448,7 @@ public class Kraken extends TalonFX {
      * @return the status code indicating the success or failure of the operation
      */
     public StatusCode setMotorInverted(boolean inverted) {
-        InvertedValue invertedValue = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        InvertedValue invertedValue = inverted ? InvertedValue.CounterClockwise_Positive : InvertedValue.Clockwise_Positive;
         outputConfigs.Inverted = invertedValue;
         return applyParameter(
             () -> configurator.apply(outputConfigs, 1.0),

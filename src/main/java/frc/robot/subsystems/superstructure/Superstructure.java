@@ -42,11 +42,11 @@ public class Superstructure {
     private final LoggedTunableNumber elevatorL2RemoveAlgae = new LoggedTunableNumber("Elevator/L4PostitionRemoveAlgae", ElevatorConstants.L2_POSITION_REMOVE_ALGAE);
     private final LoggedTunableNumber elevatorL3RemoveAlgae = new LoggedTunableNumber("Elevator/L4PostitionRemoveAlgae", ElevatorConstants.L3_POSITION_REMOVE_ALGAE);
 
-    private final LoggedTunableNumber wristMinSafe = new LoggedTunableNumber("Wrist/MinSafePosition", WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS);
-    private final LoggedTunableNumber wristMaxSafe = new LoggedTunableNumber("Wrist/MaxSafePosition", WristConstants.WRIST_MAX_SAFE_ANGLE_RADIANS);
-    private final LoggedTunableNumber wristClimb = new LoggedTunableNumber("Wrist/ClimbPosition", WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS);
+    private final LoggedTunableNumber wristMinSafe = new LoggedTunableNumber("Wrist/MinSafePosition", WristConstants.MIN_SAFE_ANGLE_RADIANS);
+    private final LoggedTunableNumber wristMaxSafe = new LoggedTunableNumber("Wrist/MaxSafePosition", WristConstants.MAX_SAFE_ANGLE_RADIANS);
+    private final LoggedTunableNumber wristClimb = new LoggedTunableNumber("Wrist/ClimbPosition", WristConstants.MIN_SAFE_ANGLE_RADIANS);
     private final LoggedTunableNumber wristLowStow = new LoggedTunableNumber("Wrist/LowStowPostion", WristConstants.STOW_POSITION_RADIANS);
-    private final LoggedTunableNumber wristUpStow = new LoggedTunableNumber("Wrist/UpStowPostion", WristConstants.WRIST_MAX_ANGLE_RADIANS);
+    private final LoggedTunableNumber wristUpStow = new LoggedTunableNumber("Wrist/UpStowPostion", WristConstants.MAX_ANGLE_RADIANS);
     private final LoggedTunableNumber wristIntake = new LoggedTunableNumber("Wrist/IntakePosition", WristConstants.INTAKE_POSITION_RADIANS);
     private final LoggedTunableNumber wristL1 = new LoggedTunableNumber("Wrist/L1Postition", WristConstants.L1_POSITION_RADIANS);
     private final LoggedTunableNumber wristL2 = new LoggedTunableNumber("Wrist/L2Postition", WristConstants.L2_POSITION_RADIANS);
@@ -87,12 +87,12 @@ public class Superstructure {
     }
 
     public enum ArmPosition {
-        UP_STOW  (ElevatorConstants.STOW_POSITION_METERS, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
+        UP_STOW  (ElevatorConstants.STOW_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS, false),
         LOW_STOW (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
         INTAKE   (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS, false),
-        CLIMB    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.WRIST_MIN_SAFE_ANGLE_RADIANS, false),
-        L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
-        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.WRIST_MAX_ANGLE_RADIANS, false),
+        CLIMB    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.MIN_SAFE_ANGLE_RADIANS, false),
+        L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.MAX_ANGLE_RADIANS, false),
+        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.MAX_ANGLE_RADIANS, false),
         L1       (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS, true),
         L2       (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS, true),
         L3       (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS, true),

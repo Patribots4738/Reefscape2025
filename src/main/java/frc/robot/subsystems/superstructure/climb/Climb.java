@@ -35,7 +35,7 @@ public class Climb extends SubsystemBase {
     public Climb(ClimbIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        ClimbConstants.LOGGED_CLIMB_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_CLIMB_GAINS.get())).ignoringDisable(true));
+        ClimbConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_GAINS.get())).ignoringDisable(true));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Climb extends SubsystemBase {
     }
 
     public void setPosition(double position) {
-        position = MathUtil.clamp(position, ClimbConstants.CLIMB_MIN_ANGLE_RADIANS, ClimbConstants.CLIMB_MAX_ANGLE_RADIANS);
+        position = MathUtil.clamp(position, ClimbConstants.MIN_ANGLE_RADIANS, ClimbConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
         io.setPosition(position);
 
@@ -82,7 +82,7 @@ public class Climb extends SubsystemBase {
     }
 
     public boolean atPosition(double position) {
-        return MathUtil.isNear(position, inputs.leaderPositionRads, ClimbConstants.CLIMB_DEADBAND_RADIANS);
+        return MathUtil.isNear(position, inputs.leaderPositionRads, ClimbConstants.DEADBAND_RADIANS);
     }
 
     public boolean atTargetPosition() {

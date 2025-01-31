@@ -9,12 +9,12 @@ public class WristIONeo implements WristIO {
     private final Neo motor;
 
     public WristIONeo() {
-        motor = new Neo(WristConstants.WRIST_CAN_ID, false, false, true);
+        motor = new Neo(WristConstants.CAN_ID, false, false, true);
         configMotor();
     }
 
     private void configMotor() {
-        motor.setPID(WristConstants.WRIST_GAINS);
+        motor.setPID(WristConstants.GAINS);
         motor.setOutputInverted(WristConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(WristConstants.VELOCITY_CONVERSION_FACTOR / 60.0);

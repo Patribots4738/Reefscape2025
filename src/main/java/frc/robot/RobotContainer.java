@@ -37,6 +37,7 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
@@ -203,13 +204,21 @@ public class RobotContainer {
                         : 180))
             ), swerve)
         );
-
-        controller.a()
-            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
       
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
+
+        controller.start().onTrue(
+            Commands.runOnce(() -> swerve.resetOdometry(
+                new Pose2d(
+                    swerve.getPose().getTranslation(), 
+                    Rotation2d.fromDegrees(
+                        Robot.isRedAlliance() 
+                        ? 0 
+                        : 180))
+            ), swerve)
+        );
 
         controller.povUp()
             .onTrue(superstructure.setArmPosition(ArmPosition.L4));
@@ -233,22 +242,14 @@ public class RobotContainer {
 
     private void configureDevBindings(PatriBoxController controller) {
 
-        controller.start().onTrue(
-            Commands.runOnce(() -> swerve.resetOdometry(
-                new Pose2d(
-                    swerve.getPose().getTranslation(), 
-                    Rotation2d.fromDegrees(
-                        Robot.isRedAlliance() 
-                        ? 0 
-                        : 180))
-            ), swerve)
-        );
+        controller.start()
+            .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
 
-        controller.a()
-            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+        // controller.a()
+        //     .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
-        controller.y()
-            .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
+        // controller.y()
+        //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
         controller.x()
             .onTrue(superstructure.climbStowCommand());
@@ -257,14 +258,14 @@ public class RobotContainer {
             .onTrue(superstructure.climbReadyCommand())
             .onFalse(superstructure.climbFinalCommand());
 
-        controller.rightStick()
-            .toggleOnTrue(alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
+        // controller.rightStick()
+        //     .toggleOnTrue(alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
-        controller.leftBumper()
-            .onTrue(alignment.updateIndexCommand(-1));
+        // controller.leftBumper()
+        //     .onTrue(alignment.updateIndexCommand(-1));
 
-        controller.rightBumper()
-            .onTrue(alignment.updateIndexCommand(1));
+        // controller.rightBumper()
+        //     .onTrue(alignment.updateIndexCommand(1));
 
         controller.povUp()
             .onTrue(superstructure.setArmPosition(ArmPosition.L4));
@@ -283,7 +284,7 @@ public class RobotContainer {
 
         controller.rightTrigger()
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
-
+        
     }
 
     public void updateNTGains() {
