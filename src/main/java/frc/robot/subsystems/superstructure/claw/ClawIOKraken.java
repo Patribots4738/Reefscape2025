@@ -10,7 +10,7 @@ public class ClawIOKraken implements ClawIO {
     private final Kraken motor;
 
     public ClawIOKraken() {
-        motor = new Kraken(ClawConstants.CAN_ID, true, ControlPreference.VOLTAGE);
+        motor = new Kraken(ClawConstants.CAN_ID, true, false, ControlPreference.VOLTAGE);
         configMotor();
     }
 

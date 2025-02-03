@@ -41,6 +41,7 @@ import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
+import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.util.custom.PatriBoxController;
 
 public class RobotContainer {
@@ -211,34 +212,13 @@ public class RobotContainer {
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        controller.start().onTrue(
-            Commands.runOnce(() -> swerve.resetOdometry(
-                new Pose2d(
-                    swerve.getPose().getTranslation(), 
-                    Rotation2d.fromDegrees(
-                        Robot.isRedAlliance() 
-                        ? 0 
-                        : 180))
-            ), swerve)
-        );
+        LoggedTunableNumber wristTunePose = new LoggedTunableNumber("Wrist/TunePose", 0.0);
 
-        controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+        controller.y()
+            .onTrue(wrist.setPositionCommand(wristTunePose::get));
 
-        controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
-
-        controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
-        
-        controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
-
-        controller.leftTrigger()
-            .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
-
-        controller.rightTrigger()
-            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
+        controller.a()
+            .onTrue(Commands.runOnce(() -> wristTunePose.set(wrist.getPosition())).ignoringDisable(true));
 
     }
 

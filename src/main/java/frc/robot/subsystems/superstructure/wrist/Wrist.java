@@ -26,7 +26,6 @@ public class Wrist extends SubsystemBase {
     private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
-    
 
     private double targetPosition = 0.0;
 
@@ -42,6 +41,9 @@ public class Wrist extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
 
+        // Utilize one shot frames to apply feedforwards based on gravitational torque on the wrist
+        io.setPosition(targetPosition, WristConstants.LOGGED_GAINS.get().getG() * Math.sin(inputs.positionRads));
+
         RobotContainer.components3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getX(), 
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getY(),
@@ -54,7 +56,6 @@ public class Wrist extends SubsystemBase {
     public void setPosition(double position) {
         position = MathUtil.clamp(position, WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
-        io.setPosition(position);
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getX(), 

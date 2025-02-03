@@ -34,8 +34,8 @@ public class WristIONeo implements WristIO {
     }
 
     @Override
-    public void setPosition(double position) {
-        motor.setTargetPosition(position);
+    public void setPosition(double position, double feedforward) {
+        motor.setTargetPosition(position, feedforward);
     }
 
     @Override

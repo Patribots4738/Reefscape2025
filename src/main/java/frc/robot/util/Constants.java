@@ -424,26 +424,18 @@ public final class Constants {
         public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 80.0;
         public static final double TURNING_MOTOR_TORQUE_LIMIT_AMPS = 60.0;
 
-        // public static final double DRIVING_P = 1.0;
-        // public static final double DRIVING_I = 0;
-        // public static final double DRIVING_D = 0.0;
-        // public static final double DRIVING_S = 0.17727;
-        // public static final double DRIVING_V = 0.69279;
-
-        // public static final GainConstants DRIVING_GAINS = new GainConstants(
-        //     DRIVING_P,
-        //     DRIVING_I,
-        //     DRIVING_D,
-        //     DRIVING_S,
-        //     DRIVING_V,
-        //     0.0
-        // );
-
-        public static final double DRIVING_P = 200d;
+        public static final double DRIVING_P = 1.0;
         public static final double DRIVING_I = 0;
         public static final double DRIVING_D = 0.0;
-        public static final double DRIVING_S = 0.51215;
-        public static final double DRIVING_V = 0.12199;
+        public static final double DRIVING_S = 0.17727;
+        public static final double DRIVING_V = 0.69279;
+
+
+        // public static final double DRIVING_P = 20d;
+        // public static final double DRIVING_I = 0;
+        // public static final double DRIVING_D = 0.0;
+        // public static final double DRIVING_S = 0.51215;
+        // public static final double DRIVING_V = 0.12199;
 
         public static final GainConstants DRIVING_GAINS = new GainConstants(
             DRIVING_P,
@@ -456,24 +448,15 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Drive");
 
-        // public static final double TURNING_P = 20.0;
-        // public static final double TURNING_I = 0.0;
-        // public static final double TURNING_D = 0.05;
-        // public static final double TURNING_S = 0.3400210000000079;
-
-        // public static final GainConstants TURNING_GAINS = new GainConstants(
-        //     TURNING_P,
-        //     TURNING_I,
-        //     TURNING_D,
-        //     TURNING_S,
-        //     0.0,
-        //     0.0
-        // );
-
-        public static final double TURNING_P = 5500d;
+        public static final double TURNING_P = 20.0;
         public static final double TURNING_I = 0.0;
-        public static final double TURNING_D = 510d;
-        public static final double TURNING_S = 1.0392280000000027;
+        public static final double TURNING_D = 0.05;
+        public static final double TURNING_S = 0.3400210000000079;
+
+        // public static final double TURNING_P = 5500d;
+        // public static final double TURNING_I = 0.0;
+        // public static final double TURNING_D = 510d;
+        // public static final double TURNING_S = 1.0392280000000027;
 
         public static final GainConstants TURNING_GAINS = new GainConstants(
             TURNING_P,
@@ -528,7 +511,7 @@ public final class Constants {
         public static final double I = 0.0;
         public static final double D = 160d;
         public static final double S = 0.78064099999999966;
-        public static final double G = 0.0;
+        public static final double G = 15.8881404705; // elevatorMass * g * pitchRadius / gearRatio / kT
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -572,11 +555,11 @@ public final class Constants {
         // public static final double S = 0.12047100000001956;
         // public static final double G = 0;
 
-        public static final double P = 150d;
+        public static final double P = 2200d;
         public static final double I = 0;
-        public static final double D = 20d;
-        public static final double S = 0.12047100000001956;
-        public static final double G = 0;
+        public static final double D = 10d;
+        public static final double S = 0.08002399999997578;
+        public static final double G = 53.3063938169; // Approx. wristMass * g * rCM / gearRatio / kT
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -690,7 +673,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 

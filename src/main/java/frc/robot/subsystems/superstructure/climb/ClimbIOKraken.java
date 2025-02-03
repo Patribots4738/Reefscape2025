@@ -11,8 +11,8 @@ public class ClimbIOKraken implements ClimbIO {
     private final Kraken follower;
 
     public ClimbIOKraken() {
-        leader = new Kraken(ClimbConstants.LEADER_CAN_ID, true, ControlPreference.VOLTAGE);
-        follower = new Kraken(ClimbConstants.FOLLOWER_CAN_ID, true, ControlPreference.VOLTAGE);
+        leader = new Kraken(ClimbConstants.LEADER_CAN_ID, true, false, ControlPreference.VOLTAGE);
+        follower = new Kraken(ClimbConstants.FOLLOWER_CAN_ID, true, false, ControlPreference.VOLTAGE);
         
         configMotors();
     }

@@ -24,8 +24,8 @@ public class ModuleIOKraken implements ModuleIO {
      * @param index
      */
     public ModuleIOKraken(int drivingCANId, int turningCANId, int canCoderId, double absoluteEncoderOffset) {
-        driveMotor = new Kraken(drivingCANId, "Drivebase", true, ControlPreference.TORQUE_CURRENT);
-        turnMotor = new Kraken(turningCANId, "Drivebase", true, ControlPreference.TORQUE_CURRENT);
+        driveMotor = new Kraken(drivingCANId, "Drivebase", true, true, ControlPreference.VOLTAGE);
+        turnMotor = new Kraken(turningCANId, "Drivebase", true, true, ControlPreference.VOLTAGE);
         turnEncoder = new CANCoderCustom(canCoderId, "Drivebase");
         resetDriveEncoder();
         configEncoder(absoluteEncoderOffset);
@@ -67,13 +67,11 @@ public class ModuleIOKraken implements ModuleIO {
         setDriveGains(MK4cSwerveModuleConstants.DRIVING_GAINS);
         setTurnGains(MK4cSwerveModuleConstants.TURNING_GAINS);
 
-        driveMotor.setSupplyCurrentLimit(MK4cSwerveModuleConstants.DRIVING_MOTOR_SUPPLY_LIMIT_AMPS);
         driveMotor.setStatorCurrentLimit(MK4cSwerveModuleConstants.DRIVING_MOTOR_STATOR_LIMIT_AMPS);
-        driveMotor.setTorqueCurrentLimits(-MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS, MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS);
+        // driveMotor.setTorqueCurrentLimits(-MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS, MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS);
 
-        turnMotor.setSupplyCurrentLimit(MK4cSwerveModuleConstants.TURNING_MOTOR_SUPPLY_LIMIT_AMPS);
         turnMotor.setStatorCurrentLimit(MK4cSwerveModuleConstants.TURNING_MOTOR_STATOR_LIMIT_AMPS);
-        turnMotor.setTorqueCurrentLimits(-MK4cSwerveModuleConstants.TURNING_MOTOR_TORQUE_LIMIT_AMPS, MK4cSwerveModuleConstants.TURNING_MOTOR_TORQUE_LIMIT_AMPS);
+        // turnMotor.setTorqueCurrentLimits(-MK4cSwerveModuleConstants.TURNING_MOTOR_TORQUE_LIMIT_AMPS, MK4cSwerveModuleConstants.TURNING_MOTOR_TORQUE_LIMIT_AMPS);
 
         setDriveBrakeMode(true);
         setTurnBrakeMode(true);

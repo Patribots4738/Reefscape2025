@@ -21,7 +21,7 @@ public interface WristIO {
 
     public default void updateInputs(WristIOInputs inputs) {}
 
-    public default void setPosition(double position) {}
+    public default void setPosition(double position, double feedforward) {}
 
     public default void runCharacterization(double input) {}
 

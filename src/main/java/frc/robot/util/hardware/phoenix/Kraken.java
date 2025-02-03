@@ -115,8 +115,8 @@ public class Kraken extends TalonFX {
      * @param useFOC uses FOC to enhance motor communication when set to true
      * @param useTorqueControl uses the TalonFX native torque control mode when set to true
      */
-    public Kraken(int id, boolean useFOC, ControlPreference controlPreference) {
-        this(id, "rio", useFOC, controlPreference);
+    public Kraken(int id, boolean useFOC, boolean useOneShot, ControlPreference controlPreference) {
+        this(id, "rio", useFOC, useOneShot, controlPreference);
     }
 
     /**
@@ -127,7 +127,7 @@ public class Kraken extends TalonFX {
      * @param useFOC Whether to use Field Oriented Control (FOC) for the Kraken object.
      * @param useTorqueControl Uses the TalonFX native torque control mode when set to true.
      */
-    public Kraken(int id, String canBus, boolean useFOC, ControlPreference controlPreference) {
+    public Kraken(int id, String canBus, boolean useFOC, boolean useOneShot, ControlPreference controlPreference) {
 
         super(id, canBus);
 
@@ -135,17 +135,17 @@ public class Kraken extends TalonFX {
 
         this.useFOC = useFOC;
 
-        positionVoltageRequest = new PositionVoltage(0).withEnableFOC(useFOC);
-        velocityVoltageRequest = new VelocityVoltage(0).withEnableFOC(useFOC);
-        positionTorqueRequest = new PositionTorqueCurrentFOC(0);
-        velocityTorqueRequest = new VelocityTorqueCurrentFOC(0);
-        voltageRequest = new VoltageOut(0).withEnableFOC(useFOC);
-        percentRequest = new DutyCycleOut(0).withEnableFOC(useFOC);
-        torqueRequest = new TorqueCurrentFOC(0);
-        positionMMVoltageRequest = new MotionMagicVoltage(0).withEnableFOC(useFOC);
-        velocityMMVoltageRequest = new MotionMagicVelocityVoltage(0).withEnableFOC(useFOC);
-        positionMMTorqueRequest = new MotionMagicTorqueCurrentFOC(0);
-        velocityMMTorqueRequest = new MotionMagicVelocityTorqueCurrentFOC(0);
+        positionVoltageRequest = new PositionVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        velocityVoltageRequest = new VelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        positionTorqueRequest = new PositionTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        velocityTorqueRequest = new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        voltageRequest = new VoltageOut(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        percentRequest = new DutyCycleOut(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        torqueRequest = new TorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        positionMMVoltageRequest = new MotionMagicVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        velocityMMVoltageRequest = new MotionMagicVelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        positionMMTorqueRequest = new MotionMagicTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        velocityMMTorqueRequest = new MotionMagicVelocityTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
 
         gains = new GainConstants[] { new GainConstants(), new GainConstants(), new GainConstants() };
 

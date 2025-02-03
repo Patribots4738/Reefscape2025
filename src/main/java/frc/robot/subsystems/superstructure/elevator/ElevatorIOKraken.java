@@ -11,8 +11,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     private final Kraken follower;
 
     public ElevatorIOKraken() {
-        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, ControlPreference.TORQUE_CURRENT);
-        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, ControlPreference.TORQUE_CURRENT);
+        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, false, ControlPreference.TORQUE_CURRENT);
+        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, false, ControlPreference.TORQUE_CURRENT);
         configMotors();
     }
 
@@ -22,7 +22,6 @@ public class ElevatorIOKraken implements ElevatorIO {
         motor.setSoftLimits(0.0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
         motor.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
         motor.setGains(ElevatorConstants.GAINS);
-        motor.setSupplyCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-ElevatorConstants.CURRENT_LIMIT, ElevatorConstants.CURRENT_LIMIT);
     }
