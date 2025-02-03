@@ -204,6 +204,8 @@ public class RobotContainer {
                         : 180))
             ), swerve)
         );
+
+        controller.leftTrigger().onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
       
     }
 
@@ -277,7 +279,7 @@ public class RobotContainer {
             .onTrue(superstructure.setArmPosition(ArmPosition.L2));
         
         controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
 
         controller.leftTrigger()
             .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));

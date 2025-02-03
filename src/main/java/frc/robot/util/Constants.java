@@ -108,7 +108,7 @@ public final class Constants {
     public static final class DriveConstants {
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
-        public static final double MAX_SPEED_METERS_PER_SECOND = 4.85;
+        public static final double MAX_SPEED_METERS_PER_SECOND = 2.0;
 
         public static final double MAX_ANGULAR_SPEED_RADS_PER_SECOND = Units.degreesToRadians(1137.21); // radians per second
 
@@ -392,10 +392,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = -0.286133;
-        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.1170097;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.280518;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.080811;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.280518;
+        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283203;
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081787;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.114990;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -409,7 +409,7 @@ public final class Constants {
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
-        public static final double DRIVE_GEAR_RATIO = 5.9;
+        public static final double DRIVE_GEAR_RATIO = CURRENT_GEARING.gearRatio;
 
         public static final double DRIVING_ENCODER_POSITION_FACTOR = WHEEL_CIRCUMFERENCE_METERS; // meters
         public static final double DRIVING_ENCODER_VELOCITY_FACTOR = WHEEL_CIRCUMFERENCE_METERS; // meters per second
@@ -424,11 +424,11 @@ public final class Constants {
         public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 80.0;
         public static final double TURNING_MOTOR_TORQUE_LIMIT_AMPS = 60.0;
 
-        public static final double DRIVING_P = 4.5;
+        public static final double DRIVING_P = 1.0;
         public static final double DRIVING_I = 0;
-        public static final double DRIVING_D = 0.727;
-        public static final double DRIVING_S = 0.01601;
-        public static final double DRIVING_V = 0.72941;
+        public static final double DRIVING_D = 0.0;
+        public static final double DRIVING_S = 0.17727;
+        public static final double DRIVING_V = 0.69279;
 
         public static final GainConstants DRIVING_GAINS = new GainConstants(
             DRIVING_P,
@@ -441,10 +441,10 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Drive");
 
-        public static final double TURNING_P = Robot.isSimulation() ? 10.0 : 23.0;
+        public static final double TURNING_P = 20.0;
         public static final double TURNING_I = 0.0;
-        public static final double TURNING_D = 0.2;
-        public static final double TURNING_S = Robot.isSimulation() ? 0.10058899999997811 : 0.30000900000007824;
+        public static final double TURNING_D = 0.05;
+        public static final double TURNING_S = 0.3400210000000079;
 
         public static final GainConstants TURNING_GAINS = new GainConstants(
             TURNING_P,
@@ -464,13 +464,12 @@ public final class Constants {
         public static final int CAN_ID = 9;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 40.0;
+        public static final double CURRENT_LIMIT = 120.0;
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double INTAKE_PERCENT = 0.2;
-        public static final double HOLD_PERCENT = 0.1;
-        public static final double OUTTAKE_PERCENT = -0.2;
+        public static final double INTAKE_PERCENT = 0.35;
+        public static final double OUTTAKE_PERCENT = -0.15;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
@@ -486,13 +485,13 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = true;
 
         public static final double GEAR_RATIO = 6.0 + 8.0 / 9.0;
-        public static final double MAX_DISPLACEMENT_METERS = 0.5831193316;
+        public static final double MAX_DISPLACEMENT_METERS = 0.54;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(5.5);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(5.5);
 
-        public static final double P = 15.0;
+        public static final double P = 5.0;
         public static final double I = 0.0;
-        public static final double D = 2.2;
+        public static final double D = 0.5;
         public static final double S = 0.20005999999999768;
         public static final double G = 0.0;
 
@@ -532,11 +531,11 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = 2.6;
-        public static final double I = 0.0;
-        public static final double D = 0.155;
+        public static final double P = 10.0;
+        public static final double I = 15.0;
+        public static final double D = 0.75;
         public static final double S = 0.12047100000001956;
-        public static final double G = 0.0;
+        public static final double G = -0.6;
         public static final GainConstants GAINS = new GainConstants(
             P,
             I,
@@ -548,18 +547,18 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
-        public static final double GEAR_RATIO = 1.3;
+        public static final double GEAR_RATIO = 3.0;
       
         public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
-        public static final double CURRENT_LIMIT = 60.0;
+        public static final double CURRENT_LIMIT = 120.0;
 
         public static final double MIN_ANGLE_RADIANS = -1.08231258091;
         public static final double MAX_ANGLE_RADIANS = 3.655594491941;
 
-        public static final double RESET_ANGLE_RADIANS = 3.857;
+        public static final double RESET_ANGLE_RADIANS = 3.752;
 
         public static final double MIN_SAFE_ANGLE_RADIANS = 1.05;
         public static final double MAX_SAFE_ANGLE_RADIANS = 1.7;
@@ -567,7 +566,7 @@ public final class Constants {
         public static final double DEADBAND_RADIANS = 0.02;
         public static final double TRANSITION_POSITION_RADIANS = Math.PI / 2.0;
         public static final double STOW_POSITION_RADIANS = 0;
-        public static final double INTAKE_POSITION_RADIANS = -0.47;
+        public static final double INTAKE_POSITION_RADIANS = -0.2;
         public static final double L1_POSITION_RADIANS = 2.2;
         public static final double L2_POSITION_RADIANS = 2.22;
         public static final double L3_POSITION_RADIANS = 2.22;
@@ -587,13 +586,13 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI;
 
-        public static final double CURRENT_LIMIT = 80.0;
+        public static final double CURRENT_LIMIT = 120.0;
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
-        public static final double MAX_ANGLE_RADIANS = 1.897590170231;
+        public static final double MAX_ANGLE_RADIANS = 1.836;
 
-        public static final double P = 15.0;
+        public static final double P = 5.0;
         public static final double I = 0.0;
         public static final double D = 0.65;
         public static final double S = 0.3198320000000531; 

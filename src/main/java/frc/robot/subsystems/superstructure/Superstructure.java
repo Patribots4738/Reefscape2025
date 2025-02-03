@@ -157,11 +157,8 @@ public class Superstructure {
                 setArmPosition(ArmPosition.INTAKE),
                 claw.intakeCommand(),
                 Commands.waitUntil(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-                Commands.either(
-                    setArmPosition(ArmPosition.LOW_STOW), 
-                    setArmPosition(ArmPosition.UP_STOW), 
-                    this::shouldEvadeReef
-                )
+                claw.stopCommand(),
+                setArmPosition(ArmPosition.LOW_STOW)
             );
     }
 
@@ -206,10 +203,10 @@ public class Superstructure {
         return
             Commands.sequence(
                 // Move arm out of way for clearance
-                setArmPosition(ArmPosition.CLIMB),
+                // setArmPosition(ArmPosition.CLIMB),
                 // Bring climb down to hard-stop
-                climb.stowPositionCommand(),
-                setArmPosition(ArmPosition.LOW_STOW)
+                climb.stowPositionCommand()
+                // setArmPosition(ArmPosition.LOW_STOW)
             );
     }
 
@@ -217,7 +214,7 @@ public class Superstructure {
         return
             Commands.sequence(
                 // Move arm down for low CG and out of way for clearance
-                setArmPosition(ArmPosition.CLIMB),
+                // setArmPosition(ArmPosition.CLIMB),
                 // Move climb to foot hard-stop
                 climb.readyPositionCommand()
             );
@@ -227,7 +224,7 @@ public class Superstructure {
         return
             Commands.sequence(
                 // Move arm down for low CG and out of way for clearance
-                setArmPosition(ArmPosition.CLIMB),
+                // setArmPosition(ArmPosition.CLIMB),
                 // Move climb & cage to flat position
                 climb.finalPositionCommand()
             );
