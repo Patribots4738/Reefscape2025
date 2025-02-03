@@ -16,6 +16,7 @@ public interface ModuleIO {
         public double driveAppliedVolts = 0.0;
         public double driveSupplyCurrentAmps = 0.0;
         public double driveStatorCurrentAmps = 0.0;
+        public double driveTorqueCurrentAmps = 0.0;
         public double driveTempCelcius = 0.0;
 
         public boolean turnMotorConnected = false;
@@ -24,6 +25,7 @@ public interface ModuleIO {
         public double turnAppliedVolts = 0.0;
         public double turnSupplyCurrentAmps = 0.0;
         public double turnStatorCurrentAmps = 0.0;
+        public double turnTorqueCurrentAmps = 0.0;
         public double turnTempCelcius = 0.0;
 
         public boolean turnEncoderConnected = false;

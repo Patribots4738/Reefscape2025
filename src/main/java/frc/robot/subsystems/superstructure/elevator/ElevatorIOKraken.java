@@ -3,6 +3,7 @@ package frc.robot.subsystems.superstructure.elevator;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
+import frc.robot.util.hardware.phoenix.Kraken.ControlPreference;
 
 public class ElevatorIOKraken implements ElevatorIO {
 
@@ -10,8 +11,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     private final Kraken follower;
 
     public ElevatorIOKraken() {
-        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, false);
-        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, false);
+        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, ControlPreference.TORQUE_CURRENT);
+        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, ControlPreference.TORQUE_CURRENT);
         configMotors();
     }
 
@@ -23,6 +24,7 @@ public class ElevatorIOKraken implements ElevatorIO {
         motor.setGains(ElevatorConstants.GAINS);
         motor.setSupplyCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
+        motor.setTorqueCurrentLimits(-ElevatorConstants.CURRENT_LIMIT, ElevatorConstants.CURRENT_LIMIT);
     }
 
     private void configMotors() {
@@ -63,8 +65,8 @@ public class ElevatorIOKraken implements ElevatorIO {
 
     @Override
     public void runCharacterization(double input) {
-        leader.setVoltageOutput(input);
-        follower.setVoltageOutput(input);
+        leader.setTorqueCurrentOutput(input);
+        follower.setTorqueCurrentOutput(input);
     }
     
     @Override

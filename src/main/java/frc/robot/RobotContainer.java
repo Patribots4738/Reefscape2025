@@ -168,8 +168,8 @@ public class RobotContainer {
                 elevator, 
                 elevator::runCharacterization, 
                 elevator::getCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("ClimbStaticCharacterization",
-            new StaticCharacterization(
+        pathPlannerStorage.getAutoChooser().addOption("ClimbFeedDorwardCharacterization",
+            new FeedForwardCharacterization(
                 climb, 
                 climb::runCharacterization, 
                 climb::getCharacterizationVelocity));

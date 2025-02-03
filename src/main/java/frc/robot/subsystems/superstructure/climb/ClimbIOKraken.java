@@ -1,6 +1,7 @@
 package frc.robot.subsystems.superstructure.climb;
 
 import frc.robot.util.hardware.phoenix.Kraken;
+import frc.robot.util.hardware.phoenix.Kraken.ControlPreference;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.custom.GainConstants;
 
@@ -10,8 +11,8 @@ public class ClimbIOKraken implements ClimbIO {
     private final Kraken follower;
 
     public ClimbIOKraken() {
-        leader = new Kraken(ClimbConstants.LEADER_CAN_ID, true, false);
-        follower = new Kraken(ClimbConstants.FOLLOWER_CAN_ID, true, false);
+        leader = new Kraken(ClimbConstants.LEADER_CAN_ID, true, ControlPreference.VOLTAGE);
+        follower = new Kraken(ClimbConstants.FOLLOWER_CAN_ID, true, ControlPreference.VOLTAGE);
         
         configMotors();
     }
@@ -19,6 +20,7 @@ public class ClimbIOKraken implements ClimbIO {
     private void configMotor(Kraken motor) {
         motor.setGearRatio(ClimbConstants.GEAR_RATIO);
         motor.setUnitConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
+        // motor.configureMotionMagic(ClimbConstants.CRUISE_VELOCITY, ClimbConstants.ACCELERATION, ClimbConstants.JERK);
         motor.setSoftLimits(ClimbConstants.MIN_ANGLE_RADIANS, ClimbConstants.MAX_ANGLE_RADIANS);
         motor.setMotorInverted(ClimbConstants.MOTOR_INVERTED);
         motor.resetEncoder(0);

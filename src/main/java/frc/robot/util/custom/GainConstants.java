@@ -23,13 +23,14 @@ public class GainConstants {
     private double maxOutput;
 
     // Talon
+    private double A;
     private double S;
     private double V;
     private double G;
 
     // Generic
     public GainConstants() {
-        this(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        this(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     // Generic
@@ -39,26 +40,25 @@ public class GainConstants {
 
     // Spark
     public GainConstants(double P, double I, double D, double FF) {
-        this(P, I, D, FF, -1, 1, true);
+        this(P, I, D, FF, Double.POSITIVE_INFINITY, -1, 1, 0d, 0d, 0d,0d);
     }
     
     // Spark
     public GainConstants(double P, double I, double D, double minOutput, double maxOutput) {
-        this(P, I, D, 0, minOutput, maxOutput, true);
+        this(P, I, D, 0d, Double.POSITIVE_INFINITY, minOutput, maxOutput, 0d, 0d, 0d,0d);
+    }
+
+    public GainConstants(double P, double I, double D, double A, double S, double V, double G) {
+        this(P, I, D, 0d, 0d, 0d, 0d, A, S, V, G);
     }
 
     // Talon
     public GainConstants(double P, double I, double D, double S, double V, double G) {
-        this(P, I, D, S, V , G, false);
+        this(P, I, D, 0d, S, V, G);
     }
 
     // Generic
-    public GainConstants(double P, double I, double D, double val0, double val1, double val2, boolean isSpark) {
-        this(P, I, D, isSpark ? val0 : 0, Double.POSITIVE_INFINITY, isSpark ? val1 : 0, val2, isSpark ? 0 : val0, isSpark ? 0 : val1, isSpark ? 0 : val2);
-    }
-
-    // Generic
-    public GainConstants(double P, double I, double D, double FF, double iZone, double minOutput, double maxOutput, double S, double V, double G) {
+    public GainConstants(double P, double I, double D, double FF, double iZone, double minOutput, double maxOutput, double A, double S, double V, double G) {
         this.P = P;
         this.I = I;
         this.D = D;
@@ -66,6 +66,7 @@ public class GainConstants {
         this.iZone = iZone;
         this.minOutput = minOutput;
         this.maxOutput = maxOutput;
+        this.A = A;
         this.S = S;
         this.V = V;
         this.G = G;
@@ -97,6 +98,10 @@ public class GainConstants {
 
     public double getMaxOutput() {
         return maxOutput;
+    }
+
+    public double getA() {
+        return A;
     }
 
     public double getS() {
@@ -131,6 +136,11 @@ public class GainConstants {
         return this;
     }
 
+    public GainConstants withA(double A) {
+        this.A = A;
+        return this;
+    }
+
     public GainConstants withV(double V) {
         this.V = V;
         return this;
@@ -141,7 +151,7 @@ public class GainConstants {
         return this;
     }
 
-    public GainConstants withGains(double P, double I, double D, double S, double V, double G) {
+    public GainConstants withGains(double P, double I, double D, double A, double S, double V, double G) {
         this.P = P;
         this.I = I;
         this.D = D;
@@ -149,6 +159,10 @@ public class GainConstants {
         this.V = V;
         this.G = G;
         return this;
+    }
+
+    public GainConstants withGains(double P, double I, double D, double S, double V, double G) {
+        return withGains(P, I, D, 0, S, V, G);
     }
 
     public GainConstants withPID(double P, double I, double D) {

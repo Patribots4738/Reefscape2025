@@ -17,6 +17,7 @@ import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
@@ -25,6 +26,10 @@ import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
@@ -37,6 +42,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
@@ -70,16 +76,21 @@ public class Kraken extends TalonFX {
     private final TorqueCurrentConfigs torqueCurrentConfigs = new TorqueCurrentConfigs();
     private final ClosedLoopRampsConfigs closedLoopRampConfigs = new ClosedLoopRampsConfigs();
     private final SoftwareLimitSwitchConfigs softLimitConfigs = new SoftwareLimitSwitchConfigs();
+    private final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
 
     private DCMotorSim motorSimModel;
 
-    private final PositionVoltage positionRequest;
-    private final VelocityVoltage velocityRequest;
+    private final PositionVoltage positionVoltageRequest;
+    private final VelocityVoltage velocityVoltageRequest;
     private final PositionTorqueCurrentFOC positionTorqueRequest;
     private final VelocityTorqueCurrentFOC velocityTorqueRequest;
     private final VoltageOut voltageRequest;
     private final DutyCycleOut percentRequest;
     private final TorqueCurrentFOC torqueRequest;
+    private final MotionMagicVoltage positionMMVoltageRequest;
+    private final MotionMagicVelocityVoltage velocityMMVoltageRequest;
+    private final MotionMagicTorqueCurrentFOC positionMMTorqueRequest;
+    private final MotionMagicVelocityTorqueCurrentFOC velocityMMTorqueRequest;
 
     private final StatusSignal<Angle> positionSignal;
     private final StatusSignal<AngularVelocity> velocitySignal;
@@ -93,28 +104,9 @@ public class Kraken extends TalonFX {
     private final GainConstants[] gains;
 
     private final boolean useFOC;
-    private final boolean useTorqueControl;
 
     private TelemetryPreference telemetryPreference;
-
-    /**
-     * Creates new Kraken motor.
-     * 
-     * @param id ID of Kraken motor
-     * @param canBus CANivore Kraken is connected to
-     */
-    public Kraken(int id, String canBus) {
-        this(id, canBus, false, false);
-    }
-
-    /**
-     * Creates new Kraken motor.
-     * 
-     * @param id ID of Kraken motor
-     */
-    public Kraken(int id) {
-        this(id, "rio");
-    }
+    private final ControlPreference controlPreference;
 
     /**
      * Creates a new Kraken motor that can be inverted and use FOC.
@@ -123,8 +115,8 @@ public class Kraken extends TalonFX {
      * @param useFOC uses FOC to enhance motor communication when set to true
      * @param useTorqueControl uses the TalonFX native torque control mode when set to true
      */
-    public Kraken(int id, boolean useFOC, boolean useTorqueControl) {
-        this(id, "rio", useFOC, useTorqueControl);
+    public Kraken(int id, boolean useFOC, ControlPreference controlPreference) {
+        this(id, "rio", useFOC, controlPreference);
     }
 
     /**
@@ -135,22 +127,25 @@ public class Kraken extends TalonFX {
      * @param useFOC Whether to use Field Oriented Control (FOC) for the Kraken object.
      * @param useTorqueControl Uses the TalonFX native torque control mode when set to true.
      */
-    public Kraken(int id, String canBus, boolean useFOC, boolean useTorqueControl) {
+    public Kraken(int id, String canBus, boolean useFOC, ControlPreference controlPreference) {
 
         super(id, canBus);
 
         restoreFactoryDefaults();
 
         this.useFOC = useFOC;
-        this.useTorqueControl = useTorqueControl;
 
-        positionRequest = new PositionVoltage(0).withEnableFOC(useFOC);
-        velocityRequest = new VelocityVoltage(0).withEnableFOC(useFOC);
+        positionVoltageRequest = new PositionVoltage(0).withEnableFOC(useFOC);
+        velocityVoltageRequest = new VelocityVoltage(0).withEnableFOC(useFOC);
         positionTorqueRequest = new PositionTorqueCurrentFOC(0);
         velocityTorqueRequest = new VelocityTorqueCurrentFOC(0);
         voltageRequest = new VoltageOut(0).withEnableFOC(useFOC);
         percentRequest = new DutyCycleOut(0).withEnableFOC(useFOC);
         torqueRequest = new TorqueCurrentFOC(0);
+        positionMMVoltageRequest = new MotionMagicVoltage(0).withEnableFOC(useFOC);
+        velocityMMVoltageRequest = new MotionMagicVelocityVoltage(0).withEnableFOC(useFOC);
+        positionMMTorqueRequest = new MotionMagicTorqueCurrentFOC(0);
+        velocityMMTorqueRequest = new MotionMagicVelocityTorqueCurrentFOC(0);
 
         gains = new GainConstants[] { new GainConstants(), new GainConstants(), new GainConstants() };
 
@@ -162,6 +157,8 @@ public class Kraken extends TalonFX {
         statorCurrentSignal = super.getStatorCurrent();
         torqueCurrentSignal = super.getTorqueCurrent();
         temperatureSignal = super.getDeviceTemp();
+
+        this.controlPreference = controlPreference;
 
         setTelemetryPreference(TelemetryPreference.DEFAULT);
         applyParameter(
@@ -179,6 +176,13 @@ public class Kraken extends TalonFX {
         SWERVE // Swerve module motors
     }
 
+    public enum ControlPreference {
+        VOLTAGE,
+        TORQUE_CURRENT,
+        MM_VOLTAGE,
+        MM_TORQUE_CURRENT
+    }
+
     /**
      * Sets the telemetry preference for the Kraken motor.
      * 
@@ -194,13 +198,13 @@ public class Kraken extends TalonFX {
                     applySignalFrequency(
                         KrakenMotorConstants.TALONFX_FAST_UPDATE_FREQ_HZ,
                         voltageSignal,
-                        percentSignal
+                        percentSignal,
+                        supplyCurrentSignal,
+                        statorCurrentSignal,
+                        torqueCurrentSignal
                     ).isOK() &&
                     applySignalFrequency(
                         KrakenMotorConstants.TALONFX_SLOW_UPDATE_FREQ_HZ, 
-                        supplyCurrentSignal,
-                        statorCurrentSignal,
-                        torqueCurrentSignal,
                         temperatureSignal
                     ).isOK() &&
                     applySignalFrequency(
@@ -215,6 +219,7 @@ public class Kraken extends TalonFX {
                         velocitySignal,
                         voltageSignal,
                         supplyCurrentSignal,
+                        statorCurrentSignal,
                         torqueCurrentSignal
                     ).isOK() &&
                     applySignalFrequency(
@@ -223,14 +228,16 @@ public class Kraken extends TalonFX {
                     ).isOK() &&
                     applySignalFrequency(
                         0,
-                        percentSignal,
-                        statorCurrentSignal
+                        percentSignal
                     ).isOK();
                 default ->
                     applySignalFrequency(
                         KrakenMotorConstants.TALONFX_FAST_UPDATE_FREQ_HZ, 
                         voltageSignal,
-                        percentSignal
+                        percentSignal,
+                        supplyCurrentSignal,
+                        statorCurrentSignal,
+                        torqueCurrentSignal
                     ).isOK() &&
                     applySignalFrequency(
                         KrakenMotorConstants.TALONFX_MID_UPDATE_FREQ_HZ,
@@ -238,10 +245,7 @@ public class Kraken extends TalonFX {
                         velocitySignal
                     ).isOK() &&
                     applySignalFrequency(
-                        KrakenMotorConstants.TALONFX_SLOW_UPDATE_FREQ_HZ, 
-                        supplyCurrentSignal,
-                        statorCurrentSignal,
-                        torqueCurrentSignal,
+                        KrakenMotorConstants.TALONFX_SLOW_UPDATE_FREQ_HZ,
                         temperatureSignal
                     ).isOK();
             };
@@ -268,17 +272,37 @@ public class Kraken extends TalonFX {
      * @return The status code indicating the success or failure of setting the target position.
      */
     public StatusCode setTargetPosition(double position, double feedForward, int slot) {
-        StatusCode status = 
-            setControl(
-                useTorqueControl 
-                    ? positionTorqueRequest
+        
+        StatusCode status = switch (controlPreference) {
+            case VOLTAGE ->
+                setControl(
+                    positionVoltageRequest
                         .withPosition(position / unitConversionFactor)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
-                    : positionRequest
+                );
+            case TORQUE_CURRENT ->
+                setControl(
+                    positionTorqueRequest
                         .withPosition(position / unitConversionFactor)
                         .withFeedForward(feedForward)
-                        .withSlot(slot));
+                        .withSlot(slot)
+                );
+            case MM_VOLTAGE ->
+                setControl(
+                    positionMMVoltageRequest
+                        .withPosition(position / unitConversionFactor)
+                        .withFeedForward(feedForward)
+                        .withSlot(slot)
+                );
+            case MM_TORQUE_CURRENT ->
+                setControl(
+                    positionMMTorqueRequest
+                        .withPosition(position / unitConversionFactor)
+                        .withFeedForward(feedForward)
+                        .withSlot(slot)
+                );
+        };
         if (!status.isError()) {
             targetPosition = position;
         } else {
@@ -309,17 +333,36 @@ public class Kraken extends TalonFX {
      * @return The status code indicating the success or failure of the operation.
      */
     public StatusCode setTargetVelocity(double velocity, double feedForward, int slot) {
-        StatusCode status = 
-            setControl(
-                useTorqueControl 
-                    ? velocityTorqueRequest
+        StatusCode status = switch (controlPreference) {
+            case VOLTAGE ->
+                setControl(
+                    velocityVoltageRequest
                         .withVelocity(velocity / unitConversionFactor)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
-                    : velocityRequest
+                );
+            case TORQUE_CURRENT ->
+                setControl(
+                    velocityTorqueRequest
                         .withVelocity(velocity / unitConversionFactor)
                         .withFeedForward(feedForward)
-                        .withSlot(slot));
+                        .withSlot(slot)
+                );
+            case MM_VOLTAGE ->
+                setControl(
+                    velocityMMVoltageRequest
+                        .withVelocity(velocity / unitConversionFactor)
+                        .withFeedForward(feedForward)
+                        .withSlot(slot)
+                );
+            case MM_TORQUE_CURRENT ->
+                setControl(
+                    velocityMMTorqueRequest
+                        .withVelocity(velocity / unitConversionFactor)
+                        .withFeedForward(feedForward)
+                        .withSlot(slot)
+                );
+        };
         if (!status.isError()) {
             targetVelocity = velocity;
         } else {
@@ -542,7 +585,8 @@ public class Kraken extends TalonFX {
      * @return the status code indicating the success or failure of the operation
      */
     public StatusCode setClosedLoopRampPeriod(double seconds) {
-        if (useTorqueControl) {
+        boolean torqueControl = controlPreference == ControlPreference.TORQUE_CURRENT || controlPreference == ControlPreference.MM_TORQUE_CURRENT;
+        if (torqueControl) {
             closedLoopRampConfigs.TorqueClosedLoopRampPeriod = seconds;
         } else {
             closedLoopRampConfigs.VoltageClosedLoopRampPeriod = seconds;
@@ -550,7 +594,7 @@ public class Kraken extends TalonFX {
         return applyParameter(
             () -> configurator.apply(closedLoopRampConfigs, 1.0),
             () -> configurator.refresh(closedLoopRampConfigs, 1.0),
-            () -> (useTorqueControl ? 
+            () -> (torqueControl ? 
                 closedLoopRampConfigs.TorqueClosedLoopRampPeriod != 0 : 
                 closedLoopRampConfigs.VoltageClosedLoopRampPeriod != 0)
                 ^ seconds == 0,
@@ -854,6 +898,20 @@ public class Kraken extends TalonFX {
 
     }
 
+    public StatusCode configureMotionMagic(double cruiseVelocity, double acceleration, double jerk) {
+        motionMagicConfigs.MotionMagicCruiseVelocity = cruiseVelocity / unitConversionFactor;
+        motionMagicConfigs.MotionMagicAcceleration = acceleration / unitConversionFactor;
+        motionMagicConfigs.MotionMagicJerk = jerk / unitConversionFactor;
+        return applyParameter(
+            () -> configurator.apply(motionMagicConfigs, 1.0),
+            () -> configurator.refresh(motionMagicConfigs, 1.0),
+            () -> (motionMagicConfigs.MotionMagicCruiseVelocity != 0 ^ cruiseVelocity == 0)
+                && (motionMagicConfigs.MotionMagicAcceleration != 0 ^ acceleration == 0)
+                && (motionMagicConfigs.MotionMagicJerk != 0 ^ jerk == 0),
+            "Motion Magic Configuration"
+        );
+    }
+
     /**
      * Applies the specified gains to the given slot.
      * 
@@ -862,14 +920,13 @@ public class Kraken extends TalonFX {
      * @return the status code indicating the success or failure of the operation
      */
     private StatusCode applyGains(GainConstants appliedGains, int slot) {
-        if (slot < 0 || slot > 2) {
-            slot = 0;
-        }
+        slot = MathUtil.clamp(slot, 0, 2);
         gains[slot] = appliedGains;
         slotConfigs.SlotNumber = slot;
         slotConfigs.kP = appliedGains.getP();
         slotConfigs.kI = appliedGains.getI();
         slotConfigs.kD = appliedGains.getD();
+        slotConfigs.kA = appliedGains.getA();
         slotConfigs.kS = appliedGains.getS();
         slotConfigs.kV = appliedGains.getV();
         slotConfigs.kG = appliedGains.getG();
@@ -879,6 +936,7 @@ public class Kraken extends TalonFX {
             () -> (slotConfigs.kP != 0 ^ appliedGains.getP() == 0) 
                 && (slotConfigs.kI != 0 ^ appliedGains.getI() == 0)
                 && (slotConfigs.kD != 0 ^ appliedGains.getD() == 0)
+                && (slotConfigs.kA != 0 ^ appliedGains.getA() == 0)
                 && (slotConfigs.kS != 0 ^ appliedGains.getS() == 0)
                 && (slotConfigs.kV != 0 ^ appliedGains.getV() == 0)
                 && (slotConfigs.kG != 0 ^ appliedGains.getG() == 0),
@@ -892,14 +950,19 @@ public class Kraken extends TalonFX {
      * @param P the proportional gain value
      * @param I the integral gain value
      * @param D the derivative gain value
+     * @param D the acceleration gain value
      * @param S the feed forward gain value
      * @param V the velocity gain value
      * @param G the acceleration gain value
      * @param slot the slot number to set the gains for
      * @return the status code indicating the success or failure of the operation
      */
-    public StatusCode setGains(double P, double I, double D, double S, double V, double G, int slot)  {
-        return applyGains(gains[slot].withGains(P, I, D, S, V, G), slot);
+    public StatusCode setGains(double P, double I, double D, double A, double S, double V, double G, int slot)  {
+        return applyGains(gains[slot].withGains(P, I, D, A, S, V, G), slot);
+    }
+
+    public StatusCode setGains(double P, double I, double D, double A, double S, double V, double G) {
+        return setGains(P, I, D, A, S, V, G, 0);
     }
 
     public StatusCode setGains(double P, double I, double D, double S, double V, double G) {
@@ -985,6 +1048,21 @@ public class Kraken extends TalonFX {
 
     public StatusCode setD(double D) {
         return setD(D, 0);
+    }
+
+    /**
+     * Sets the value of kA (acceleration gain) for a specific slot and applies the gains.
+     *
+     * @param A    the value of A to set
+     * @param slot the slot to apply the gains to
+     * @return the status code indicating the result of the operation
+     */
+    public StatusCode setA(double A, int slot) {
+        return applyGains(gains[slot].withA(A), slot);
+    }
+
+    public StatusCode setA(double A) {
+        return setA(A, 0);
     }
 
     /**

@@ -9,10 +9,7 @@ public class LoggedGainConstants {
     private final LoggedTunableNumber pValue; 
     private final LoggedTunableNumber iValue;
     private final LoggedTunableNumber dValue;
-    private final LoggedTunableNumber ffValue;
-    private final LoggedTunableNumber iZoneValue;
-    private final LoggedTunableNumber minOutputValue;
-    private final LoggedTunableNumber maxOutputValue;
+    private final LoggedTunableNumber aValue;
     private final LoggedTunableNumber sValue;
     private final LoggedTunableNumber vValue;
     private final LoggedTunableNumber gValue;
@@ -23,13 +20,10 @@ public class LoggedGainConstants {
         this.pValue = new LoggedTunableNumber(name + "0-P", constants.getP());
         this.iValue = new LoggedTunableNumber(name + "1-I", constants.getI());
         this.dValue = new LoggedTunableNumber(name + "2-D", constants.getD());
-        this.ffValue = new LoggedTunableNumber(name + "3-FF", constants.getFF());        
-        this.iZoneValue = new LoggedTunableNumber(name + "4-IZone", constants.getIZone());
-        this.minOutputValue = new LoggedTunableNumber(name + "5-MinOutput", constants.getMinOutput());
-        this.maxOutputValue = new LoggedTunableNumber(name + "6-MaxOutput", constants.getMaxOutput());
-        this.sValue = new LoggedTunableNumber(name + "7-S", constants.getS());
-        this.vValue = new LoggedTunableNumber(name + "8-V", constants.getV());
-        this.gValue = new LoggedTunableNumber(name + "9-G", constants.getG());
+        this.aValue = new LoggedTunableNumber(name + "3-A", constants.getA());
+        this.sValue = new LoggedTunableNumber(name + "4-S", constants.getS());
+        this.vValue = new LoggedTunableNumber(name + "5-V", constants.getV());
+        this.gValue = new LoggedTunableNumber(name + "6-G", constants.getG());
 
     }
 
@@ -37,10 +31,7 @@ public class LoggedGainConstants {
         return pValue.onChanged()
             .or(iValue.onChanged())
             .or(dValue.onChanged())
-            .or(ffValue.onChanged())
-            .or(iZoneValue.onChanged())
-            .or(minOutputValue.onChanged())
-            .or(maxOutputValue.onChanged())
+            .or(aValue.onChanged())
             .or(sValue.onChanged())
             .or(vValue.onChanged())
             .or(gValue.onChanged());
@@ -55,10 +46,7 @@ public class LoggedGainConstants {
             pValue.get(), 
             iValue.get(),
             dValue.get(), 
-            ffValue.get(), 
-            iZoneValue.get(), 
-            minOutputValue.get(), 
-            maxOutputValue.get(), 
+            aValue.get(),
             sValue.get(), 
             dValue.get(), 
             gValue.get()
