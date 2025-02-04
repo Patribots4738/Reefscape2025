@@ -28,6 +28,7 @@ public class Wrist extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
 
     private double targetPosition = 0.0;
+    private boolean hasBeenSet = false;
 
     public Wrist(WristIO io) {
         this.io = io;
@@ -48,10 +49,16 @@ public class Wrist extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
 
+        // Get angle relative to CG rest angle
         double centerGravityAngle = inputs.positionRads - WristConstants.CG_OFFSET_ANGLE_RADIANS;
+        // Get the fraction of FF that should be applied with grav torque
         double appliedFeedforward = Math.sin(centerGravityAngle);
+        // Convert to amperes
         double feedforwardAmps = WristConstants.LOGGED_GAINS.get().getG() * appliedFeedforward;
 
+        // Flip counter torque current if wrist is fighting gravity in the other direction
+        // This mainly helps with short movements in the intake/stow zone of the wrist motion
+        // TODO: find this same angle threshold for the upper end of the wrist motion
         if (centerGravityAngle < 0) {
             feedforwardAmps *= -1;
         }
@@ -60,8 +67,12 @@ public class Wrist extends SubsystemBase {
         Logger.recordOutput("Subsystems/Wrist/AppliedFF", appliedFeedforward);
         Logger.recordOutput("Subsystems/Wrist/FFAmps", feedforwardAmps);
 
-        // Utilize one shot frames to apply feedforwards based on gravitational torque on the wrist
-        io.setPosition(targetPosition, feedforwardAmps);
+        // If target position has been applied to motor, apply one shot frame
+        // This makes it so that the wrist doesn't get excited on enable.
+        if (hasBeenSet) {
+            // Utilize one shot frames to apply feedforwards based on gravitational torque on the wrist
+            io.setPosition(targetPosition, feedforwardAmps);
+        }
 
         RobotContainer.components3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getX(), 
@@ -75,6 +86,7 @@ public class Wrist extends SubsystemBase {
     public void setPosition(double position) {
         position = MathUtil.clamp(position, WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
+        hasBeenSet = true;
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getX(), 
