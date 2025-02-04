@@ -212,13 +212,19 @@ public class RobotContainer {
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        LoggedTunableNumber wristTunePose = new LoggedTunableNumber("Wrist/TunePose", 0.0);
+        LoggedTunableNumber elevatorTunePose = new LoggedTunableNumber("Elevator/TunePose", 0.0);
 
         controller.y()
-            .onTrue(wrist.setPositionCommand(wristTunePose::get));
+            .onTrue(elevator.setPositionCommand(elevatorTunePose::get));
 
         controller.a()
-            .onTrue(Commands.runOnce(() -> wristTunePose.set(wrist.getPosition())).ignoringDisable(true));
+            .onTrue(Commands.runOnce(() -> elevatorTunePose.set(0)).ignoringDisable(true));
+
+        controller.x()
+            .onTrue(Commands.runOnce(() -> elevatorTunePose.set(0.5)).ignoringDisable(true));
+
+        controller.b()
+            .onTrue(Commands.runOnce(() -> elevatorTunePose.set(1.0)).ignoringDisable(true));
 
     }
 

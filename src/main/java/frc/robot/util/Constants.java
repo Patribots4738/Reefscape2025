@@ -507,11 +507,11 @@ public final class Constants {
         // public static final double S = 0.20005999999999768;
         // public static final double G = 0.0;
 
-        public static final double P = 800d;
-        public static final double I = 0.0;
-        public static final double D = 160d;
-        public static final double S = 0.78064099999999966;
-        public static final double G = 15.8881404705; // elevatorMass * g * pitchRadius / gearRatio / kT
+        public static final double P = 0d;
+        public static final double I = 0d;
+        public static final double D = 0d;
+        public static final double S = 0d;
+        public static final double G = 0d; // elevatorMass * g * pitchRadius / gearRatio / kT
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -555,11 +555,11 @@ public final class Constants {
         // public static final double S = 0.12047100000001956;
         // public static final double G = 0;
 
-        public static final double P = 3500.0;
+        public static final double P = 350d;
         public static final double I = 0d;
-        public static final double D = 8d;
-        public static final double S = 0.08002399999997578;
-        public static final double G = 53d;
+        public static final double D = 36.5;
+        public static final double S = 2.7236959999999963;
+        public static final double G = 2.5;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
