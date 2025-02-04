@@ -23,6 +23,8 @@ public interface WristIO {
 
     public default void setPosition(double position, double feedforward) {}
 
+    public default void setNeutral() {}
+
     public default void runCharacterization(double input) {}
 
     public default void setBrakeMode(boolean brake) {}

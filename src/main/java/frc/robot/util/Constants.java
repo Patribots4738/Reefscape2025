@@ -498,8 +498,8 @@ public final class Constants {
 
         public static final double GEAR_RATIO = 6.0 + 8.0 / 9.0;
         public static final double MAX_DISPLACEMENT_METERS = 0.54;
-        public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(5.5);
-        public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(5.5);
+        public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
+        public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
         // public static final double P = 5.0;
         // public static final double I = 0.0;
@@ -555,11 +555,11 @@ public final class Constants {
         // public static final double S = 0.12047100000001956;
         // public static final double G = 0;
 
-        public static final double P = 2200d;
-        public static final double I = 0;
-        public static final double D = 10d;
+        public static final double P = 3500.0;
+        public static final double I = 0d;
+        public static final double D = 8d;
         public static final double S = 0.08002399999997578;
-        public static final double G = 53.3063938169; // Approx. wristMass * g * rCM / gearRatio / kT
+        public static final double G = 53d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -572,13 +572,15 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
-        public static final double GEAR_RATIO = 3.0;
+        public static final double GEAR_RATIO = 60.0;
       
         public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
-        public static final double CURRENT_LIMIT = 120.0;
+        public static final double CURRENT_LIMIT = 80.0;
+
+        public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
         public static final double MIN_ANGLE_RADIANS = -1.08231258091;
         public static final double MAX_ANGLE_RADIANS = 3.655594491941;
@@ -588,7 +590,7 @@ public final class Constants {
         public static final double MIN_SAFE_ANGLE_RADIANS = 1.05;
         public static final double MAX_SAFE_ANGLE_RADIANS = 1.7;
 
-        public static final double DEADBAND_RADIANS = 0.02;
+        public static final double DEADBAND_RADIANS = 0.06;
         public static final double TRANSITION_POSITION_RADIANS = Math.PI / 2.0;
         public static final double STOW_POSITION_RADIANS = 0;
         public static final double INTAKE_POSITION_RADIANS = -0.2;

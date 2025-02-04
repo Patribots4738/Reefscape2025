@@ -30,6 +30,7 @@ import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
@@ -80,6 +81,7 @@ public class Kraken extends TalonFX {
 
     private DCMotorSim motorSimModel;
 
+    private final NeutralOut neutralRequest;
     private final PositionVoltage positionVoltageRequest;
     private final VelocityVoltage velocityVoltageRequest;
     private final PositionTorqueCurrentFOC positionTorqueRequest;
@@ -135,6 +137,7 @@ public class Kraken extends TalonFX {
 
         this.useFOC = useFOC;
 
+        neutralRequest = new NeutralOut();
         positionVoltageRequest = new PositionVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
         velocityVoltageRequest = new VelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
         positionTorqueRequest = new PositionTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
@@ -249,6 +252,18 @@ public class Kraken extends TalonFX {
                         temperatureSignal
                     ).isOK();
             };
+    }
+
+    public StatusCode setNeutral() {
+
+        StatusCode status = setControl(neutralRequest);
+
+        if (status.isError()) {
+            System.err.println("Failure to set neutral output");
+            System.err.println("Error Code " + status.value + " On Device " + getDeviceID() + " - " + status.getDescription());
+        }
+
+        return status;
     }
 
     public StatusCode setTargetPosition(double position) {

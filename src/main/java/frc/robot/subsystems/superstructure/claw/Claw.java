@@ -37,6 +37,10 @@ public class Claw extends SubsystemBase {
         Logger.recordOutput("Subsystems/Claw/HasPiece", hasPiece());
     }
 
+    public Command setNeutralCommand() {
+        return runOnce(io::setNeutral);
+    }
+
     public void setPercent(double percent) {
         io.setPercent(percent);
     }

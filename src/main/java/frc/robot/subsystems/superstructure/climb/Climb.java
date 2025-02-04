@@ -50,6 +50,10 @@ public class Climb extends SubsystemBase {
         );
     }
 
+    public Command setNeutralCommand() {
+        return runOnce(io::setNeutral);
+    }
+
     public void setPosition(double position) {
         position = MathUtil.clamp(position, ClimbConstants.MIN_ANGLE_RADIANS, ClimbConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;

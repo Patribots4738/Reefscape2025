@@ -31,6 +31,8 @@ public interface ClimbIO {
 
     public default void updateInputs(ClimbIOInputs inputs) {}
 
+    public default void setNeutral() {}
+
     public default void setPosition(double position) {}
 
     public default void runCharacterization(double input) {}

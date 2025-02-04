@@ -61,6 +61,10 @@ public class Elevator extends SubsystemBase {
         );
     }
 
+    public Command setNeutralCommand() {
+        return runOnce(io::setNeutral);
+    }
+
     public void setPosition(double position) {
         position = MathUtil.clamp(position, 0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
         targetPosition = position;

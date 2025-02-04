@@ -20,7 +20,7 @@ public class WristIOKraken implements WristIO {
         motor.setSoftLimits(WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         motor.setMotorInverted(WristConstants.MOTOR_INVERTED);
         motor.resetEncoder(WristConstants.RESET_ANGLE_RADIANS);
-        motor.setGains(WristConstants.GAINS);
+        motor.setGains(WristConstants.GAINS.withG(0.0));
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-WristConstants.CURRENT_LIMIT, WristConstants.CURRENT_LIMIT);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
@@ -42,6 +42,11 @@ public class WristIOKraken implements WristIO {
     @Override
     public void setPosition(double position, double feedforward) {
         motor.setTargetPosition(position, feedforward);
+    }
+
+    @Override
+    public void setNeutral() {
+        motor.setNeutral();
     }
 
     @Override

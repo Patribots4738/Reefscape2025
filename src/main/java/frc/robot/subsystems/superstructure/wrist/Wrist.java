@@ -32,7 +32,14 @@ public class Wrist extends SubsystemBase {
     public Wrist(WristIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        WristConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(WristConstants.LOGGED_GAINS.get())).ignoringDisable(true));
+        WristConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(WristConstants.LOGGED_GAINS.get().withG(0.0))).ignoringDisable(true));
+
+        RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
+            LoggingConstants.WRIST_OFFSET.getX(),
+            LoggingConstants.WRIST_OFFSET.getY(),
+            LoggingConstants.WRIST_OFFSET.getZ(),
+            RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getRotation()
+        );
     }
 
     @Override
@@ -41,8 +48,20 @@ public class Wrist extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
 
+        double centerGravityAngle = inputs.positionRads - WristConstants.CG_OFFSET_ANGLE_RADIANS;
+        double appliedFeedforward = Math.sin(centerGravityAngle);
+        double feedforwardAmps = WristConstants.LOGGED_GAINS.get().getG() * appliedFeedforward;
+
+        if (centerGravityAngle < 0) {
+            feedforwardAmps *= -1;
+        }
+
+        Logger.recordOutput("Subsystems/Wrist/CGAngle", centerGravityAngle);
+        Logger.recordOutput("Subsystems/Wrist/AppliedFF", appliedFeedforward);
+        Logger.recordOutput("Subsystems/Wrist/FFAmps", feedforwardAmps);
+
         // Utilize one shot frames to apply feedforwards based on gravitational torque on the wrist
-        io.setPosition(targetPosition, WristConstants.LOGGED_GAINS.get().getG() * Math.sin(inputs.positionRads));
+        io.setPosition(targetPosition, feedforwardAmps);
 
         RobotContainer.components3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getX(), 
@@ -63,6 +82,10 @@ public class Wrist extends SubsystemBase {
             RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getZ(),
             new Rotation3d(0, position, 0)
         );
+    }
+
+    public Command setNeutralCommand() {
+        return runOnce(io::setNeutral);
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {

@@ -35,6 +35,11 @@ public class ClawIOKraken implements ClawIO {
     }
 
     @Override
+    public void setNeutral() {
+        motor.setNeutral();
+    }
+
+    @Override
     public void setBrakeMode(boolean brake) {
         motor.setBrakeMode(brake);
     }

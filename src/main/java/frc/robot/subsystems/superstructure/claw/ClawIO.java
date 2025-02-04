@@ -20,6 +20,8 @@ public interface ClawIO {
 
     public default void updateInputs(ClawIOInputs inputs) {}
 
+    public default void setNeutral() {}
+
     public default void setBrakeMode(boolean brake) {}
 
     public default void setPercent(double percent) {}

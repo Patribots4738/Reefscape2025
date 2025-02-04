@@ -33,6 +33,8 @@ public interface ElevatorIO {
 
     public default void setPosition(double position) {}
 
+    public default void setNeutral() {}
+
     public default void runCharacterization(double input) {}
 
     public default void setBrakeMode(boolean brake) {}

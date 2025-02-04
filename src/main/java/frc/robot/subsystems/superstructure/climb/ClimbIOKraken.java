@@ -57,6 +57,11 @@ public class ClimbIOKraken implements ClimbIO {
         inputs.followerTemperatureCelcius = follower.getTemperatureAsDouble();
     }
 
+    public void setNeutral() {
+        leader.setNeutral();
+        follower.setNeutral();
+    }
+
     public void setPosition(double position) {
         leader.setTargetPosition(position);
         follower.setTargetPosition(position);

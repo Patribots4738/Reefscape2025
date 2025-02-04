@@ -57,6 +57,12 @@ public class ElevatorIOKraken implements ElevatorIO {
     }
 
     @Override
+    public void setNeutral() {
+        leader.setNeutral();
+        follower.setNeutral();
+    }
+
+    @Override
     public void setPosition(double position) {
         leader.setTargetPosition(position);
         follower.setTargetPosition(position);
