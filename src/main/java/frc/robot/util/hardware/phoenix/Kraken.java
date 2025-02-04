@@ -706,30 +706,17 @@ public class Kraken extends TalonFX {
         );
     }
     
-    /**
-     * Adds a follower motor to the current motor.
-     * 
-     * @param motor The motor to be added as a follower.
-     * @param invert Specifies whether the follower motor should be inverted or not.
-     * @return The status code indicating the success or failure of adding the follower motor.
-     */
-    public StatusCode addFollower(Kraken motor, boolean invert) {
-        StatusCode status = motor.setControl(new Follower(getDeviceID(), invert));
+    public StatusCode setFollowing(Kraken motor, boolean invert) {
+        StatusCode status = setControl(new Follower(motor.getDeviceID(), invert));
         if (status.isError()) {
-            System.err.println("Failure to add follower");
+            System.err.println("Failure to set following");
             System.err.println("Error Code " + status.value + " - " + status.getDescription());
         }
         return status;
     }
 
-    /**
-     * Adds a follower motor to this Kraken motor.
-     * 
-     * @param motor the motor to be added as a follower
-     * @return the status code indicating the success or failure of the operation
-     */
-    public StatusCode addFollower(Kraken motor) {
-        return addFollower(motor, false);
+    public StatusCode setFollowing(Kraken motor) {
+        return setFollowing(motor, false);
     }
 
     /**
