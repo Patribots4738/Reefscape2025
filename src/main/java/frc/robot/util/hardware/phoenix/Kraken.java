@@ -137,18 +137,20 @@ public class Kraken extends TalonFX {
 
         this.useFOC = useFOC;
 
+        double updateFrequency = useOneShot ? 0.0 : 100.0;
+
         neutralRequest = new NeutralOut();
-        positionVoltageRequest = new PositionVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        velocityVoltageRequest = new VelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        positionTorqueRequest = new PositionTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        velocityTorqueRequest = new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        voltageRequest = new VoltageOut(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        percentRequest = new DutyCycleOut(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        torqueRequest = new TorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        positionMMVoltageRequest = new MotionMagicVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        velocityMMVoltageRequest = new MotionMagicVelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        positionMMTorqueRequest = new MotionMagicTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
-        velocityMMTorqueRequest = new MotionMagicVelocityTorqueCurrentFOC(0).withUpdateFreqHz(useOneShot ? 0.0 : 100.0);
+        positionVoltageRequest = new PositionVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(updateFrequency);
+        velocityVoltageRequest = new VelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(updateFrequency);
+        positionTorqueRequest = new PositionTorqueCurrentFOC(0).withUpdateFreqHz(updateFrequency);
+        velocityTorqueRequest = new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(updateFrequency);
+        voltageRequest = new VoltageOut(0).withEnableFOC(useFOC).withUpdateFreqHz(updateFrequency);
+        percentRequest = new DutyCycleOut(0).withEnableFOC(useFOC).withUpdateFreqHz(updateFrequency);
+        torqueRequest = new TorqueCurrentFOC(0).withUpdateFreqHz(updateFrequency);
+        positionMMVoltageRequest = new MotionMagicVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(updateFrequency);
+        velocityMMVoltageRequest = new MotionMagicVelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(updateFrequency);
+        positionMMTorqueRequest = new MotionMagicTorqueCurrentFOC(0).withUpdateFreqHz(updateFrequency);
+        velocityMMTorqueRequest = new MotionMagicVelocityTorqueCurrentFOC(0).withUpdateFreqHz(updateFrequency);
 
         gains = new GainConstants[] { new GainConstants(), new GainConstants(), new GainConstants() };
 
@@ -708,6 +710,9 @@ public class Kraken extends TalonFX {
     
     public StatusCode setFollowing(Kraken motor, boolean invert) {
         StatusCode status = setControl(new Follower(motor.getDeviceID(), invert));
+        targetPosition = motor.getTargetPosition();
+        targetVelocity = motor.getTargetVelocity();
+        targetPercent = motor.getTargetPercent();
         if (status.isError()) {
             System.err.println("Failure to set following");
             System.err.println("Error Code " + status.value + " - " + status.getDescription());

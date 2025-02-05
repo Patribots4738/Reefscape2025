@@ -28,7 +28,7 @@ public class Wrist extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
 
     private double targetPosition = 0.0;
-    private boolean hasBeenSet = false;
+    private boolean shouldRunSetpoint = false;
 
     public Wrist(WristIO io) {
         this.io = io;
@@ -69,7 +69,7 @@ public class Wrist extends SubsystemBase {
 
         // If target position has been applied to motor, apply one shot frame
         // This makes it so that the wrist doesn't get excited on enable.
-        if (hasBeenSet) {
+        if (shouldRunSetpoint) {
             // Utilize one shot frames to apply feedforwards based on gravitational torque on the wrist
             io.setPosition(targetPosition, feedforwardAmps);
         }
@@ -86,7 +86,7 @@ public class Wrist extends SubsystemBase {
     public void setPosition(double position) {
         position = MathUtil.clamp(position, WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
-        hasBeenSet = true;
+        shouldRunSetpoint = true;
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getX(), 

@@ -218,13 +218,18 @@ public class RobotContainer {
             .onTrue(elevator.setPositionCommand(elevatorTunePose::get));
 
         controller.a()
-            .onTrue(Commands.runOnce(() -> elevatorTunePose.set(0)).ignoringDisable(true));
+            .onTrue(Commands.runOnce(() -> elevatorTunePose.set(elevator.getPosition())).ignoringDisable(true));
 
         controller.x()
-            .onTrue(Commands.runOnce(() -> elevatorTunePose.set(0.5)).ignoringDisable(true));
+            .onTrue(elevator.resetEncodersCommand().ignoringDisable(true));
 
-        controller.b()
-            .onTrue(Commands.runOnce(() -> elevatorTunePose.set(1.0)).ignoringDisable(true));
+        // LoggedTunableNumber wristTunePose = new LoggedTunableNumber("Wrist/TunePose", 0.0);
+
+        // controller.y()
+        //     .onTrue(wrist.setPositionCommand(wristTunePose::get));
+
+        // controller.a()
+        //     .onTrue(Commands.runOnce(() -> wristTunePose.set(wrist.getPosition())).ignoringDisable(true));
 
     }
 

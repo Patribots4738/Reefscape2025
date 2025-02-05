@@ -11,8 +11,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     private final Kraken follower;
 
     public ElevatorIOKraken() {
-        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, false, ControlPreference.TORQUE_CURRENT);
-        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, false, ControlPreference.TORQUE_CURRENT);
+        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
+        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
         configMotors();
     }
 
@@ -59,19 +59,19 @@ public class ElevatorIOKraken implements ElevatorIO {
     @Override
     public void setNeutral() {
         leader.setNeutral();
-        follower.setNeutral();
+        follower.setFollowing(leader);
     }
 
     @Override
     public void setPosition(double position) {
         leader.setTargetPosition(position);
-        follower.setTargetPosition(position);
+        follower.setFollowing(leader);
     }
 
     @Override
     public void runCharacterization(double input) {
         leader.setTorqueCurrentOutput(input);
-        follower.setTorqueCurrentOutput(input);
+        follower.setFollowing(leader);
     }
     
     @Override

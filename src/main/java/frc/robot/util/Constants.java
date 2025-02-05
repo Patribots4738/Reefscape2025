@@ -47,7 +47,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.DEVBOT;
+        private static RobotType robotType = RobotType.COMPBOT;
 
         public static RobotType getRobot() {
             if (!FieldConstants.IS_SIMULATION && robotType == RobotType.SIMBOT) {
@@ -476,7 +476,7 @@ public final class Constants {
         public static final int CAN_ID = 9;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 120.0;
+        public static final double CURRENT_LIMIT = 80.0;
 
         public static final boolean MOTOR_INVERTED = false;
 
@@ -613,7 +613,7 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI;
 
-        public static final double CURRENT_LIMIT = 120.0;
+        public static final double CURRENT_LIMIT = 80.0;
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;

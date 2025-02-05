@@ -28,6 +28,7 @@ public class Elevator extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Elevator/BrakeMotor", ElevatorConstants.BRAKE_MOTOR);
 
     private double targetPosition = 0.0;
+    private boolean shouldRunSetpoint = false;
     
     public Elevator(ElevatorIO io) {
         this.io = io;
@@ -40,6 +41,10 @@ public class Elevator extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Elevator", inputs);
         Logger.recordOutput("Subsystems/Elevator/AtTargetPosition", atTargetPosition());
+
+        if (shouldRunSetpoint) {
+            io.setPosition(targetPosition);
+        }
 
         RobotContainer.components3d[LoggingConstants.ELEVATOR_FIRST_STAGE_INDEX] = new Pose3d(
             0, 
@@ -64,7 +69,7 @@ public class Elevator extends SubsystemBase {
     public void setPosition(double position) {
         position = MathUtil.clamp(position, 0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
         targetPosition = position;
-        io.setPosition(position);
+        shouldRunSetpoint = true;
 
         RobotContainer.desiredComponents3d[LoggingConstants.ELEVATOR_FIRST_STAGE_INDEX] = new Pose3d(
             0, 
