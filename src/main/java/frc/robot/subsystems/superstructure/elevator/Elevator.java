@@ -44,6 +44,8 @@ public class Elevator extends SubsystemBase {
 
         if (shouldRunSetpoint) {
             io.setPosition(targetPosition);
+        } else {
+            io.setNeutral();
         }
 
         RobotContainer.components3d[LoggingConstants.ELEVATOR_FIRST_STAGE_INDEX] = new Pose3d(
@@ -91,6 +93,10 @@ public class Elevator extends SubsystemBase {
         );
     }
 
+    public void setNeutral() {
+        shouldRunSetpoint = false;
+    }
+
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
         return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
@@ -100,7 +106,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command setNeutralCommand() {
-        return runOnce(io::setNeutral);
+        return runOnce(this::setNeutral);
     }
 
     public Command resetEncodersCommand() {

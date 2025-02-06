@@ -11,8 +11,8 @@ public class ClimbIOKraken implements ClimbIO {
     private final Kraken follower;
 
     public ClimbIOKraken() {
-        leader = new Kraken(ClimbConstants.LEADER_CAN_ID, true, false, ControlPreference.VOLTAGE);
-        follower = new Kraken(ClimbConstants.FOLLOWER_CAN_ID, true, false, ControlPreference.VOLTAGE);
+        leader = new Kraken(ClimbConstants.LEADER_CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
+        follower = new Kraken(ClimbConstants.FOLLOWER_CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
         
         configMotors();
     }
@@ -25,8 +25,8 @@ public class ClimbIOKraken implements ClimbIO {
         motor.setMotorInverted(ClimbConstants.MOTOR_INVERTED);
         motor.resetEncoder(0);
         motor.setGains(ClimbConstants.GAINS);
-        motor.setSupplyCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
+        motor.setTorqueCurrentLimits(-ClimbConstants.CURRENT_LIMIT, ClimbConstants.CURRENT_LIMIT);
     }
 
     private void configMotors() {
@@ -35,6 +35,7 @@ public class ClimbIOKraken implements ClimbIO {
         setBrakeMode(ClimbConstants.BRAKE_MOTOR);
     }
 
+    @Override
     public void updateInputs(ClimbIOInputs inputs) {
         inputs.leaderMotorConnected = leader.refreshSignals().isOK();
         inputs.leaderPositionRads = leader.getPositionAsDouble();
@@ -57,21 +58,25 @@ public class ClimbIOKraken implements ClimbIO {
         inputs.followerTemperatureCelcius = follower.getTemperatureAsDouble();
     }
 
+    @Override
     public void setNeutral() {
         leader.setNeutral();
-        follower.setNeutral();
+        follower.setFollowing(leader);
     }
 
+    @Override
     public void setPosition(double position) {
         leader.setTargetPosition(position);
-        follower.setTargetPosition(position);
+        follower.setFollowing(leader);
     }
 
+    @Override
     public void runCharacterization(double input) {
-        leader.setVoltageOutput(input);
-        follower.setVoltageOutput(input);
+        leader.setTorqueCurrentOutput(input);
+        follower.setFollowing(leader);
     }
 
+    @Override
     public void setBrakeMode(boolean brake) {
         leader.setBrakeMode(brake);
         follower.setBrakeMode(brake);

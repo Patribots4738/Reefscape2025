@@ -47,7 +47,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.COMPBOT;
+        private static RobotType robotType = RobotType.DEVBOT;
 
         public static RobotType getRobot() {
             if (!FieldConstants.IS_SIMULATION && robotType == RobotType.SIMBOT) {
@@ -108,7 +108,7 @@ public final class Constants {
     public static final class DriveConstants {
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
-        public static final double MAX_SPEED_METERS_PER_SECOND = 2.0;
+        public static final double MAX_SPEED_METERS_PER_SECOND = 4.5;
 
         public static final double MAX_ANGULAR_SPEED_RADS_PER_SECOND = Units.degreesToRadians(1137.21); // radians per second
 
@@ -424,11 +424,11 @@ public final class Constants {
         public static final double DRIVING_MOTOR_TORQUE_LIMIT_AMPS = 80.0;
         public static final double TURNING_MOTOR_TORQUE_LIMIT_AMPS = 60.0;
 
-        public static final double DRIVING_P = 1.0;
+        public static final double DRIVING_P = 35d;
         public static final double DRIVING_I = 0;
-        public static final double DRIVING_D = 0.0;
-        public static final double DRIVING_S = 0.17727;
-        public static final double DRIVING_V = 0.69279;
+        public static final double DRIVING_D = 0;
+        public static final double DRIVING_S = 2.4316460000000006;
+        public static final double DRIVING_V = 0;
 
 
         // public static final double DRIVING_P = 20d;
@@ -446,12 +446,12 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Drive");
+        public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Swerve/Drive");
 
-        public static final double TURNING_P = 20.0;
-        public static final double TURNING_I = 0.0;
-        public static final double TURNING_D = 0.05;
-        public static final double TURNING_S = 0.3400210000000079;
+        public static final double TURNING_P = 1500d;
+        public static final double TURNING_I = 0;
+        public static final double TURNING_D = 30d;
+        public static final double TURNING_S = 2.800419999999998;
 
         // public static final double TURNING_P = 5500d;
         // public static final double TURNING_I = 0.0;
@@ -467,7 +467,7 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_TURNING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Turn");
+        public static final LoggedGainConstants LOGGED_TURNING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Swerve/Turn");
 
     }
 
@@ -496,7 +496,7 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = true;
 
-        public static final double GEAR_RATIO = 6.0 + 8.0 / 9.0;
+        public static final double GEAR_RATIO = 7.75;
         public static final double MAX_DISPLACEMENT_METERS = 0.54;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
@@ -533,7 +533,7 @@ public final class Constants {
         public static final double L3_POSITION_REMOVE_ALGAE = 0.4;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.2;
 
-        public static final double DEADBAND_METERS = 0.005;
+        public static final double DEADBAND_METERS = 0.02;
 
     }
 
@@ -555,11 +555,11 @@ public final class Constants {
         // public static final double S = 0.12047100000001956;
         // public static final double G = 0;
 
-        public static final double P = 350d;
+        public static final double P = 390d;
         public static final double I = 0d;
-        public static final double D = 36.5;
+        public static final double D = 40d;
         public static final double S = 2.7236959999999963;
-        public static final double G = 2.5;
+        public static final double G = 2d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -594,8 +594,8 @@ public final class Constants {
         public static final double TRANSITION_POSITION_RADIANS = Math.PI / 2.0;
         public static final double STOW_POSITION_RADIANS = 0;
         public static final double INTAKE_POSITION_RADIANS = -0.2;
-        public static final double L1_POSITION_RADIANS = 2.2;
-        public static final double L2_POSITION_RADIANS = 2.22;
+        public static final double L1_POSITION_RADIANS = 2.85;
+        public static final double L2_POSITION_RADIANS = 2.6;
         public static final double L3_POSITION_RADIANS = 2.22;
         public static final double L4_POSITION_RADIANS = 2.257;
 
@@ -608,21 +608,21 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = true;
 
-        public static final double GEAR_RATIO = 16.0 + 1.0 / 3.0;
+        public static final double GEAR_RATIO = 181.176470591;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI;
 
-        public static final double CURRENT_LIMIT = 80.0;
+        public static final double CURRENT_LIMIT = 120.0;
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 1.836;
 
-        public static final double P = 5.0;
+        public static final double P = 0.0;
         public static final double I = 0.0;
-        public static final double D = 0.65;
-        public static final double S = 0.3198320000000531; 
+        public static final double D = 0.0;
+        public static final double S = 0.0; 
         public static final double G = 0.0;
 
         public static final double CRUISE_VELOCITY = 1.047;
@@ -675,7 +675,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
 
     }
 

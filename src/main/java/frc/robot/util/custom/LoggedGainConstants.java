@@ -42,16 +42,15 @@ public class LoggedGainConstants {
     }
 
     public GainConstants get(){
-        this.gainConstants = new GainConstants(
-            pValue.get(), 
+        return gainConstants.withGains(
+            pValue.get(),
             iValue.get(),
-            dValue.get(), 
+            dValue.get(),
             aValue.get(),
-            sValue.get(), 
-            dValue.get(), 
+            sValue.get(),
+            vValue.get(),
             gValue.get()
         );
-        return gainConstants;
     }
 
 

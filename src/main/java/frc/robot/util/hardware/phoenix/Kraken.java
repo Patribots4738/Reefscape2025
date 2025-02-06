@@ -139,7 +139,7 @@ public class Kraken extends TalonFX {
 
         double updateFrequency = useOneShot ? 0.0 : 100.0;
 
-        neutralRequest = new NeutralOut();
+        neutralRequest = new NeutralOut().withUpdateFreqHz(updateFrequency);
         positionVoltageRequest = new PositionVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(updateFrequency);
         velocityVoltageRequest = new VelocityVoltage(0).withEnableFOC(useFOC).withUpdateFreqHz(updateFrequency);
         positionTorqueRequest = new PositionTorqueCurrentFOC(0).withUpdateFreqHz(updateFrequency);

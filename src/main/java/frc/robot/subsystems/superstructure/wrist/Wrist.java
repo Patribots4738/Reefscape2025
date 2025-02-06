@@ -51,10 +51,7 @@ public class Wrist extends SubsystemBase {
 
         // Get angle relative to CG rest angle
         double centerGravityAngle = inputs.positionRads - WristConstants.CG_OFFSET_ANGLE_RADIANS;
-        // Get the fraction of FF that should be applied with grav torque
-        double appliedFeedforward = Math.sin(centerGravityAngle);
-        // Convert to amperes
-        double feedforwardAmps = WristConstants.LOGGED_GAINS.get().getG() * appliedFeedforward;
+        double feedforwardAmps = WristConstants.LOGGED_GAINS.get().getG();
 
         // Flip counter torque current if wrist is fighting gravity in the other direction
         // This mainly helps with short movements in the intake/stow zone of the wrist motion
@@ -64,7 +61,6 @@ public class Wrist extends SubsystemBase {
         }
 
         Logger.recordOutput("Subsystems/Wrist/CGAngle", centerGravityAngle);
-        Logger.recordOutput("Subsystems/Wrist/AppliedFF", appliedFeedforward);
         Logger.recordOutput("Subsystems/Wrist/FFAmps", feedforwardAmps);
 
         // If target position has been applied to motor, apply one shot frame
@@ -72,6 +68,8 @@ public class Wrist extends SubsystemBase {
         if (shouldRunSetpoint) {
             // Utilize one shot frames to apply feedforwards based on gravitational torque on the wrist
             io.setPosition(targetPosition, feedforwardAmps);
+        } else {
+            io.setNeutral();
         }
 
         RobotContainer.components3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
@@ -96,8 +94,8 @@ public class Wrist extends SubsystemBase {
         );
     }
 
-    public Command setNeutralCommand() {
-        return runOnce(io::setNeutral);
+    public void setNeutral() {
+        shouldRunSetpoint = false;
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
@@ -106,7 +104,11 @@ public class Wrist extends SubsystemBase {
 
     public Command setPositionCommand(double position) {
         return setPositionCommand(() -> position);
-    }   
+    }
+    
+    public Command setNeutralCommand() {
+        return runOnce(this::setNeutral);
+    }
 
     public boolean atPosition(double position) {
         return MathUtil.isNear(position, inputs.positionRads, WristConstants.DEADBAND_RADIANS);

@@ -24,8 +24,8 @@ public class ModuleIOKraken implements ModuleIO {
      * @param index
      */
     public ModuleIOKraken(int drivingCANId, int turningCANId, int canCoderId, double absoluteEncoderOffset) {
-        driveMotor = new Kraken(drivingCANId, "Drivebase", true, true, ControlPreference.VOLTAGE);
-        turnMotor = new Kraken(turningCANId, "Drivebase", true, true, ControlPreference.VOLTAGE);
+        driveMotor = new Kraken(drivingCANId, "Drivebase", true, true, ControlPreference.TORQUE_CURRENT);
+        turnMotor = new Kraken(turningCANId, "Drivebase", true, true, ControlPreference.TORQUE_CURRENT);
         turnEncoder = new CANCoderCustom(canCoderId, "Drivebase");
         resetDriveEncoder();
         configEncoder(absoluteEncoderOffset);

@@ -31,6 +31,7 @@ public class Climb extends SubsystemBase {
     private final LoggedTunableNumber finalPosition = new LoggedTunableNumber("Climb/FinalPosition", ClimbConstants.FINAL_POSITION_RADIANS);
 
     private double targetPosition = 0.0;
+    private boolean shouldRunSetpoint = false;
 
     public Climb(ClimbIO io) {
         this.io = io;
@@ -44,14 +45,16 @@ public class Climb extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Climb", inputs);
         Logger.recordOutput("Subsystems/Climb/AtDesiredPosition", atTargetPosition());
 
+        if (shouldRunSetpoint) {
+            io.setPosition(targetPosition);
+        } else {
+            io.setNeutral();
+        }
+
         RobotContainer.components3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
             LoggingConstants.CLIMB_OFFSET, 
             new Rotation3d(-inputs.leaderPositionRads, 0, 0)
         );
-    }
-
-    public Command setNeutralCommand() {
-        return runOnce(io::setNeutral);
     }
 
     public void setPosition(double position) {
@@ -65,12 +68,20 @@ public class Climb extends SubsystemBase {
         );
     }
 
+    public void setNeutral() {
+        shouldRunSetpoint = false;
+    }
+
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
         return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
     public Command setPositionCommand(double position) {
         return setPositionCommand(() -> position);
+    }
+
+    public Command setNeutralCommand() {
+        return runOnce(this::setNeutral);
     }
 
     public Command stowPositionCommand() {
