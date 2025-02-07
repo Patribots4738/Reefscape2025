@@ -167,8 +167,8 @@ public class RobotContainer {
                 elevator, 
                 elevator::runCharacterization, 
                 elevator::getCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("ClimbFeedDorwardCharacterization",
-            new FeedForwardCharacterization(
+        pathPlannerStorage.getAutoChooser().addOption("ClimbStaticCharacterization",
+            new StaticCharacterization(
                 climb, 
                 climb::runCharacterization, 
                 climb::getCharacterizationVelocity));
@@ -263,6 +263,9 @@ public class RobotContainer {
         controller.b()
             .onTrue(superstructure.climbReadyCommand())
             .onFalse(superstructure.climbFinalCommand());
+
+        controller.povRight()
+            .onTrue(superstructure.stopAllCommand());
 
         // controller.leftBumper()
         //     .onTrue(alignment.updateIndexCommand(-1));
