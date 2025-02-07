@@ -7,6 +7,7 @@ package frc.robot.subsystems.vision;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.VecBuilder;
@@ -77,12 +78,17 @@ public class Vision extends SubsystemBase {
 
         List<Integer> camerasToUpdate = new ArrayList<>();
         for (int i = 0; i < cameras.length; i++) {
-            if (cameraHasTarget(i)) {
+            boolean updateCamera = cameraHasTarget(i);
+            Logger.recordOutput("Subsystems/Vision/UpdateCamera" + i, updateCamera);
+            if (updateCamera) {
                 camerasToUpdate.add(i);
                 tagCount += inputs[i].tagIds.length;
                 tagArea = (tagArea * (camerasToUpdate.size() - 1) + inputs[i].averageTA) / camerasToUpdate.size();
             }
         }
+
+        Logger.recordOutput("Subsystems/Vision/TagCount", tagCount);
+        Logger.recordOutput("Subsystems/Vision/TagArea", tagArea);
 
         double xyStds = 0.0;
         double radStds = 0.0;
@@ -118,12 +124,15 @@ public class Vision extends SubsystemBase {
             else {
                 return;
             }
-
-            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, radStds));
-            for (int i : camerasToUpdate) {
-                poseEstimator.addVisionMeasurement(inputs[i].robotPose, inputs[i].timestampSeconds);
-            }
         }
+
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, radStds));
+        for (int i : camerasToUpdate) {
+            poseEstimator.addVisionMeasurement(inputs[i].robotPose, inputs[i].timestampSeconds);
+        }
+
+        Logger.recordOutput("Subsystems/Vision/XYStdDev", xyStds);
+        Logger.recordOutput("Subsystems/Vision/ThetaStdDev", radStds);
     }
 
     private boolean cameraHasTarget(int cameraIndex) {
@@ -137,6 +146,7 @@ public class Vision extends SubsystemBase {
         return true;
     }
 
+    @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
         return Robot.gameMode == GameMode.DISABLED;
     }

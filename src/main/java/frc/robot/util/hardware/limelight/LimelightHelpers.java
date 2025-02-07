@@ -1,4 +1,4 @@
-//LimelightHelpers v1.10 (REQUIRES LLOS 2024.9.1 OR LATER)
+//LimelightHelpers v1.11 (REQUIRES LLOS 2025.0 OR LATER)
 
 package frc.robot.util.hardware.limelight;
 
@@ -571,6 +571,40 @@ public class LimelightHelpers {
         }
 
     }
+
+    /**
+     * Encapsulates the state of an internal Limelight IMU.
+     */
+    public static class IMUData {
+        public double robotYaw = 0.0;
+        public double Roll = 0.0;
+        public double Pitch = 0.0;
+        public double Yaw = 0.0;
+        public double gyroX = 0.0;
+        public double gyroY = 0.0;
+        public double gyroZ = 0.0;
+        public double accelX = 0.0;
+        public double accelY = 0.0;
+        public double accelZ = 0.0;
+
+        public IMUData() {}
+
+        public IMUData(double[] imuData) {
+            if (imuData != null && imuData.length >= 10) {
+                this.robotYaw = imuData[0];
+                this.Roll = imuData[1];
+                this.Pitch = imuData[2];
+                this.Yaw = imuData[3];
+                this.gyroX = imuData[4];
+                this.gyroY = imuData[5];
+                this.gyroZ = imuData[6];
+                this.accelX = imuData[7];
+                this.accelY = imuData[8];
+                this.accelZ = imuData[9];
+            }
+        }
+    }
+
 
     private static ObjectMapper mapper;
 
@@ -1296,7 +1330,21 @@ public class LimelightHelpers {
 
     }
    
-
+    /**
+     * Gets the current IMU data from NetworkTables.
+     * IMU data is formatted as [robotYaw, Roll, Pitch, Yaw, gyroX, gyroY, gyroZ, accelX, accelY, accelZ].
+     * Returns all zeros if data is invalid or unavailable.
+     * 
+     * @param limelightName Name/identifier of the Limelight
+     * @return IMUData object containing all current IMU data
+     */
+    public static IMUData getIMUData(String limelightName) {
+        double[] imuData = getLimelightNTDoubleArray(limelightName, "imu");
+        if (imuData == null || imuData.length < 10) {
+            return new IMUData();  // Returns object with all zeros
+        }
+        return new IMUData(imuData);
+    }
 
     /////
     /////
@@ -1422,6 +1470,16 @@ public class LimelightHelpers {
         {
             Flush();
         }
+    }
+   
+    /**
+     * Configures the IMU mode for MegaTag2 Localization
+     * 
+     * @param limelightName Name/identifier of the Limelight
+     * @param mode IMU mode.
+     */
+    public static void SetIMUMode(String limelightName, int mode) {
+        setLimelightNTDouble(limelightName, "imumode_set", mode);
     }
 
     /**
