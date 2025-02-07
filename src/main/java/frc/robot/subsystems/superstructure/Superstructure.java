@@ -154,11 +154,15 @@ public class Superstructure {
     public Command intakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
-                setArmPosition(ArmPosition.INTAKE),
-                claw.intakeCommand(),
+                Commands.parallel(
+                    setArmPosition(ArmPosition.INTAKE),
+                    claw.intakeCommand()
+                ),
                 Commands.waitUntil(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-                claw.stopCommand(),
-                setArmPosition(ArmPosition.LOW_STOW)
+                Commands.parallel(
+                    claw.stopCommand(),
+                    setArmPosition(ArmPosition.LOW_STOW)
+                )
             );
     }
 
@@ -203,10 +207,10 @@ public class Superstructure {
         return
             Commands.sequence(
                 // Move arm out of way for clearance
-                // setArmPosition(ArmPosition.CLIMB),
+                setArmPosition(ArmPosition.CLIMB),
                 // Bring climb down to hard-stop
-                climb.stowPositionCommand()
-                // setArmPosition(ArmPosition.LOW_STOW)
+                climb.stowPositionCommand(),
+                setArmPosition(ArmPosition.LOW_STOW)
             );
     }
 
@@ -214,7 +218,7 @@ public class Superstructure {
         return
             Commands.sequence(
                 // Move arm down for low CG and out of way for clearance
-                // setArmPosition(ArmPosition.CLIMB),
+                setArmPosition(ArmPosition.CLIMB),
                 // Move climb to foot hard-stop
                 climb.readyPositionCommand()
             );
@@ -224,9 +228,19 @@ public class Superstructure {
         return
             Commands.sequence(
                 // Move arm down for low CG and out of way for clearance
-                // setArmPosition(ArmPosition.CLIMB),
+                setArmPosition(ArmPosition.CLIMB),
                 // Move climb & cage to flat position
                 climb.finalPositionCommand()
+            );
+    }
+
+    public Command stopAllCommand() {
+        return 
+            Commands.parallel(
+                wrist.setNeutralCommand(),
+                elevator.setNeutralCommand(),
+                climb.setNeutralCommand(),
+                claw.setNeutralCommand()
             );
     }
 

@@ -29,8 +29,10 @@ public class Climb extends SubsystemBase {
     private final LoggedTunableNumber stowPosition = new LoggedTunableNumber("Climb/StowPosition", ClimbConstants.STOW_POSITION_RADIANS);
     private final LoggedTunableNumber readyPosition = new LoggedTunableNumber("Climb/ReadyPosition", ClimbConstants.READY_POSITION_RADIANS);
     private final LoggedTunableNumber finalPosition = new LoggedTunableNumber("Climb/FinalPosition", ClimbConstants.FINAL_POSITION_RADIANS);
+    private final LoggedTunableNumber torqueCurrent = new LoggedTunableNumber("Climb/Current", 0.0);
 
     private double targetPosition = 0.0;
+    private boolean shouldRunSetpoint = false;
 
     public Climb(ClimbIO io) {
         this.io = io;
@@ -44,6 +46,12 @@ public class Climb extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Climb", inputs);
         Logger.recordOutput("Subsystems/Climb/AtDesiredPosition", atTargetPosition());
 
+        if (shouldRunSetpoint) {
+            io.setPosition(targetPosition);
+        } else {
+            io.setNeutral();
+        }
+
         RobotContainer.components3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
             LoggingConstants.CLIMB_OFFSET, 
             new Rotation3d(-inputs.leaderPositionRads, 0, 0)
@@ -53,12 +61,16 @@ public class Climb extends SubsystemBase {
     public void setPosition(double position) {
         position = MathUtil.clamp(position, ClimbConstants.MIN_ANGLE_RADIANS, ClimbConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
-        io.setPosition(position);
+        shouldRunSetpoint = true;
 
         RobotContainer.desiredComponents3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
             LoggingConstants.CLIMB_OFFSET,
             new Rotation3d(-position, 0, 0)
         );
+    }
+
+    public void setNeutral() {
+        shouldRunSetpoint = false;
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
@@ -67,6 +79,10 @@ public class Climb extends SubsystemBase {
 
     public Command setPositionCommand(double position) {
         return setPositionCommand(() -> position);
+    }
+
+    public Command setNeutralCommand() {
+        return runOnce(this::setNeutral);
     }
 
     public Command stowPositionCommand() {

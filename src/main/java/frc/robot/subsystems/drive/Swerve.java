@@ -71,10 +71,10 @@ public class Swerve extends SubsystemBase {
     private final SwerveSetpointGenerator setpointGenerator;
     private SwerveSetpoint previousSetpoint;
 
-    private final LoggedTunableNumber driveMultiplier = new LoggedTunableNumber("Drive/DriveMultiplier", 1.0);
-    private final LoggedTunableNumber driveMaxLinearVelocity = new LoggedTunableNumber("Drive/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
-    private final LoggedTunableNumber driveMaxAngularVelocity = new LoggedTunableNumber("Drive/DriveAngularVelocity", DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND);
-    private final LoggedTunableNumber turnMaxVelocity = new LoggedTunableNumber("Drive/MaxTurnVelocity", MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC);
+    private final LoggedTunableNumber driveMultiplier = new LoggedTunableNumber("Swerve/DriveMultiplier", 1.0);
+    private final LoggedTunableNumber driveMaxLinearVelocity = new LoggedTunableNumber("Swerve/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
+    private final LoggedTunableNumber driveMaxAngularVelocity = new LoggedTunableNumber("Swerve/DriveAngularVelocity", DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND);
+    private final LoggedTunableNumber turnMaxVelocity = new LoggedTunableNumber("Swerve/MaxTurnVelocity", MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC);
 
     /**
      * Creates a new DriveSubsystem.

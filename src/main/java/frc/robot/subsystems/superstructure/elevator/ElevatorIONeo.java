@@ -24,7 +24,7 @@ public class ElevatorIONeo implements ElevatorIO {
     }
 
     private void configMotors() {
-        resetEncoder(0);
+        resetEncoders(0);
         configMotor(leader);
         configMotor(follower);
         setBrakeMode(ElevatorConstants.BRAKE_MOTOR);
@@ -73,7 +73,7 @@ public class ElevatorIONeo implements ElevatorIO {
     }
 
     @Override
-    public void resetEncoder(double position) {
+    public void resetEncoders(double position) {
         leader.resetEncoder(position);
         follower.resetEncoder(position);
     }

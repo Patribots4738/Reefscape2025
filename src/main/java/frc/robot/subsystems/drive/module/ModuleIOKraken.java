@@ -5,6 +5,7 @@ import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.CANCoderCustom;
 import frc.robot.util.hardware.phoenix.Kraken;
+import frc.robot.util.hardware.phoenix.Kraken.ControlPreference;
 import frc.robot.util.hardware.phoenix.Kraken.TelemetryPreference;
 
 public class ModuleIOKraken implements ModuleIO {
@@ -23,8 +24,8 @@ public class ModuleIOKraken implements ModuleIO {
      * @param index
      */
     public ModuleIOKraken(int drivingCANId, int turningCANId, int canCoderId, double absoluteEncoderOffset) {
-        driveMotor = new Kraken(drivingCANId, "Drivebase", true, false);
-        turnMotor = new Kraken(turningCANId, "Drivebase", true, false);
+        driveMotor = new Kraken(drivingCANId, "Drivebase", true, true, ControlPreference.TORQUE_CURRENT);
+        turnMotor = new Kraken(turningCANId, "Drivebase", true, true, ControlPreference.TORQUE_CURRENT);
         turnEncoder = new CANCoderCustom(canCoderId, "Drivebase");
         resetDriveEncoder();
         configEncoder(absoluteEncoderOffset);
@@ -57,12 +58,20 @@ public class ModuleIOKraken implements ModuleIO {
         // We only want to ask for the abs encoder in real life
         if (!FieldConstants.IS_SIMULATION) {
             turnMotor.setEncoder(turnEncoder.getDeviceID(), MK4cSwerveModuleConstants.TURNING_MOTOR_REDUCTION);
+        } else {
+            turnMotor.setGearRatio(MK4cSwerveModuleConstants.TURNING_MOTOR_REDUCTION);
         }
 
         turnMotor.setPositionClosedLoopWrappingEnabled(true);
 
         setDriveGains(MK4cSwerveModuleConstants.DRIVING_GAINS);
         setTurnGains(MK4cSwerveModuleConstants.TURNING_GAINS);
+
+        driveMotor.setStatorCurrentLimit(MK4cSwerveModuleConstants.DRIVING_MOTOR_STATOR_LIMIT_AMPS);
+        // driveMotor.setTorqueCurrentLimits(-MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS, MK4cSwerveModuleConstants.DRIVING_MOTOR_TORQUE_LIMIT_AMPS);
+
+        turnMotor.setStatorCurrentLimit(MK4cSwerveModuleConstants.TURNING_MOTOR_STATOR_LIMIT_AMPS);
+        // turnMotor.setTorqueCurrentLimits(-MK4cSwerveModuleConstants.TURNING_MOTOR_TORQUE_LIMIT_AMPS, MK4cSwerveModuleConstants.TURNING_MOTOR_TORQUE_LIMIT_AMPS);
 
         setDriveBrakeMode(true);
         setTurnBrakeMode(true);
@@ -89,6 +98,7 @@ public class ModuleIOKraken implements ModuleIO {
         inputs.driveAppliedVolts = driveMotor.getVoltageAsDouble();
         inputs.driveSupplyCurrentAmps = driveMotor.getSupplyCurrentAsDouble();
         inputs.driveStatorCurrentAmps = driveMotor.getStatorCurrentAsDouble();
+        inputs.driveTorqueCurrentAmps = driveMotor.getTorqueCurrentAsDouble();
         inputs.driveTempCelcius = driveMotor.getTemperatureAsDouble();
         
         // Call refreshALl() to refresh all status signals, and check in on him :)
@@ -98,6 +108,7 @@ public class ModuleIOKraken implements ModuleIO {
         inputs.turnAppliedVolts = turnMotor.getVoltageAsDouble();
         inputs.turnSupplyCurrentAmps = turnMotor.getSupplyCurrentAsDouble();
         inputs.turnStatorCurrentAmps = turnMotor.getStatorCurrentAsDouble();
+        inputs.turnTorqueCurrentAmps = driveMotor.getTorqueCurrentAsDouble();
         inputs.turnTempCelcius = turnMotor.getTemperatureAsDouble();
 
         // Call refreshALl() to refresh all status signals (only if he is real)
@@ -132,12 +143,12 @@ public class ModuleIOKraken implements ModuleIO {
     @Override
     public void runDriveCharacterization(double input, double turnAngle) {
         turnMotor.setTargetPosition(turnAngle);
-        driveMotor.setVoltageOutput(input);
+        driveMotor.setTorqueCurrentOutput(input);
     }
 
     @Override
     public void runTurnCharacterization(double input) {
-        turnMotor.setVoltageOutput(input);
+        turnMotor.setTorqueCurrentOutput(input);
     }
 
     @Override

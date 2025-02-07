@@ -10,7 +10,6 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -148,8 +147,8 @@ public class RobotContainer {
             swerve.setWheelsOCommand()
             .andThen(Commands.waitSeconds(0.5))
             .andThen(new WheelRadiusCharacterization(swerve)));
-        pathPlannerStorage.getAutoChooser().addOption("DriveFeedForwardCharacterization",
-            new FeedForwardCharacterization(
+        pathPlannerStorage.getAutoChooser().addOption("DriveStaticCharacterization",
+            new StaticCharacterization(
                 swerve, 
                 swerve::runDriveCharacterization, 
                 swerve::getDriveCharacterizationVelocity));
@@ -194,51 +193,56 @@ public class RobotContainer {
 
     private void configureDriverBindings(PatriBoxController controller) {
 
-        controller.start().onTrue(
-            Commands.runOnce(() -> swerve.resetOdometry(
-                new Pose2d(
-                    swerve.getPose().getTranslation(), 
-                    Rotation2d.fromDegrees(
-                        Robot.isRedAlliance() 
-                        ? 0 
-                        : 180))
-            ), swerve)
-        );
+        controller.start()
+            .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
 
-        controller.leftTrigger().onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
+        controller.rightStick()
+            .toggleOnTrue(alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
+
+        controller.a()
+            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+
+        controller.leftBumper()
+            .onTrue(alignment.updateIndexCommand(-1));
+
+        controller.rightBumper()
+            .onTrue(alignment.updateIndexCommand(1));
       
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        controller.start().onTrue(
-            Commands.runOnce(() -> swerve.resetOdometry(
-                new Pose2d(
-                    swerve.getPose().getTranslation(), 
-                    Rotation2d.fromDegrees(
-                        Robot.isRedAlliance() 
-                        ? 0 
-                        : 180))
-            ), swerve)
-        );
+        controller.leftTrigger().onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
 
-        controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+        controller.rightTrigger().onTrue(claw.outtakeCommand());
 
-        controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
-
-        controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
-        
         controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+        
+        controller.x()
+            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
+        
+        controller.povRight()
+            .onTrue(superstructure.stopAllCommand());
 
-        controller.leftTrigger()
-            .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
+        // LoggedTunableNumber elevatorTunePose = new LoggedTunableNumber("Elevator/TunePose", 0.0);
 
-        controller.rightTrigger()
-            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
+        // controller.y()
+        //     .onTrue(elevator.setPositionCommand(elevatorTunePose::get));
+
+        // controller.a()
+        //     .onTrue(Commands.runOnce(() -> elevatorTunePose.set(elevator.getPosition())).ignoringDisable(true));
+
+        // controller.x()
+        //     .onTrue(elevator.resetEncodersCommand().ignoringDisable(true));
+
+        // LoggedTunableNumber wristTunePose = new LoggedTunableNumber("Wrist/TunePose", 0.0);
+
+        // controller.y()
+        //     .onTrue(wrist.setPositionCommand(wristTunePose::get));
+
+        // controller.a()
+        //     .onTrue(Commands.runOnce(() -> wristTunePose.set(wrist.getPosition())).ignoringDisable(true));
 
     }
 
@@ -260,8 +264,8 @@ public class RobotContainer {
             .onTrue(superstructure.climbReadyCommand())
             .onFalse(superstructure.climbFinalCommand());
 
-        // controller.rightStick()
-        //     .toggleOnTrue(alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
+        controller.povRight()
+            .onTrue(superstructure.stopAllCommand());
 
         // controller.leftBumper()
         //     .onTrue(alignment.updateIndexCommand(-1));
@@ -269,24 +273,14 @@ public class RobotContainer {
         // controller.rightBumper()
         //     .onTrue(alignment.updateIndexCommand(1));
 
-        controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+        // controller.povUp()
+        //     .onTrue(superstructure.setArmPosition(ArmPosition.L4));
 
-        controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
+        // controller.povRight()
+        //     .onTrue(superstructure.setArmPosition(ArmPosition.L3));
 
-        controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
-        
-        controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
-
-        controller.leftTrigger()
-            .onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
-
-        controller.rightTrigger()
-            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
-        
+        // controller.povLeft()
+        //     .onTrue(superstructure.setArmPosition(ArmPosition.L2));
     }
 
     public void updateNTGains() {
