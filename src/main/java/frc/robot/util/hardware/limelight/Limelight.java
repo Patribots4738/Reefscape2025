@@ -70,8 +70,8 @@ public class Limelight {
         );
     }
 
-    public void setIMUMode(String camera, int mode) {
-        LimelightHelpers.SetIMUMode(camera, mode);
+    public void setIMUMode(int mode) {
+        LimelightHelpers.SetIMUMode(this.name, mode);
     }
 
     public PoseEstimate refreshPoseEstimate() {

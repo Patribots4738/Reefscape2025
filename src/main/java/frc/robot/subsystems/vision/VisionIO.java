@@ -26,6 +26,6 @@ public interface VisionIO {
 
     public default void setUseMegaTag2(boolean megaTag2) {}
 
-    public default void setIMUMode(String name, int mode) {}
+    public default void setIMUMode(int mode) {}
     
 }

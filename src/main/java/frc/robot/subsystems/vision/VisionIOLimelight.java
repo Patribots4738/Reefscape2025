@@ -45,14 +45,14 @@ public class VisionIOLimelight implements VisionIO {
     }
 
     @Override 
-    public void setIMUMode(String limelight, int mode) {
+    public void setIMUMode(int mode) {
         if (mode == 2 || mode == 0) {
             setUseMegaTag2(true);
         }
         else {
             setUseMegaTag2(false);
         }
-        camera.setIMUMode(limelight, mode);
+        camera.setIMUMode(mode);
     }
 
 

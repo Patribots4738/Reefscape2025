@@ -41,7 +41,7 @@ public class Vision extends SubsystemBase {
     private final LoggedTunableNumber minSingleTagArea = new LoggedTunableNumber("Vision/minSingleTagArea", 0.14);
 
     private final SwerveDrivePoseEstimator poseEstimator;
-    private boolean hasPose = false;
+    private boolean rotationUpdated = false;
 
     public Vision(SwerveDrivePoseEstimator poseEstimator, VisionIO... io) {
         int cameraCount = io.length;
@@ -59,9 +59,9 @@ public class Vision extends SubsystemBase {
         for (int i = 0; i < cameras.length; i++) {
             VisionIO camera = cameras[i];
             if (shouldUseMT1()) {
-                camera.setIMUMode("limelight-four", 1);
+                camera.setIMUMode(1);
             } else {
-                camera.setIMUMode("limelight-four", 2);
+                camera.setIMUMode(2);
             }
 
             camera.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
@@ -132,11 +132,12 @@ public class Vision extends SubsystemBase {
         for (int i : camerasToUpdate) {
             poseEstimator.addVisionMeasurement(inputs[i].robotPose, inputs[i].timestampSeconds);
         }
+        if (!camerasToUpdate.isEmpty()) {
+            rotationUpdated = true;
+        }
 
         Logger.recordOutput("Subsystems/Vision/XYStdDev", xyStds);
         Logger.recordOutput("Subsystems/Vision/ThetaStdDev", radStds);
-
-        hasPose = true;
     }
 
     private boolean cameraHasTarget(int cameraIndex) {
@@ -163,7 +164,7 @@ public class Vision extends SubsystemBase {
 
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
-        return Robot.gameMode == GameMode.DISABLED || !hasPose;
+        return Robot.gameMode == GameMode.DISABLED || !rotationUpdated;
     }
 
 }
