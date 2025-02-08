@@ -187,7 +187,7 @@ public class RobotContainer {
     private void configureTimedEvents() {}
 
     private void configureDriverBindings(PatriBoxController controller) {
-
+        
         controller.start()
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
 
@@ -208,11 +208,11 @@ public class RobotContainer {
     private void configureOperatorBindings(PatriBoxController controller) {
 
         controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
-        controller.y().onTrue(superstructure.algaeIntakeCommand(controller::getLeftTrigger));
+        superstructure.algaeIntakeCommand();
 
 
         controller.rightTrigger().onTrue(coralClaw.outtakeCommand());
-        controller.a().onTrue(algaeClaw.outtakeCommand());
+        algaeClaw.outtakeCommand();
 
         controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));

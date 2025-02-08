@@ -156,19 +156,19 @@ public class Superstructure {
         });
     }
 
-    public Command algaeIntakeCommand(BooleanSupplier continueIntakingSupplier) {
-        return 
-            Commands.sequence(
-                Commands.parallel(
-                    setArmPosition(ArmPosition.INTAKE),
-                    algaeClaw.intakeCommand()
-                ),
-                Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-                Commands.parallel(
-                    algaeClaw.stopCommand(),
-                    setArmPosition(ArmPosition.LOW_STOW)
-                )
-            );
+    public Command algaeIntakeCommand()  { //BooleanSupplier continueIntakingSupplier
+        return algaeClaw.intakeCommand();
+            // Commands.sequence(
+            //     Commands.parallel(
+            //         setArmPosition(ArmPosition.INTAKE),
+            //         algaeClaw.intakeCommand()
+            //     ),
+            //     Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+            //     Commands.parallel(
+            //         algaeClaw.stopCommand(),
+            //         setArmPosition(ArmPosition.LOW_STOW)
+            //     )
+            // );
     }
 
     public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
@@ -227,21 +227,21 @@ public class Superstructure {
             );
     }
 
-    public Command algaePlaceCommand(BooleanSupplier continueOuttakingSupplier) {
-        return
-            Commands.sequence(
-                Commands.either(
+    public Command algaePlaceCommand() {//BooleanSupplier continueOuttakingSupplier
+        return algaeClaw.outtakeCommand();
+            //Commands.sequence(
+               // Commands.either(
                     // Wait until arm stopped
-                    Commands.waitUntil(this::armAtTargetPosition), 
+                 //   Commands.waitUntil(this::armAtTargetPosition), 
                     // If arm not currently at scoring pos, go to L1
-                    setArmPosition(ArmPosition.L1), 
-                    () -> this.armPosition.scoring
-                ),
-                algaeClaw.outtakeCommand(),
-                Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-                algaeClaw.stopCommand(),
-                setArmPosition(ArmPosition.LOW_STOW)
-            );
+                 //   setArmPosition(ArmPosition.L1), 
+                  //  () -> this.armPosition.scoring
+               // ),
+               // algaeClaw.outtakeCommand(),
+              //  Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
+               // algaeClaw.stopCommand(),
+               // setArmPosition(ArmPosition.LOW_STOW)
+           // );
     }
 
     public Command coralAutoPlaceCommand() {
