@@ -10,6 +10,7 @@ import frc.robot.RobotContainer;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
+import frc.robot.util.custom.LoggedTunableNumber;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -26,14 +27,17 @@ public class Wrist extends SubsystemBase {
     private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
+    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Wrist/Velocity", WristConstants.VELOCITY);
+    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Wrist/Acceleration", WristConstants.ACCELERATION);
+    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Wrist/Jerk", 0d);
 
     private double targetPosition = 0.0;
-    private boolean shouldRunSetpoint = false;
 
     public Wrist(WristIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
         WristConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(WristConstants.LOGGED_GAINS.get().withG(0.0))).ignoringDisable(true));
+        velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())));
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             LoggingConstants.WRIST_OFFSET.getX(),
@@ -49,29 +53,6 @@ public class Wrist extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
 
-        // Get angle relative to CG rest angle
-        double centerGravityAngle = inputs.positionRads - WristConstants.CG_OFFSET_ANGLE_RADIANS;
-        double feedforwardAmps = WristConstants.LOGGED_GAINS.get().getG();
-
-        // Flip counter torque current if wrist is fighting gravity in the other direction
-        // This mainly helps with short movements in the intake/stow zone of the wrist motion
-        // TODO: find this same angle threshold for the upper end of the wrist motion
-        if (centerGravityAngle < 0) {
-            feedforwardAmps *= -1;
-        }
-
-        Logger.recordOutput("Subsystems/Wrist/CGAngle", centerGravityAngle);
-        Logger.recordOutput("Subsystems/Wrist/FFAmps", feedforwardAmps);
-
-        // If target position has been applied to motor, apply one shot frame
-        // This makes it so that the wrist doesn't get excited on enable.
-        if (shouldRunSetpoint) {
-            // Utilize one shot frames to apply feedforwards based on gravitational torque on the wrist
-            io.setPosition(targetPosition, feedforwardAmps);
-        } else {
-            io.setNeutral();
-        }
-
         RobotContainer.components3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getX(), 
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getY(),
@@ -84,7 +65,7 @@ public class Wrist extends SubsystemBase {
     public void setPosition(double position) {
         position = MathUtil.clamp(position, WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
-        shouldRunSetpoint = true;
+        io.setPosition(targetPosition, 0);
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getX(), 
@@ -95,7 +76,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public void setNeutral() {
-        shouldRunSetpoint = false;
+        io.setNeutral();
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {

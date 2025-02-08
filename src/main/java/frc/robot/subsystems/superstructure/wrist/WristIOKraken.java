@@ -10,13 +10,14 @@ public class WristIOKraken implements WristIO {
     private final Kraken motor;
 
     public WristIOKraken() {
-        motor = new Kraken(WristConstants.CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
+        motor = new Kraken(WristConstants.CAN_ID, true, false, ControlPreference.MM_TORQUE_CURRENT);
         configMotor();
     }
 
     private void configMotor() {
         motor.setGearRatio(WristConstants.GEAR_RATIO);
         motor.setUnitConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
+        motor.configureMotionMagic(WristConstants.VELOCITY, WristConstants.ACCELERATION, 0);
         motor.setSoftLimits(WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         motor.setMotorInverted(WristConstants.MOTOR_INVERTED);
         motor.resetEncoder(WristConstants.RESET_ANGLE_RADIANS);
@@ -62,6 +63,11 @@ public class WristIOKraken implements WristIO {
     @Override
     public void setGains(GainConstants constants) {
         motor.setGains(constants.withG(0.0));
+    }
+
+    @Override
+    public void configureProfile(double velocity, double acceleration, double jerk) {
+        motor.configureMotionMagic(velocity, acceleration, jerk);
     }
 
 }

@@ -555,16 +555,18 @@ public final class Constants {
         // public static final double S = 0.12047100000001956;
         // public static final double G = 0;
 
-        public static final double P = 390d;
+        public static final double P = 350d;
         public static final double I = 0d;
         public static final double D = 40d;
-        public static final double S = 2.7236959999999963;
-        public static final double G = 2d;
+        public static final double A = 0d;
+        public static final double S = 0d;
+        public static final double G = 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
             I,
             D,
+            A,
             S,
             0.0,
             G
@@ -572,13 +574,16 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
+        public static final double VELOCITY = Math.PI;
+        public static final double ACCELERATION = 4 * Math.PI;
+
         public static final double GEAR_RATIO = 60.0;
       
         public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
 
-        public static final double CURRENT_LIMIT = 80.0;
+        public static final double CURRENT_LIMIT = 60.0;
 
         public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
@@ -675,7 +680,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 
