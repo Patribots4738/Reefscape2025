@@ -19,6 +19,7 @@ import frc.robot.Robot.GameMode;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
+import frc.robot.util.hardware.limelight.LimelightHelpers;
 
 public class Vision extends SubsystemBase {
 
@@ -58,11 +59,13 @@ public class Vision extends SubsystemBase {
             VisionIO camera = cameras[i];
             if (shouldUseMT1()) {
                 camera.setUseMegaTag2(false);
+                LimelightHelpers.SetIMUMode("limelight-four", 1);
             } else {
                 camera.setUseMegaTag2(true);
-                camera.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+                LimelightHelpers.SetIMUMode("limelight-four", 2);
             }
 
+            camera.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
             camera.updateInputs(inputs[i]);
             Logger.processInputs("SubsystemInputs/Vision/Camera" + i, inputs[i]);
         }
@@ -146,9 +149,18 @@ public class Vision extends SubsystemBase {
         return true;
     }
 
+    private boolean cameraHasTarget() {
+        for (int i = 0; i < cameras.length; i++) {
+            if (cameraHasTarget(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
-        return Robot.gameMode == GameMode.DISABLED;
+        return Robot.gameMode == GameMode.DISABLED || !cameraHasTarget();
     }
 
 }
