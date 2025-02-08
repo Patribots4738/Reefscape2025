@@ -163,7 +163,7 @@ public class Vision extends SubsystemBase {
 
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
-        return !hasPose;
+        return Robot.gameMode == GameMode.DISABLED || !hasPose;
     }
 
 }
