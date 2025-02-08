@@ -208,11 +208,11 @@ public class RobotContainer {
     private void configureOperatorBindings(PatriBoxController controller) {
 
         controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
-        superstructure.algaeIntakeCommand();
+        controller.y().onTrue(superstructure.algaeIntakeCommand());
 
 
         controller.rightTrigger().onTrue(coralClaw.outtakeCommand());
-        algaeClaw.outtakeCommand();
+        controller.povLeft().onTrue(algaeClaw.outtakeCommand());
 
         controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
