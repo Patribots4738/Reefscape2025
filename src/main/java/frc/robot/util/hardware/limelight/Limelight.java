@@ -70,6 +70,10 @@ public class Limelight {
         );
     }
 
+    public void setIMUMode(String camera, int mode) {
+        LimelightHelpers.SetIMUMode(camera, mode);
+    }
+
     public PoseEstimate refreshPoseEstimate() {
         latestPoseEstimate = useMT2 
                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name) 
