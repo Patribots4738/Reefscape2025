@@ -149,7 +149,7 @@ public class Vision extends SubsystemBase {
         return true;
     }
 
-    private boolean cameraHasTarget() {
+    private boolean hasTarget() {
         for (int i = 0; i < cameras.length; i++) {
             if (cameraHasTarget(i)) {
                 return true;
@@ -160,7 +160,7 @@ public class Vision extends SubsystemBase {
 
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
-        return Robot.gameMode == GameMode.DISABLED || !cameraHasTarget();
+        return Robot.gameMode == GameMode.DISABLED || !hasTarget();
     }
 
 }
