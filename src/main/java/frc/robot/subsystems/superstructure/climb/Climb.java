@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems.superstructure.climb;
 
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -14,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.LoggingConstants;
@@ -29,7 +33,6 @@ public class Climb extends SubsystemBase {
     private final LoggedTunableNumber stowPosition = new LoggedTunableNumber("Climb/StowPosition", ClimbConstants.STOW_POSITION_RADIANS);
     private final LoggedTunableNumber readyPosition = new LoggedTunableNumber("Climb/ReadyPosition", ClimbConstants.READY_POSITION_RADIANS);
     private final LoggedTunableNumber finalPosition = new LoggedTunableNumber("Climb/FinalPosition", ClimbConstants.FINAL_POSITION_RADIANS);
-    private final LoggedTunableNumber torqueCurrent = new LoggedTunableNumber("Climb/Current", 0.0);
 
     private double targetPosition = 0.0;
     private boolean shouldRunSetpoint = false;
@@ -116,4 +119,24 @@ public class Climb extends SubsystemBase {
     public void runCharacterization(double input) {
         io.runCharacterization(input);
     }
+
+    public SysIdRoutine getSysIdRoutine() {
+        return new SysIdRoutine(
+            new SysIdRoutine.Config(
+                    // Gaslight SysId since motor is actually running amps instead of volts, feedforwards should still be accurate
+                    Volts.of(0.1).per(Second),
+                    null, 
+                    null,
+                    (state) -> Logger.recordOutput("ClimbSysIdState", state.toString())),
+            new SysIdRoutine.Mechanism((voltage) -> io.runCharacterization(voltage.in(Volts)), null, this));
+    }
+
+    public Command sysIdQuasistatic() {
+        return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kForward);
+    }
+
+    public Command sysIdDynamic() {
+        return getSysIdRoutine().dynamic(SysIdRoutine.Direction.kForward);
+    }
+
 }

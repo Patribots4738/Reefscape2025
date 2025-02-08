@@ -8,6 +8,9 @@ import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.LoggingConstants;
 
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.function.DoubleSupplier;
 import frc.robot.util.custom.LoggedTunableBoolean;
 
@@ -19,6 +22,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class Elevator extends SubsystemBase {
 
@@ -131,5 +135,24 @@ public class Elevator extends SubsystemBase {
 
     public void runCharacterization(double input) {
         io.runCharacterization(input);
+    }
+
+    public SysIdRoutine getSysIdRoutine() {
+        return new SysIdRoutine(
+            new SysIdRoutine.Config(
+                    // Gaslight SysId since motor is actually running amps instead of volts, feedforwards should still be accurate
+                    Volts.of(0.1).per(Second),
+                    null, 
+                    null,
+                    (state) -> Logger.recordOutput("ElevatorSysIdState", state.toString())),
+            new SysIdRoutine.Mechanism((voltage) -> io.runCharacterization(voltage.in(Volts)), null, this));
+    }
+
+    public Command sysIdQuasistatic() {
+        return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kForward);
+    }
+
+    public Command sysIdDynamic() {
+        return getSysIdRoutine().dynamic(SysIdRoutine.Direction.kForward);
     }
 }

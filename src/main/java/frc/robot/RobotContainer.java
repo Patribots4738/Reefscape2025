@@ -24,6 +24,8 @@ import frc.robot.commands.characterization.StaticCharacterization;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
 import frc.robot.subsystems.drive.Swerve;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
 import frc.robot.subsystems.superstructure.claw.Claw;
@@ -55,6 +57,7 @@ public class RobotContainer {
     private final BooleanSupplier robotRelativeSupplier;
 
     private final Swerve swerve;
+    private final Vision vision;
     private final Claw claw;
     private final Elevator elevator;
     private final Wrist wrist;
@@ -96,6 +99,7 @@ public class RobotContainer {
         pdh.setSwitchableChannel(false);
 
         swerve = new Swerve();
+        vision = new Vision(swerve.getPoseEstimator(), new VisionIOLimelight("limelight-four"));
         claw = new Claw(new ClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
@@ -128,13 +132,13 @@ public class RobotContainer {
             Commands.run(() -> AutoConstants.TELE_HDC.getYController().setPID(
                 AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
                 AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
-                AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))));
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))).ignoringDisable(true));
 
-        AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(Commands.parallel(
+        AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(
             Commands.run(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
                 AutoConstants.LOGGED_TELE_THETA_GAINS.get().getP(),
                 AutoConstants.LOGGED_TELE_THETA_GAINS.get().getI(),
-                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD()))));
+                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
 
         configureButtonBindings();
         configureTimedEvents();
@@ -146,31 +150,19 @@ public class RobotContainer {
             swerve.setWheelsOCommand()
             .andThen(Commands.waitSeconds(0.5))
             .andThen(new WheelRadiusCharacterization(swerve)));
-        pathPlannerStorage.getAutoChooser().addOption("DriveStaticCharacterization",
+        pathPlannerStorage.getAutoChooser().addOption("DriveFFCharacterization",
             new StaticCharacterization(
                 swerve, 
                 swerve::runDriveCharacterization, 
                 swerve::getDriveCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("TurnStaticCharacterization",
+        pathPlannerStorage.getAutoChooser().addOption("TurnFFCharacterization",
             new StaticCharacterization(
                 swerve, 
                 swerve::runTurnCharacterization, 
                 swerve::getTurnCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("WristStaticCharacterization",
-            new StaticCharacterization(
-                wrist, 
-                wrist::runCharacterization, 
-                wrist::getCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("ElevatorStaticCharacterization",
-            new StaticCharacterization(
-                elevator, 
-                elevator::runCharacterization, 
-                elevator::getCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("ClimbStaticCharacterization",
-            new StaticCharacterization(
-                climb, 
-                climb::runCharacterization, 
-                climb::getCharacterizationVelocity));
+        pathPlannerStorage.getAutoChooser().addOption("WristFFCharacterization", wrist.sysIdQuasistatic());
+        pathPlannerStorage.getAutoChooser().addOption("ElevatorFFCharacterization", elevator.sysIdQuasistatic());
+        pathPlannerStorage.getAutoChooser().addOption("ClimbFFCharacterization", climb.sysIdQuasistatic());
         
         prepareNamedCommands();
 
