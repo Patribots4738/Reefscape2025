@@ -41,7 +41,7 @@ public class Vision extends SubsystemBase {
     private final LoggedTunableNumber minSingleTagArea = new LoggedTunableNumber("Vision/minSingleTagArea", 0.14);
 
     private final SwerveDrivePoseEstimator poseEstimator;
-    private final boolean hasPose = false;
+    private boolean hasPose = false;
 
     public Vision(SwerveDrivePoseEstimator poseEstimator, VisionIO... io) {
         int cameraCount = io.length;
