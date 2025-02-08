@@ -28,8 +28,10 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
-import frc.robot.subsystems.superstructure.claw.Claw;
-import frc.robot.subsystems.superstructure.claw.ClawIOKraken;
+import frc.robot.subsystems.superstructure.claw.AlgaeClaw;
+import frc.robot.subsystems.superstructure.claw.AlgaeClawIOKraken;
+import frc.robot.subsystems.superstructure.claw.CoralClaw;
+import frc.robot.subsystems.superstructure.claw.CoralClawIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.elevator.ElevatorIOKraken;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
@@ -58,7 +60,8 @@ public class RobotContainer {
 
     private final Swerve swerve;
     private final Vision vision;
-    private final Claw claw;
+    private final CoralClaw coralClaw;
+    private final AlgaeClaw algaeClaw;
     private final Elevator elevator;
     private final Wrist wrist;
     private final Climb climb;
@@ -100,12 +103,13 @@ public class RobotContainer {
 
         swerve = new Swerve();
         vision = new Vision(swerve.getPoseEstimator(), new VisionIOLimelight("limelight-four"));
-        claw = new Claw(new ClawIOKraken());
+        coralClaw = new CoralClaw(new CoralClawIOKraken());
+        algaeClaw = new AlgaeClaw(new AlgaeClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
 
-        superstructure = new Superstructure(claw, elevator, wrist, climb, swerve::getPose);
+        superstructure = new Superstructure(algaeClaw, coralClaw, elevator, wrist, climb, swerve::getPose);
         alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
@@ -203,9 +207,12 @@ public class RobotContainer {
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        controller.leftTrigger().onTrue(superstructure.intakeCommand(controller::getLeftTrigger));
+        controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
+        controller.y().onTrue(superstructure.algaeIntakeCommand(controller::getLeftTrigger));
 
-        controller.rightTrigger().onTrue(claw.outtakeCommand());
+
+        controller.rightTrigger().onTrue(coralClaw.outtakeCommand());
+        controller.a().onTrue(algaeClaw.outtakeCommand());
 
         controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
@@ -327,14 +334,17 @@ public class RobotContainer {
     }
     
     private void prepareNamedCommands() {
-        NamedCommands.registerCommand("IntakeStart", superstructure.autoIntakeStartCommand());
-        NamedCommands.registerCommand("IntakeStop", superstructure.autoIntakeStopCommand());
+        NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
+        NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
+        NamedCommands.registerCommand("AlgaeIntakeStart", superstructure.algaeAutoIntakeStartCommand());
+        NamedCommands.registerCommand("IntakeStop", superstructure.algaeAutoIntakeStopCommand());
         NamedCommands.registerCommand("ArmStow", superstructure.setArmPosition(ArmPosition.LOW_STOW));
         NamedCommands.registerCommand("ArmL1", superstructure.setArmPosition(ArmPosition.L1));
         NamedCommands.registerCommand("ArmL2", superstructure.setArmPosition(ArmPosition.L2));
         NamedCommands.registerCommand("ArmL3", superstructure.setArmPosition(ArmPosition.L3));
         NamedCommands.registerCommand("ArmL4", superstructure.setArmPosition(ArmPosition.L4));
-        NamedCommands.registerCommand("PlaceCoral", superstructure.autoPlaceCommand());
+        NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
+        NamedCommands.registerCommand("PlaceAlgae", superstructure.algaeAutoPlaceCommand());
     }
 
 }

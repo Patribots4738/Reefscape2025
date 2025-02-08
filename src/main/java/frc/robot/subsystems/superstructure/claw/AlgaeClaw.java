@@ -11,23 +11,23 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.Constants.ClawConstants;
+import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
 import frc.robot.util.custom.LoggedTunableNumber;
 
-public class Claw extends SubsystemBase {
+public class AlgaeClaw extends SubsystemBase {
 
     private final ClawIO io;
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
     
-    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Claw/BrakeMotor", ClawConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("Claw/IntakePercent", ClawConstants.INTAKE_PERCENT);
-    private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("Claw/OuttakePercent", ClawConstants.OUTTAKE_PERCENT);
+    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Claw/BrakeMotor", AlgaeClawConstants.BRAKE_MOTOR);
+    private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("Claw/IntakePercent", AlgaeClawConstants.INTAKE_PERCENT);
+    private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("Claw/OuttakePercent", AlgaeClawConstants.OUTTAKE_PERCENT);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
     
-    public Claw(ClawIO io) {
+    public AlgaeClaw(ClawIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
     }
@@ -91,3 +91,4 @@ public class Claw extends SubsystemBase {
         return false;
     }
 }
+

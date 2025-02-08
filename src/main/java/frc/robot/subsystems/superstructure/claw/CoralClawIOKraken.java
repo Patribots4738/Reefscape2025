@@ -1,25 +1,25 @@
 package frc.robot.subsystems.superstructure.claw;
 
-import frc.robot.util.Constants.ClawConstants;
+import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.phoenix.Kraken.ControlPreference;
 import frc.robot.util.hardware.phoenix.Kraken.TelemetryPreference;
 
-public class ClawIOKraken implements ClawIO {
+public class CoralClawIOKraken implements ClawIO {
     
     private final Kraken motor;
 
-    public ClawIOKraken() {
-        motor = new Kraken(ClawConstants.CAN_ID, true, false, ControlPreference.VOLTAGE);
+    public CoralClawIOKraken() {
+        motor = new Kraken(CoralClawConstants.CAN_ID, true, false, ControlPreference.VOLTAGE);
         configMotor();
     }
 
     private void configMotor() {
-        motor.setMotorInverted(ClawConstants.MOTOR_INVERTED);
+        motor.setMotorInverted(CoralClawConstants.MOTOR_INVERTED);
         motor.setTelemetryPreference(TelemetryPreference.NO_ENCODER);
-        motor.setSupplyCurrentLimit(ClawConstants.CURRENT_LIMIT);
-        motor.setStatorCurrentLimit(ClawConstants.CURRENT_LIMIT);
-        setBrakeMode(ClawConstants.BRAKE_MOTOR);
+        motor.setSupplyCurrentLimit(CoralClawConstants.CURRENT_LIMIT);
+        motor.setStatorCurrentLimit(CoralClawConstants.CURRENT_LIMIT);
+        setBrakeMode(CoralClawConstants.BRAKE_MOTOR);
     }
 
     @Override

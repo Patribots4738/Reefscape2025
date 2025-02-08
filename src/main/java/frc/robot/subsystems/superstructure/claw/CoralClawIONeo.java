@@ -1,23 +1,23 @@
 package frc.robot.subsystems.superstructure.claw;
 
-import frc.robot.util.Constants.ClawConstants;
+import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.hardware.rev.Neo;
 import frc.robot.util.hardware.rev.SafeSpark.TelemetryPreference;
 
-public class ClawIONeo implements ClawIO {
+public class CoralClawIONeo implements ClawIO {
     
     private final Neo motor;
 
-    public ClawIONeo() {
-        motor = new Neo(ClawConstants.CAN_ID, false);
+    public CoralClawIONeo() {
+        motor = new Neo(CoralClawConstants.CAN_ID, false);
         configMotor();
     }
 
     private void configMotor() {
-        motor.setOutputInverted(ClawConstants.MOTOR_INVERTED);
+        motor.setOutputInverted(CoralClawConstants.MOTOR_INVERTED);
         motor.setTelemetryPreference(TelemetryPreference.NO_ENCODER);
-        motor.setSmartCurrentLimit((int) ClawConstants.CURRENT_LIMIT);
-        setBrakeMode(ClawConstants.BRAKE_MOTOR);
+        motor.setSmartCurrentLimit((int) CoralClawConstants.CURRENT_LIMIT);
+        setBrakeMode(CoralClawConstants.BRAKE_MOTOR);
     }
 
     @Override
