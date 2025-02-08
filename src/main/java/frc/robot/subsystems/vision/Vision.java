@@ -41,6 +41,8 @@ public class Vision extends SubsystemBase {
     private final LoggedTunableNumber minSingleTagArea = new LoggedTunableNumber("Vision/minSingleTagArea", 0.14);
 
     private final SwerveDrivePoseEstimator poseEstimator;
+
+    @AutoLogOutput (key="Subsystems/Vision/RotationUpdated")
     private boolean rotationUpdated = false;
 
     public Vision(SwerveDrivePoseEstimator poseEstimator, VisionIO... io) {
