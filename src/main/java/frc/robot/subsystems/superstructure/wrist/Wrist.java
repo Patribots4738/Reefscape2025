@@ -31,9 +31,9 @@ public class Wrist extends SubsystemBase {
     private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Wrist/Velocity", WristConstants.VELOCITY);
-    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Wrist/Acceleration", WristConstants.ACCELERATION);
-    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Wrist/Jerk", 0d);
+    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Wrist/Profile/Velocity", WristConstants.VELOCITY);
+    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Wrist/Profile/Acceleration", WristConstants.ACCELERATION);
+    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Wrist/Profile/Jerk", WristConstants.JERK);
 
     private double targetPosition = 0.0;
 

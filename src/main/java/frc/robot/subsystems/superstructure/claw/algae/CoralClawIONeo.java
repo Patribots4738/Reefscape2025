@@ -1,5 +1,6 @@
-package frc.robot.subsystems.superstructure.claw;
+package frc.robot.subsystems.superstructure.claw.algae;
 
+import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.hardware.rev.Neo;
 import frc.robot.util.hardware.rev.SafeSpark.TelemetryPreference;

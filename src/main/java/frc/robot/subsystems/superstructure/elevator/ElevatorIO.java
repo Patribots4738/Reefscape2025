@@ -43,4 +43,6 @@ public interface ElevatorIO {
 
     public default void setGains(GainConstants constants) {}
 
+    public default void configureProfile(double velocity, double acceleration, double jerk) {}
+
 }

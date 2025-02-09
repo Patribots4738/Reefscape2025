@@ -11,8 +11,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     private final Kraken follower;
 
     public ElevatorIOKraken() {
-        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
-        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
+        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, false, ControlPreference.MM_TORQUE_CURRENT);
+        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, false, ControlPreference.MM_TORQUE_CURRENT);
         configMotors();
     }
 
@@ -20,16 +20,18 @@ public class ElevatorIOKraken implements ElevatorIO {
         motor.setGearRatio(ElevatorConstants.GEAR_RATIO);
         motor.setUnitConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR);
         motor.setSoftLimits(0.0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
-        motor.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
         motor.setGains(ElevatorConstants.GAINS);
         motor.setStatorCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-ElevatorConstants.CURRENT_LIMIT, ElevatorConstants.CURRENT_LIMIT);
     }
 
     private void configMotors() {
+        leader.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
+        follower.setMotorInverted(!ElevatorConstants.MOTOR_INVERTED);
         resetEncoders(0);
         configMotor(leader);
         configMotor(follower);
+        configureProfile(ElevatorConstants.VELOCITY, ElevatorConstants.ACCELERATION, ElevatorConstants.JERK);
         setBrakeMode(ElevatorConstants.BRAKE_MOTOR);
     }
 
@@ -59,19 +61,19 @@ public class ElevatorIOKraken implements ElevatorIO {
     @Override
     public void setNeutral() {
         leader.setNeutral();
-        follower.setFollowing(leader);
+        follower.setNeutral();
     }
 
     @Override
     public void setPosition(double position) {
         leader.setTargetPosition(position);
-        follower.setFollowing(leader);
+        follower.setTargetPosition(position);
     }
 
     @Override
     public void runCharacterization(double input) {
         leader.setTorqueCurrentOutput(input);
-        follower.setFollowing(leader);
+        follower.setTorqueCurrentOutput(input);
     }
     
     @Override
@@ -90,6 +92,12 @@ public class ElevatorIOKraken implements ElevatorIO {
     public void setGains(GainConstants constants) {
         leader.setGains(constants);
         follower.setGains(constants);
+    }
+
+    @Override
+    public void configureProfile(double velocity, double acceleration, double jerk) {
+        leader.configureMotionMagic(velocity, acceleration, jerk);
+        follower.configureMotionMagic(velocity, acceleration, jerk);
     }
 
 }

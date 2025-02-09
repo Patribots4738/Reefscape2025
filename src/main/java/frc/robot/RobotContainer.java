@@ -28,10 +28,10 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
-import frc.robot.subsystems.superstructure.claw.AlgaeClaw;
-import frc.robot.subsystems.superstructure.claw.AlgaeClawIOKraken;
-import frc.robot.subsystems.superstructure.claw.CoralClaw;
-import frc.robot.subsystems.superstructure.claw.CoralClawIOKraken;
+import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
+import frc.robot.subsystems.superstructure.claw.algae.AlgaeClawIOKraken;
+import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
+import frc.robot.subsystems.superstructure.claw.coral.CoralClawIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.elevator.ElevatorIOKraken;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
@@ -59,6 +59,7 @@ public class RobotContainer {
     private final BooleanSupplier robotRelativeSupplier;
 
     private final Swerve swerve;
+    @SuppressWarnings("unused")
     private final Vision vision;
     private final CoralClaw coralClaw;
     private final AlgaeClaw algaeClaw;
@@ -208,11 +209,14 @@ public class RobotContainer {
     private void configureOperatorBindings(PatriBoxController controller) {
 
         controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
-        controller.y().onTrue(superstructure.algaeIntakeCommand());
 
+        controller.leftBumper().onTrue(superstructure.algaeIntakeCommand(controller::getLeftBumper));
 
-        controller.rightTrigger().onTrue(coralClaw.outtakeCommand());
-        controller.povLeft().onTrue(algaeClaw.outtakeCommand());
+        controller.rightTrigger().onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
+
+        controller.rightBumper().onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
+
+        controller.povUp().onTrue(superstructure.setArmPosition(ArmPosition.L4));
 
         controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
@@ -255,12 +259,11 @@ public class RobotContainer {
         // controller.y()
         //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
-        controller.x()
-            .onTrue(superstructure.climbStowCommand());
-
         controller.b()
-            .onTrue(superstructure.climbReadyCommand())
-            .onFalse(superstructure.climbFinalCommand());
+            .onTrue(superstructure.climbFinalCommand());
+
+        controller.x()
+            .onTrue(superstructure.climbReadyCommand());
 
         controller.povRight()
             .onTrue(superstructure.stopAllCommand());
@@ -336,8 +339,6 @@ public class RobotContainer {
     private void prepareNamedCommands() {
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
-        NamedCommands.registerCommand("AlgaeIntakeStart", superstructure.algaeAutoIntakeStartCommand());
-        NamedCommands.registerCommand("IntakeStop", superstructure.algaeAutoIntakeStopCommand());
         NamedCommands.registerCommand("ArmStow", superstructure.setArmPosition(ArmPosition.LOW_STOW));
         NamedCommands.registerCommand("ArmL1", superstructure.setArmPosition(ArmPosition.L1));
         NamedCommands.registerCommand("ArmL2", superstructure.setArmPosition(ArmPosition.L2));

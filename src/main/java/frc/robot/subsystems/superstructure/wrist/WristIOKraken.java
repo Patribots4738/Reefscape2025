@@ -17,13 +17,13 @@ public class WristIOKraken implements WristIO {
     private void configMotor() {
         motor.setGearRatio(WristConstants.GEAR_RATIO);
         motor.setUnitConversionFactor(WristConstants.POSITION_CONVERSION_FACTOR);
-        motor.configureMotionMagic(WristConstants.VELOCITY, WristConstants.ACCELERATION, 0);
         motor.setSoftLimits(WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         motor.setMotorInverted(WristConstants.MOTOR_INVERTED);
         motor.resetEncoder(WristConstants.RESET_ANGLE_RADIANS);
         motor.setGains(WristConstants.GAINS);
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-WristConstants.CURRENT_LIMIT, WristConstants.CURRENT_LIMIT);
+        configureProfile(WristConstants.VELOCITY, WristConstants.ACCELERATION, WristConstants.JERK);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
     }
 

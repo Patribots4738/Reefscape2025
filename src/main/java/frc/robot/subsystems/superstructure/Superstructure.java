@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
-import frc.robot.subsystems.superstructure.claw.AlgaeClaw;
-import frc.robot.subsystems.superstructure.claw.CoralClaw;
+import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
+import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.util.Constants.AlgaeClawConstants;
@@ -156,28 +156,19 @@ public class Superstructure {
         });
     }
 
-    public Command algaeIntakeCommand()  { //BooleanSupplier continueIntakingSupplier
-        return algaeClaw.intakeCommand();
-            // Commands.sequence(
-            //     Commands.parallel(
-            //         setArmPosition(ArmPosition.INTAKE),
-            //         algaeClaw.intakeCommand()
-            //     ),
-            //     Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-            //     Commands.parallel(
-            //         algaeClaw.stopCommand(),
-            //         setArmPosition(ArmPosition.LOW_STOW)
-            //     )
-            // );
+    public Command algaeIntakeCommand(BooleanSupplier continueIntakingSupplier)  {
+        return Commands.sequence(
+            algaeClaw.intakeCommand(),
+            Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+            algaeClaw.stopCommand()
+        );
     }
 
     public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
-                Commands.parallel(
-                    setArmPosition(ArmPosition.INTAKE),
-                    coralClaw.intakeCommand()
-                ),
+                setArmPosition(ArmPosition.INTAKE).until(elevator::atTargetPosition),
+                coralClaw.intakeCommand(),
                 Commands.waitUntil(() -> coralClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
                 Commands.parallel(
                     coralClaw.stopCommand(),
@@ -194,54 +185,33 @@ public class Superstructure {
             );
     }
 
-    public Command algaeAutoIntakeStartCommand(){
-        return
-            Commands.sequence(
-                setArmPosition(ArmPosition.INTAKE),
-                coralClaw.intakeCommand()
-            );
-    }
-
     public Command coralAutoIntakeStopCommand(){
         return coralClaw.stopCommand();
-    }
-
-    public Command algaeAutoIntakeStopCommand(){
-        return algaeClaw.stopCommand();
     }
 
     public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
-                Commands.either(
-                    // Wait until arm stopped
-                    Commands.waitUntil(this::armAtTargetPosition), 
-                    // If arm not currently at scoring pos, go to L1
-                    setArmPosition(ArmPosition.L1), 
-                    () -> this.armPosition.scoring
-                ),
+                // Commands.either(
+                //     // Wait until arm stopped
+                //     Commands.waitUntil(this::armAtTargetPosition), 
+                //     // If arm not currently at scoring pos, go to L1
+                //     setArmPosition(ArmPosition.L1), 
+                //     () -> this.armPosition.scoring
+                // ),
                 coralClaw.outtakeCommand(),
                 Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-                coralClaw.stopCommand(),
-                setArmPosition(ArmPosition.LOW_STOW)
+                coralClaw.stopCommand()
+                // setArmPosition(ArmPosition.LOW_STOW)
             );
     }
 
-    public Command algaePlaceCommand() {//BooleanSupplier continueOuttakingSupplier
-        return algaeClaw.outtakeCommand();
-            //Commands.sequence(
-               // Commands.either(
-                    // Wait until arm stopped
-                 //   Commands.waitUntil(this::armAtTargetPosition), 
-                    // If arm not currently at scoring pos, go to L1
-                 //   setArmPosition(ArmPosition.L1), 
-                  //  () -> this.armPosition.scoring
-               // ),
-               // algaeClaw.outtakeCommand(),
-              //  Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-               // algaeClaw.stopCommand(),
-               // setArmPosition(ArmPosition.LOW_STOW)
-           // );
+    public Command algaePlaceCommand(BooleanSupplier continueOuttakingSupplier) {
+        return Commands.sequence(
+            algaeClaw.outtakeCommand(),
+            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
+            algaeClaw.stopCommand()
+        );
     }
 
     public Command coralAutoPlaceCommand() {

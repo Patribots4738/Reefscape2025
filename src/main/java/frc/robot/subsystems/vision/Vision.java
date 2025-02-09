@@ -19,7 +19,6 @@ import frc.robot.Robot.GameMode;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
-import frc.robot.util.hardware.limelight.LimelightHelpers;
 
 public class Vision extends SubsystemBase {
 
@@ -152,17 +151,6 @@ public class Vision extends SubsystemBase {
         }
         return true;
     }
-
-    private boolean hasTarget() {
-        for (int i = 0; i < cameras.length; i++) {
-            if (cameraHasTarget(i)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {

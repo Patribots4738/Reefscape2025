@@ -1,5 +1,6 @@
-package frc.robot.subsystems.superstructure.claw;
+package frc.robot.subsystems.superstructure.claw.algae;
 
+import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.phoenix.Kraken.ControlPreference;

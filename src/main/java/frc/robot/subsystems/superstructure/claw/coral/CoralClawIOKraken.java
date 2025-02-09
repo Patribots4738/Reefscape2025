@@ -1,5 +1,6 @@
-package frc.robot.subsystems.superstructure.claw;
+package frc.robot.subsystems.superstructure.claw.coral;
 
+import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.phoenix.Kraken.ControlPreference;

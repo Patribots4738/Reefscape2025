@@ -30,16 +30,20 @@ public class Climb extends SubsystemBase {
     private final ClimbIOInputsAutoLogged inputs = new ClimbIOInputsAutoLogged();
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Climb/BrakeMotor", ClimbConstants.BRAKE_MOTOR);
+    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Climb/Profile/Velocity", ClimbConstants.VELOCITY);
+    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Climb/Profile/Acceleration", ClimbConstants.ACCELERATION);
+    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Climb/Profile/Jerk", ClimbConstants.JERK);
+
     private final LoggedTunableNumber stowPosition = new LoggedTunableNumber("Climb/StowPosition", ClimbConstants.STOW_POSITION_RADIANS);
     private final LoggedTunableNumber readyPosition = new LoggedTunableNumber("Climb/ReadyPosition", ClimbConstants.READY_POSITION_RADIANS);
     private final LoggedTunableNumber finalPosition = new LoggedTunableNumber("Climb/FinalPosition", ClimbConstants.FINAL_POSITION_RADIANS);
 
     private double targetPosition = 0.0;
-    private boolean shouldRunSetpoint = false;
 
     public Climb(ClimbIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
+        velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
         ClimbConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_GAINS.get())).ignoringDisable(true));
     }
 
@@ -48,12 +52,6 @@ public class Climb extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Climb", inputs);
         Logger.recordOutput("Subsystems/Climb/AtDesiredPosition", atTargetPosition());
-
-        if (shouldRunSetpoint) {
-            io.setPosition(targetPosition);
-        } else {
-            io.setNeutral();
-        }
 
         RobotContainer.components3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
             LoggingConstants.CLIMB_OFFSET, 
@@ -64,7 +62,7 @@ public class Climb extends SubsystemBase {
     public void setPosition(double position) {
         position = MathUtil.clamp(position, ClimbConstants.MIN_ANGLE_RADIANS, ClimbConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
-        shouldRunSetpoint = true;
+        io.setPosition(targetPosition);
 
         RobotContainer.desiredComponents3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
             LoggingConstants.CLIMB_OFFSET,
@@ -73,7 +71,7 @@ public class Climb extends SubsystemBase {
     }
 
     public void setNeutral() {
-        shouldRunSetpoint = false;
+        io.setNeutral();
     }
 
     public Command setPositionCommand(DoubleSupplier positionSupplier) {

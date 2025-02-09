@@ -489,7 +489,7 @@ public final class Constants {
 
     public static final class AlgaeClawConstants {
 
-        public static final int CAN_ID = 10;
+        public static final int CAN_ID = 15;
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 60.0;
@@ -504,8 +504,8 @@ public final class Constants {
     }
     public static final class ElevatorConstants {
 
-        public static final int LEADER_CAN_ID = 11;
-        public static final int FOLLOWER_CAN_ID = 12;
+        public static final int LEADER_CAN_ID = 10;
+        public static final int FOLLOWER_CAN_ID = 11;
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 80.0;
@@ -517,28 +517,28 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        // public static final double P = 5.0;
-        // public static final double I = 0.0;
-        // public static final double D = 0.5;
-        // public static final double S = 0.20005999999999768;
-        // public static final double G = 0.0;
-
-        public static final double P = 0d;
-        public static final double I = 0d;
-        public static final double D = 0d;
-        public static final double S = 0d;
-        public static final double G = 0d; // elevatorMass * g * pitchRadius / gearRatio / kT
+        public static final double P = !FieldConstants.IS_SIMULATION ? 800d : 0d;
+        public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 0d;
+        public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
             I,
             D,
+            A,
             S,
             0.0,
             G
         );
 
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
+        
+        public static final double VELOCITY = 1d;
+        public static final double ACCELERATION = 2d;
+        public static final double JERK = 15d;
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
@@ -555,7 +555,7 @@ public final class Constants {
 
     public static final class WristConstants {
 
-        public static final int CAN_ID = 13;
+        public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 0;
 
         public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
@@ -565,18 +565,12 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        // public static final double P = 5d;
-        // public static final double I = 0;
-        // public static final double D = 1d;
-        // public static final double S = 0.12047100000001956;
-        // public static final double G = 0;
-
-        public static final double P = 350d;
-        public static final double I = 0d;
-        public static final double D = 40d;
-        public static final double A = 0d;
-        public static final double S = 0d;
-        public static final double G = 0d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 350d : 0d;
+        public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 40d : 0d;
+        public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -592,6 +586,7 @@ public final class Constants {
 
         public static final double VELOCITY = Math.PI;
         public static final double ACCELERATION = 4 * Math.PI;
+        public static final double JERK = 0d;
 
         public static final double GEAR_RATIO = 60.0;
       
@@ -624,8 +619,8 @@ public final class Constants {
 
     public static final class ClimbConstants {
 
-        public static final int LEADER_CAN_ID = 14;
-        public static final int FOLLOWER_CAN_ID = 15;
+        public static final int LEADER_CAN_ID = 13;
+        public static final int FOLLOWER_CAN_ID = 14;
 
         public static final boolean MOTOR_INVERTED = true;
 
@@ -640,14 +635,14 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 1.735;
 
-        public static final double P = 25d;
-        public static final double I = 0.3;
-        public static final double D = 2.5;
-        public static final double S = 4.61; 
-        public static final double G = 0.0;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
+        public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
-        public static final double CRUISE_VELOCITY = 1.047;
-        public static final double ACCELERATION = 2.0 * Math.PI;
+        public static final double VELOCITY = 0.0;
+        public static final double ACCELERATION = 0.0;
         public static final double JERK = 0.0;
 
         // public static final double P = 5.0;
