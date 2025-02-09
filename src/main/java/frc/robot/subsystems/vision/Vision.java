@@ -19,6 +19,7 @@ import frc.robot.Robot.GameMode;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
+import frc.robot.util.hardware.limelight.LimelightHelpers;
 
 public class Vision extends SubsystemBase {
 
@@ -41,6 +42,9 @@ public class Vision extends SubsystemBase {
 
     private final SwerveDrivePoseEstimator poseEstimator;
 
+    @AutoLogOutput (key="Subsystems/Vision/RotationUpdated")
+    private boolean rotationUpdated = false;
+
     public Vision(SwerveDrivePoseEstimator poseEstimator, VisionIO... io) {
         int cameraCount = io.length;
         cameras = new VisionIO[cameraCount];
@@ -57,12 +61,12 @@ public class Vision extends SubsystemBase {
         for (int i = 0; i < cameras.length; i++) {
             VisionIO camera = cameras[i];
             if (shouldUseMT1()) {
-                camera.setUseMegaTag2(false);
+                camera.setIMUMode(1);
             } else {
-                camera.setUseMegaTag2(true);
-                camera.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+                camera.setIMUMode(2);
             }
 
+            camera.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
             camera.updateInputs(inputs[i]);
             Logger.processInputs("SubsystemInputs/Vision/Camera" + i, inputs[i]);
         }
@@ -130,6 +134,9 @@ public class Vision extends SubsystemBase {
         for (int i : camerasToUpdate) {
             poseEstimator.addVisionMeasurement(inputs[i].robotPose, inputs[i].timestampSeconds);
         }
+        if (!camerasToUpdate.isEmpty()) {
+            rotationUpdated = true;
+        }
 
         Logger.recordOutput("Subsystems/Vision/XYStdDev", xyStds);
         Logger.recordOutput("Subsystems/Vision/ThetaStdDev", radStds);
@@ -146,9 +153,20 @@ public class Vision extends SubsystemBase {
         return true;
     }
 
+    private boolean hasTarget() {
+        for (int i = 0; i < cameras.length; i++) {
+            if (cameraHasTarget(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
-        return Robot.gameMode == GameMode.DISABLED;
+        return Robot.gameMode == GameMode.DISABLED || !rotationUpdated;
     }
 
 }

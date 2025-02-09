@@ -43,4 +43,17 @@ public class VisionIOLimelight implements VisionIO {
     public void setUseMegaTag2(boolean megaTag2) {
         camera.setUseMT2(megaTag2);
     }
+
+    @Override 
+    public void setIMUMode(int mode) {
+        if (mode == 2 || mode == 0) {
+            setUseMegaTag2(true);
+        }
+        else {
+            setUseMegaTag2(false);
+        }
+        camera.setIMUMode(mode);
+    }
+
+
 }
