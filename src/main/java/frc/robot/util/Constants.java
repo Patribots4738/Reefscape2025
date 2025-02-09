@@ -896,13 +896,13 @@ public final class Constants {
             // All points are in meters and radians
             // All relative to the blue origin
             // Positions go from blueReef1 (the farthest from blue driverstation) clockwise around
-
-            ReefSide blueReef1 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L);
-            ReefSide blueReef2 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I);
-            ReefSide blueReef3 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G);
-            ReefSide blueReef4 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E);
-            ReefSide blueReef5 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D);
-            ReefSide blueReef6 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B);
+            // even = high, odd = low
+            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L);
+            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I);
+            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G);
+            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E);
+            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D);
+            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B);
 
             // Blue Reef
             add(blueReef1);
