@@ -11,10 +11,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
-import frc.robot.subsystems.superstructure.claw.Claw;
+import frc.robot.subsystems.superstructure.claw.AlgaeClaw;
+import frc.robot.subsystems.superstructure.claw.CoralClaw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
-import frc.robot.util.Constants.ClawConstants;
+import frc.robot.util.Constants.AlgaeClawConstants;
+import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.calc.PoseCalculations;
@@ -23,7 +25,8 @@ import frc.robot.subsystems.superstructure.climb.Climb;
 
 public class Superstructure {
      
-    private final Claw claw;
+    private final AlgaeClaw algaeClaw;
+    private final CoralClaw coralClaw;
     private final Elevator elevator;
     private final Wrist wrist;
     private final Climb climb;
@@ -53,10 +56,12 @@ public class Superstructure {
     private final LoggedTunableNumber wristL3 = new LoggedTunableNumber("Wrist/L3Postition", WristConstants.L3_POSITION_RADIANS);
     private final LoggedTunableNumber wristL4 = new LoggedTunableNumber("Wrist/L4Postition", WristConstants.L4_POSITION_RADIANS);
   
-    private final LoggedTunableNumber clawPlaceTime = new LoggedTunableNumber("Claw/PlaceTime", ClawConstants.PLACING_NAMED_COMMAND_TIME);
+    private final LoggedTunableNumber algaeClawPlaceTime = new LoggedTunableNumber("Coraw/PlaceTime", CoralClawConstants.PLACING_NAMED_COMMAND_TIME);
+    private final LoggedTunableNumber coralClawPlaceTime = new LoggedTunableNumber("Algaw/PlaceTime", AlgaeClawConstants.PLACING_NAMED_COMMAND_TIME);
 
-    public Superstructure(Claw claw, Elevator elevator, Wrist wrist, Climb climb, Supplier<Pose2d> robotPoseSupplier) {
-        this.claw = claw;
+    public Superstructure(AlgaeClaw algaeClaw, CoralClaw coralClaw, Elevator elevator, Wrist wrist, Climb climb, Supplier<Pose2d> robotPoseSupplier) {
+        this.algaeClaw = algaeClaw;
+        this.coralClaw = coralClaw;
         this.elevator = elevator;
         this.wrist = wrist;
         this.climb = climb;
@@ -151,34 +156,61 @@ public class Superstructure {
         });
     }
 
-    public Command intakeCommand(BooleanSupplier continueIntakingSupplier) {
+    public Command algaeIntakeCommand()  { //BooleanSupplier continueIntakingSupplier
+        return algaeClaw.intakeCommand();
+            // Commands.sequence(
+            //     Commands.parallel(
+            //         setArmPosition(ArmPosition.INTAKE),
+            //         algaeClaw.intakeCommand()
+            //     ),
+            //     Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+            //     Commands.parallel(
+            //         algaeClaw.stopCommand(),
+            //         setArmPosition(ArmPosition.LOW_STOW)
+            //     )
+            // );
+    }
+
+    public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
                 Commands.parallel(
                     setArmPosition(ArmPosition.INTAKE),
-                    claw.intakeCommand()
+                    coralClaw.intakeCommand()
                 ),
-                Commands.waitUntil(() -> claw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+                Commands.waitUntil(() -> coralClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
                 Commands.parallel(
-                    claw.stopCommand(),
+                    coralClaw.stopCommand(),
                     setArmPosition(ArmPosition.LOW_STOW)
                 )
             );
     }
 
-    public Command autoIntakeStartCommand(){
+    public Command coralAutoIntakeStartCommand(){
         return
             Commands.sequence(
                 setArmPosition(ArmPosition.INTAKE),
-                claw.intakeCommand()
+                coralClaw.intakeCommand()
             );
     }
 
-    public Command autoIntakeStopCommand(){
-        return claw.stopCommand();
+    public Command algaeAutoIntakeStartCommand(){
+        return
+            Commands.sequence(
+                setArmPosition(ArmPosition.INTAKE),
+                coralClaw.intakeCommand()
+            );
     }
 
-    public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
+    public Command coralAutoIntakeStopCommand(){
+        return coralClaw.stopCommand();
+    }
+
+    public Command algaeAutoIntakeStopCommand(){
+        return algaeClaw.stopCommand();
+    }
+
+    public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
                 Commands.either(
@@ -188,18 +220,43 @@ public class Superstructure {
                     setArmPosition(ArmPosition.L1), 
                     () -> this.armPosition.scoring
                 ),
-                claw.outtakeCommand(),
+                coralClaw.outtakeCommand(),
                 Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-                claw.stopCommand(),
+                coralClaw.stopCommand(),
                 setArmPosition(ArmPosition.LOW_STOW)
             );
     }
 
-    public Command autoPlaceCommand() {
+    public Command algaePlaceCommand() {//BooleanSupplier continueOuttakingSupplier
+        return algaeClaw.outtakeCommand();
+            //Commands.sequence(
+               // Commands.either(
+                    // Wait until arm stopped
+                 //   Commands.waitUntil(this::armAtTargetPosition), 
+                    // If arm not currently at scoring pos, go to L1
+                 //   setArmPosition(ArmPosition.L1), 
+                  //  () -> this.armPosition.scoring
+               // ),
+               // algaeClaw.outtakeCommand(),
+              //  Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
+               // algaeClaw.stopCommand(),
+               // setArmPosition(ArmPosition.LOW_STOW)
+           // );
+    }
+
+    public Command coralAutoPlaceCommand() {
         return
             Commands.sequence(
                 Commands.waitUntil(this::armAtTargetPosition),
-                claw.outtakeTimeCommand(clawPlaceTime.get())
+                coralClaw.outtakeTimeCommand(coralClawPlaceTime.get())
+            );
+    }
+
+    public Command algaeAutoPlaceCommand() {
+        return
+            Commands.sequence(
+                Commands.waitUntil(this::armAtTargetPosition),
+                algaeClaw.outtakeTimeCommand(algaeClawPlaceTime.get())
             );
     }
 
@@ -240,7 +297,8 @@ public class Superstructure {
                 wrist.setNeutralCommand(),
                 elevator.setNeutralCommand(),
                 climb.setNeutralCommand(),
-                claw.setNeutralCommand()
+                algaeClaw.setNeutralCommand(),
+                coralClaw.setNeutralCommand()
             );
     }
 

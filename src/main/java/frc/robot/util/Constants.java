@@ -471,7 +471,7 @@ public final class Constants {
 
     }
 
-    public static final class ClawConstants {
+    public static final class CoralClawConstants {
 
         public static final int CAN_ID = 9;
 
@@ -486,10 +486,26 @@ public final class Constants {
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
     }
+
+    public static final class AlgaeClawConstants {
+
+        public static final int CAN_ID = 10;
+
+        public static final boolean BRAKE_MOTOR = true;
+        public static final double CURRENT_LIMIT = 60.0;
+
+        public static final boolean MOTOR_INVERTED = false;
+
+        public static final double INTAKE_PERCENT = 0.35;
+        public static final double OUTTAKE_PERCENT = -0.15;
+
+        public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
+
+    }
     public static final class ElevatorConstants {
 
-        public static final int LEADER_CAN_ID = 10;
-        public static final int FOLLOWER_CAN_ID = 11;
+        public static final int LEADER_CAN_ID = 11;
+        public static final int FOLLOWER_CAN_ID = 12;
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 80.0;
@@ -539,7 +555,7 @@ public final class Constants {
 
     public static final class WristConstants {
 
-        public static final int CAN_ID = 12;
+        public static final int CAN_ID = 13;
         public static final int ENCODER_DIO_PIN = 0;
 
         public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
@@ -608,8 +624,8 @@ public final class Constants {
 
     public static final class ClimbConstants {
 
-        public static final int LEADER_CAN_ID = 13;
-        public static final int FOLLOWER_CAN_ID = 14;
+        public static final int LEADER_CAN_ID = 14;
+        public static final int FOLLOWER_CAN_ID = 15;
 
         public static final boolean MOTOR_INVERTED = true;
 
