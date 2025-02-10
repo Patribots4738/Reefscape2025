@@ -9,13 +9,15 @@ import frc.robot.util.hardware.limelight.LimelightHelpers.RawFiducial;
 public class Limelight {
     
     private final String name;
-    private boolean useMT2;
+    private final boolean isLimelight4;
+    private boolean useMT2 = false;
+
 
     private PoseEstimate latestPoseEstimate;
 
-    public Limelight(String name, boolean useMT2) {
+    public Limelight(String name, boolean isLimelight4) {
         this.name = name;
-        this.useMT2 = useMT2;
+        this.isLimelight4 = isLimelight4;
     }
 
     public void setPipelineIndex(int newIndex) {
@@ -111,6 +113,10 @@ public class Limelight {
 
     public boolean getUseMT2() {
         return useMT2;
+    }
+
+    public boolean getIsLL4() {
+        return isLimelight4;
     }
     
     public void setUseMT2(boolean megaTag2) {

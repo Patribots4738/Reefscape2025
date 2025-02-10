@@ -57,15 +57,12 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
+        boolean shouldUseMT2 = !shouldUseMT1();
+        double currentYawDegrees = poseEstimator.getEstimatedPosition().getRotation().getDegrees();
         for (int i = 0; i < cameras.length; i++) {
             VisionIO camera = cameras[i];
-            if (shouldUseMT1()) {
-                camera.setIMUMode(1);
-            } else {
-                camera.setIMUMode(2);
-            }
-
-            camera.setRobotOrientation(poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+            camera.setUseMegaTag2(shouldUseMT2);
+            camera.setRobotOrientation(currentYawDegrees);
             camera.updateInputs(inputs[i]);
             Logger.processInputs("SubsystemInputs/Vision/Camera" + i, inputs[i]);
         }

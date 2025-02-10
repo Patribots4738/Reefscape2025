@@ -55,6 +55,7 @@ public class Superstructure {
     private final LoggedTunableNumber wristL2 = new LoggedTunableNumber("Wrist/L2Postition", WristConstants.L2_POSITION_RADIANS);
     private final LoggedTunableNumber wristL3 = new LoggedTunableNumber("Wrist/L3Postition", WristConstants.L3_POSITION_RADIANS);
     private final LoggedTunableNumber wristL4 = new LoggedTunableNumber("Wrist/L4Postition", WristConstants.L4_POSITION_RADIANS);
+    private final LoggedTunableNumber wristAlgae = new LoggedTunableNumber("Wrist/Algae", WristConstants.ALGAE_REMOVAL);
   
     private final LoggedTunableNumber algaeClawPlaceTime = new LoggedTunableNumber("Coraw/PlaceTime", CoralClawConstants.PLACING_NAMED_COMMAND_TIME);
     private final LoggedTunableNumber coralClawPlaceTime = new LoggedTunableNumber("Algaw/PlaceTime", AlgaeClawConstants.PLACING_NAMED_COMMAND_TIME);
@@ -88,7 +89,11 @@ public class Superstructure {
         wristL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.wristPose = wristL2.get()).ignoringDisable(true));
         wristL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.wristPose = wristL3.get()).ignoringDisable(true));
         wristL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.wristPose = wristL4.get()).ignoringDisable(true));
-        
+        wristAlgae.onChanged(Commands.runOnce(() -> {
+            ArmPosition.L2_ALGAE.wristPose = wristAlgae.get();
+            ArmPosition.L3_ALGAE.wristPose = wristAlgae.get();
+        }).ignoringDisable(true));
+
     }
 
     public enum ArmPosition {
@@ -96,8 +101,8 @@ public class Superstructure {
         LOW_STOW (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
         INTAKE   (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS, false),
         CLIMB    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.MIN_SAFE_ANGLE_RADIANS, false),
-        L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.MAX_ANGLE_RADIANS, false),
-        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.MAX_ANGLE_RADIANS, false),
+        L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL, false),
+        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL, false),
         L1       (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS, true),
         L2       (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS, true),
         L3       (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS, true),
@@ -158,9 +163,11 @@ public class Superstructure {
 
     public Command algaeIntakeCommand(BooleanSupplier continueIntakingSupplier)  {
         return Commands.sequence(
+            setArmPosition(ArmPosition.L2_ALGAE),
             algaeClaw.intakeCommand(),
             Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-            algaeClaw.stopCommand()
+            algaeClaw.stopCommand(),
+            setArmPosition(ArmPosition.L2_ALGAE)
         );
     }
 
@@ -208,9 +215,11 @@ public class Superstructure {
 
     public Command algaePlaceCommand(BooleanSupplier continueOuttakingSupplier) {
         return Commands.sequence(
-            algaeClaw.outtakeCommand(),
+            setArmPosition(ArmPosition.L2_ALGAE),
+            algaeClaw.intakeCommand(),
             Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-            algaeClaw.stopCommand()
+            algaeClaw.stopCommand(),
+            setArmPosition(ArmPosition.L2_ALGAE)
         );
     }
 

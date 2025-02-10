@@ -7,8 +7,8 @@ public class VisionIOLimelight implements VisionIO {
     
     private final Limelight camera;
 
-    public VisionIOLimelight(String name) {
-        this.camera = new Limelight(name, false);
+    public VisionIOLimelight(String name, boolean isLL4) {
+        this.camera = new Limelight(name, true);
     }
 
     public void updateInputs(VisionIOInputs inputs) {
@@ -39,20 +39,25 @@ public class VisionIOLimelight implements VisionIO {
         camera.setRobotOrientation(yawDegrees);
     }
 
-    @Override
-    public void setUseMegaTag2(boolean megaTag2) {
-        camera.setUseMT2(megaTag2);
-    }
-
     @Override 
-    public void setIMUMode(int mode) {
-        if (mode == 2 || mode == 0) {
-            setUseMegaTag2(true);
+    public void setUseMegaTag2(boolean useMT2) {
+        boolean changed = camera.getUseMT2() == useMT2;
+        if (!changed) {
+            return;
         }
-        else {
-            setUseMegaTag2(false);
+        boolean isLL4 = camera.getIsLL4();
+        if (useMT2) {
+            if (isLL4) {
+                camera.setIMUMode(2);
+            }
+        } else {
+            if (isLL4) {
+                camera.setIMUMode(1);
+            } else {
+                camera.setIMUMode(0);
+            }
         }
-        camera.setIMUMode(mode);
+        camera.setUseMT2(useMT2);
     }
 
 

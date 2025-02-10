@@ -22,9 +22,9 @@ public class AlgaeClaw extends SubsystemBase {
     private final ClawIO io;
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
     
-    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Claw/BrakeMotor", AlgaeClawConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("Claw/IntakePercent", AlgaeClawConstants.INTAKE_PERCENT);
-    private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("Claw/OuttakePercent", AlgaeClawConstants.OUTTAKE_PERCENT);
+    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("AlgaeClaw/BrakeMotor", AlgaeClawConstants.BRAKE_MOTOR);
+    private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("AlgaeClaw/IntakePercent", AlgaeClawConstants.INTAKE_PERCENT);
+    private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("AlgaeClaw/OuttakePercent", AlgaeClawConstants.OUTTAKE_PERCENT);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
@@ -37,8 +37,8 @@ public class AlgaeClaw extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        Logger.processInputs("SubsystemInputs/Claw", inputs);
-        Logger.recordOutput("Subsystems/Claw/HasPiece", hasPiece());
+        Logger.processInputs("SubsystemInputs/AlgaeClaw", inputs);
+        Logger.recordOutput("Subsystems/AlgaeClaw/HasPiece", hasPiece());
 
         if (shouldRunSetpoint) {
             io.setPercent(percentOutput);

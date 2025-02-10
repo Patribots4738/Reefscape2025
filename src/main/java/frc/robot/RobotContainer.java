@@ -103,7 +103,7 @@ public class RobotContainer {
         pdh.setSwitchableChannel(false);
 
         swerve = new Swerve();
-        vision = new Vision(swerve.getPoseEstimator(), new VisionIOLimelight("limelight-four"));
+        vision = new Vision(swerve.getPoseEstimator(), new VisionIOLimelight("limelight-four", true));
         coralClaw = new CoralClaw(new CoralClawIOKraken());
         algaeClaw = new AlgaeClaw(new AlgaeClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
@@ -216,8 +216,6 @@ public class RobotContainer {
 
         controller.rightBumper().onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
 
-        controller.povUp().onTrue(superstructure.setArmPosition(ArmPosition.L4));
-
         controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
         
@@ -259,12 +257,29 @@ public class RobotContainer {
         // controller.y()
         //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
-        controller.b()
-            .onTrue(superstructure.climbFinalCommand());
+        // controller.b()
+        //     .onTrue(superstructure.climbFinalCommand());
 
+        // controller.x()
+        //     .onTrue(superstructure.climbReadyCommand());
+
+        // controller.povRight()
+        //     .onTrue(superstructure.stopAllCommand());
+
+        controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
+
+        controller.leftBumper().onTrue(superstructure.algaeIntakeCommand(controller::getLeftBumper));
+
+        controller.rightTrigger().onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
+
+        controller.rightBumper().onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
+
+        controller.povDown()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+        
         controller.x()
-            .onTrue(superstructure.climbReadyCommand());
-
+            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
+        
         controller.povRight()
             .onTrue(superstructure.stopAllCommand());
 

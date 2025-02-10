@@ -22,9 +22,9 @@ public class CoralClaw extends SubsystemBase {
     private final ClawIO io;
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
     
-    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Claw/BrakeMotor", CoralClawConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("Claw/IntakePercent", CoralClawConstants.INTAKE_PERCENT);
-    private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("Claw/OuttakePercent", CoralClawConstants.OUTTAKE_PERCENT);
+    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("CoralClaw/BrakeMotor", CoralClawConstants.BRAKE_MOTOR);
+    private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("CoralClaw/IntakePercent", CoralClawConstants.INTAKE_PERCENT);
+    private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("CoralClaw/OuttakePercent", CoralClawConstants.OUTTAKE_PERCENT);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
@@ -37,8 +37,8 @@ public class CoralClaw extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        Logger.processInputs("SubsystemInputs/Claw", inputs);
-        Logger.recordOutput("Subsystems/Claw/HasPiece", hasPiece());
+        Logger.processInputs("SubsystemInputs/AlgaeClaw", inputs);
+        Logger.recordOutput("Subsystems/AlgaeClaw/HasPiece", hasPiece());
 
         if (shouldRunSetpoint) {
             io.setPercent(percentOutput);
