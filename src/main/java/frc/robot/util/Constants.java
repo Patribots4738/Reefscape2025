@@ -626,7 +626,7 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = true;
 
-        public static final double GEAR_RATIO = 181.176470591;
+        public static final double GEAR_RATIO = 233 + 1d/3d;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI;
@@ -640,6 +640,7 @@ public final class Constants {
         public static final double P = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double D = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
@@ -647,17 +648,11 @@ public final class Constants {
         public static final double ACCELERATION = 0.0;
         public static final double JERK = 0.0;
 
-        // public static final double P = 5.0;
-        // public static final double I = 0.0;
-        // public static final double D = 0.65;
-        // public static final double A = 0.0;
-        // public static final double S = 0.01747; 
-        // public static final double V = 2.01349; 
-        // public static final double G = 0.0;
         public static final GainConstants GAINS = new GainConstants(
             P,
             I,
             D,
+            A,
             S,
             G
         );

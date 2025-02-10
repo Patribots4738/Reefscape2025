@@ -55,7 +55,7 @@ public class Superstructure {
     private final LoggedTunableNumber wristL2 = new LoggedTunableNumber("Wrist/L2Postition", WristConstants.L2_POSITION_RADIANS);
     private final LoggedTunableNumber wristL3 = new LoggedTunableNumber("Wrist/L3Postition", WristConstants.L3_POSITION_RADIANS);
     private final LoggedTunableNumber wristL4 = new LoggedTunableNumber("Wrist/L4Postition", WristConstants.L4_POSITION_RADIANS);
-    private final LoggedTunableNumber wristAlgae = new LoggedTunableNumber("Wrist/Algae", WristConstants.ALGAE_REMOVAL);
+    private final LoggedTunableNumber wristAlgaeGrab = new LoggedTunableNumber("Wrist/Algae", WristConstants.ALGAE_REMOVAL);
   
     private final LoggedTunableNumber algaeClawPlaceTime = new LoggedTunableNumber("Coraw/PlaceTime", CoralClawConstants.PLACING_NAMED_COMMAND_TIME);
     private final LoggedTunableNumber coralClawPlaceTime = new LoggedTunableNumber("Algaw/PlaceTime", AlgaeClawConstants.PLACING_NAMED_COMMAND_TIME);
@@ -89,9 +89,9 @@ public class Superstructure {
         wristL2.onChanged(Commands.runOnce(() -> ArmPosition.L2.wristPose = wristL2.get()).ignoringDisable(true));
         wristL3.onChanged(Commands.runOnce(() -> ArmPosition.L3.wristPose = wristL3.get()).ignoringDisable(true));
         wristL4.onChanged(Commands.runOnce(() -> ArmPosition.L4.wristPose = wristL4.get()).ignoringDisable(true));
-        wristAlgae.onChanged(Commands.runOnce(() -> {
-            ArmPosition.L2_ALGAE.wristPose = wristAlgae.get();
-            ArmPosition.L3_ALGAE.wristPose = wristAlgae.get();
+        wristAlgaeGrab.onChanged(Commands.runOnce(() -> {
+            ArmPosition.L2_ALGAE.wristPose = wristAlgaeGrab.get();
+            ArmPosition.L3_ALGAE.wristPose = wristAlgaeGrab.get();
         }).ignoringDisable(true));
 
     }

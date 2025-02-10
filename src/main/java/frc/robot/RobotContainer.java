@@ -257,31 +257,31 @@ public class RobotContainer {
         // controller.y()
         //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
-        // controller.b()
-        //     .onTrue(superstructure.climbFinalCommand());
+        controller.x()
+            .onTrue(superstructure.climbFinalCommand());
 
+        controller.b()
+            .onTrue(superstructure.climbReadyCommand());
+
+        controller.a()
+            .onTrue(superstructure.stopAllCommand());
+
+        // controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
+
+        // controller.leftBumper().onTrue(superstructure.algaeIntakeCommand(controller::getLeftBumper));
+
+        // controller.rightTrigger().onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
+
+        // controller.rightBumper().onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
+
+        // controller.povDown()
+        //     .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+        
         // controller.x()
-        //     .onTrue(superstructure.climbReadyCommand());
-
+        //     .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
+        
         // controller.povRight()
         //     .onTrue(superstructure.stopAllCommand());
-
-        controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
-
-        controller.leftBumper().onTrue(superstructure.algaeIntakeCommand(controller::getLeftBumper));
-
-        controller.rightTrigger().onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
-
-        controller.rightBumper().onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
-
-        controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
-        
-        controller.x()
-            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
-        
-        controller.povRight()
-            .onTrue(superstructure.stopAllCommand());
 
         // controller.leftBumper()
         //     .onTrue(alignment.updateIndexCommand(-1));
