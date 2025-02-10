@@ -5,6 +5,7 @@
 package frc.robot.subsystems.superstructure.wrist;
 
 import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import java.util.function.DoubleSupplier;
@@ -118,20 +119,22 @@ public class Wrist extends SubsystemBase {
     public SysIdRoutine getSysIdRoutine() {
         return new SysIdRoutine(
             new SysIdRoutine.Config(
-                    // Gaslight SysId since motor is actually running amps instead of volts, feedforwards should still be accurate
-                    Volts.of(0.1).per(Second),
-                    null, 
-                    null,
-                    (state) -> Logger.recordOutput("WristSysIdState", state.toString())),
-            new SysIdRoutine.Mechanism((voltage) -> io.runCharacterization(voltage.in(Volts)), null, this));
+                // Gaslight SysId since motor is actually running amps instead of volts, feedforwards should still be accurate
+                Volts.of(0.1).per(Second),
+                null, 
+                Seconds.of(2),
+                (state) -> Logger.recordOutput("WristSysIdState", state.toString())
+            ),
+            new SysIdRoutine.Mechanism(
+                (voltage) -> io.runCharacterization(voltage.in(Volts)), 
+                null, 
+                this
+            )
+        );
     }
 
     public Command sysIdQuasistatic() {
         return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kForward);
-    }
-
-    public Command sysIdDynamic() {
-        return getSysIdRoutine().dynamic(SysIdRoutine.Direction.kForward);
     }
 
 }

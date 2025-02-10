@@ -198,7 +198,8 @@ public class Swerve extends SubsystemBase {
             AutoConstants.AUTO_HDC,
             config,
             Robot::isRedAlliance,
-            this);
+            this
+        );
     }
 
     @Override
@@ -235,10 +236,12 @@ public class Swerve extends SubsystemBase {
 
         if (FieldConstants.IS_SIMULATION) {
             resetOdometry(
-                    currentPose.exp(
-                            new Twist2d(
-                                    0, 0,
-                                    speeds.omegaRadiansPerSecond * .02)));
+                currentPose.exp(
+                    new Twist2d(
+                        0, 0,
+                        speeds.omegaRadiansPerSecond * .02)
+                )
+            );
         }
 
         RobotContainer.field2d.setRobotPose(currentPose);
@@ -594,6 +597,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public boolean atHDCPose() {
+        
         return atPose(desiredHDCPose);
     }
 
@@ -601,6 +605,7 @@ public class Swerve extends SubsystemBase {
         return MathUtil.isNear(
             desiredHDCPose.getRotation().getRadians(), 
             getPose().getRotation().getRadians(),
-            AutoConstants.HDC_ROTATION_TOLERANCE_RADIANS);
+            AutoConstants.HDC_ROTATION_TOLERANCE_RADIANS
+        );
     }
 }

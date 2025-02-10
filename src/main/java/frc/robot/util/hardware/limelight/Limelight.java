@@ -12,7 +12,6 @@ public class Limelight {
     private final boolean isLimelight4;
     private boolean useMT2 = false;
 
-
     private PoseEstimate latestPoseEstimate;
 
     public Limelight(String name, boolean isLimelight4) {
@@ -88,27 +87,27 @@ public class Limelight {
     }
 
     public Pose2d getRobotPose() {
-        return latestPoseEstimate.pose;
+        return latestPoseEstimate != null ? latestPoseEstimate.pose : new Pose2d();
     }
 
     public double getTimestamp() {
-        return latestPoseEstimate.timestampSeconds;
+        return latestPoseEstimate != null ? latestPoseEstimate.timestampSeconds : 0;
     }
 
     public double getAverageTA() {
-        return latestPoseEstimate.avgTagArea;
+        return latestPoseEstimate != null ? latestPoseEstimate.avgTagArea : 0;
     }
 
     public double getAverageTD() {
-        return latestPoseEstimate.avgTagDist;
+        return latestPoseEstimate != null ? latestPoseEstimate.avgTagDist : 0;
     }
 
     public int getTagCount() {
-        return latestPoseEstimate.tagCount;
+        return latestPoseEstimate != null ? latestPoseEstimate.tagCount : 0;
     }
 
     public RawFiducial[] getRawFiducials() {
-        return latestPoseEstimate.rawFiducials;
+        return latestPoseEstimate != null ? latestPoseEstimate.rawFiducials : new RawFiducial[0];
     }
 
     public boolean getUseMT2() {
