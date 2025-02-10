@@ -228,9 +228,7 @@ public class Swerve extends SubsystemBase {
 
         currentPose = getPose();
 
-        RobotContainer.swerveMeasuredStates = new SwerveModuleState[] {
-            frontLeft.getState(), frontRight.getState(), rearLeft.getState(), rearRight.getState()
-        };
+        RobotContainer.swerveMeasuredStates = getModuleStates();
 
         ChassisSpeeds speeds = DriveConstants.DRIVE_KINEMATICS.toChassisSpeeds(RobotContainer.swerveMeasuredStates);
 
@@ -266,9 +264,9 @@ public class Swerve extends SubsystemBase {
                 Units.degreesToRadians(0), 
                 currentPose.getRotation().getRadians())
             :  new Rotation3d(
-                Units.degreesToRadians(-roll), 
-                Units.degreesToRadians(-pitch+Math.PI), 
-                currentPose.getRotation().getRadians()+Math.PI);
+                Units.degreesToRadians(roll), 
+                Units.degreesToRadians(pitch), 
+                currentPose.getRotation().getRadians());
 
         RobotContainer.robotPose3d = new Pose3d(
                 new Translation3d(
@@ -281,7 +279,6 @@ public class Swerve extends SubsystemBase {
                                     * DriveConstants.ROBOT_LENGTH_METERS / 2.0)),
                rotation3d);
 
-        Logger.recordOutput("Subsystems/Swerve/RobotPose3d", RobotContainer.robotPose3d);
         Logger.recordOutput("Subsystems/Swerve/ChassisSpeeds", speeds);
 
         Logger.recordOutput("Subsystems/Swerve/Modules/FrontLeft/DesiredState", frontLeft.getDesiredState());

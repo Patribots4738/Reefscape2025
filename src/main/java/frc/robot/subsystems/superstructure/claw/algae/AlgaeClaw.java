@@ -40,6 +40,7 @@ public class AlgaeClaw extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/AlgaeClaw", inputs);
         Logger.recordOutput("Subsystems/AlgaeClaw/HasPiece", hasPiece());
 
+        // Run setpoint on RIO to minimize CAN utilization
         if (shouldRunSetpoint) {
             io.setPercent(percentOutput);
         } else {

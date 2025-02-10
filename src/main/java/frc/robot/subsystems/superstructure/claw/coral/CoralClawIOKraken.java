@@ -50,4 +50,14 @@ public class CoralClawIOKraken implements ClawIO {
         motor.setPercentOutput(percent);
     }
 
+    @Override
+    public void setVoltage(double volts) {
+        motor.setVoltageOutput(volts);
+    }
+
+    @Override
+    public void setCurrent(double amps) {
+        motor.setTorqueCurrentOutput(amps);
+    }
+
 }

@@ -26,4 +26,8 @@ public interface ClawIO {
 
     public default void setPercent(double percent) {}
 
+    public default void setVoltage(double volts) {}
+
+    public default void setCurrent(double amps) {}
+
 }
