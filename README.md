@@ -48,6 +48,16 @@ ____
 ______
 ## Major Class Functions 🤩
 
+### Subsystems
+
+> [`subsystems/`](src/main/java/frc/robot/subsystems) Folder containing class files for each subsystem on the robot.
+> - Superstructure [`subsystems/superstructure/`](src/main/java/frc/robot/subsystems/superstructure) Folder containing class files for superstructure subsystem
+> - Vision [`subsystems/vision/`](src/main/java/frc/robot/subsystems/vision) Folder containing class files for the vision subsystem
+> - Drive [`subsystems/drive/`](src/main/java/frc/robot/subsystems/drive) Folder containing class files for the drive subsystem
+### Commands
+
+### Utilities
+
 ## Controls 🎮
 
 ## Components & Tools 🛠️
