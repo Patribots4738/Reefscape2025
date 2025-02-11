@@ -57,8 +57,8 @@ public class Superstructure {
     private final LoggedTunableNumber wristL4 = new LoggedTunableNumber("Wrist/L4Postition", WristConstants.L4_POSITION_RADIANS);
     private final LoggedTunableNumber wristAlgaeGrab = new LoggedTunableNumber("Wrist/Algae", WristConstants.ALGAE_REMOVAL);
   
-    private final LoggedTunableNumber algaeClawPlaceTime = new LoggedTunableNumber("Coraw/PlaceTime", CoralClawConstants.PLACING_NAMED_COMMAND_TIME);
-    private final LoggedTunableNumber coralClawPlaceTime = new LoggedTunableNumber("Algaw/PlaceTime", AlgaeClawConstants.PLACING_NAMED_COMMAND_TIME);
+    private final LoggedTunableNumber coralClawPlaceTime = new LoggedTunableNumber("CoralClaw/PlaceTime", CoralClawConstants.PLACING_NAMED_COMMAND_TIME);
+    private final LoggedTunableNumber algaeClawPlaceTime = new LoggedTunableNumber("AlgaeClaw/PlaceTime", AlgaeClawConstants.PLACING_NAMED_COMMAND_TIME);
 
     public Superstructure(AlgaeClaw algaeClaw, CoralClaw coralClaw, Elevator elevator, Wrist wrist, Climb climb, Supplier<Pose2d> robotPoseSupplier) {
         this.algaeClaw = algaeClaw;
