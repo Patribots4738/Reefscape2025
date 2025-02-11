@@ -489,7 +489,7 @@ public final class Constants {
 
     public static final class AlgaeClawConstants {
 
-        public static final int CAN_ID = 15;
+        public static final int CAN_ID = 14;
 
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 80-.0;
@@ -510,16 +510,16 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
         public static final double CURRENT_LIMIT = 80.0;
 
-        public static final boolean MOTOR_INVERTED = true;
+        public static final boolean MOTOR_INVERTED = false;
 
-        public static final double GEAR_RATIO = 7.75;
+        public static final double GEAR_RATIO = 16.0;
         public static final double MAX_DISPLACEMENT_METERS = 0.54;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 800d : 0d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -536,9 +536,9 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
-        public static final double VELOCITY = 1d;
+        public static final double VELOCITY = 0.25;
         public static final double ACCELERATION = 2d;
-        public static final double JERK = 15d;
+        public static final double JERK = 0d;
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
@@ -556,7 +556,6 @@ public final class Constants {
     public static final class WristConstants {
 
         public static final int CAN_ID = 12;
-        public static final int ENCODER_DIO_PIN = 0;
 
         public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
         public static final boolean ENCODER_INVERTED = false;
@@ -621,10 +620,9 @@ public final class Constants {
 
     public static final class ClimbConstants {
 
-        public static final int LEADER_CAN_ID = 13;
-        public static final int FOLLOWER_CAN_ID = 14;
+        public static final int CAN_ID = 13;
 
-        public static final boolean MOTOR_INVERTED = true;
+        public static final boolean MOTOR_INVERTED = false;
 
         public static final double GEAR_RATIO = 233 + 1d/3d;
 
@@ -637,9 +635,9 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 1.735;
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 25d : 0d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 2d : 0d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -777,8 +775,7 @@ public final class Constants {
                 add(KRAKEN_MOTOR_MAP.get(WristConstants.CAN_ID));
             }});
             KRAKEN_MOTOR_GROUPS.put("Climb", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.LEADER_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.FOLLOWER_CAN_ID));
+                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.CAN_ID));
             }});
 
             return KRAKEN_MOTOR_GROUPS;

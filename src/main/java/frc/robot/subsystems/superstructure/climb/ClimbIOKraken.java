@@ -7,17 +7,15 @@ import frc.robot.util.custom.GainConstants;
 
 public class ClimbIOKraken implements ClimbIO {
     
-    private final Kraken leader;
-    // private final Kraken follower;
+    private final Kraken motor;
 
     public ClimbIOKraken() {
-        leader = new Kraken(ClimbConstants.LEADER_CAN_ID, true, false, ControlPreference.TORQUE_CURRENT);
-        // follower = new Kraken(ClimbConstants.FOLLOWER_CAN_ID, true, false, ControlPreference.MM_TORQUE_CURRENT);
+        motor = new Kraken(ClimbConstants.CAN_ID, true, false, ControlPreference.TORQUE_CURRENT);
         
-        configMotors();
+        configMotor();
     }
 
-    private void configMotor(Kraken motor) {
+    private void configMotor() {
         motor.setGearRatio(ClimbConstants.GEAR_RATIO);
         motor.setUnitConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setSoftLimits(ClimbConstants.MIN_ANGLE_RADIANS, ClimbConstants.MAX_ANGLE_RADIANS);
@@ -26,72 +24,56 @@ public class ClimbIOKraken implements ClimbIO {
         motor.setGains(ClimbConstants.GAINS);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-ClimbConstants.CURRENT_LIMIT, ClimbConstants.CURRENT_LIMIT);
-    }
-
-    private void configMotors() {
-        configMotor(leader);
-        // configMotor(follower);
         configureProfile(ClimbConstants.VELOCITY, ClimbConstants.ACCELERATION, ClimbConstants.JERK);
         setBrakeMode(ClimbConstants.BRAKE_MOTOR);
     }
 
     @Override
     public void updateInputs(ClimbIOInputs inputs) {
-        inputs.leaderMotorConnected = leader.refreshSignals().isOK();
-        inputs.leaderPositionRads = leader.getPositionAsDouble();
-        inputs.leaderVelocityRadsPerSec = leader.getVelocityAsDouble();
-        inputs.leaderTargetPositionRads = leader.getTargetPosition();
-        inputs.leaderAppliedOutputVolts = leader.getVoltageAsDouble();
-        inputs.leaderSupplyCurrentAmps = leader.getSupplyCurrentAsDouble();
-        inputs.leaderStatorCurrentAmps = leader.getStatorCurrentAsDouble();
-        inputs.leaderTorqueCurrentAmps = leader.getTorqueCurrentAsDouble();
-        inputs.leaderTemperatureCelcius = leader.getTemperatureAsDouble();
-
-        // inputs.followerMotorConnected = follower.refreshSignals().isOK();
-        // inputs.followerPositionRads = follower.getPositionAsDouble();
-        // inputs.followerVelocityRadsPerSec = follower.getVelocityAsDouble();
-        // inputs.followerTargetPositionRads = follower.getTargetPosition();
-        // inputs.followerAppliedOutputVolts = follower.getVoltageAsDouble();
-        // inputs.followerSupplyCurrentAmps = follower.getSupplyCurrentAsDouble();
-        // inputs.followerStatorCurrentAmps = follower.getStatorCurrentAsDouble();
-        // inputs.followerTorqueCurrentAmps = follower.getTorqueCurrentAsDouble();
-        // inputs.followerTemperatureCelcius = follower.getTemperatureAsDouble();
+        inputs.motorConnected = motor.refreshSignals().isOK();
+        inputs.positionRads = motor.getPositionAsDouble();
+        inputs.velocityRadsPerSec = motor.getVelocityAsDouble();
+        inputs.targetPositionRads = motor.getTargetPosition();
+        inputs.appliedOutputVolts = motor.getVoltageAsDouble();
+        inputs.supplyCurrentAmps = motor.getSupplyCurrentAsDouble();
+        inputs.statorCurrentAmps = motor.getStatorCurrentAsDouble();
+        inputs.torqueCurrentAmps = motor.getTorqueCurrentAsDouble();
+        inputs.temperatureCelcius = motor.getTemperatureAsDouble();
     }
 
     @Override
     public void setNeutral() {
-        leader.setNeutral();
-        // follower.setFollowing(leader);
+        motor.setNeutral();
     }
 
     @Override
     public void setPosition(double position) {
-        leader.setTargetPosition(position);
-        // follower.setFollowing(leader);
+        motor.setTargetPosition(position);
     }
 
     @Override
     public void runCharacterization(double input) {
-        leader.setTorqueCurrentOutput(input);
-        // follower.setFollowing(leader);
+        motor.setTorqueCurrentOutput(input);
     }
 
     @Override
     public void setBrakeMode(boolean brake) {
-        leader.setBrakeMode(brake);
-        // follower.setBrakeMode(brake);
+        motor.setBrakeMode(brake);
+    }
+
+    @Override
+    public void resetEncoder(double position) {
+        motor.resetEncoder(position);
     }
 
     @Override
     public void setGains(GainConstants constants) {
-        leader.setGains(constants);
-        // follower.setGains(constants);
+        motor.setGains(constants);
     }
 
     @Override
     public void configureProfile(double velocity, double acceleration, double jerk) {
-        leader.configureMotionMagic(velocity, acceleration, jerk);
-        // follower.configureMotionMagic(velocity, acceleration, jerk);
+        motor.configureMotionMagic(velocity, acceleration, jerk);
     }
 
 }

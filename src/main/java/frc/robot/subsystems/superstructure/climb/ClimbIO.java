@@ -8,25 +8,15 @@ public interface ClimbIO {
     
     @AutoLog
     class ClimbIOInputs {
-        public boolean leaderMotorConnected = false;
-        public double leaderPositionRads = 0.0;
-        public double leaderVelocityRadsPerSec = 0.0;
-        public double leaderTargetPositionRads = 0.0;
-        public double leaderAppliedOutputVolts = 0.0;
-        public double leaderSupplyCurrentAmps = 0.0;
-        public double leaderStatorCurrentAmps = 0.0;
-        public double leaderTorqueCurrentAmps = 0.0;
-        public double leaderTemperatureCelcius = 0.0;
-
-        public boolean followerMotorConnected = false;
-        public double followerPositionRads = 0.0;
-        public double followerVelocityRadsPerSec = 0.0;
-        public double followerTargetPositionRads = 0.0;
-        public double followerAppliedOutputVolts = 0.0;
-        public double followerSupplyCurrentAmps = 0.0;
-        public double followerStatorCurrentAmps = 0.0;
-        public double followerTorqueCurrentAmps = 0.0;
-        public double followerTemperatureCelcius = 0.0;
+        public boolean motorConnected = false;
+        public double positionRads = 0.0;
+        public double velocityRadsPerSec = 0.0;
+        public double targetPositionRads = 0.0;
+        public double appliedOutputVolts = 0.0;
+        public double supplyCurrentAmps = 0.0;
+        public double statorCurrentAmps = 0.0;
+        public double torqueCurrentAmps = 0.0;
+        public double temperatureCelcius = 0.0;
     }
 
     public default void updateInputs(ClimbIOInputs inputs) {}
@@ -38,6 +28,8 @@ public interface ClimbIO {
     public default void runCharacterization(double input) {}
 
     public default void setBrakeMode(boolean brake) {}
+
+    public default void resetEncoder(double position) {}
 
     public default void setGains(GainConstants constants) {}
 

@@ -56,7 +56,7 @@ public class Climb extends SubsystemBase {
 
         RobotContainer.components3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
             LoggingConstants.CLIMB_OFFSET, 
-            new Rotation3d(-inputs.leaderPositionRads, 0, 0)
+            new Rotation3d(-inputs.positionRads, 0, 0)
         );
     }
 
@@ -75,6 +75,10 @@ public class Climb extends SubsystemBase {
         io.setNeutral();
     }
 
+    public void resetEncoder() {
+        io.resetEncoder(0);
+    }
+
     public Command setPositionCommand(DoubleSupplier positionSupplier) {
         return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
@@ -85,6 +89,10 @@ public class Climb extends SubsystemBase {
 
     public Command setNeutralCommand() {
         return runOnce(this::setNeutral);
+    }
+
+    public Command resetEncoderCommand() {
+        return runOnce(this::resetEncoder);
     }
 
     public Command stowPositionCommand() {
@@ -100,7 +108,7 @@ public class Climb extends SubsystemBase {
     }
 
     public boolean atPosition(double position) {
-        return MathUtil.isNear(position, inputs.leaderPositionRads, ClimbConstants.DEADBAND_RADIANS);
+        return MathUtil.isNear(position, inputs.positionRads, ClimbConstants.DEADBAND_RADIANS);
     }
 
     public boolean atTargetPosition() {
@@ -108,11 +116,11 @@ public class Climb extends SubsystemBase {
     }
 
     public double getPosition() {
-        return inputs.leaderPositionRads;
+        return inputs.positionRads;
     }
 
     public double getCharacterizationVelocity() {
-        return inputs.leaderVelocityRadsPerSec / ClimbConstants.VELOCITY_CONVERSION_FACTOR;
+        return inputs.velocityRadsPerSec / ClimbConstants.VELOCITY_CONVERSION_FACTOR;
     }
 
     public void runCharacterization(double input) {

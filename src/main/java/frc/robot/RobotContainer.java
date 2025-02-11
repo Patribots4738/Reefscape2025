@@ -257,14 +257,23 @@ public class RobotContainer {
         // controller.y()
         //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
+        controller.povUp()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+
+        controller.povRight()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
+
+        controller.povLeft()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
+            
+        controller.povLeft()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+
+        controller.y()
+            .onTrue(elevator.resetEncodersCommand());
+
         controller.x()
-            .onTrue(superstructure.climbFinalCommand());
-
-        controller.b()
-            .onTrue(superstructure.climbReadyCommand());
-
-        controller.a()
-            .onTrue(superstructure.stopAllCommand());
+            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
 
         // controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 

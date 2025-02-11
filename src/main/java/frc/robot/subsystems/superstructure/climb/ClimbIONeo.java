@@ -6,71 +6,52 @@ import frc.robot.util.custom.GainConstants;
 
 public class ClimbIONeo implements ClimbIO {
     
-    private final Neo leader;
-    private final Neo follower;
+    private final Neo motor;
 
     public ClimbIONeo() {
-        leader = new Neo(ClimbConstants.LEADER_CAN_ID, false, false, true);
-        follower = new Neo(ClimbConstants.FOLLOWER_CAN_ID, false, false, false);
+        motor = new Neo(ClimbConstants.CAN_ID, false, false, true);
         configMotors();
     }
 
-    private void configMotor(Neo motor) {
+
+    private void configMotors() {
         motor.setOutputInverted(ClimbConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
         motor.setPID(ClimbConstants.GAINS);
         motor.setSmartCurrentLimit((int) ClimbConstants.CURRENT_LIMIT);
-    }
-
-    private void configMotors() {
-        configMotor(leader);
-        configMotor(follower);
         setBrakeMode(ClimbConstants.BRAKE_MOTOR);
     }
 
     public void updateInputs(ClimbIOInputs inputs) {
-        inputs.leaderMotorConnected = true;
-        inputs.leaderPositionRads = leader.getPosition();
-        inputs.leaderVelocityRadsPerSec = leader.getVelocity();
-        inputs.leaderTargetPositionRads = leader.getTargetPosition();
-        inputs.leaderAppliedOutputVolts = leader.getBusVoltage();
-        inputs.leaderSupplyCurrentAmps = leader.getOutputCurrent();
-        inputs.leaderTemperatureCelcius = leader.getMotorTemperature();
-
-        inputs.followerMotorConnected = true;
-        inputs.followerPositionRads = follower.getPosition();
-        inputs.followerVelocityRadsPerSec = follower.getVelocity();
-        inputs.followerTargetPositionRads = follower.getTargetPosition();
-        inputs.followerAppliedOutputVolts = follower.getBusVoltage();
-        inputs.followerSupplyCurrentAmps = follower.getOutputCurrent();
-        inputs.followerTemperatureCelcius = follower.getMotorTemperature();
+        inputs.motorConnected = true;
+        inputs.positionRads = motor.getPosition();
+        inputs.velocityRadsPerSec = motor.getVelocity();
+        inputs.targetPositionRads = motor.getTargetPosition();
+        inputs.appliedOutputVolts = motor.getBusVoltage();
+        inputs.supplyCurrentAmps = motor.getOutputCurrent();
+        inputs.temperatureCelcius = motor.getMotorTemperature();
     }
 
     public void setPosition(double position) {
-        leader.setTargetPosition(position);
-        follower.setTargetPosition(position);
+        motor.setTargetPosition(position);
     }
 
     public void runCharacterization(double input) {
-        leader.setVoltage(input);
-        follower.setVoltage(input);
+        motor.setVoltage(input);
     }
 
     public void setBrakeMode(boolean brake) {
         if (brake) {
-            leader.setBrakeMode();
-            follower.setBrakeMode();
+            motor.setBrakeMode();
         } else {
-            leader.setCoastMode();
-            follower.setBrakeMode();
+            motor.setCoastMode();
         }
     }
 
     @Override
     public void setGains(GainConstants constants) {
-        leader.setPID(constants);
-        follower.setPID(constants);
+        motor.setPID(constants);
     }
 
 

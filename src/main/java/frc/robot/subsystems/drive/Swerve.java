@@ -342,7 +342,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void stopDriving() {
-        drive(0, 0, 0, false);
+        setWheelsX();
     }
 
     public void runDriveCharacterization(double input) {
