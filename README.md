@@ -30,3 +30,25 @@ We are a team of students, for students, and we are proud to be a part of the _F
 Thanks for checking us out, & be sure to star this repository if you find anything helpful or interesting!
 
 ### [See how we did!](https://www.statbotics.io/team/4738)
+
+
+____
+
+## ✨Highlights✨
+
+## Simulation & Testing 🪄
+
+## Swerve Drive 🛞
+
+## Autonomous 🤖
+
+## Teleoperated 🎮
+
+
+______
+## Major Class Functions 🤩
+
+## Controls 🎮
+
+## Components & Tools 🛠️
+
