@@ -602,11 +602,10 @@ public final class Constants {
 
         public static final double RESET_ANGLE_RADIANS = 2.95;
 
-        public static final double MIN_SAFE_ANGLE_RADIANS = 1.7;
-        public static final double MAX_SAFE_ANGLE_RADIANS = 1.7;
+        public static final double CLIMB_RADIANS = 1.7;
+        public static final double TRANSITION_RADIANS = 1.7;
 
         public static final double DEADBAND_RADIANS = 0.06;
-        public static final double TRANSITION_POSITION_RADIANS = Math.PI / 2.0;
         public static final double STOW_POSITION_RADIANS = 0.07;
         public static final double INTAKE_POSITION_RADIANS = -0.18;
         public static final double L1_POSITION_RADIANS = 2.8;

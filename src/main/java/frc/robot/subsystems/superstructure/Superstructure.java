@@ -45,9 +45,8 @@ public class Superstructure {
     private final LoggedTunableNumber elevatorL2RemoveAlgae = new LoggedTunableNumber("Elevator/L2PostitionRemoveAlgae", ElevatorConstants.L2_POSITION_REMOVE_ALGAE);
     private final LoggedTunableNumber elevatorL3RemoveAlgae = new LoggedTunableNumber("Elevator/L3PostitionRemoveAlgae", ElevatorConstants.L3_POSITION_REMOVE_ALGAE);
 
-    private final LoggedTunableNumber wristMinSafe = new LoggedTunableNumber("Wrist/MinSafePosition", WristConstants.MIN_SAFE_ANGLE_RADIANS);
-    private final LoggedTunableNumber wristMaxSafe = new LoggedTunableNumber("Wrist/MaxSafePosition", WristConstants.MAX_SAFE_ANGLE_RADIANS);
-    private final LoggedTunableNumber wristClimb = new LoggedTunableNumber("Wrist/ClimbPosition", WristConstants.MIN_SAFE_ANGLE_RADIANS);
+    private final LoggedTunableNumber wristTransition = new LoggedTunableNumber("Wrist/TransitionPosition", WristConstants.TRANSITION_RADIANS);
+    private final LoggedTunableNumber wristClimb = new LoggedTunableNumber("Wrist/ClimbPosition", WristConstants.CLIMB_RADIANS);
     private final LoggedTunableNumber wristLowStow = new LoggedTunableNumber("Wrist/LowStowPostion", WristConstants.STOW_POSITION_RADIANS);
     private final LoggedTunableNumber wristUpStow = new LoggedTunableNumber("Wrist/UpStowPostion", WristConstants.MAX_ANGLE_RADIANS);
     private final LoggedTunableNumber wristIntake = new LoggedTunableNumber("Wrist/IntakePosition", WristConstants.INTAKE_POSITION_RADIANS);
@@ -100,7 +99,7 @@ public class Superstructure {
         UP_STOW  (ElevatorConstants.STOW_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS, false),
         LOW_STOW (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS, false),
         INTAKE   (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS, false),
-        CLIMB    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.MIN_SAFE_ANGLE_RADIANS, false),
+        CLIMB    (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS, false),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL, false),
         L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL, false),
         L1       (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS, true),
@@ -133,7 +132,7 @@ public class Superstructure {
                     () -> 
                         // Only transition wrist if elevator needs to move in addition to other conditions
                         (shouldEvadeReef()
-                            || position.wristPose < wristMinSafe.get()
+                            || position.wristPose < wristTransition.get()
                             || Robot.gameMode == GameMode.AUTONOMOUS) 
                         && !elevator.atPosition(position.elevatorPose)
                 // Stop blocking sequence when wrist is in a safe position
@@ -145,7 +144,7 @@ public class Superstructure {
     }
 
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
-        return wrist.setPositionCommand(wristMaxSafe::get);
+        return wrist.setPositionCommand(wristTransition::get);
     }
 
     public Command algaeL2Command(BooleanSupplier continueIntakingSupplier)  {
@@ -288,11 +287,7 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
-        return 
-            // Wrist pos inside of safe range or at the edges within error bound
-            wrist.getPosition() > wristMinSafe.get() && (wrist.getPosition() < wristMaxSafe.get() || !shouldEvadeReef()) 
-            || wrist.atPosition(wristMinSafe.get())
-            || wrist.atPosition(wristMaxSafe.get());
+        return wrist.atPosition(wristTransition.get());
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")
