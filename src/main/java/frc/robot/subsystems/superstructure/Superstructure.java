@@ -42,8 +42,8 @@ public class Superstructure {
     private final LoggedTunableNumber elevatorL2 = new LoggedTunableNumber("Elevator/L2Postition", ElevatorConstants.L2_POSITION_METERS);
     private final LoggedTunableNumber elevatorL3 = new LoggedTunableNumber("Elevator/L3Postition", ElevatorConstants.L3_POSITION_METERS);
     private final LoggedTunableNumber elevatorL4 = new LoggedTunableNumber("Elevator/L4Postition", ElevatorConstants.L4_POSITION_METERS);
-    private final LoggedTunableNumber elevatorL2RemoveAlgae = new LoggedTunableNumber("Elevator/L4PostitionRemoveAlgae", ElevatorConstants.L2_POSITION_REMOVE_ALGAE);
-    private final LoggedTunableNumber elevatorL3RemoveAlgae = new LoggedTunableNumber("Elevator/L4PostitionRemoveAlgae", ElevatorConstants.L3_POSITION_REMOVE_ALGAE);
+    private final LoggedTunableNumber elevatorL2RemoveAlgae = new LoggedTunableNumber("Elevator/L2PostitionRemoveAlgae", ElevatorConstants.L2_POSITION_REMOVE_ALGAE);
+    private final LoggedTunableNumber elevatorL3RemoveAlgae = new LoggedTunableNumber("Elevator/L3PostitionRemoveAlgae", ElevatorConstants.L3_POSITION_REMOVE_ALGAE);
 
     private final LoggedTunableNumber wristMinSafe = new LoggedTunableNumber("Wrist/MinSafePosition", WristConstants.MIN_SAFE_ANGLE_RADIANS);
     private final LoggedTunableNumber wristMaxSafe = new LoggedTunableNumber("Wrist/MaxSafePosition", WristConstants.MAX_SAFE_ANGLE_RADIANS);
@@ -145,37 +145,37 @@ public class Superstructure {
     }
 
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
-        return wrist.setPositionCommand(() -> {
-            double wristTransition;
-            if (targetWristPosition.getAsDouble() >= wristMaxSafe.get()) {
-                // Target pos is greater than safe range, transition in high end of safe range
-                wristTransition = wristMaxSafe.get();
-            } else if (targetWristPosition.getAsDouble() <= wristMinSafe.get()) {
-                // Target pos is lower than safe range, transition in low end of safe range
-                wristTransition = wristMinSafe.get();
-            } else {
-                // Target pos is in safe range, transition with target pos
-                wristTransition = targetWristPosition.getAsDouble();
-            }
-            return wristTransition;
-        });
+        return wrist.setPositionCommand(wristMaxSafe::get);
     }
 
-    public Command algaeIntakeCommand(BooleanSupplier continueIntakingSupplier)  {
+    public Command algaeL2Command(BooleanSupplier continueIntakingSupplier)  {
         return Commands.sequence(
             setArmPosition(ArmPosition.L2_ALGAE),
             algaeClaw.intakeCommand(),
             Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-            algaeClaw.stopCommand(),
-            setArmPosition(ArmPosition.L2_ALGAE)
+            algaeClaw.stopCommand()
+        );
+    }
+
+    public Command algaeL3Command(BooleanSupplier continueIntakingSupplier)  {
+        return Commands.sequence(
+            setArmPosition(ArmPosition.L3_ALGAE),
+            algaeClaw.intakeCommand(),
+            Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+            algaeClaw.stopCommand()
         );
     }
 
     public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
-                setArmPosition(ArmPosition.INTAKE).until(elevator::atTargetPosition),
-                coralClaw.intakeCommand(),
+                Commands.parallel(
+                    setArmPosition(ArmPosition.INTAKE),
+                    Commands.sequence(
+                        Commands.waitUntil(() -> elevator.atPosition(ArmPosition.INTAKE.elevatorPose)),
+                        coralClaw.intakeCommand()
+                    )
+                ),
                 Commands.waitUntil(() -> coralClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
                 Commands.parallel(
                     coralClaw.stopCommand(),

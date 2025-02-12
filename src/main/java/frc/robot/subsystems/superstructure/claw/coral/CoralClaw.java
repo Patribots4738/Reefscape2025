@@ -37,8 +37,8 @@ public class CoralClaw extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        Logger.processInputs("SubsystemInputs/AlgaeClaw", inputs);
-        Logger.recordOutput("Subsystems/AlgaeClaw/HasPiece", hasPiece());
+        Logger.processInputs("SubsystemInputs/CoralClaw", inputs);
+        Logger.recordOutput("Subsystems/CoralClaw/HasPiece", hasPiece());
 
         // Run setpoint on RIO to minimize CAN utilization
         if (shouldRunSetpoint) {

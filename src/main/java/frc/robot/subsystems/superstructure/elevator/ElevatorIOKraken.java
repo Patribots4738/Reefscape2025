@@ -17,7 +17,6 @@ public class ElevatorIOKraken implements ElevatorIO {
     }
 
     private void configMotor(Kraken motor) {
-        motor.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
         motor.setGearRatio(ElevatorConstants.GEAR_RATIO);
         motor.setUnitConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR);
         motor.setSoftLimits(0.0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
@@ -28,6 +27,8 @@ public class ElevatorIOKraken implements ElevatorIO {
 
     private void configMotors() {
         resetEncoders(0);
+        leader.setMotorInverted(ElevatorConstants.MOTOR_INVERTED);
+        follower.setMotorInverted(!ElevatorConstants.MOTOR_INVERTED);
         configMotor(leader);
         configMotor(follower);
         configureProfile(ElevatorConstants.VELOCITY, ElevatorConstants.ACCELERATION, ElevatorConstants.JERK);

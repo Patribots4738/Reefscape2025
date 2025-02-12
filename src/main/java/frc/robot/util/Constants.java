@@ -108,7 +108,7 @@ public final class Constants {
     public static final class DriveConstants {
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
-        public static final double MAX_SPEED_METERS_PER_SECOND = 2.5;
+        public static final double MAX_SPEED_METERS_PER_SECOND = 4.5;
 
         public static final double MAX_ANGULAR_SPEED_RADS_PER_SECOND = Units.degreesToRadians(1137.21); // radians per second
 
@@ -481,7 +481,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double INTAKE_PERCENT = 0.35;
-        public static final double OUTTAKE_PERCENT = -0.15;
+        public static final double OUTTAKE_PERCENT = -0.75;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
@@ -513,13 +513,13 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double GEAR_RATIO = 16.0;
-        public static final double MAX_DISPLACEMENT_METERS = 0.54;
+        public static final double MAX_DISPLACEMENT_METERS = 0.548;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 180d : 800d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 20d : 160d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -536,17 +536,17 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
-        public static final double VELOCITY = 0.25;
+        public static final double VELOCITY = 1d;
         public static final double ACCELERATION = 2d;
         public static final double JERK = 0d;
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
         public static final double L1_POSITION_METERS = 0.0;
-        public static final double L2_POSITION_METERS = 0.13;
+        public static final double L2_POSITION_METERS = 0.12;
         public static final double L3_POSITION_METERS = 0.32;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
-        public static final double L3_POSITION_REMOVE_ALGAE = 0.0;
+        public static final double L3_POSITION_REMOVE_ALGAE = 0.18;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.0;
 
         public static final double DEADBAND_METERS = 0.02;
@@ -602,17 +602,17 @@ public final class Constants {
 
         public static final double RESET_ANGLE_RADIANS = 2.95;
 
-        public static final double MIN_SAFE_ANGLE_RADIANS = 1.05;
+        public static final double MIN_SAFE_ANGLE_RADIANS = 1.7;
         public static final double MAX_SAFE_ANGLE_RADIANS = 1.7;
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double TRANSITION_POSITION_RADIANS = Math.PI / 2.0;
-        public static final double STOW_POSITION_RADIANS = 0;
-        public static final double INTAKE_POSITION_RADIANS = -0.2;
-        public static final double L1_POSITION_RADIANS = 2.85;
-        public static final double L2_POSITION_RADIANS = 2.6;
+        public static final double STOW_POSITION_RADIANS = 0.07;
+        public static final double INTAKE_POSITION_RADIANS = -0.18;
+        public static final double L1_POSITION_RADIANS = 2.8;
+        public static final double L2_POSITION_RADIANS = 2.2;
         public static final double L3_POSITION_RADIANS = 2.22;
-        public static final double L4_POSITION_RADIANS = 2.257;
+        public static final double L4_POSITION_RADIANS = 2.65;
         public static final double ALGAE_REMOVAL = 1.57;
 
 
@@ -686,7 +686,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 

@@ -208,21 +208,30 @@ public class RobotContainer {
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
+        controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
 
-        controller.leftBumper().onTrue(superstructure.algaeIntakeCommand(controller::getLeftBumper));
+        controller.a().onTrue(superstructure.algaeL2Command(controller::getAButton));
 
-        controller.rightTrigger().onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
+        controller.y().onTrue(superstructure.algaeL3Command(controller::getYButton));
 
-        controller.rightBumper().onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
+        controller.rightBumper().onTrue(superstructure.coralPlaceCommand(controller::getRightBumper));
 
-        controller.povDown()
+        controller.povLeft()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
         
-        controller.x()
-            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
-        
+        controller.povDown()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
+
         controller.povRight()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
+
+        controller.povUp()
+            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+        
+        controller.b()
+            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
+
+        controller.x()
             .onTrue(superstructure.stopAllCommand());
 
         // LoggedTunableNumber elevatorTunePose = new LoggedTunableNumber("Elevator/TunePose", 0.0);
@@ -266,14 +275,26 @@ public class RobotContainer {
         controller.povLeft()
             .onTrue(superstructure.setArmPosition(ArmPosition.L2));
             
-        controller.povLeft()
+        controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
 
         controller.y()
             .onTrue(elevator.resetEncodersCommand());
 
+        controller.leftBumper()
+            .onTrue(superstructure.algaeL2Command(controller::getLeftBumper));
+
+        controller.rightBumper()
+            .onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
+
         controller.x()
             .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
+
+        controller.leftTrigger()
+            .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
+
+        controller.rightTrigger()
+            .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
 
         // controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 
