@@ -284,9 +284,6 @@ public class RobotContainer {
         controller.leftBumper()
             .onTrue(superstructure.algaeL2Command(controller::getLeftBumper));
 
-        controller.rightBumper()
-            .onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
-
         controller.x()
             .onTrue(superstructure.setArmState(ArmState.STOW));
 
@@ -384,13 +381,12 @@ public class RobotContainer {
     private void prepareNamedCommands() {
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
-        NamedCommands.registerCommand("ArmStow", superstructure.setArmState(ArmState.STOW));
-        NamedCommands.registerCommand("ArmL1", superstructure.setArmState(ArmState.L1));
-        NamedCommands.registerCommand("ArmL2", superstructure.setArmState(ArmState.L2));
-        NamedCommands.registerCommand("ArmL3", superstructure.setArmState(ArmState.L3));
-        NamedCommands.registerCommand("ArmL4", superstructure.setArmState(ArmState.L4));
+        NamedCommands.registerCommand("ArmStow", superstructure.setSuperState(superstructure.STOW));
+        NamedCommands.registerCommand("ArmL1", superstructure.setSuperState(superstructure.L1));
+        NamedCommands.registerCommand("ArmL2", superstructure.setSuperState(superstructure.L2));
+        NamedCommands.registerCommand("ArmL3", superstructure.setSuperState(superstructure.L3));
+        NamedCommands.registerCommand("ArmL4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
-        NamedCommands.registerCommand("PlaceAlgae", superstructure.algaeAutoPlaceCommand());
     }
 
 }

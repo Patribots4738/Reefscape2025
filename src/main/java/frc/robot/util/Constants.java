@@ -30,12 +30,6 @@ import frc.robot.util.custom.LoggedGainConstants;
 import frc.robot.util.custom.ReefSide;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
-import frc.robot.subsystems.superstructure.SuperState.*;
-import frc.robot.subsystems.superstructure.Superstructure.ArmState;
-import frc.robot.subsystems.superstructure.Superstructure.ClawState;
-import frc.robot.subsystems.superstructure.Superstructure.ClimbState;
-import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
-import frc.robot.subsystems.superstructure.LoggedSuperState;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide

@@ -35,27 +35,26 @@ public class Superstructure {
     private final Supplier<Pose2d> robotPoseSupplier;
 
     private final LoggedTunableNumber wristTransition = new LoggedTunableNumber("Wrist/TransitionPosition", WristConstants.TRANSITION_RADIANS);
-  
     private final LoggedTunableNumber coralClawPlaceTime = new LoggedTunableNumber("CoralClaw/PlaceTime", CoralClawConstants.PLACING_NAMED_COMMAND_TIME);
-    private final LoggedTunableNumber algaeClawPlaceTime = new LoggedTunableNumber("AlgaeClaw/PlaceTime", AlgaeClawConstants.PLACING_NAMED_COMMAND_TIME);
 
-    private final LoggedSuperState STOW;
-    private final LoggedSuperState INTAKE;
-    private final LoggedSuperState L1;
-    private final LoggedSuperState L2;
-    private final LoggedSuperState L3;
-    private final LoggedSuperState L4;
-    private final LoggedSuperState L1_PLACE;
-    private final LoggedSuperState L2_PLACE;
-    private final LoggedSuperState L3_PLACE;
-    private final LoggedSuperState L4_PLACE;
-    private final LoggedSuperState L2_ALGAE;
-    private final LoggedSuperState L3_ALGAE;
-    private final LoggedSuperState CLIMB_READY;
-    private final LoggedSuperState CLIMB_FINAL;
+    public final LoggedSuperState STOW;
+    public final LoggedSuperState INTAKE;
+    public final LoggedSuperState L1;
+    public final LoggedSuperState L2;
+    public final LoggedSuperState L3;
+    public final LoggedSuperState L4;
+    public final LoggedSuperState L1_PLACE;
+    public final LoggedSuperState L2_PLACE;
+    public final LoggedSuperState L3_PLACE;
+    public final LoggedSuperState L4_PLACE;
+    public final LoggedSuperState L2_ALGAE;
+    public final LoggedSuperState L3_ALGAE;
+    public final LoggedSuperState L2_ALGAE_IN;
+    public final LoggedSuperState L3_ALGAE_IN;
+    public final LoggedSuperState CLIMB_READY;
+    public final LoggedSuperState CLIMB_FINAL;
 
-    private SuperState currentState;
-    private SuperState nextState;
+    private SuperState targetState;
 
     public Superstructure(AlgaeClaw algaeClaw, CoralClaw coralClaw, Elevator elevator, Wrist wrist, Climb climb, Supplier<Pose2d> robotPoseSupplier) {
         this.algaeClaw = algaeClaw;
@@ -76,13 +75,14 @@ public class Superstructure {
         L2_PLACE = new LoggedSuperState("L2", ArmState.L2, ClimbState.STOW, ClawState.CORAL_OUT);
         L3_PLACE = new LoggedSuperState("L3", ArmState.L3, ClimbState.STOW, ClawState.CORAL_OUT);
         L4_PLACE = new LoggedSuperState("L4", ArmState.L4, ClimbState.STOW, ClawState.CORAL_OUT);
-        L2_ALGAE = new LoggedSuperState("L2_ALGAE", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
-        L3_ALGAE = new LoggedSuperState("L3_ALGAE", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
+        L2_ALGAE = new LoggedSuperState("L2_ALGAE", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.STOP);
+        L3_ALGAE = new LoggedSuperState("L3_ALGAE", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.STOP);
+        L2_ALGAE_IN = new LoggedSuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
+        L3_ALGAE_IN = new LoggedSuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         CLIMB_READY = new LoggedSuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.STOP);
         CLIMB_FINAL = new LoggedSuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.STOP);
 
-        currentState = STOW;
-        nextState = STOW;
+        targetState = STOW;
     }
 
     public enum ArmState {
@@ -141,6 +141,7 @@ public class Superstructure {
 
     public Command setSuperState(SuperState nextState) {
         return Commands.sequence(
+            Commands.runOnce(() -> this.targetState = nextState),
             stopClaw(),
             Commands.either(
                 Commands.either(
@@ -156,14 +157,14 @@ public class Superstructure {
                     () -> nextState.armState.wristPosition < WristConstants.CLIMB_RADIANS
                 ), 
                 moveToFinalArm(nextState), 
-                () -> climb.getPosition() != nextState.climbState.climbPosition
+                () -> !climb.atPosition(nextState.climbState.climbPosition)
             )
         );
     }
 
     public Command moveToFinalArm(SuperState nextState) {
         return Commands.sequence(
-            Commands.parallel(
+            Commands.deadline(
                 setArmState(nextState.armState),
                 Commands.sequence(
                     Commands.waitUntil(nextState.coralInterruptSupplier),
@@ -220,121 +221,82 @@ public class Superstructure {
 
     public Command algaeL2Command(BooleanSupplier continueIntakingSupplier)  {
         return Commands.sequence(
-            setArmState(ArmState.L2_ALGAE),
-            algaeClaw.intakeCommand(),
-            Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-            algaeClaw.stopCommand()
+            setSuperState(L2_ALGAE_IN),
+            Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
+            setSuperState(L2_ALGAE)
         );
     }
 
     public Command algaeL3Command(BooleanSupplier continueIntakingSupplier)  {
         return Commands.sequence(
-            setArmState(ArmState.L3_ALGAE),
-            algaeClaw.intakeCommand(),
-            Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-            algaeClaw.stopCommand()
+            setSuperState(L3_ALGAE_IN),
+            Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
+            setSuperState(L3_ALGAE)
         );
     }
 
     public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
-                Commands.parallel(
-                    setArmState(ArmState.INTAKE),
-                    coralClaw.intakeCommand()
-                ),
-                Commands.waitUntil(() -> coralClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
-                Commands.parallel(
-                    coralClaw.stopCommand(),
-                    setArmState(ArmState.STOW)
-                )
+                setSuperState(INTAKE),
+                Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
+                setSuperState(STOW)
             );
     }
 
     public Command coralAutoIntakeStartCommand(){
-        return
-            Commands.sequence(
-                setArmState(ArmState.INTAKE),
-                coralClaw.intakeCommand()
-            );
+        return setSuperState(INTAKE);
     }
 
     public Command coralAutoIntakeStopCommand(){
-        return coralClaw.stopCommand();
+        return setSuperState(STOW);
+    }
+
+    public SuperState getPlacementState() {
+        // Derive next state based on current arm target
+        return switch (targetState.armState) {
+            case L2 -> L2_PLACE;
+            case L3 -> L3_PLACE;
+            case L4 -> L4_PLACE;
+            default -> L1_PLACE;
+        };
+    }
+
+    public SuperState getStopState() {
+        // Derive next state based on current arm target
+        // I know the L2 -> L2 thing looks weird, its basically converting the current target ArmState to the next overall SuperState
+        return switch (targetState.armState) {
+            case L2 -> L2;
+            case L3 -> L3;
+            case L4 -> L4;
+            default -> L1;
+        };
     }
 
     public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
-                // Commands.either(
-                //     // Wait until arm stopped
-                //     Commands.waitUntil(this::armAtTargetPosition), 
-                //     // If arm not currently at scoring pos, go to L1
-                //     setArmPosition(ArmPosition.L1), 
-                //     () -> this.armPosition.scoring
-                // ),
-                coralClaw.outtakeCommand(),
+                setSuperState(getPlacementState()),
                 Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-                coralClaw.stopCommand()
-                // setArmPosition(ArmPosition.LOW_STOW)
+                setSuperState(getStopState())
             );
-    }
-
-    public Command algaePlaceCommand(BooleanSupplier continueOuttakingSupplier) {
-        return Commands.sequence(
-            setArmState(ArmState.L2_ALGAE),
-            algaeClaw.intakeCommand(),
-            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-            algaeClaw.stopCommand(),
-            setArmState(ArmState.L2_ALGAE)
-        );
     }
 
     public Command coralAutoPlaceCommand() {
         return
             Commands.sequence(
-                Commands.waitUntil(this::armAtTargetPosition),
-                coralClaw.outtakeTimeCommand(coralClawPlaceTime.get())
-            );
-    }
-
-    public Command algaeAutoPlaceCommand() {
-        return
-            Commands.sequence(
-                Commands.waitUntil(this::armAtTargetPosition),
-                algaeClaw.outtakeTimeCommand(algaeClawPlaceTime.get())
-            );
-    }
-
-    public Command climbStowCommand() {
-        return
-            Commands.sequence(
-                // Move arm out of way for clearance
-                setArmState(ArmState.CLIMB),
-                // Bring climb down to hard-stop
-                climb.stowPositionCommand(),
-                setArmState(ArmState.STOW)
+                setSuperState(getPlacementState()),
+                Commands.waitSeconds(coralClawPlaceTime.get()),
+                setSuperState(getStopState())
             );
     }
 
     public Command climbReadyCommand() {
-        return
-            Commands.sequence(
-                // Move arm down for low CG and out of way for clearance
-                setArmState(ArmState.CLIMB),
-                // Move climb to foot hard-stop
-                climb.readyPositionCommand()
-            );
+        return setSuperState(CLIMB_READY);
     }
 
     public Command climbFinalCommand() {
-        return
-            Commands.sequence(
-                // Move arm down for low CG and out of way for clearance
-                setArmState(ArmState.CLIMB),
-                // Move climb & cage to flat position
-                climb.finalPositionCommand()
-            );
+        return setSuperState(CLIMB_FINAL);
     }
 
     public Command stopAllCommand() {
@@ -350,7 +312,7 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ArmAtTargetPosition")
     public boolean armAtTargetPosition() {
-        return elevator.atTargetPosition() && wrist.atTargetPosition();
+        return elevator.atPosition(targetState.armState.elevatorPosition) && wrist.atPosition(targetState.armState.wristPosition);
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
@@ -361,6 +323,30 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")
     public boolean shouldEvadeReef() {
         return PoseCalculations.nearReef(robotPoseSupplier.get());
+    }
+
+    public SuperState getTargetState() {
+        return targetState;
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/Key")
+    public String getTargetStateKey() {
+        return targetState.key;
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ArmState")
+    public ArmState getTargetArmState() {
+        return targetState.armState;
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ClimbState")
+    public ClimbState getTargetClimbState() {
+        return targetState.climbState;
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ClawState")
+    public ClawState getTargetClawState() {
+        return targetState.clawState;
     }
 
 }

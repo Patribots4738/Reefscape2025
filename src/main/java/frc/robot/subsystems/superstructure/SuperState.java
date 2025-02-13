@@ -8,13 +8,15 @@ import frc.robot.subsystems.superstructure.Superstructure.ClimbState;
 
 public class SuperState {
 
+    public final String key;
     public final ArmState armState;
     public final ClimbState climbState;
     public final ClawState clawState;
     public final BooleanSupplier coralInterruptSupplier;
     public final BooleanSupplier algaeInterruptSupplier;
 
-    public SuperState(ArmState armState, ClimbState climbState, ClawState clawState, BooleanSupplier coralInterruptSupplier, BooleanSupplier algaeInterruptSupplier) {
+    public SuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState, BooleanSupplier coralInterruptSupplier, BooleanSupplier algaeInterruptSupplier) {
+        this.key = key;
         this.armState = armState;
         this.climbState = climbState;
         this.clawState = clawState;
@@ -22,8 +24,8 @@ public class SuperState {
         this.algaeInterruptSupplier = algaeInterruptSupplier;
     }
 
-    public SuperState(ArmState armState, ClimbState climbState, ClawState clawState) {
-        this(armState, climbState, clawState, () -> false, () -> false);
+    public SuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState) {
+        this(key, armState, climbState, clawState, () -> false, () -> false);
     }
 
 }

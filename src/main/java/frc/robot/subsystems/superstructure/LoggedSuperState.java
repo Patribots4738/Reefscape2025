@@ -17,7 +17,7 @@ public class LoggedSuperState extends SuperState {
     LoggedTunableNumber algaePercent;
 
     public LoggedSuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState, BooleanSupplier coralInterruptSupplier, BooleanSupplier algaeInterruptSupplier) {
-        super(armState, climbState, clawState, coralInterruptSupplier, algaeInterruptSupplier);
+        super(key, armState, climbState, clawState, coralInterruptSupplier, algaeInterruptSupplier);
         String mainKey = "SuperStates/" + key;
         String armKey = mainKey + "ArmState/";
         String climbKey = mainKey + "ClimbState/";
