@@ -632,7 +632,7 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
-        public static final double MAX_ANGLE_RADIANS = 1.735;
+        public static final double MAX_ANGLE_RADIANS = 1.5;
 
         public static final double P = !FieldConstants.IS_SIMULATION ? 25d : 0d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -657,7 +657,7 @@ public final class Constants {
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ClimbConstants.GAINS, "Climb");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 1.735;
+        public static final double READY_POSITION_RADIANS = 1.5;
         public static final double FINAL_POSITION_RADIANS = 0.169;
 
         public static final double Y_CHASSIS_OFFSET = 0.0508;
@@ -685,7 +685,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
 
     }
 

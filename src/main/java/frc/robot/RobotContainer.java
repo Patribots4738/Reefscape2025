@@ -266,35 +266,8 @@ public class RobotContainer {
         // controller.y()
         //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
-        controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
-
-        controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
-
-        controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
-            
-        controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
-
-        controller.y()
-            .onTrue(elevator.resetEncodersCommand());
-
         controller.leftBumper()
             .onTrue(superstructure.algaeL2Command(controller::getLeftBumper));
-
-        controller.rightBumper()
-            .onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
-
-        controller.x()
-            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
-
-        controller.leftTrigger()
-            .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
-
-        controller.rightTrigger()
-            .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
 
         // controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 
