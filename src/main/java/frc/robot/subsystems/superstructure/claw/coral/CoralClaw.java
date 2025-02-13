@@ -6,8 +6,11 @@ package frc.robot.subsystems.superstructure.claw.coral;
 
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,17 +31,26 @@ public class CoralClaw extends SubsystemBase {
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
+    private boolean hasPiece = false;
+
+    private final Debouncer hasPieceDebouncer;
     
     public CoralClaw(ClawIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
+        hasPieceDebouncer = new Debouncer(0.25);
     }
 
     @Override
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/CoralClaw", inputs);
-        Logger.recordOutput("Subsystems/CoralClaw/HasPiece", hasPiece());
+
+        // If claw is running, update hasPiece with timed debouncing function.
+        // If it isn't running, assume the coral is in the same state that it was when the claw stopped.
+        if (percentOutput != 0.0) {
+            hasPiece = hasPieceDebouncer.calculate(MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, 10));
+        }
 
         // Run setpoint on RIO to minimize CAN utilization
         if (shouldRunSetpoint) {
@@ -89,8 +101,8 @@ public class CoralClaw extends SubsystemBase {
         );
     }
 
+    @AutoLogOutput (key = "Subsystems/CoralClaw/HasCoral")
     public boolean hasPiece() {
-        // TODO: IMPLEMENT DETECTION LOGIC
-        return false;
+        return hasPiece;
     }
 }

@@ -175,7 +175,7 @@ public class Superstructure {
                         coralClaw.intakeCommand()
                     )
                 ),
-                Commands.waitUntil(() -> coralClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+                Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
                 Commands.parallel(
                     coralClaw.stopCommand(),
                     setArmPosition(ArmPosition.LOW_STOW)
