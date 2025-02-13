@@ -1,4 +1,4 @@
-package frc.robot.subsystems.superstructure.states;
+package frc.robot.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.util.custom.LoggedTunableNumber;

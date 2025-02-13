@@ -1,4 +1,4 @@
-package frc.robot.subsystems.superstructure.states;
+package frc.robot.subsystems.superstructure;
 
 import java.util.function.BooleanSupplier;
 
