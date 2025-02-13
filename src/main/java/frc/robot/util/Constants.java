@@ -31,6 +31,9 @@ import frc.robot.util.custom.ReefSide;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
 import frc.robot.subsystems.superstructure.SuperState.*;
+import frc.robot.subsystems.superstructure.Superstructure.ArmState;
+import frc.robot.subsystems.superstructure.Superstructure.ClawState;
+import frc.robot.subsystems.superstructure.Superstructure.ClimbState;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.LoggedSuperState;
 
@@ -666,31 +669,6 @@ public final class Constants {
         public static final double Y_CHASSIS_OFFSET = 0.0508;
 
         public static final double DEADBAND_RADIANS = Units.degreesToRadians(3.0);
-
-    }
-
-    public static final class SuperstructureConstants {
-
-
-        // public static final ClimbState CLIMB_STOW = new ClimbState(ClimbConstants.STOW_POSITION_RADIANS);
-        // public static final ClimbState CLIMB_READY = new ClimbState(ClimbConstants.READY_POSITION_RADIANS);
-        // public static final ClimbState CLIMB_FINAL = new ClimbState(ClimbConstants.FINAL_POSITION_RADIANS);
-
-        // public static final ArmState ARM_STOW = new ArmState(ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS);
-        // public static final ArmState ARM_INTAKE = new ArmState(ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS);
-        // public static final ArmState ARM_L1 = new ArmState(ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS);
-        // public static final ArmState ARM_L2 = new ArmState(ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS);
-        // public static final ArmState ARM_L3 = new ArmState(ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS);
-        // public static final ArmState ARM_L4 = new ArmState(ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS);
-        // public static final ArmState ARM_CLIMB = new ArmState(ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS);
-        // public static final ArmState ARM_L2_ALGAE = new ArmState(ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL);
-        // public static final ArmState ARM_L3_ALGAE = new ArmState(ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL);
-
-        // public static final ClawState STOP = new ClawState(0, 0, () -> true, () -> true);
-        // public static final ClawState CORAL_IN = new ClawState(CoralClawConstants.INTAKE_PERCENT, 0, () -> true, () -> true);
-
-
-        // public static final LoggedSuperState INTAKE = new LoggedSuperState("INTAKE", null, null, null);
 
     }
 

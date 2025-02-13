@@ -27,7 +27,7 @@ import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.superstructure.Superstructure;
-import frc.robot.subsystems.superstructure.Superstructure.ArmPosition;
+import frc.robot.subsystems.superstructure.Superstructure.ArmState;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClawIOKraken;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
@@ -217,19 +217,19 @@ public class RobotContainer {
         controller.rightBumper().onTrue(superstructure.coralPlaceCommand(controller::getRightBumper));
 
         controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+            .onTrue(superstructure.setArmState(ArmState.L1));
         
         controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
+            .onTrue(superstructure.setArmState(ArmState.L2));
 
         controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
+            .onTrue(superstructure.setArmState(ArmState.L3));
 
         controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+            .onTrue(superstructure.setArmState(ArmState.L4));
         
         controller.b()
-            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
+            .onTrue(superstructure.setArmState(ArmState.STOW));
 
         controller.x()
             .onTrue(superstructure.stopAllCommand());
@@ -267,16 +267,16 @@ public class RobotContainer {
         //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
         controller.povUp()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L4));
+            .onTrue(superstructure.setArmState(ArmState.L4));
 
         controller.povRight()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L3));
+            .onTrue(superstructure.setArmState(ArmState.L3));
 
         controller.povLeft()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L2));
+            .onTrue(superstructure.setArmState(ArmState.L2));
             
         controller.povDown()
-            .onTrue(superstructure.setArmPosition(ArmPosition.L1));
+            .onTrue(superstructure.setArmState(ArmState.L1));
 
         controller.y()
             .onTrue(elevator.resetEncodersCommand());
@@ -288,7 +288,7 @@ public class RobotContainer {
             .onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
 
         controller.x()
-            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
+            .onTrue(superstructure.setArmState(ArmState.STOW));
 
         controller.leftTrigger()
             .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
@@ -384,11 +384,11 @@ public class RobotContainer {
     private void prepareNamedCommands() {
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
-        NamedCommands.registerCommand("ArmStow", superstructure.setArmPosition(ArmPosition.LOW_STOW));
-        NamedCommands.registerCommand("ArmL1", superstructure.setArmPosition(ArmPosition.L1));
-        NamedCommands.registerCommand("ArmL2", superstructure.setArmPosition(ArmPosition.L2));
-        NamedCommands.registerCommand("ArmL3", superstructure.setArmPosition(ArmPosition.L3));
-        NamedCommands.registerCommand("ArmL4", superstructure.setArmPosition(ArmPosition.L4));
+        NamedCommands.registerCommand("ArmStow", superstructure.setArmState(ArmState.STOW));
+        NamedCommands.registerCommand("ArmL1", superstructure.setArmState(ArmState.L1));
+        NamedCommands.registerCommand("ArmL2", superstructure.setArmState(ArmState.L2));
+        NamedCommands.registerCommand("ArmL3", superstructure.setArmState(ArmState.L3));
+        NamedCommands.registerCommand("ArmL4", superstructure.setArmState(ArmState.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
         NamedCommands.registerCommand("PlaceAlgae", superstructure.algaeAutoPlaceCommand());
     }

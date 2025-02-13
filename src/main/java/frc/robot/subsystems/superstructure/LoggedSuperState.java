@@ -1,6 +1,11 @@
 package frc.robot.subsystems.superstructure;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.superstructure.Superstructure.ArmState;
+import frc.robot.subsystems.superstructure.Superstructure.ClawState;
+import frc.robot.subsystems.superstructure.Superstructure.ClimbState;
 import frc.robot.util.custom.LoggedTunableNumber;
 
 public class LoggedSuperState extends SuperState {
@@ -11,8 +16,8 @@ public class LoggedSuperState extends SuperState {
     LoggedTunableNumber coralPercent;
     LoggedTunableNumber algaePercent;
 
-    public LoggedSuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState) {
-        super(armState, climbState, clawState);
+    public LoggedSuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState, BooleanSupplier coralInterruptSupplier, BooleanSupplier algaeInterruptSupplier) {
+        super(armState, climbState, clawState, coralInterruptSupplier, algaeInterruptSupplier);
         String mainKey = "SuperStates/" + key;
         String armKey = mainKey + "ArmState/";
         String climbKey = mainKey + "ClimbState/";
@@ -28,6 +33,10 @@ public class LoggedSuperState extends SuperState {
         climbPosition.onChanged(Commands.runOnce(() -> this.climbState.climbPosition = climbPosition.get()));
         coralPercent.onChanged(Commands.runOnce(() -> this.clawState.coralPercent = coralPercent.get()));
         algaePercent.onChanged(Commands.runOnce(() -> this.clawState.algaePercent = algaePercent.get()));
+    }
+
+    public LoggedSuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState) {
+        this(key, armState, climbState, clawState, () -> false, () -> false);
     }
 
 }
