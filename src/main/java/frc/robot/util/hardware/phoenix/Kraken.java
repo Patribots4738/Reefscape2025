@@ -289,33 +289,33 @@ public class Kraken extends TalonFX {
      * @return The status code indicating the success or failure of setting the target position.
      */
     public StatusCode setTargetPosition(double position, double feedForward, int slot) {
-        
+        double convertedPosition = position / unitConversionFactor;
         StatusCode status = switch (controlPreference) {
             case VOLTAGE ->
                 setControl(
                     positionVoltageRequest
-                        .withPosition(position / unitConversionFactor)
+                        .withPosition(convertedPosition)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                 );
             case TORQUE_CURRENT ->
                 setControl(
                     positionTorqueRequest
-                        .withPosition(position / unitConversionFactor)
+                        .withPosition(convertedPosition)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                 );
             case MM_VOLTAGE ->
                 setControl(
                     positionMMVoltageRequest
-                        .withPosition(position / unitConversionFactor)
+                        .withPosition(convertedPosition)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                 );
             case MM_TORQUE_CURRENT ->
                 setControl(
                     positionMMTorqueRequest
-                        .withPosition(position / unitConversionFactor)
+                        .withPosition(convertedPosition)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                 );
@@ -350,32 +350,33 @@ public class Kraken extends TalonFX {
      * @return The status code indicating the success or failure of the operation.
      */
     public StatusCode setTargetVelocity(double velocity, double feedForward, int slot) {
+        double convertedVelocity = velocity / unitConversionFactor;
         StatusCode status = switch (controlPreference) {
             case VOLTAGE ->
                 setControl(
                     velocityVoltageRequest
-                        .withVelocity(velocity / unitConversionFactor)
+                        .withVelocity(convertedVelocity)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                 );
             case TORQUE_CURRENT ->
                 setControl(
                     velocityTorqueRequest
-                        .withVelocity(velocity / unitConversionFactor)
+                        .withVelocity(convertedVelocity)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                 );
             case MM_VOLTAGE ->
                 setControl(
                     velocityMMVoltageRequest
-                        .withVelocity(velocity / unitConversionFactor)
+                        .withVelocity(convertedVelocity)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                 );
             case MM_TORQUE_CURRENT ->
                 setControl(
                     velocityMMTorqueRequest
-                        .withVelocity(velocity / unitConversionFactor)
+                        .withVelocity(convertedVelocity)
                         .withFeedForward(feedForward)
                         .withSlot(slot)
                 );
