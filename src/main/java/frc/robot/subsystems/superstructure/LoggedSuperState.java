@@ -10,11 +10,11 @@ import frc.robot.util.custom.LoggedTunableNumber;
 
 public class LoggedSuperState extends SuperState {
     
-    LoggedTunableNumber elevatorPosition;
-    LoggedTunableNumber wristPosition;
-    LoggedTunableNumber climbPosition;
-    LoggedTunableNumber coralPercent;
-    LoggedTunableNumber algaePercent;
+    private final LoggedTunableNumber elevatorPosition;
+    private final LoggedTunableNumber wristPosition;
+    private final LoggedTunableNumber climbPosition;
+    private final LoggedTunableNumber coralPercent;
+    private final LoggedTunableNumber algaePercent;
 
     public LoggedSuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState, BooleanSupplier coralInterruptSupplier, BooleanSupplier algaeInterruptSupplier) {
         super(key, armState, climbState, clawState, coralInterruptSupplier, algaeInterruptSupplier);
