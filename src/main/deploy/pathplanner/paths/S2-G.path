@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.0906195508009
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Staged",

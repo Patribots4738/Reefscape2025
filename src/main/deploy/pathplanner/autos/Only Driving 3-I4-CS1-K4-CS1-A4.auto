@@ -103,6 +103,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Only Driving",
   "choreoAuto": false
 }
