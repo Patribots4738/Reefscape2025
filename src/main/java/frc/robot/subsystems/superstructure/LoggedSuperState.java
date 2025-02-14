@@ -19,9 +19,9 @@ public class LoggedSuperState extends SuperState {
     public LoggedSuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState, BooleanSupplier coralInterruptSupplier, BooleanSupplier algaeInterruptSupplier) {
         super(key, armState, climbState, clawState, coralInterruptSupplier, algaeInterruptSupplier);
         String mainKey = "SuperStates/" + key;
-        String armKey = mainKey + "ArmState/";
-        String climbKey = mainKey + "ClimbState/";
-        String clawKey = mainKey + "ClawState/";
+        String armKey = mainKey + "/ArmState/";
+        String climbKey = mainKey + "/ClimbState/";
+        String clawKey = mainKey + "/ClawState/";
         elevatorPosition = new LoggedTunableNumber(armKey + "ElevatorPosition", armState.elevatorPosition);
         wristPosition = new LoggedTunableNumber(armKey + "WristPosition", armState.wristPosition);
         climbPosition = new LoggedTunableNumber(climbKey + "ClimbPosition", climbState.climbPosition);

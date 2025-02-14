@@ -67,15 +67,18 @@ public class Superstructure {
         this.robotPoseSupplier = robotPoseSupplier;
 
         STOW = new LoggedSuperState("STOW", ArmState.STOW, ClimbState.STOW, ClawState.STOP);
-        INTAKE = new LoggedSuperState("INTAKE", ArmState.INTAKE, ClimbState.STOW, ClawState.CORAL_IN);
+
+        targetState = STOW;
+
+        INTAKE = new LoggedSuperState("INTAKE", ArmState.INTAKE, ClimbState.STOW, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
         L1 = new LoggedSuperState("L1", ArmState.L1, ClimbState.STOW, ClawState.STOP);
         L2 = new LoggedSuperState("L2", ArmState.L2, ClimbState.STOW, ClawState.STOP);
         L3 = new LoggedSuperState("L3", ArmState.L3, ClimbState.STOW, ClawState.STOP);
         L4 = new LoggedSuperState("L4", ArmState.L4, ClimbState.STOW, ClawState.STOP);
-        L1_PLACE = new LoggedSuperState("L1", ArmState.L1, ClimbState.STOW, ClawState.CORAL_OUT);
-        L2_PLACE = new LoggedSuperState("L2", ArmState.L2, ClimbState.STOW, ClawState.CORAL_OUT);
-        L3_PLACE = new LoggedSuperState("L3", ArmState.L3, ClimbState.STOW, ClawState.CORAL_OUT);
-        L4_PLACE = new LoggedSuperState("L4", ArmState.L4, ClimbState.STOW, ClawState.CORAL_OUT);
+        L1_PLACE = new LoggedSuperState("L1_PLACE", ArmState.L1, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
+        L2_PLACE = new LoggedSuperState("L2_PLACE", ArmState.L2, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
+        L3_PLACE = new LoggedSuperState("L3_PLACE", ArmState.L3, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
+        L4_PLACE = new LoggedSuperState("L4_PLACE", ArmState.L4, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
         L2_ALGAE = new LoggedSuperState("L2_ALGAE", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.STOP);
         L3_ALGAE = new LoggedSuperState("L3_ALGAE", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.STOP);
         L2_ALGAE_IN = new LoggedSuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
@@ -83,7 +86,6 @@ public class Superstructure {
         CLIMB_READY = new LoggedSuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.STOP);
         CLIMB_FINAL = new LoggedSuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.STOP);
 
-        targetState = STOW;
     }
 
     public enum ArmState {
@@ -143,36 +145,29 @@ public class Superstructure {
     public Command setSuperState(SuperState nextState) {
         return Commands.sequence(
             Commands.runOnce(() -> this.targetState = nextState),
-            stopClaw(),
-            Commands.either(
-                Commands.either(
-                    Commands.sequence(
-                        setArmState(ArmState.CLIMB),
-                        setClimbState(nextState.climbState),
-                        moveToFinalArm(nextState)
-                    ), 
-                    Commands.sequence(
-                        moveToFinalArm(nextState),
-                        setClimbState(nextState.climbState)
-                    ), 
-                    () -> nextState.armState.wristPosition < WristConstants.CLIMB_RADIANS
-                ), 
-                moveToFinalArm(nextState), 
-                () -> !climb.atPosition(nextState.climbState.climbPosition)
-            )
-        );
-    }
-
-    public Command moveToFinalArm(SuperState nextState) {
-        return Commands.sequence(
             Commands.deadline(
-                setArmState(nextState.armState),
+                Commands.either(
+                    Commands.either(
+                        Commands.sequence(
+                            setArmState(ArmState.CLIMB),
+                            setClimbState(nextState.climbState),
+                            setArmState(nextState.armState)
+                        ), 
+                        Commands.sequence(
+                            setArmState(nextState.armState),
+                            setClimbState(nextState.climbState)
+                        ), 
+                        () -> nextState.armState.wristPosition < WristConstants.CLIMB_RADIANS
+                    ), 
+                    setArmState(nextState.armState), 
+                    () -> !climb.atPosition(nextState.climbState.climbPosition)
+                ),
                 Commands.sequence(
-                    Commands.waitUntil(nextState.coralInterruptSupplier),
+                    Commands.waitUntil(() -> nextState.coralInterruptSupplier.getAsBoolean() || nextState.clawState.coralPercent == 0),
                     coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent)
                 ),
                 Commands.sequence(
-                    Commands.waitUntil(nextState.algaeInterruptSupplier),
+                    Commands.waitUntil(() -> nextState.algaeInterruptSupplier.getAsBoolean() || nextState.clawState.algaePercent == 0),
                     algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent)
                 )
             ),
@@ -180,13 +175,6 @@ public class Superstructure {
                 coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent),
                 algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent)
             )
-        );
-    }
-
-    public Command stopClaw() {
-        return Commands.parallel(
-            coralClaw.stopCommand(),
-            algaeClaw.stopCommand()
         );
     }
 
