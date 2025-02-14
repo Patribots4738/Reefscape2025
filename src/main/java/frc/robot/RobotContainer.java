@@ -271,7 +271,7 @@ public class RobotContainer {
 
         controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 
-        // controller.leftBumper().onTrue(superstructure.algaeIntakeCommand(controller::getLeftBumper));
+        controller.y().onTrue(superstructure.algaeL2Command(controller::getYButton));
 
         controller.rightTrigger().onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
 
@@ -280,8 +280,8 @@ public class RobotContainer {
         controller.povDown()
             .onTrue(superstructure.setArmPosition(ArmPosition.L1));
         
-        // controller.x()
-        //     .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
+        controller.x()
+            .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
         
         // controller.povRight()
         //     .onTrue(superstructure.stopAllCommand());

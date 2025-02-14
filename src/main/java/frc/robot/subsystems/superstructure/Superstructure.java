@@ -151,7 +151,7 @@ public class Superstructure {
         return Commands.sequence(
             setArmPosition(ArmPosition.L2_ALGAE),
             algaeClaw.intakeCommand(),
-            Commands.waitUntil(() -> algaeClaw.hasPiece() || !continueIntakingSupplier.getAsBoolean()),
+            Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
             algaeClaw.stopCommand()
         );
     }
