@@ -90,7 +90,7 @@ public class Superstructure {
         STOW (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS),
         INTAKE (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS),
         L1 (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS),
-        L2 (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
+        L2 (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS),
         L3 (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
         L4 (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS),
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
@@ -172,7 +172,7 @@ public class Superstructure {
                 ),
                 Commands.sequence(
                     Commands.waitUntil(nextState.algaeInterruptSupplier),
-                    coralClaw.setPercentCommand(() -> nextState.clawState.algaePercent)
+                    algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent)
                 )
             ),
             Commands.parallel(
@@ -254,23 +254,26 @@ public class Superstructure {
 
     public SuperState getPlacementState() {
         // Derive next state based on current arm target
-        return switch (targetState.armState) {
+        SuperState placementState = switch (targetState.armState) {
             case L2 -> L2_PLACE;
             case L3 -> L3_PLACE;
             case L4 -> L4_PLACE;
             default -> L1_PLACE;
         };
+
+        return placementState;
     }
 
     public SuperState getStopState() {
         // Derive next state based on current arm target
-        // I know the L2 -> L2 thing looks weird, its basically converting the current target ArmState to the next overall SuperState
-        return switch (targetState.armState) {
+        SuperState stopState = switch (targetState.armState) {
             case L2 -> L2;
             case L3 -> L3;
             case L4 -> L4;
             default -> L1;
         };
+
+        return stopState;
     }
 
     public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {

@@ -217,22 +217,19 @@ public class RobotContainer {
         controller.rightBumper().onTrue(superstructure.coralPlaceCommand(controller::getRightBumper));
 
         controller.povLeft()
-            .onTrue(superstructure.setArmState(ArmState.L1));
+            .onTrue(superstructure.setSuperState(superstructure.L1));
         
         controller.povDown()
-            .onTrue(superstructure.setArmState(ArmState.L2));
+            .onTrue(superstructure.setSuperState(superstructure.L2));
 
         controller.povRight()
-            .onTrue(superstructure.setArmState(ArmState.L3));
+            .onTrue(superstructure.setSuperState(superstructure.L3));
 
         controller.povUp()
-            .onTrue(superstructure.setArmState(ArmState.L4));
+            .onTrue(superstructure.setSuperState(superstructure.L4));
         
         controller.b()
-            .onTrue(superstructure.setArmState(ArmState.STOW));
-
-        controller.x()
-            .onTrue(superstructure.stopAllCommand());
+            .onTrue(superstructure.setSuperState(superstructure.STOW));
 
         // LoggedTunableNumber elevatorTunePose = new LoggedTunableNumber("Elevator/TunePose", 0.0);
 
