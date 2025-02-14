@@ -1,5 +1,6 @@
 package frc.robot.subsystems.superstructure;
 
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -279,18 +280,18 @@ public class Superstructure {
     public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {
         return
             Commands.sequence(
-                setSuperState(getPlacementState()),
+                Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb)),
                 Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-                setSuperState(getStopState())
+                Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
             );
     }
 
     public Command coralAutoPlaceCommand() {
         return
             Commands.sequence(
-                setSuperState(getPlacementState()),
+                Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb)),
                 Commands.waitSeconds(coralClawPlaceTime.get()),
-                setSuperState(getStopState())
+                Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
             );
     }
 
