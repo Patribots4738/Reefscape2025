@@ -11,9 +11,12 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
+import frc.robot.Robot.GameMode;
 import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.subsystems.superstructure.claw.ClawIOInputsAutoLogged;
 import frc.robot.util.Constants.CoralClawConstants;
@@ -31,7 +34,7 @@ public class CoralClaw extends SubsystemBase {
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
-    private boolean hasPiece = false;
+    private boolean hasPiece;;
 
     private final Debouncer hasPieceDebouncer;
     
@@ -39,6 +42,7 @@ public class CoralClaw extends SubsystemBase {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
         hasPieceDebouncer = new Debouncer(0.25);
+        hasPiece = DriverStation.isFMSAttached();
     }
 
     @Override
@@ -48,7 +52,9 @@ public class CoralClaw extends SubsystemBase {
 
         // If claw is running, update hasPiece with timed debouncing function.
         // If it isn't running, assume the coral is in the same state that it was when the claw stopped.
-        if (percentOutput != 0.0) {
+        if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSecond > 0 && inputs.statorCurrentAmps < 10) {
+            hasPiece = true;
+        } else if (percentOutput != 0.0) {
             hasPiece = hasPieceDebouncer.calculate(MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, 10));
         }
 
