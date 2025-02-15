@@ -244,64 +244,12 @@ public class RobotContainer {
         // controller.y()
         //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
-        controller.povUp()
-            .onTrue(superstructure.setArmState(ArmState.L4));
-
-        controller.povRight()
-            .onTrue(superstructure.setArmState(ArmState.L3));
-
-        controller.povLeft()
-            .onTrue(superstructure.setArmState(ArmState.L2));
-            
-        controller.povDown()
-            .onTrue(superstructure.setArmState(ArmState.L1));
-
-        controller.y()
-            .onTrue(elevator.resetEncodersCommand());
-
-        controller.leftBumper()
-            .onTrue(superstructure.algaeL2Command(controller::getLeftBumper));
-
-        controller.x()
-            .onTrue(superstructure.setArmState(ArmState.STOW));
-
-        controller.leftTrigger()
-            .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
-
-        controller.rightTrigger()
-            .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
-
-        // controller.leftTrigger().onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
-
-        // controller.leftBumper().onTrue(superstructure.algaeIntakeCommand(controller::getLeftBumper));
-
-        // controller.rightTrigger().onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
-
-        // controller.rightBumper().onTrue(superstructure.algaePlaceCommand(controller::getRightBumper));
-
-        // controller.povDown()
-        //     .onTrue(superstructure.setArmPosition(ArmPosition.L1));
-        
-        // controller.x()
-        //     .onTrue(superstructure.setArmPosition(ArmPosition.LOW_STOW));
-        
-        // controller.povRight()
-        //     .onTrue(superstructure.stopAllCommand());
-
         // controller.leftBumper()
         //     .onTrue(alignment.updateIndexCommand(-1));
 
         // controller.rightBumper()
         //     .onTrue(alignment.updateIndexCommand(1));
 
-        // controller.povUp()
-        //     .onTrue(superstructure.setArmPosition(ArmPosition.L4));
-
-        // controller.povRight()
-        //     .onTrue(superstructure.setArmPosition(ArmPosition.L3));
-
-        // controller.povLeft()
-        //     .onTrue(superstructure.setArmPosition(ArmPosition.L2));
     }
 
     public void updateNTGains() {

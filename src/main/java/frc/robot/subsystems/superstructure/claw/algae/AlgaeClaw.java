@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,6 +29,7 @@ public class AlgaeClaw extends SubsystemBase {
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
+    private boolean hasPiece = false;
     
     public AlgaeClaw(ClawIO io) {
         this.io = io;
@@ -39,6 +41,10 @@ public class AlgaeClaw extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/AlgaeClaw", inputs);
         Logger.recordOutput("Subsystems/AlgaeClaw/HasPiece", hasPiece());
+
+        if (percentOutput != 0.0) {
+            hasPiece = MathUtil.isNear(AlgaeClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, 10);
+        }
 
         // Run setpoint on RIO to minimize CAN utilization
         if (shouldRunSetpoint) {
@@ -90,8 +96,7 @@ public class AlgaeClaw extends SubsystemBase {
     }
 
     public boolean hasPiece() {
-        // TODO: IMPLEMENT DETECTION LOGIC
-        return false;
+        return hasPiece;
     }
 }
 
