@@ -56,6 +56,8 @@ public class Superstructure {
     public final LoggedSuperState CLIMB_FINAL;
 
     private SuperState targetState;
+    private ArmState targetArmState;
+    private ClimbState targetClimbState;
 
     public Superstructure(AlgaeClaw algaeClaw, CoralClaw coralClaw, Elevator elevator, Wrist wrist, Climb climb, Supplier<Pose2d> robotPoseSupplier) {
         this.algaeClaw = algaeClaw;
@@ -69,6 +71,8 @@ public class Superstructure {
         STOW = new LoggedSuperState("STOW", ArmState.STOW, ClimbState.STOW, ClawState.STOP);
 
         targetState = STOW;
+        targetArmState = ArmState.STOW;
+        targetClimbState = ClimbState.STOW;
 
         INTAKE = new LoggedSuperState("INTAKE", ArmState.INTAKE, ClimbState.STOW, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
         L1 = new LoggedSuperState("L1", ArmState.L1, ClimbState.STOW, ClawState.STOP);
@@ -142,44 +146,61 @@ public class Superstructure {
 
     }
 
+    // This command allows us to always transition between superstructure states.
+    // Note that this command is not safe if the end positions are not possible, for example if the final goal has the claw inside the climb.
+    // TODO: Extract some of this logic, it's a bit much
     public Command setSuperState(SuperState nextState) {
-        return Commands.sequence(
-            Commands.runOnce(() -> this.targetState = nextState),
-            Commands.deadline(
-                Commands.either(
+        // Update logged state
+        return Commands.runOnce(() -> this.targetState = nextState).alongWith(
+            Commands.sequence(
+                // Run these commands in parallel, cancel all when first command argument ends
+                Commands.deadline(
                     Commands.either(
-                        Commands.sequence(
-                            setArmState(ArmState.CLIMB),
-                            setClimbState(nextState.climbState),
-                            setArmState(nextState.armState)
+                        // Climb needs to move to achieve goal state
+                        Commands.either(
+                            // Arm goal is unsafe for climb, give way to climb then move arm back in
+                            // TODO: Make this logic more efficient
+                            Commands.sequence(
+                                setArmState(ArmState.CLIMB),
+                                setClimbState(nextState.climbState),
+                                setArmState(nextState.armState)
+                            ), 
+                            // Arm goal is safe for climb, move to arm goal then set climb state
+                            // TODO: Make this logic more efficient
+                            Commands.sequence(
+                                setArmState(nextState.armState),
+                                setClimbState(nextState.climbState)
+                            ), 
+                            () -> nextState.armState.wristPosition < WristConstants.CLIMB_RADIANS
                         ), 
-                        Commands.sequence(
+                        // Climb doesn't need to move, set goal arm state and update climb control loop JIC
+                        Commands.parallel(
                             setArmState(nextState.armState),
                             setClimbState(nextState.climbState)
                         ), 
-                        () -> nextState.armState.wristPosition < WristConstants.CLIMB_RADIANS
-                    ), 
-                    setArmState(nextState.armState), 
-                    () -> !climb.atPosition(nextState.climbState.climbPosition)
+                        () -> !climb.atPosition(nextState.climbState.climbPosition)
+                    ),
+                    // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
+                    Commands.sequence(
+                        Commands.waitUntil(() -> nextState.coralInterruptSupplier.getAsBoolean() || nextState.clawState.coralPercent == 0),
+                        coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent)
+                    ),
+                    Commands.sequence(
+                        Commands.waitUntil(() -> nextState.algaeInterruptSupplier.getAsBoolean() || nextState.clawState.algaePercent == 0),
+                        algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent)
+                    )
                 ),
-                Commands.sequence(
-                    Commands.waitUntil(() -> nextState.coralInterruptSupplier.getAsBoolean() || nextState.clawState.coralPercent == 0),
-                    coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent)
-                ),
-                Commands.sequence(
-                    Commands.waitUntil(() -> nextState.algaeInterruptSupplier.getAsBoolean() || nextState.clawState.algaePercent == 0),
+                // This is for if the suppliers never return true, then make the claws do their state thing
+                Commands.parallel(
+                    coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent),
                     algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent)
                 )
-            ),
-            Commands.parallel(
-                coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent),
-                algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent)
             )
         );
     }
 
     public Command setArmState(ArmState state) {
-        return 
+        return Commands.runOnce(() -> targetArmState = state).alongWith(
             Commands.sequence(
                 Commands.either(
                     // Move wrist to nearest transition pose, unless the arm was previously stowed up (which is a safe spot)
@@ -197,13 +218,16 @@ public class Superstructure {
                 elevator.setPositionCommand(() -> state.elevatorPosition),
                 // Only effectual if wrist just transitioned
                 wrist.setPositionCommand(() -> state.wristPosition)
-            );
+            )
+        );
     }
 
     public Command setClimbState(ClimbState state) {
-        return climb.setPositionCommand(() -> state.climbPosition);
+        return Commands.runOnce(() -> targetClimbState = state)
+                .alongWith(climb.setPositionCommand(() -> state.climbPosition));
     }
 
+    // TODO: MAKE WRIST TRANSITIONS GREAT AGAIN
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
         return wrist.setPositionCommand(wristTransition::get);
     }
@@ -266,21 +290,21 @@ public class Superstructure {
     }
 
     public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {
-        return
-            Commands.sequence(
-                Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb)),
-                Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-                Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
-            );
+        return Commands.sequence(
+            // Figure out the correct SuperState at runtime, so defer
+            Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb)),
+            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
+            Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
+        );
     }
 
     public Command coralAutoPlaceCommand() {
-        return
-            Commands.sequence(
-                Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb)),
-                Commands.waitSeconds(coralClawPlaceTime.get()),
-                Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
-            );
+        return Commands.sequence(
+            // Figure out the correct SuperState at runtime, so defer
+            Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb)),
+            Commands.waitSeconds(coralClawPlaceTime.get()),
+            Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
+        );
     }
 
     public Command climbReadyCommand() {
@@ -328,12 +352,12 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ArmState")
     public ArmState getTargetArmState() {
-        return targetState.armState;
+        return targetArmState;
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ClimbState")
     public ClimbState getTargetClimbState() {
-        return targetState.climbState;
+        return targetClimbState;
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ClawState")

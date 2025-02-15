@@ -231,25 +231,6 @@ public class RobotContainer {
         controller.b()
             .onTrue(superstructure.setSuperState(superstructure.STOW));
 
-        // LoggedTunableNumber elevatorTunePose = new LoggedTunableNumber("Elevator/TunePose", 0.0);
-
-        // controller.y()
-        //     .onTrue(elevator.setPositionCommand(elevatorTunePose::get));
-
-        // controller.a()
-        //     .onTrue(Commands.runOnce(() -> elevatorTunePose.set(elevator.getPosition())).ignoringDisable(true));
-
-        // controller.x()
-        //     .onTrue(elevator.resetEncodersCommand().ignoringDisable(true));
-
-        // LoggedTunableNumber wristTunePose = new LoggedTunableNumber("Wrist/TunePose", 0.0);
-
-        // controller.y()
-        //     .onTrue(wrist.setPositionCommand(wristTunePose::get));
-
-        // controller.a()
-        //     .onTrue(Commands.runOnce(() -> wristTunePose.set(wrist.getPosition())).ignoringDisable(true));
-
     }
 
     private void configureDevBindings(PatriBoxController controller) {
