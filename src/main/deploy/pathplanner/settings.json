@@ -9,7 +9,10 @@
     "Staged",
     "Coral Station"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Full Auto",
+    "Only Driving"
+  ],
   "defaultMaxVel": 3.5,
   "defaultMaxAccel": 8.8,
   "defaultMaxAngVel": 540.0,
