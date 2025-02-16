@@ -31,7 +31,7 @@ public class CoralClaw extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("CoralClaw/BrakeMotor", CoralClawConstants.BRAKE_MOTOR);
     private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("CoralClaw/IntakePercent", CoralClawConstants.INTAKE_PERCENT);
     private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("CoralClaw/OuttakePercent", CoralClawConstants.OUTTAKE_PERCENT);
-    private final LoggedTunableNumber CurrentThresholdHasPieceAmps = new LoggedTunableNumber("CoralCLaw/CurrentThresholdHasPieceAmps", CoralClawConstants.CURRENT_THRESHOLD_HAS_PIECE_AMPS);
+    private final LoggedTunableNumber currentThresholdHasPieceAmps = new LoggedTunableNumber("CoralCLaw/CurrentThresholdHasPieceAmps", CoralClawConstants.CURRENT_THRESHOLD_HAS_PIECE_AMPS);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
@@ -56,12 +56,12 @@ public class CoralClaw extends SubsystemBase {
         if (Robot.gameMode == GameMode.DISABLED && 
             inputs.velocityRotationsPerSecond > 0 &&
             inputs.statorCurrentAmps < 10 && 
-            inputs.statorCurrentAmps <= CurrentThresholdHasPieceAmps.get()) 
+            inputs.statorCurrentAmps < currentThresholdHasPieceAmps.get()) 
         {
             hasPiece = true;
         } 
-        else if (percentOutput != 0.0 && Robot.gameMode != GameMode.DISABLED) {
-            hasPiece = hasPieceDebouncer.calculate(MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, 10));
+        else if (percentOutput != 0.0 && Robot.gameMode != GameMode.DISABLED && inputs.statorCurrentAmps < CoralClawConstants.CURRENT_THRESHOLD_HAS_PIECE_AMPS) {
+            hasPiece = hasPieceDebouncer.calculate(MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, CoralClawConstants.CORAL_CLAW_CURRENT_DEADBAND));
         }
 
         // Run setpoint on RIO to minimize CAN utilization
