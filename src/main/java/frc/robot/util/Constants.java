@@ -159,6 +159,8 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
+
+        public static final String REEF_NODES = "ABCDEFGHIJKL";
         
         // Below is gotten from choreo
         public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.degreesToRadians(1137.21);
