@@ -62,6 +62,7 @@ public class PathPlannerStorage {
 
         return Commands.defer(
             () -> Commands.sequence(
+                    Commands.waitSeconds(.5),
                     NamedCommands.getCommand("CoralIntakeStop"),
                     (Commands.parallel(
                         NamedCommands.getCommand(commandNameToReef),
