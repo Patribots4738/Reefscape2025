@@ -304,7 +304,7 @@ public class RobotContainer {
     }
     
     private void prepareNamedCommands() {
-        
+
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.STOW));
@@ -314,42 +314,33 @@ public class RobotContainer {
         NamedCommands.registerCommand("L4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
 
-
-        Character[] reefNodes = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
-        char[] preLoad = {'1', '2', '3', '4', '5', '6'};
-        String[] reefLevels = {"L1", "L2", "L3", "L4"};
         
         for (int i = 0; i < 12; i++) {
-            char currentNode = reefNodes[i];
-            String currentLevel = "";
+            char currentNode = AutoConstants.REEF_NODES.charAt(i);
 
-            for (int l = 0; l < 4; l++) {
-                currentLevel = reefLevels[l];
+            for (int l = 1; l < 5; l++) {
+                String currentLevel = "L" + l;
+                String commandName = currentNode + "-" + currentLevel;
+            
+                NamedCommands.registerCommand(commandName, pathPlannerStorage.autoToReef(currentNode, currentLevel));
+
+                System.out.println(commandName);
             }
-            
-            String commandName = currentNode + "-" + currentLevel;
-
-            System.out.println(commandName);
-            
-            NamedCommands.registerCommand(commandName, pathPlannerStorage.AutoToReef(currentNode, currentLevel));
         }
 
-        for (int i = 0; i < 6; i++) {
-            char currentPreLoad = preLoad[i];
-            char currentNode = ' ';
-            String currentLevel = "";
+        for (int m = 1; m < 7; m++) {
+            int currentPreLoad = m;
 
-            for (int l = 0; l < 4; l++) {
-                currentLevel = reefLevels[l];
+            for (int i = 0; i < 12; i++) {
+                char currentNode = AutoConstants.REEF_NODES.charAt(i);
+
+                for (int l = 1; l < 5; l++) {
+                    String currentLevel = "L" + l;
+                    String commandName = currentPreLoad + "-" + currentNode + "-" + currentLevel;
+
+                    NamedCommands.registerCommand(commandName, pathPlannerStorage.preLoadToReef(currentPreLoad, currentNode, currentLevel));
+                }
             }
-
-            for (int m = 0; m < 12; m++) {
-                currentNode = reefNodes[m];
-            }
-
-            String commandName = currentPreLoad + "-" + currentNode + "-" + currentLevel;
-
-            NamedCommands.registerCommand(commandName, pathPlannerStorage.PreLoadToReef(currentPreLoad, currentNode, currentLevel));
         }
     }
 }

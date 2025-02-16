@@ -48,15 +48,8 @@ public class PathPlannerStorage {
         requirements = NamedCommands.getCommand("Stow").getRequirements();
     }
 
-    public Command AutoToReef(Character reefNode, String reefLevel) {
-        String coralStation = "";
-
-        if (reefNode > 'G' || reefNode == 'A') {
-            coralStation = "CS1";
-        } else {
-            coralStation = "CS2";
-        }
-
+    public Command autoToReef(char reefNode, String reefLevel) {
+        String coralStation = reefNode > 'G' || reefNode == 'A' ? "CS1" : "CS2";
         String commandNameToReef = coralStation + "-" + reefNode;
         String commandNameFromReef = reefNode + "-" + coralStation;
 
@@ -74,19 +67,11 @@ public class PathPlannerStorage {
                         NamedCommands.getCommand("Stow")
                     ),
                     NamedCommands.getCommand("CoralIntakeStart")
-            ), 
-                requirements);
+            ), requirements);
     }
 
-    public Command PreLoadToReef(char startPose, char reefNode, String reefLevel) {
-        String coralStation = "";
-
-        if (reefNode > 'G' || reefNode == 'A') {
-            coralStation = "CS1";
-        } else {
-            coralStation = "CS2";
-        }
-
+    public Command preLoadToReef(int startPose, char reefNode, String reefLevel) {
+        String coralStation = reefNode > 'G' || reefNode == 'A' ? "CS1" : "CS2";
         String commandNamePreLoad = startPose + "-" + reefNode;
         String commandNameFromReef = reefNode + "-" + coralStation;
 
