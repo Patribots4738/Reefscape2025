@@ -17,7 +17,6 @@ import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.util.Constants.AlgaeClawConstants;
-import frc.robot.util.Constants.ArmConstants;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.ElevatorConstants;
@@ -228,14 +227,14 @@ public class Superstructure {
                 .alongWith(climb.setPositionCommand(() -> state.climbPosition));
     }
 
-    // TODO: MAKE WRIST TRANSITIONS GREAT AGAIN
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
         Commands.either(
-            wrist.setPositionCommand(ArmConstants.AGAINST_REEF_RADIANS),
-            wrist.setPositionCommand(ArmConstants.OFF_REEF_RADIANS),
+            wrist.setPositionCommand(WristConstants.AGAINST_REEF_RADIANS),
+            wrist.setPositionCommand(WristConstants.OFF_REEF_RADIANS),
             
-            ()-> shouldEvadeReef()
+            ()-> shouldEvadeReefUnder()
         );
+        
         return wrist.setPositionCommand(wristTransition::get);
     }
 
@@ -346,6 +345,11 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")
     public boolean shouldEvadeReef() {
         return PoseCalculations.nearReef(robotPoseSupplier.get());
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReefUnder")
+    public boolean shouldEvadeReefUnder() {
+        return PoseCalculations.nearReef(robotPoseSupplier.get()) && wrist.atPosition(WristConstants.UNDER_THRESHOLD_RADIANS);
     }
 
     public SuperState getTargetState() {

@@ -4,16 +4,16 @@
 
 package frc.robot.util.calc;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.google.flatbuffers.Constants;
+
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.util.Constants.ArmConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
 
@@ -89,7 +89,9 @@ public class PoseCalculations {
     }
 
     public static boolean nearReef(Pose2d pos) {
-        return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < ArmConstants.NEAR_REEF;
+        return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < FieldConstants.NEAR_REEF;
     }
+
+    
 
 }

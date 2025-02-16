@@ -614,14 +614,11 @@ public final class Constants {
         public static final double L4_POSITION_RADIANS = 2.65;
         public static final double ALGAE_REMOVAL = 1.57;
 
-
+        public static final double AGAINST_REEF_RADIANS = Math.PI/2;
+        public static final double OFF_REEF_RADIANS = Math.PI/2;
+        public static final double UNDER_THRESHOLD_RADIANS = Math.PI/3;
     }
 
-    public static final class ArmConstants{
-        public static final double AGAINST_REEF_RADIANS = 0.0;
-        public static final double OFF_REEF_RADIANS = 0.0;
-        public static final double NEAR_REEF = 0.0; //1.4??
-    }
 
     public static final class ClimbConstants {
 
@@ -989,6 +986,8 @@ public final class Constants {
         public static final Pose2d GET_RESET_ODO_POSITION() {
             return RESET_ODO_POSITIONS.get(Robot.isRedAlliance() ? 1 : 0);
         }
+
+        public static final double NEAR_REEF = 1.4; 
 
     }
 
