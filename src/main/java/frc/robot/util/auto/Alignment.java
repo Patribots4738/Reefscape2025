@@ -9,10 +9,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.ReefSide;
@@ -31,6 +31,7 @@ public class Alignment {
         INTAKE,
         CAGE,
         REEF,
+        REEF_SOFT,
         NONE
     }
 
@@ -92,10 +93,15 @@ public class Alignment {
     }
 
     public ChassisSpeeds getIntakeAutoSpeeds() {
-        Rotation2d intakeRotation = swerve.getPose().nearest(FieldConstants.GET_CORAL_STATION_POSITIONS()).getRotation();
+        Rotation2d intakeRotation = PoseCalculations.getClosestCoralStation(swerve.getPose()).getRotation();
         return getAutoRotationalSpeeds(intakeRotation);
     }
 
+    public ChassisSpeeds getReefRotationalAutoSpeeds() {
+        Rotation2d reefRotation = PoseCalculations.getClosestReefSide(swerve.getPose()).getRotation();
+        return getAutoRotationalSpeeds(reefRotation);
+    }
+    
     public ChassisSpeeds getCageAutoSpeeds() {
         Pose2d cagePose;
         if (alignmentIndex == -1) {
@@ -217,12 +223,19 @@ public class Alignment {
     }
 
     public Command intakeAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
-        return 
-            autoAlignmentCommand(
-                AlignmentMode.INTAKE, 
-                this::getIntakeAutoSpeeds, 
-                () -> getControllerSpeeds(driverX.getAsDouble(), 
-                driverY.getAsDouble()));
+        return autoAlignmentCommand(
+            AlignmentMode.INTAKE, 
+            this::getIntakeAutoSpeeds, 
+            () -> getControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble())
+        );
+    }
+
+    public Command reefRotationalAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
+        return autoAlignmentCommand(
+            AlignmentMode.REEF_SOFT,
+            this::getReefRotationalAutoSpeeds,
+            () -> getControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble())
+        );
     }
 
     public Command cageAlignmentCommand(DoubleSupplier driverY) {
