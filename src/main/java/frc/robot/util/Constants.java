@@ -588,7 +588,7 @@ public final class Constants {
         public static final double JERK = 0d;
 
         public static final double GEAR_RATIO = 60.0;
-      
+    
         public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
@@ -615,6 +615,12 @@ public final class Constants {
         public static final double ALGAE_REMOVAL = 1.57;
 
 
+    }
+
+    public static final class ArmConstants{
+        public static final double AGAINST_REEF_RADIANS = 0.0;
+        public static final double OFF_REEF_RADIANS = 0.0;
+        public static final double NEAR_REEF = 0.0; //1.4??
     }
 
     public static final class ClimbConstants {

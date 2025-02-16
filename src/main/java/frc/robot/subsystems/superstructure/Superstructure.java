@@ -17,6 +17,7 @@ import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.util.Constants.AlgaeClawConstants;
+import frc.robot.util.Constants.ArmConstants;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.ElevatorConstants;
@@ -26,7 +27,7 @@ import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
 public class Superstructure {
-     
+    
     private final AlgaeClaw algaeClaw;
     private final CoralClaw coralClaw;
     private final Elevator elevator;
@@ -229,6 +230,12 @@ public class Superstructure {
 
     // TODO: MAKE WRIST TRANSITIONS GREAT AGAIN
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
+        Commands.either(
+            wrist.setPositionCommand(ArmConstants.AGAINST_REEF_RADIANS),
+            wrist.setPositionCommand(ArmConstants.OFF_REEF_RADIANS),
+            
+            ()-> shouldEvadeReef()
+        );
         return wrist.setPositionCommand(wristTransition::get);
     }
 
