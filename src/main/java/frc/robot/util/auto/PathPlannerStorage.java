@@ -50,6 +50,7 @@ public class PathPlannerStorage {
 
     public Command AutoToReef(Character reefNode, String reefLevel) {
         String coralStation = "";
+
         if (reefNode > 'G' || reefNode == 'A') {
             coralStation = "CS1";
         } else {
@@ -61,18 +62,47 @@ public class PathPlannerStorage {
 
         return Commands.defer(
             () -> Commands.sequence(
+                    NamedCommands.getCommand("CoralIntakeStop"),
                     (Commands.parallel(
                         NamedCommands.getCommand(commandNameToReef),
-                        NamedCommands.getCommand(reefLevel))),
+                        NamedCommands.getCommand(reefLevel)
+                    )),
                     NamedCommands.getCommand("PlaceCoral"),
                     Commands.parallel(
                         NamedCommands.getCommand(commandNameFromReef),
-                        NamedCommands.getCommand("Stow")),
-                    NamedCommands.getCommand("CoralIntakeStart")), 
+                        NamedCommands.getCommand("Stow")
+                    ),
+                    NamedCommands.getCommand("CoralIntakeStart")
+            ), 
                 requirements);
     }
 
+    public Command PreLoadToReef(char startPose, char reefNode, String reefLevel) {
+        String coralStation = "";
 
+        if (reefNode > 'G' || reefNode == 'A') {
+            coralStation = "CS1";
+        } else {
+            coralStation = "CS2";
+        }
+
+        String commandNamePreLoad = startPose + "-" + reefNode;
+        String commandNameFromReef = reefNode + "-" + coralStation;
+
+        return Commands.defer(
+            () -> Commands.sequence(
+                (Commands.parallel(
+                    NamedCommands.getCommand(commandNamePreLoad),
+                    NamedCommands.getCommand(reefLevel)
+                )),
+                NamedCommands.getCommand("PlaceCoral"),
+                Commands.parallel(
+                    NamedCommands.getCommand(commandNameFromReef),
+                    NamedCommands.getCommand("Stow")
+                ),
+                NamedCommands.getCommand("CoralIntakeStart")
+            ), requirements);
+    }
     
     public void configureAutoChooser() {
         /**

@@ -304,6 +304,7 @@ public class RobotContainer {
     }
     
     private void prepareNamedCommands() {
+        
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.STOW));
@@ -314,87 +315,41 @@ public class RobotContainer {
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
 
 
-        NamedCommands.registerCommand("A-L4", pathPlannerStorage.AutoToReef('A', "L4"));
-        NamedCommands.registerCommand("B-L4", pathPlannerStorage.AutoToReef('B', "L4"));
-        NamedCommands.registerCommand("C-L4", pathPlannerStorage.AutoToReef('C', "L4"));
-        NamedCommands.registerCommand("D-L4", pathPlannerStorage.AutoToReef('D', "L4"));
-        NamedCommands.registerCommand("E-L4", pathPlannerStorage.AutoToReef('E', "L4"));
-        NamedCommands.registerCommand("F-L4", pathPlannerStorage.AutoToReef('F', "L4"));
-        NamedCommands.registerCommand("G-L4", pathPlannerStorage.AutoToReef('G', "L4"));
-        NamedCommands.registerCommand("H-L4", pathPlannerStorage.AutoToReef('H', "L4"));
-        NamedCommands.registerCommand("I-L4", pathPlannerStorage.AutoToReef('I', "L4"));
-        NamedCommands.registerCommand("J-L4", pathPlannerStorage.AutoToReef('J', "L4"));
-        NamedCommands.registerCommand("K-L4", pathPlannerStorage.AutoToReef('K', "L4"));
-        NamedCommands.registerCommand("L-L4", pathPlannerStorage.AutoToReef('L', "L4"));
+        Character[] reefNodes = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
+        char[] preLoad = {'1', '2', '3', '4', '5', '6'};
+        String[] reefLevels = {"L1", "L2", "L3", "L4"};
+        
+        for (int i = 0; i < 12; i++) {
+            char currentNode = reefNodes[i];
+            String currentLevel = "";
 
-        NamedCommands.registerCommand("A-L4", pathPlannerStorage.AutoToReef('A', "L3"));
-        NamedCommands.registerCommand("B-L4", pathPlannerStorage.AutoToReef('B', "L3"));
-        NamedCommands.registerCommand("C-L4", pathPlannerStorage.AutoToReef('C', "L3"));
-        NamedCommands.registerCommand("D-L4", pathPlannerStorage.AutoToReef('D', "L3"));
-        NamedCommands.registerCommand("E-L4", pathPlannerStorage.AutoToReef('E', "L3"));
-        NamedCommands.registerCommand("F-L4", pathPlannerStorage.AutoToReef('F', "L3"));
-        NamedCommands.registerCommand("G-L4", pathPlannerStorage.AutoToReef('G', "L3"));
-        NamedCommands.registerCommand("H-L4", pathPlannerStorage.AutoToReef('H', "L3"));
-        NamedCommands.registerCommand("I-L4", pathPlannerStorage.AutoToReef('I', "L3"));
-        NamedCommands.registerCommand("J-L4", pathPlannerStorage.AutoToReef('J', "L3"));
-        NamedCommands.registerCommand("K-L4", pathPlannerStorage.AutoToReef('K', "L3"));
-        NamedCommands.registerCommand("L-L4", pathPlannerStorage.AutoToReef('L', "L3"));
+            for (int l = 0; l < 4; l++) {
+                currentLevel = reefLevels[l];
+            }
+            
+            String commandName = currentNode + "-" + currentLevel;
 
-        NamedCommands.registerCommand("A-L4", pathPlannerStorage.AutoToReef('A', "L2"));
-        NamedCommands.registerCommand("B-L4", pathPlannerStorage.AutoToReef('B', "L2"));
-        NamedCommands.registerCommand("C-L4", pathPlannerStorage.AutoToReef('C', "L2"));
-        NamedCommands.registerCommand("D-L4", pathPlannerStorage.AutoToReef('D', "L2"));
-        NamedCommands.registerCommand("E-L4", pathPlannerStorage.AutoToReef('E', "L2"));
-        NamedCommands.registerCommand("F-L4", pathPlannerStorage.AutoToReef('F', "L2"));
-        NamedCommands.registerCommand("G-L4", pathPlannerStorage.AutoToReef('G', "L2"));
-        NamedCommands.registerCommand("H-L4", pathPlannerStorage.AutoToReef('H', "L2"));
-        NamedCommands.registerCommand("I-L4", pathPlannerStorage.AutoToReef('I', "L2"));
-        NamedCommands.registerCommand("J-L4", pathPlannerStorage.AutoToReef('J', "L2"));
-        NamedCommands.registerCommand("K-L4", pathPlannerStorage.AutoToReef('K', "L2"));
-        NamedCommands.registerCommand("L-L4", pathPlannerStorage.AutoToReef('L', "L2"));
+            System.out.println(commandName);
+            
+            NamedCommands.registerCommand(commandName, pathPlannerStorage.AutoToReef(currentNode, currentLevel));
+        }
 
-        NamedCommands.registerCommand("A-L4", pathPlannerStorage.AutoToReef('A', "L1"));
-        NamedCommands.registerCommand("B-L4", pathPlannerStorage.AutoToReef('B', "L1"));
-        NamedCommands.registerCommand("C-L4", pathPlannerStorage.AutoToReef('C', "L1"));
-        NamedCommands.registerCommand("D-L4", pathPlannerStorage.AutoToReef('D', "L1"));
-        NamedCommands.registerCommand("E-L4", pathPlannerStorage.AutoToReef('E', "L1"));
-        NamedCommands.registerCommand("F-L4", pathPlannerStorage.AutoToReef('F', "L1"));
-        NamedCommands.registerCommand("G-L4", pathPlannerStorage.AutoToReef('G', "L1"));
-        NamedCommands.registerCommand("H-L4", pathPlannerStorage.AutoToReef('H', "L1"));
-        NamedCommands.registerCommand("I-L4", pathPlannerStorage.AutoToReef('I', "L1"));
-        NamedCommands.registerCommand("J-L4", pathPlannerStorage.AutoToReef('J', "L1"));
-        NamedCommands.registerCommand("K-L4", pathPlannerStorage.AutoToReef('K', "L1"));
-        NamedCommands.registerCommand("L-L4", pathPlannerStorage.AutoToReef('L', "L1"));
+        for (int i = 0; i < 6; i++) {
+            char currentPreLoad = preLoad[i];
+            char currentNode = ' ';
+            String currentLevel = "";
 
+            for (int l = 0; l < 4; l++) {
+                currentLevel = reefLevels[l];
+            }
 
-        NamedCommands.getCommand("CS1-L");
-        NamedCommands.getCommand("L-CS1");
+            for (int m = 0; m < 12; m++) {
+                currentNode = reefNodes[m];
+            }
 
-        NamedCommands.getCommand("CS1-K");
-        NamedCommands.getCommand("K-CS1");
+            String commandName = currentPreLoad + "-" + currentNode + "-" + currentLevel;
 
-        NamedCommands.getCommand("CS1-J");
-        NamedCommands.getCommand("J-CS1");
-
-        NamedCommands.getCommand("I-CS1");
-        NamedCommands.getCommand("CS1-I");
-
-        NamedCommands.getCommand("CS2-F");
-        NamedCommands.getCommand("F-CS2");
-
-        NamedCommands.getCommand("CS2-E");
-        NamedCommands.getCommand("E-CS2");
-
-        NamedCommands.getCommand("CS2-D");
-        NamedCommands.getCommand("D-CS2");
-
-        NamedCommands.getCommand("CS2-C");
-        NamedCommands.getCommand("C-CS2");
-
-        NamedCommands.getCommand("CS2-B");
-        NamedCommands.getCommand("B-CS2");
-
-        NamedCommands.getCommand("CS1-A");
-        NamedCommands.getCommand("A-CS1");
+            NamedCommands.registerCommand(commandName, pathPlannerStorage.PreLoadToReef(currentPreLoad, currentNode, currentLevel));
+        }
     }
 }
