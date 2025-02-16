@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
+import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 
 public class PoseCalculations {
 
@@ -89,4 +90,8 @@ public class PoseCalculations {
         return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 1.4;
     }
 
+    public static boolean shouldReefAlign(Pose2d pos) {
+        return pos.getTranslation().getDistance(getClosestCoralStation(pos).getTranslation()) > 1.5 && hasPiece();
+    }
+    
 }
