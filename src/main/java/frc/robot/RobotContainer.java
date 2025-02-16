@@ -27,7 +27,6 @@ import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.superstructure.Superstructure;
-import frc.robot.subsystems.superstructure.Superstructure.ArmState;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClawIOKraken;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
