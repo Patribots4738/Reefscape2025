@@ -3,7 +3,6 @@ package frc.robot.subsystems.superstructure.claw.coral;
 import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.hardware.rev.Neo;
-import frc.robot.util.hardware.rev.SafeSpark.TelemetryPreference;
 
 public class CoralClawIONeo implements ClawIO {
     
