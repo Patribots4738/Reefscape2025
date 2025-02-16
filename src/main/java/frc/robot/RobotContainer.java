@@ -24,20 +24,19 @@ import frc.robot.commands.characterization.StaticCharacterization;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
 import frc.robot.subsystems.drive.Swerve;
-import frc.robot.subsystems.vision.Vision;
-import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.superstructure.Superstructure;
-import frc.robot.subsystems.superstructure.Superstructure.ArmState;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClawIOKraken;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClawIOKraken;
+import frc.robot.subsystems.superstructure.climb.Climb;
+import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.elevator.ElevatorIOKraken;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
-import frc.robot.subsystems.superstructure.climb.Climb;
-import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
@@ -307,12 +306,95 @@ public class RobotContainer {
     private void prepareNamedCommands() {
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
-        NamedCommands.registerCommand("ArmStow", superstructure.setSuperState(superstructure.STOW));
-        NamedCommands.registerCommand("ArmL1", superstructure.setSuperState(superstructure.L1));
-        NamedCommands.registerCommand("ArmL2", superstructure.setSuperState(superstructure.L2));
-        NamedCommands.registerCommand("ArmL3", superstructure.setSuperState(superstructure.L3));
-        NamedCommands.registerCommand("ArmL4", superstructure.setSuperState(superstructure.L4));
+        NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.STOW));
+        NamedCommands.registerCommand("L1", superstructure.setSuperState(superstructure.L1));
+        NamedCommands.registerCommand("L2", superstructure.setSuperState(superstructure.L2));
+        NamedCommands.registerCommand("L3", superstructure.setSuperState(superstructure.L3));
+        NamedCommands.registerCommand("L4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
-    }
 
+
+        NamedCommands.registerCommand("A-L4", pathPlannerStorage.AutoToReef('A', "L4"));
+        NamedCommands.registerCommand("B-L4", pathPlannerStorage.AutoToReef('B', "L4"));
+        NamedCommands.registerCommand("C-L4", pathPlannerStorage.AutoToReef('C', "L4"));
+        NamedCommands.registerCommand("D-L4", pathPlannerStorage.AutoToReef('D', "L4"));
+        NamedCommands.registerCommand("E-L4", pathPlannerStorage.AutoToReef('E', "L4"));
+        NamedCommands.registerCommand("F-L4", pathPlannerStorage.AutoToReef('F', "L4"));
+        NamedCommands.registerCommand("G-L4", pathPlannerStorage.AutoToReef('G', "L4"));
+        NamedCommands.registerCommand("H-L4", pathPlannerStorage.AutoToReef('H', "L4"));
+        NamedCommands.registerCommand("I-L4", pathPlannerStorage.AutoToReef('I', "L4"));
+        NamedCommands.registerCommand("J-L4", pathPlannerStorage.AutoToReef('J', "L4"));
+        NamedCommands.registerCommand("K-L4", pathPlannerStorage.AutoToReef('K', "L4"));
+        NamedCommands.registerCommand("L-L4", pathPlannerStorage.AutoToReef('L', "L4"));
+
+        NamedCommands.registerCommand("A-L4", pathPlannerStorage.AutoToReef('A', "L3"));
+        NamedCommands.registerCommand("B-L4", pathPlannerStorage.AutoToReef('B', "L3"));
+        NamedCommands.registerCommand("C-L4", pathPlannerStorage.AutoToReef('C', "L3"));
+        NamedCommands.registerCommand("D-L4", pathPlannerStorage.AutoToReef('D', "L3"));
+        NamedCommands.registerCommand("E-L4", pathPlannerStorage.AutoToReef('E', "L3"));
+        NamedCommands.registerCommand("F-L4", pathPlannerStorage.AutoToReef('F', "L3"));
+        NamedCommands.registerCommand("G-L4", pathPlannerStorage.AutoToReef('G', "L3"));
+        NamedCommands.registerCommand("H-L4", pathPlannerStorage.AutoToReef('H', "L3"));
+        NamedCommands.registerCommand("I-L4", pathPlannerStorage.AutoToReef('I', "L3"));
+        NamedCommands.registerCommand("J-L4", pathPlannerStorage.AutoToReef('J', "L3"));
+        NamedCommands.registerCommand("K-L4", pathPlannerStorage.AutoToReef('K', "L3"));
+        NamedCommands.registerCommand("L-L4", pathPlannerStorage.AutoToReef('L', "L3"));
+
+        NamedCommands.registerCommand("A-L4", pathPlannerStorage.AutoToReef('A', "L2"));
+        NamedCommands.registerCommand("B-L4", pathPlannerStorage.AutoToReef('B', "L2"));
+        NamedCommands.registerCommand("C-L4", pathPlannerStorage.AutoToReef('C', "L2"));
+        NamedCommands.registerCommand("D-L4", pathPlannerStorage.AutoToReef('D', "L2"));
+        NamedCommands.registerCommand("E-L4", pathPlannerStorage.AutoToReef('E', "L2"));
+        NamedCommands.registerCommand("F-L4", pathPlannerStorage.AutoToReef('F', "L2"));
+        NamedCommands.registerCommand("G-L4", pathPlannerStorage.AutoToReef('G', "L2"));
+        NamedCommands.registerCommand("H-L4", pathPlannerStorage.AutoToReef('H', "L2"));
+        NamedCommands.registerCommand("I-L4", pathPlannerStorage.AutoToReef('I', "L2"));
+        NamedCommands.registerCommand("J-L4", pathPlannerStorage.AutoToReef('J', "L2"));
+        NamedCommands.registerCommand("K-L4", pathPlannerStorage.AutoToReef('K', "L2"));
+        NamedCommands.registerCommand("L-L4", pathPlannerStorage.AutoToReef('L', "L2"));
+
+        NamedCommands.registerCommand("A-L4", pathPlannerStorage.AutoToReef('A', "L1"));
+        NamedCommands.registerCommand("B-L4", pathPlannerStorage.AutoToReef('B', "L1"));
+        NamedCommands.registerCommand("C-L4", pathPlannerStorage.AutoToReef('C', "L1"));
+        NamedCommands.registerCommand("D-L4", pathPlannerStorage.AutoToReef('D', "L1"));
+        NamedCommands.registerCommand("E-L4", pathPlannerStorage.AutoToReef('E', "L1"));
+        NamedCommands.registerCommand("F-L4", pathPlannerStorage.AutoToReef('F', "L1"));
+        NamedCommands.registerCommand("G-L4", pathPlannerStorage.AutoToReef('G', "L1"));
+        NamedCommands.registerCommand("H-L4", pathPlannerStorage.AutoToReef('H', "L1"));
+        NamedCommands.registerCommand("I-L4", pathPlannerStorage.AutoToReef('I', "L1"));
+        NamedCommands.registerCommand("J-L4", pathPlannerStorage.AutoToReef('J', "L1"));
+        NamedCommands.registerCommand("K-L4", pathPlannerStorage.AutoToReef('K', "L1"));
+        NamedCommands.registerCommand("L-L4", pathPlannerStorage.AutoToReef('L', "L1"));
+
+
+        NamedCommands.getCommand("CS1-L");
+        NamedCommands.getCommand("L-CS1");
+
+        NamedCommands.getCommand("CS1-K");
+        NamedCommands.getCommand("K-CS1");
+
+        NamedCommands.getCommand("CS1-J");
+        NamedCommands.getCommand("J-CS1");
+
+        NamedCommands.getCommand("I-CS1");
+        NamedCommands.getCommand("CS1-I");
+
+        NamedCommands.getCommand("CS2-F");
+        NamedCommands.getCommand("F-CS2");
+
+        NamedCommands.getCommand("CS2-E");
+        NamedCommands.getCommand("E-CS2");
+
+        NamedCommands.getCommand("CS2-D");
+        NamedCommands.getCommand("D-CS2");
+
+        NamedCommands.getCommand("CS2-C");
+        NamedCommands.getCommand("C-CS2");
+
+        NamedCommands.getCommand("CS2-B");
+        NamedCommands.getCommand("B-CS2");
+
+        NamedCommands.getCommand("CS1-A");
+        NamedCommands.getCommand("A-CS1");
+    }
 }
