@@ -31,10 +31,11 @@ public class CoralClaw extends SubsystemBase {
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("CoralClaw/BrakeMotor", CoralClawConstants.BRAKE_MOTOR);
     private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("CoralClaw/IntakePercent", CoralClawConstants.INTAKE_PERCENT);
     private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("CoralClaw/OuttakePercent", CoralClawConstants.OUTTAKE_PERCENT);
+    private final LoggedTunableNumber CurrentThresholdHasPieceAmps = new LoggedTunableNumber("CoralCLaw/CurrentThresholdHasPieceAmps", CoralClawConstants.CURRENT_THRESHOLD_HAS_PIECE_AMPS);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
-    private boolean hasPiece;;
+    private boolean hasPiece;
 
     private final Debouncer hasPieceDebouncer;
     
@@ -52,9 +53,14 @@ public class CoralClaw extends SubsystemBase {
 
         // If claw is running, update hasPiece with timed debouncing function.
         // If it isn't running, assume the coral is in the same state that it was when the claw stopped.
-        if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSecond > 0 && inputs.statorCurrentAmps < 10) {
+        if (Robot.gameMode == GameMode.DISABLED && 
+            inputs.velocityRotationsPerSecond > 0 &&
+            inputs.statorCurrentAmps < 10 && 
+            inputs.statorCurrentAmps <= CurrentThresholdHasPieceAmps.get()) 
+        {
             hasPiece = true;
-        } else if (percentOutput != 0.0) {
+        } 
+        else if (percentOutput != 0.0 && Robot.gameMode != GameMode.DISABLED) {
             hasPiece = hasPieceDebouncer.calculate(MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, 10));
         }
 
