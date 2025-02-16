@@ -485,6 +485,10 @@ public final class Constants {
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
+        public static final double CURRENT_THRESHOLD_HAS_PIECE_AMPS = 5.0;
+
+        public static final double CORAL_CLAW_CURRENT_DEADBAND = 10.101205;
+
     }
 
     public static final class AlgaeClawConstants {

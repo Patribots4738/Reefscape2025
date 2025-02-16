@@ -15,6 +15,7 @@ public interface ClawIO {
         public double statorCurrentAmps = 0.0;
         public double torqueCurrentAmps = 0.0;
         public double temperatureCelsius = 0.0;
+        public double velocityRotationsPerSecond = 0.0;
 
     }
 
