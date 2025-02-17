@@ -450,9 +450,9 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Swerve/Drive");
 
-        public static final double TURNING_P = 1500d;
+        public static final double TURNING_P = !FieldConstants.IS_SIMULATION ? 1500d : 2400d;
         public static final double TURNING_I = 0;
-        public static final double TURNING_D = 30d;
+        public static final double TURNING_D = !FieldConstants.IS_SIMULATION ? 30d : 250d;
         public static final double TURNING_S = 2.800419999999998;
 
         // public static final double TURNING_P = 5500d;

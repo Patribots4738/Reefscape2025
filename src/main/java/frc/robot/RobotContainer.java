@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -149,7 +150,9 @@ public class RobotContainer {
         configureButtonBindings();
         configureTimedEvents();
 
-        pathPlannerStorage = new PathPlannerStorage();
+        prepareNamedCommands();
+
+        pathPlannerStorage = new PathPlannerStorage(Set.of(swerve, coralClaw, algaeClaw, elevator, wrist, climb));
 
         pathPlannerStorage.configureAutoChooser();
         pathPlannerStorage.getAutoChooser().addOption("WheelRadiusCharacterization",
@@ -169,8 +172,6 @@ public class RobotContainer {
         pathPlannerStorage.getAutoChooser().addOption("WristFFCharacterization", wrist.sysIdQuasistatic());
         pathPlannerStorage.getAutoChooser().addOption("ElevatorFFCharacterization", elevator.sysIdQuasistatic());
         pathPlannerStorage.getAutoChooser().addOption("ClimbFFCharacterization", climb.sysIdQuasistatic());
-        
-        prepareNamedCommands();
 
     }
 
@@ -331,27 +332,25 @@ public class RobotContainer {
         for (int i = 0; i < 12; i++) {
             char currentNode = AutoConstants.REEF_NODES.charAt(i);
 
-            for (int l = 1; l < 5; l++) {
-                String currentLevel = "L" + l;
+            for (int level = 1; level <= 4; level++) {
+                String currentLevel = "L" + level;
                 String commandName = currentNode + "-" + currentLevel;
             
-                NamedCommands.registerCommand(commandName, pathPlannerStorage.autoToReef(currentNode, currentLevel));
-
-                System.out.println(commandName);
+                NamedCommands.registerCommand(commandName, pathPlannerStorage.autoCycle(currentNode, currentLevel));
             }
         }
 
-        for (int m = 1; m < 7; m++) {
-            int currentPreLoad = m;
+        for (int start = 1; start <= 7; start++) {
+            int currentPreload = start;
 
             for (int i = 0; i < 12; i++) {
                 char currentNode = AutoConstants.REEF_NODES.charAt(i);
 
                 for (int l = 1; l < 5; l++) {
                     String currentLevel = "L" + l;
-                    String commandName = currentPreLoad + "-" + currentNode + "-" + currentLevel;
+                    String commandName = currentPreload + "-" + currentNode + "-" + currentLevel;
 
-                    NamedCommands.registerCommand(commandName, pathPlannerStorage.preLoadToReef(currentPreLoad, currentNode, currentLevel));
+                    NamedCommands.registerCommand(commandName, pathPlannerStorage.preload(currentPreload, currentNode, currentLevel));
                 }
             }
         }

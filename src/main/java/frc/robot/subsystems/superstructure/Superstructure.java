@@ -10,8 +10,6 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.Robot;
-import frc.robot.Robot.GameMode;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -149,7 +147,6 @@ public class Superstructure {
 
     // This command allows us to always transition between superstructure states.
     // Note that this command is not safe if the end positions are not possible, for example if the final goal has the claw inside the climb.
-    // TODO: Extract some of this logic, it's a bit much
     public Command setSuperState(SuperState nextState) {
         // Update logged state
         return Commands.runOnce(() -> this.targetState = nextState).alongWith(
@@ -186,9 +183,7 @@ public class Superstructure {
                     wrist.setPositionCommand(() -> state.wristPosition), 
                     () -> 
                         // Only transition wrist if elevator needs to move in addition to other conditions
-                        (shouldEvadeReef()
-                            || state.wristPosition < wristUnderTransition.get()
-                            || Robot.gameMode == GameMode.AUTONOMOUS) 
+                        (shouldEvadeReef() || state.wristPosition < wristUnderTransition.get()) 
                         && !elevator.atPosition(state.elevatorPosition)
                 // Stop blocking sequence when wrist is in a safe position
                 ).until(this::wristSafe),

@@ -41,47 +41,63 @@ public class PathPlannerStorage {
     /**
      * Creates a new AutoPathStorage object.
      */
-    public PathPlannerStorage() {
+    public PathPlannerStorage(Set<Subsystem> autoRequirements) {
         autoChooser = new LoggedDashboardChooser<>("Auto Routine");
-        requirements = NamedCommands.getCommand("Stow").getRequirements();
+        requirements = autoRequirements;
     }
 
-    public Command autoToReef(char reefNode, String reefLevel) {
+    public Command autoCycle(char reefNode, String reefLevel) {
         String coralStation = reefNode > 'G' || reefNode == 'A' ? "CS1" : "CS2";
-        String commandNameToReef = coralStation + "-" + reefNode;
-        String commandNameFromReef = reefNode + "-" + coralStation;
+        String pathNameToReef = coralStation + "-" + reefNode;
+        String pathNameToStation = reefNode + "-" + coralStation;
+        PathPlannerPath pathToReef;
+        PathPlannerPath pathToStation;
+        try {
+            pathToReef = PathPlannerPath.fromPathFile(pathNameToReef);
+            pathToStation = PathPlannerPath.fromPathFile(pathNameToStation);
+        } catch (Exception e) {
+            return Commands.none();
+        }
 
         return Commands.defer(
             () -> Commands.sequence(
                     Commands.waitSeconds(.5),
                     NamedCommands.getCommand("CoralIntakeStop"),
-                    (Commands.parallel(
-                        NamedCommands.getCommand(commandNameToReef),
+                    Commands.parallel(
+                        AutoBuilder.followPath(pathToReef),
                         NamedCommands.getCommand(reefLevel)
-                    )),
+                    ),
                     NamedCommands.getCommand("PlaceCoral"),
                     Commands.parallel(
-                        NamedCommands.getCommand(commandNameFromReef),
+                        AutoBuilder.followPath(pathToStation),
                         NamedCommands.getCommand("Stow")
                     ),
                     NamedCommands.getCommand("CoralIntakeStart")
             ), requirements);
     }
 
-    public Command preLoadToReef(int startPose, char reefNode, String reefLevel) {
+    public Command preload(int startPose, char reefNode, String reefLevel) {
         String coralStation = reefNode > 'G' || reefNode == 'A' ? "CS1" : "CS2";
-        String commandNamePreLoad = startPose + "-" + reefNode;
-        String commandNameFromReef = reefNode + "-" + coralStation;
+        String pathNameToPreload = startPose + "-" + reefNode;
+        String pathNameToStation = reefNode + "-" + coralStation;
+        PathPlannerPath pathToPreload;
+        PathPlannerPath pathToStation;
+        try {
+            pathToPreload = PathPlannerPath.fromPathFile(pathNameToPreload);
+            pathToStation = PathPlannerPath.fromPathFile(pathNameToStation);
+        } catch (Exception e) {
+            return Commands.none();
+        }
 
         return Commands.defer(
             () -> Commands.sequence(
-                (Commands.parallel(
-                    NamedCommands.getCommand(commandNamePreLoad),
+                Commands.parallel(
+                    AutoBuilder.followPath(pathToPreload),
                     NamedCommands.getCommand(reefLevel)
-                )),
+                ),
                 NamedCommands.getCommand("PlaceCoral"),
                 Commands.parallel(
-                    NamedCommands.getCommand(commandNameFromReef),
+                    AutoBuilder.followPath(pathToStation),
                     NamedCommands.getCommand("Stow")
                 ),
                 NamedCommands.getCommand("CoralIntakeStart")
