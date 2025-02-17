@@ -110,7 +110,7 @@ public class Superstructure {
             this.wristPosition = wristPosition;
         }
 
-    };
+    }
 
     public enum ClimbState {
 

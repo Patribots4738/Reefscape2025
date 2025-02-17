@@ -595,9 +595,9 @@ public final class Constants {
         public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
         public static final double MIN_ANGLE_RADIANS = -1.08231258091;
-        public static final double MAX_ANGLE_RADIANS = 2.95;
+        public static final double MAX_ANGLE_RADIANS = 2.723;
 
-        public static final double RESET_ANGLE_RADIANS = 2.95;
+        public static final double RESET_ANGLE_RADIANS = 2.723;
 
         public static final double CLIMB_RADIANS = 1.7;
         public static final double TRANSITION_RADIANS = 1.7;
