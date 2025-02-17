@@ -230,6 +230,12 @@ public class RobotContainer {
         controller.b()
             .onTrue(superstructure.setSuperState(superstructure.STOW));
 
+        controller.leftTrigger()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
+
+        controller.rightTrigger()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
+
     }
 
     private void configureDevBindings(PatriBoxController controller) {
