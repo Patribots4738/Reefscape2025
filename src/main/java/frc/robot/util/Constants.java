@@ -432,13 +432,6 @@ public final class Constants {
         public static final double DRIVING_S = 2.4316460000000006;
         public static final double DRIVING_V = 0;
 
-
-        // public static final double DRIVING_P = 20d;
-        // public static final double DRIVING_I = 0;
-        // public static final double DRIVING_D = 0.0;
-        // public static final double DRIVING_S = 0.51215;
-        // public static final double DRIVING_V = 0.12199;
-
         public static final GainConstants DRIVING_GAINS = new GainConstants(
             DRIVING_P,
             DRIVING_I,
@@ -454,11 +447,6 @@ public final class Constants {
         public static final double TURNING_I = 0;
         public static final double TURNING_D = !FieldConstants.IS_SIMULATION ? 30d : 250d;
         public static final double TURNING_S = 2.800419999999998;
-
-        // public static final double TURNING_P = 5500d;
-        // public static final double TURNING_I = 0.0;
-        // public static final double TURNING_D = 510d;
-        // public static final double TURNING_S = 1.0392280000000027;
 
         public static final GainConstants TURNING_GAINS = new GainConstants(
             TURNING_P,

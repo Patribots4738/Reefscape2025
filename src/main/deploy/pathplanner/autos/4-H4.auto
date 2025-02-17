@@ -28,19 +28,6 @@
           "data": {
             "name": "PlaceCoral"
           }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": null
-                }
-              }
-            ]
-          }
         }
       ]
     }
