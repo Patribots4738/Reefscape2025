@@ -523,9 +523,9 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 180d : 750;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 180d : 800d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 20d : 585;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 20d : 200d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -570,9 +570,9 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 2500d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 2200d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 800d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 450d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -640,9 +640,9 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 1.5;
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 25d : 0d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 25d : 1000d; // Chef Curry
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 2d : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 2d : 500d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -691,7 +691,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 
