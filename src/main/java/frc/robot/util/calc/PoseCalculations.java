@@ -94,6 +94,6 @@ public class PoseCalculations {
 }
 
     public static boolean shouldReefAlign(Pose2d pos) {
-        return pos.getTranslation().getDistance(getClosestCoralStation(pos).getTranslation()) > 1.5;
+        return pos.getTranslation().getDistance(getClosestCoralStation(pos).getTranslation()) > FieldConstants.INTAKE_ALIGNMENT_DISTANCE_METERS;
     }
 }
