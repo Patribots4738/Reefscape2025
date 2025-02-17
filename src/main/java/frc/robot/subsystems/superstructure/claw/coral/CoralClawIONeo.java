@@ -3,7 +3,6 @@ package frc.robot.subsystems.superstructure.claw.coral;
 import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.hardware.rev.Neo;
-import frc.robot.util.hardware.rev.SafeSpark.TelemetryPreference;
 
 public class CoralClawIONeo implements ClawIO {
     
@@ -16,7 +15,6 @@ public class CoralClawIONeo implements ClawIO {
 
     private void configMotor() {
         motor.setOutputInverted(CoralClawConstants.MOTOR_INVERTED);
-        motor.setTelemetryPreference(TelemetryPreference.NO_ENCODER);
         motor.setSmartCurrentLimit((int) CoralClawConstants.CURRENT_LIMIT);
         setBrakeMode(CoralClawConstants.BRAKE_MOTOR);
     }

@@ -91,7 +91,13 @@ public class PoseCalculations {
     public static boolean nearReef(Pose2d pos) {
         return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < FieldConstants.NEAR_REEF_METERS;
     }
+  
+    public static Pose2d getClosestCoralStation(Pose2d pos) {
+    return pos.nearest(FieldConstants.GET_CORAL_STATION_POSITIONS());
+}
 
-    
-
+    public static boolean shouldReefAlign(Pose2d pos) {
+        return pos.getTranslation().getDistance(getClosestCoralStation(pos).getTranslation()) > FieldConstants.INTAKE_ALIGNMENT_DISTANCE_METERS;
+    }
+  
 }

@@ -1,23 +1,26 @@
 package frc.robot.util.auto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.util.Constants.AutoConstants;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.Robot.GameMode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.Consumer;
-
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import frc.robot.RobotContainer;
+import frc.robot.util.Constants.AutoConstants;
 
 /**
  * This file represents all of the auto paths that we will have
@@ -29,17 +32,62 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class PathPlannerStorage {
 
     private final LoggedDashboardChooser<Command> autoChooser;
+    private final Set<Subsystem> requirements;
 
     public static final ArrayList<Pose2d> AUTO_STARTING_POSITIONS = new ArrayList<Pose2d>();
 
     public static final HashMap<String, List<PathPlannerPath>> AUTO_PATHS = new HashMap<String, List<PathPlannerPath>>();
+
     /**
      * Creates a new AutoPathStorage object.
      */
     public PathPlannerStorage() {
         autoChooser = new LoggedDashboardChooser<>("Auto Routine");
+        requirements = NamedCommands.getCommand("Stow").getRequirements();
     }
 
+    public Command autoToReef(char reefNode, String reefLevel) {
+        String coralStation = reefNode > 'G' || reefNode == 'A' ? "CS1" : "CS2";
+        String commandNameToReef = coralStation + "-" + reefNode;
+        String commandNameFromReef = reefNode + "-" + coralStation;
+
+        return Commands.defer(
+            () -> Commands.sequence(
+                    Commands.waitSeconds(.5),
+                    NamedCommands.getCommand("CoralIntakeStop"),
+                    (Commands.parallel(
+                        NamedCommands.getCommand(commandNameToReef),
+                        NamedCommands.getCommand(reefLevel)
+                    )),
+                    NamedCommands.getCommand("PlaceCoral"),
+                    Commands.parallel(
+                        NamedCommands.getCommand(commandNameFromReef),
+                        NamedCommands.getCommand("Stow")
+                    ),
+                    NamedCommands.getCommand("CoralIntakeStart")
+            ), requirements);
+    }
+
+    public Command preLoadToReef(int startPose, char reefNode, String reefLevel) {
+        String coralStation = reefNode > 'G' || reefNode == 'A' ? "CS1" : "CS2";
+        String commandNamePreLoad = startPose + "-" + reefNode;
+        String commandNameFromReef = reefNode + "-" + coralStation;
+
+        return Commands.defer(
+            () -> Commands.sequence(
+                (Commands.parallel(
+                    NamedCommands.getCommand(commandNamePreLoad),
+                    NamedCommands.getCommand(reefLevel)
+                )),
+                NamedCommands.getCommand("PlaceCoral"),
+                Commands.parallel(
+                    NamedCommands.getCommand(commandNameFromReef),
+                    NamedCommands.getCommand("Stow")
+                ),
+                NamedCommands.getCommand("CoralIntakeStart")
+            ), requirements);
+    }
+    
     public void configureAutoChooser() {
         /**
          * Warning

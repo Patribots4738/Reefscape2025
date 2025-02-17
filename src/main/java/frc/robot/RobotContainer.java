@@ -24,24 +24,26 @@ import frc.robot.commands.characterization.StaticCharacterization;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
 import frc.robot.subsystems.drive.Swerve;
-import frc.robot.subsystems.vision.Vision;
-import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClawIOKraken;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClawIOKraken;
+import frc.robot.subsystems.superstructure.climb.Climb;
+import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.elevator.ElevatorIOKraken;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
-import frc.robot.subsystems.superstructure.climb.Climb;
-import frc.robot.subsystems.superstructure.climb.ClimbIOKraken;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
+import frc.robot.util.calc.PoseCalculations;
+import frc.robot.util.custom.ActiveConditionalCommand;
 import frc.robot.util.custom.PatriBoxController;
 
 public class RobotContainer {
@@ -192,7 +194,12 @@ public class RobotContainer {
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
 
         controller.rightStick()
-            .toggleOnTrue(alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
+            .toggleOnTrue(
+                new ActiveConditionalCommand(
+                    alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
+                ));
 
         controller.a()
             .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
@@ -229,6 +236,12 @@ public class RobotContainer {
         
         controller.b()
             .onTrue(superstructure.setSuperState(superstructure.STOW));
+
+        controller.leftTrigger()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
+
+        controller.rightTrigger()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
 
     }
 
@@ -304,14 +317,43 @@ public class RobotContainer {
     }
     
     private void prepareNamedCommands() {
+
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
-        NamedCommands.registerCommand("ArmStow", superstructure.setSuperState(superstructure.STOW));
-        NamedCommands.registerCommand("ArmL1", superstructure.setSuperState(superstructure.L1));
-        NamedCommands.registerCommand("ArmL2", superstructure.setSuperState(superstructure.L2));
-        NamedCommands.registerCommand("ArmL3", superstructure.setSuperState(superstructure.L3));
-        NamedCommands.registerCommand("ArmL4", superstructure.setSuperState(superstructure.L4));
+        NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.STOW));
+        NamedCommands.registerCommand("L1", superstructure.setSuperState(superstructure.L1));
+        NamedCommands.registerCommand("L2", superstructure.setSuperState(superstructure.L2));
+        NamedCommands.registerCommand("L3", superstructure.setSuperState(superstructure.L3));
+        NamedCommands.registerCommand("L4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
-    }
 
+        
+        for (int i = 0; i < 12; i++) {
+            char currentNode = AutoConstants.REEF_NODES.charAt(i);
+
+            for (int l = 1; l < 5; l++) {
+                String currentLevel = "L" + l;
+                String commandName = currentNode + "-" + currentLevel;
+            
+                NamedCommands.registerCommand(commandName, pathPlannerStorage.autoToReef(currentNode, currentLevel));
+
+                System.out.println(commandName);
+            }
+        }
+
+        for (int m = 1; m < 7; m++) {
+            int currentPreLoad = m;
+
+            for (int i = 0; i < 12; i++) {
+                char currentNode = AutoConstants.REEF_NODES.charAt(i);
+
+                for (int l = 1; l < 5; l++) {
+                    String currentLevel = "L" + l;
+                    String commandName = currentPreLoad + "-" + currentNode + "-" + currentLevel;
+
+                    NamedCommands.registerCommand(commandName, pathPlannerStorage.preLoadToReef(currentPreLoad, currentNode, currentLevel));
+                }
+            }
+        }
+    }
 }

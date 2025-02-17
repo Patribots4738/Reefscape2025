@@ -1,5 +1,6 @@
 package frc.robot.subsystems.superstructure.wrist;
 
+import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
@@ -10,7 +11,7 @@ public class WristIOKraken implements WristIO {
     private final Kraken motor;
 
     public WristIOKraken() {
-        motor = new Kraken(WristConstants.CAN_ID, true, false, ControlPreference.MM_TORQUE_CURRENT);
+        motor = new Kraken(WristConstants.CAN_ID, true, false, !FieldConstants.IS_SIMULATION ? ControlPreference.MM_TORQUE_CURRENT : ControlPreference.TORQUE_CURRENT);
         configMotor();
     }
 

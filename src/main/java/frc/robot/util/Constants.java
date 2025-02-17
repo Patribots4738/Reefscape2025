@@ -159,6 +159,8 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
+
+        public static final String REEF_NODES = "ABCDEFGHIJKL";
         
         // Below is gotten from choreo
         public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.degreesToRadians(1137.21);
@@ -485,6 +487,10 @@ public final class Constants {
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
+        public static final double CURRENT_THRESHOLD_HAS_PIECE_AMPS = 5.0;
+
+        public static final double CORAL_CLAW_CURRENT_DEADBAND = 10.101205;
+
     }
 
     public static final class AlgaeClawConstants {
@@ -517,9 +523,9 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 180d : 750;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 180d : 800d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 20d : 585;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 20d : 200d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -564,9 +570,9 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 2500d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 2200d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 800d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 450d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -636,9 +642,9 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 1.5;
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 25d : 0d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 25d : 1000d; // Chef Curry
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 2d : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 2d : 500d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -804,10 +810,11 @@ public final class Constants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
 
-
         public static final double FIELD_MAX_LENGTH = 17.55;
         // 2d height
         public static final double FIELD_MAX_HEIGHT = 8.0518;
+
+        public static final double INTAKE_ALIGNMENT_DISTANCE_METERS = 1.5;
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 

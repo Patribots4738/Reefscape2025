@@ -156,31 +156,7 @@ public class Superstructure {
             Commands.sequence(
                 // Run these commands in parallel, cancel all when first command argument ends
                 Commands.deadline(
-                    Commands.either(
-                        // Climb needs to move to achieve goal state
-                        Commands.either(
-                            // Arm goal is unsafe for climb, give way to climb then move arm back in
-                            // TODO: Make this logic more efficient
-                            Commands.sequence(
-                                setArmState(ArmState.CLIMB),
-                                setClimbState(nextState.climbState),
-                                setArmState(nextState.armState)
-                            ), 
-                            // Arm goal is safe for climb, move to arm goal then set climb state
-                            // TODO: Make this logic more efficient
-                            Commands.sequence(
-                                setArmState(nextState.armState),
-                                setClimbState(nextState.climbState)
-                            ), 
-                            () -> nextState.armState.wristPosition < WristConstants.CLIMB_RADIANS
-                        ), 
-                        // Climb doesn't need to move, set goal arm state and update climb control loop JIC
-                        Commands.parallel(
-                            setArmState(nextState.armState),
-                            setClimbState(nextState.climbState)
-                        ), 
-                        () -> !climb.atPosition(nextState.climbState.climbPosition)
-                    ),
+                    fixArmAndClimb(nextState.armState, nextState.climbState),
                     // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
                     Commands.sequence(
                         Commands.waitUntil(() -> nextState.coralInterruptSupplier.getAsBoolean() || nextState.clawState.coralPercent == 0),
@@ -226,6 +202,40 @@ public class Superstructure {
     public Command setClimbState(ClimbState state) {
         return Commands.runOnce(() -> targetClimbState = state)
                 .alongWith(climb.setPositionCommand(() -> state.climbPosition));
+    }
+
+    public Command avoidClimb(ArmState armState, ClimbState climbState) {
+        return Commands.parallel(
+            Commands.sequence(
+                Commands.waitUntil(() -> 
+                    wrist.getPosition() > ArmState.CLIMB.wristPosition 
+                    || wrist.atPosition(ArmState.CLIMB.wristPosition)),
+                setClimbState(climbState)
+            ),
+            setArmState(armState)
+        );
+    }
+
+    public Command fixArmAndClimb(ArmState armState, ClimbState climbState) {
+        return Commands.either(
+            // Climb needs to move to achieve goal state
+            Commands.either(
+                // Arm goal is unsafe for climb, give way to climb then move arm back in
+                Commands.sequence(
+                    avoidClimb(ArmState.CLIMB, climbState),
+                    setArmState(armState)
+                ), 
+                // Arm goal is safe for climb, move to arm goal then set climb state
+                avoidClimb(armState, climbState), 
+                () -> armState.wristPosition < ArmState.CLIMB.wristPosition
+            ), 
+            // Climb doesn't need to move, set goal arm state and update climb control loop JIC
+            Commands.parallel(
+                setArmState(armState),
+                setClimbState(climbState)
+            ), 
+            () -> !climb.atPosition(climbState.climbPosition)
+        );
     }
 
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
@@ -309,14 +319,6 @@ public class Superstructure {
             Commands.waitSeconds(coralClawPlaceTime.get()),
             Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
         );
-    }
-
-    public Command climbReadyCommand() {
-        return setSuperState(CLIMB_READY);
-    }
-
-    public Command climbFinalCommand() {
-        return setSuperState(CLIMB_FINAL);
     }
 
     public Command stopAllCommand() {
