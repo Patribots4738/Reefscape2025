@@ -229,10 +229,10 @@ public class Superstructure {
 
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
         Commands.either(
-            wrist.setPositionCommand(WristConstants.AGAINST_REEF_RADIANS),
-            wrist.setPositionCommand(WristConstants.OFF_REEF_RADIANS),
-            
-            ()-> shouldEvadeReefUnder()
+            wrist.setPositionCommand(WristConstants.REEF_TRANSITION_RADIANS),
+            wrist.setPositionCommand(WristConstants.UNDER_TRANSITION_RADIANS),  
+            () ->
+                (shouldEvadeReef() && (wrist.getPosition() > (WristConstants.UNDER_TRANSITION_RADIANS))) 
         );
         
         return wrist.setPositionCommand(wristTransition::get);
@@ -345,11 +345,6 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")
     public boolean shouldEvadeReef() {
         return PoseCalculations.nearReef(robotPoseSupplier.get());
-    }
-
-    @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReefUnder")
-    public boolean shouldEvadeReefUnder() {
-        return PoseCalculations.nearReef(robotPoseSupplier.get()) && wrist.atPosition(WristConstants.UNDER_THRESHOLD_RADIANS);
     }
 
     public SuperState getTargetState() {

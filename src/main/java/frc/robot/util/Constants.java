@@ -614,9 +614,8 @@ public final class Constants {
         public static final double L4_POSITION_RADIANS = 2.65;
         public static final double ALGAE_REMOVAL = 1.57;
 
-        public static final double AGAINST_REEF_RADIANS = Math.PI/2;
-        public static final double OFF_REEF_RADIANS = Math.PI/2;
-        public static final double UNDER_THRESHOLD_RADIANS = Math.PI/3;
+        public static final double REEF_TRANSITION_RADIANS = Math.PI/2;
+        public static final double UNDER_TRANSITION_RADIANS = Math.PI/2;
     }
 
 
@@ -987,7 +986,7 @@ public final class Constants {
             return RESET_ODO_POSITIONS.get(Robot.isRedAlliance() ? 1 : 0);
         }
 
-        public static final double NEAR_REEF = 1.4; 
+        public static final double NEAR_REEF_METERS = 1.4; 
 
     }
 
