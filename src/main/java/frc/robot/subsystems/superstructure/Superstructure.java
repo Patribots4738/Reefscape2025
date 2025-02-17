@@ -26,7 +26,7 @@ import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
 public class Superstructure {
-     
+    
     private final AlgaeClaw algaeClaw;
     private final CoralClaw coralClaw;
     private final Elevator elevator;
@@ -35,7 +35,8 @@ public class Superstructure {
     
     private final Supplier<Pose2d> robotPoseSupplier;
 
-    private final LoggedTunableNumber wristTransition = new LoggedTunableNumber("Wrist/TransitionPosition", WristConstants.TRANSITION_RADIANS);
+    private final LoggedTunableNumber wristUnderTransition = new LoggedTunableNumber("Wrist/UnderTransitionPosition", WristConstants.UNDER_TRANSITION_RADIANS);
+    private final LoggedTunableNumber wristReefTransition = new LoggedTunableNumber("Wrist/ReefTransitionPosition", WristConstants.REEF_TRANSITION_RADIANS);
     private final LoggedTunableNumber coralClawPlaceTime = new LoggedTunableNumber("CoralClaw/PlaceTime", CoralClawConstants.PLACING_NAMED_COMMAND_TIME);
 
     public final LoggedSuperState STOW;
@@ -186,7 +187,7 @@ public class Superstructure {
                     () -> 
                         // Only transition wrist if elevator needs to move in addition to other conditions
                         (shouldEvadeReef()
-                            || state.wristPosition < wristTransition.get()
+                            || state.wristPosition < wristUnderTransition.get()
                             || Robot.gameMode == GameMode.AUTONOMOUS) 
                         && !elevator.atPosition(state.elevatorPosition)
                 // Stop blocking sequence when wrist is in a safe position
@@ -237,9 +238,12 @@ public class Superstructure {
         );
     }
 
-    // TODO: MAKE WRIST TRANSITIONS GREAT AGAIN
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
-        return wrist.setPositionCommand(wristTransition::get);
+        return Commands.either(
+            wrist.setPositionCommand(wristReefTransition.get()),
+            wrist.setPositionCommand(wristUnderTransition.get()),  
+            () -> shouldEvadeReef() || wrist.getPosition() > wristUnderTransition.get()
+        );
     }
 
     public Command algaeL2Command(BooleanSupplier continueIntakingSupplier)  {
@@ -335,7 +339,8 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
-        return wrist.atPosition(wristTransition.get());
+        return (shouldEvadeReef() && wrist.atPosition(wristReefTransition.get())) 
+            || (!shouldEvadeReef() && (wrist.atPosition(wristUnderTransition.get()) || wrist.getPosition() > wristUnderTransition.get()));
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")

@@ -4,9 +4,12 @@
 
 package frc.robot.util.calc;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -86,9 +89,9 @@ public class PoseCalculations {
     }
 
     public static boolean nearReef(Pose2d pos) {
-        return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 1.4;
+        return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < FieldConstants.NEAR_REEF_METERS;
     }
-
+  
     public static Pose2d getClosestCoralStation(Pose2d pos) {
     return pos.nearest(FieldConstants.GET_CORAL_STATION_POSITIONS());
 }
@@ -96,4 +99,5 @@ public class PoseCalculations {
     public static boolean shouldReefAlign(Pose2d pos) {
         return pos.getTranslation().getDistance(getClosestCoralStation(pos).getTranslation()) > FieldConstants.INTAKE_ALIGNMENT_DISTANCE_METERS;
     }
+  
 }

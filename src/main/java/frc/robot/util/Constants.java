@@ -594,7 +594,7 @@ public final class Constants {
         public static final double JERK = 0d;
 
         public static final double GEAR_RATIO = 60.0;
-      
+    
         public static final double POSITION_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2 * Math.PI;
         public static final double ENCODER_POSITION_CONVERSION_FACTOR = 2 * Math.PI;
@@ -620,8 +620,10 @@ public final class Constants {
         public static final double L4_POSITION_RADIANS = 2.65;
         public static final double ALGAE_REMOVAL = 1.57;
 
-
+        public static final double REEF_TRANSITION_RADIANS = Math.PI/2;
+        public static final double UNDER_TRANSITION_RADIANS = Math.PI/2;
     }
+
 
     public static final class ClimbConstants {
 
@@ -990,6 +992,8 @@ public final class Constants {
         public static final Pose2d GET_RESET_ODO_POSITION() {
             return RESET_ODO_POSITIONS.get(Robot.isRedAlliance() ? 1 : 0);
         }
+
+        public static final double NEAR_REEF_METERS = 1.4; 
 
     }
 
