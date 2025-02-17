@@ -11,13 +11,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "4-G"
+                  "pathName": "5-E"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "ArmL4"
+                  "name": "CoralL4"
                 }
               }
             ]
@@ -30,9 +30,34 @@
           }
         },
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 0.5
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "E-CS2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "CoralIntakeStart"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "C4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "B4"
           }
         }
       ]

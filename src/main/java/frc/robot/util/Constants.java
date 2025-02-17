@@ -234,13 +234,16 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "2-J4-CS1-K4-CS1-L4-CS1-A4-CS1",
-            "1-K4-CS1-L4-CS1-A4-CS1-B4-CS1",
-            "2-I4-CS1-J4-CS1-K4-CS1-L4-CS1",
-            "4-H4-CS2-G4-CS2-B4-CS2-A4-CS2",
-            "6-E4-CS2-D4-CS2-C4-CS2-B4-CS2"
-
-
+            "3-J4-K4-L4-A4",
+            "5-E4-D4-C4-B4",
+            "3-J4-L4-A4",
+            "5-E4-C4-B4",
+            "4-H4",
+            "Only Driving 3-J4-K4-L4-A4",
+            "Only Driving 5-E4-D4-C4-B4",
+            "Only Driving 3-J4-L4-A4",
+            "Only Driving 5-E4-C4-B4",
+            "Only Driving 4-H4"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;

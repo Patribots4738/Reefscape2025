@@ -61,21 +61,21 @@ public class PathPlannerStorage {
 
         return Commands.defer(
             () -> Commands.sequence(
-                    Commands.waitSeconds(.5),
-                    NamedCommands.getCommand("CoralIntakeStop"),
-                    Commands.parallel(
-                        AutoBuilder.followPath(pathToReef),
-                        NamedCommands.getCommand(reefLevel)
-                    ),
-                    NamedCommands.getCommand("PlaceCoral"),
-                    Commands.parallel(
-                        AutoBuilder.followPath(pathToStation),
-                        NamedCommands.getCommand("Stow")
-                    ),
+                Commands.waitSeconds(.5),
+                NamedCommands.getCommand("CoralIntakeStop"),
+                Commands.parallel(
+                    AutoBuilder.followPath(pathToReef),
+                    NamedCommands.getCommand("Coral" + reefLevel)
+                ),
+                NamedCommands.getCommand("PlaceCoral"),
+                Commands.parallel(
+                    AutoBuilder.followPath(pathToStation),
                     NamedCommands.getCommand("CoralIntakeStart")
+                )
             ), requirements);
     }
 
+    // By default we will just build this part in PP, however this will be handy in a jam
     public Command preload(int startPose, char reefNode, String reefLevel) {
         String coralStation = reefNode > 'G' || reefNode == 'A' ? "CS1" : "CS2";
         String pathNameToPreload = startPose + "-" + reefNode;
@@ -93,14 +93,13 @@ public class PathPlannerStorage {
             () -> Commands.sequence(
                 Commands.parallel(
                     AutoBuilder.followPath(pathToPreload),
-                    NamedCommands.getCommand(reefLevel)
+                    NamedCommands.getCommand("Coral" + reefLevel)
                 ),
                 NamedCommands.getCommand("PlaceCoral"),
                 Commands.parallel(
                     AutoBuilder.followPath(pathToStation),
-                    NamedCommands.getCommand("Stow")
-                ),
-                NamedCommands.getCommand("CoralIntakeStart")
+                    NamedCommands.getCommand("CoralIntakeStart")
+                )
             ), requirements);
     }
     

@@ -499,8 +499,9 @@ public class Swerve extends SubsystemBase {
             pose);
     }
 
+    // Fear.
     private void resetOdometryAuto(Pose2d pose) {
-        if (pose.getTranslation().getDistance(getPose().getTranslation()) > 1.0 && DriverStation.isFMSAttached()) {
+        if (!FieldConstants.IS_SIMULATION) {
             return;
         }
         resetOdometry(pose);

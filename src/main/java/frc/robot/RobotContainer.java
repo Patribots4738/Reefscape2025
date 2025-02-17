@@ -150,9 +150,9 @@ public class RobotContainer {
         configureButtonBindings();
         configureTimedEvents();
 
-        prepareNamedCommands();
-
         pathPlannerStorage = new PathPlannerStorage(Set.of(swerve, coralClaw, algaeClaw, elevator, wrist, climb));
+
+        prepareNamedCommands();
 
         pathPlannerStorage.configureAutoChooser();
         pathPlannerStorage.getAutoChooser().addOption("WheelRadiusCharacterization",
@@ -322,10 +322,10 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.STOW));
-        NamedCommands.registerCommand("L1", superstructure.setSuperState(superstructure.L1));
-        NamedCommands.registerCommand("L2", superstructure.setSuperState(superstructure.L2));
-        NamedCommands.registerCommand("L3", superstructure.setSuperState(superstructure.L3));
-        NamedCommands.registerCommand("L4", superstructure.setSuperState(superstructure.L4));
+        NamedCommands.registerCommand("CoralL1", superstructure.setSuperState(superstructure.L1));
+        NamedCommands.registerCommand("CoralL2", superstructure.setSuperState(superstructure.L2));
+        NamedCommands.registerCommand("CoralL3", superstructure.setSuperState(superstructure.L3));
+        NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
 
         
@@ -334,7 +334,7 @@ public class RobotContainer {
 
             for (int level = 1; level <= 4; level++) {
                 String currentLevel = "L" + level;
-                String commandName = currentNode + "-" + currentLevel;
+                String commandName = currentNode + Integer.toString(level);
             
                 NamedCommands.registerCommand(commandName, pathPlannerStorage.autoCycle(currentNode, currentLevel));
             }
@@ -346,9 +346,9 @@ public class RobotContainer {
             for (int i = 0; i < 12; i++) {
                 char currentNode = AutoConstants.REEF_NODES.charAt(i);
 
-                for (int l = 1; l < 5; l++) {
-                    String currentLevel = "L" + l;
-                    String commandName = currentPreload + "-" + currentNode + "-" + currentLevel;
+                for (int level = 1; level <= 4; level++) {
+                    String currentLevel = "L" + level;
+                    String commandName = currentPreload + "-" + currentNode + Integer.toString(level);
 
                     NamedCommands.registerCommand(commandName, pathPlannerStorage.preload(currentPreload, currentNode, currentLevel));
                 }

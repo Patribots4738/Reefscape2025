@@ -55,7 +55,6 @@ public class CoralClaw extends SubsystemBase {
         // If it isn't running, assume the coral is in the same state that it was when the claw stopped.
         if (Robot.gameMode == GameMode.DISABLED && 
             inputs.velocityRotationsPerSecond > 0 &&
-            inputs.statorCurrentAmps < 10 && 
             inputs.statorCurrentAmps < currentThresholdHasPieceAmps.get()) 
         {
             hasPiece = true;
