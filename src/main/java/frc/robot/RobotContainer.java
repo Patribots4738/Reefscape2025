@@ -42,6 +42,8 @@ import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
+import frc.robot.util.calc.PoseCalculations;
+import frc.robot.util.custom.ActiveConditionalCommand;
 import frc.robot.util.custom.PatriBoxController;
 
 public class RobotContainer {
@@ -192,7 +194,12 @@ public class RobotContainer {
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
 
         controller.rightStick()
-            .toggleOnTrue(alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY));
+            .toggleOnTrue(
+                new ActiveConditionalCommand(
+                    alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
+                ));
 
         controller.a()
             .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));

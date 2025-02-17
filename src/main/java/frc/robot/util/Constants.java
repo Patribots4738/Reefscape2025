@@ -808,10 +808,11 @@ public final class Constants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
 
-
         public static final double FIELD_MAX_LENGTH = 17.55;
         // 2d height
         public static final double FIELD_MAX_HEIGHT = 8.0518;
+
+        public static final double INTAKE_ALIGNMENT_DISTANCE_METERS = 1.5;
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 
