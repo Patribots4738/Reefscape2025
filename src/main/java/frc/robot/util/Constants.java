@@ -687,7 +687,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 
