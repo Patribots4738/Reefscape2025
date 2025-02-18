@@ -10,13 +10,11 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.subsystems.superstructure.claw.ClawIOInputsAutoLogged;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
-import frc.robot.util.custom.LoggedTunableNumber;
 
 public class AlgaeClaw extends SubsystemBase {
 
@@ -24,8 +22,6 @@ public class AlgaeClaw extends SubsystemBase {
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
     
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("AlgaeClaw/BrakeMotor", AlgaeClawConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("AlgaeClaw/IntakePercent", AlgaeClawConstants.INTAKE_PERCENT);
-    private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("AlgaeClaw/OuttakePercent", AlgaeClawConstants.OUTTAKE_PERCENT);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
@@ -74,27 +70,7 @@ public class AlgaeClaw extends SubsystemBase {
     public Command setNeutralCommand() {
         return runOnce(this::setNeutral);
     }
-
-    public Command intakeCommand() {
-        return setPercentCommand(intakePercent::get);
-    }
-
-    public Command outtakeCommand() {
-        return setPercentCommand(outtakePercent::get);
-    }
-
-    public Command stopCommand() {
-        return setPercentCommand(0.0);
-    }
-
-    public Command outtakeTimeCommand(double time){
-        return Commands.sequence(
-            outtakeCommand(),
-            Commands.waitSeconds(time),
-            stopCommand()
-        );
-    }
-
+    
     public boolean hasPiece() {
         return hasPiece;
     }

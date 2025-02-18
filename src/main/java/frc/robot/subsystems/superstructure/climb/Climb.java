@@ -35,10 +35,6 @@ public class Climb extends SubsystemBase {
     private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Climb/Profile/Acceleration", ClimbConstants.ACCELERATION);
     private final LoggedTunableNumber jerk = new LoggedTunableNumber("Climb/Profile/Jerk", ClimbConstants.JERK);
 
-    private final LoggedTunableNumber stowPosition = new LoggedTunableNumber("Climb/StowPosition", ClimbConstants.STOW_POSITION_RADIANS);
-    private final LoggedTunableNumber readyPosition = new LoggedTunableNumber("Climb/ReadyPosition", ClimbConstants.READY_POSITION_RADIANS);
-    private final LoggedTunableNumber finalPosition = new LoggedTunableNumber("Climb/FinalPosition", ClimbConstants.FINAL_POSITION_RADIANS);
-
     private double targetPosition = 0.0;
 
     public Climb(ClimbIO io) {
@@ -93,18 +89,6 @@ public class Climb extends SubsystemBase {
 
     public Command resetEncoderCommand() {
         return runOnce(this::resetEncoder);
-    }
-
-    public Command stowPositionCommand() {
-        return setPositionCommand(stowPosition::get);
-    }
-
-    public Command readyPositionCommand() {
-        return setPositionCommand(readyPosition::get);
-    }
-
-    public Command finalPositionCommand() {
-        return setPositionCommand(finalPosition::get);
     }
 
     public boolean atPosition(double position) {

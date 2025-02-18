@@ -150,7 +150,7 @@ public class RobotContainer {
                 AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
 
         configureButtonBindings();
-        configureTimedEvents();
+        configureMiscTriggers();
 
         pathPlannerStorage = new PathPlannerStorage(Set.of(swerve, coralClaw, algaeClaw, elevator, wrist, climb));
 
@@ -189,9 +189,9 @@ public class RobotContainer {
         }
     }
 
-    private void configureTimedEvents() {
+    private void configureMiscTriggers() {
         new Trigger(() -> alignment.getAlignmentMode() != AlignmentMode.NONE)
-            .whileTrue(driver.setRumble(() -> 1)
+            .whileTrue(Commands.run(() -> driver.setRumble(0.5))
                 .finallyDo(() -> driver.setRumble(0)));
     }
 
@@ -219,9 +219,6 @@ public class RobotContainer {
 
         controller.rightTrigger()
             .onTrue(superstructure.coralPlaceCommand());
-
-        controller.b()
-            .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
       
     }
 
@@ -263,17 +260,48 @@ public class RobotContainer {
         controller.start()
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
 
-        // controller.a()
-        //     .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+        controller.y().onTrue(superstructure.coralIntakeCommand());
 
-        // controller.y()
-        //     .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
+        controller.povLeft()
+            .onTrue(superstructure.setSuperState(superstructure.L1));
+        
+        controller.povDown()
+            .onTrue(superstructure.setSuperState(superstructure.L2));
 
-        // controller.leftBumper()
-        //     .onTrue(alignment.updateIndexCommand(-1));
+        controller.povRight()
+            .onTrue(superstructure.setSuperState(superstructure.L3));
 
-        // controller.rightBumper()
-        //     .onTrue(alignment.updateIndexCommand(1));
+        controller.povUp()
+            .onTrue(superstructure.setSuperState(superstructure.L4));
+        
+        controller.x()
+            .onTrue(superstructure.setSuperState(superstructure.STOW));
+
+        controller.b()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
+
+        controller.rightTrigger()
+            .onTrue(superstructure.coralPlaceCommand());
+
+        controller.leftTrigger()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
+
+        controller.rightStick()
+            .toggleOnTrue(
+                new ActiveConditionalCommand(
+                    alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
+                ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
+
+        controller.a()
+            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+
+        controller.leftBumper()
+            .onTrue(alignment.updateIndexCommand(-1));
+
+        controller.rightBumper()
+            .onTrue(alignment.updateIndexCommand(1));
 
     }
 

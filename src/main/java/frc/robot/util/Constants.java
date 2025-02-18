@@ -86,21 +86,21 @@ public final class Constants {
         public static final int WRIST_INDEX = 3;
 
         public static final Translation3d ROBOT_OFFSET = new Translation3d(
-            0.2655697,
-            0.0933069,
-            0.2824708
+            0.0054708171,
+            0.0070311264,
+            0.0
         );
 
         public static final Translation3d CLIMB_OFFSET = new Translation3d(
-            ROBOT_OFFSET.getX() - 0.215, 
-            ROBOT_OFFSET.getY() + 0.1442, 
-            ROBOT_OFFSET.getZ() - 0.0946
+            ROBOT_OFFSET.getX() + 0.056, 
+            ROBOT_OFFSET.getY() + 0.241, 
+            ROBOT_OFFSET.getZ() + 0.2735
         );
 
         public static final Translation3d WRIST_OFFSET = new Translation3d(
-            ROBOT_OFFSET.getX() - 0.4368, 
-            ROBOT_OFFSET.getY() - 0.0933069, 
-            ROBOT_OFFSET.getZ() + 0.504
+            ROBOT_OFFSET.getX() - 0.166, 
+            ROBOT_OFFSET.getY() + 0.007, 
+            ROBOT_OFFSET.getZ() + 0.7836464896
         );
 
     }
@@ -510,7 +510,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double GEAR_RATIO = 16.0;
-        public static final double MAX_DISPLACEMENT_METERS = 0.548;
+        public static final double MAX_DISPLACEMENT_METERS = 0.6109564362;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
@@ -563,7 +563,7 @@ public final class Constants {
 
         public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 2200d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 450d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 500d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -594,25 +594,24 @@ public final class Constants {
 
         public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
-        public static final double MIN_ANGLE_RADIANS = -1.08231258091;
-        public static final double MAX_ANGLE_RADIANS = 2.723;
+        public static final double MIN_ANGLE_RADIANS = -1.11370457898;
+        public static final double MAX_ANGLE_RADIANS = 2.40720302912;
 
-        public static final double RESET_ANGLE_RADIANS = 2.723;
+        public static final double RESET_ANGLE_RADIANS = 2.40720302912;
 
-        public static final double CLIMB_RADIANS = 1.7;
-        public static final double TRANSITION_RADIANS = 1.7;
+        public static final double CLIMB_RADIANS = 1.1;
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.07;
         public static final double INTAKE_POSITION_RADIANS = -0.18;
-        public static final double L1_POSITION_RADIANS = 2.8;
+        public static final double L1_POSITION_RADIANS = 2.40720302912;
         public static final double L2_POSITION_RADIANS = 2.2;
         public static final double L3_POSITION_RADIANS = 2.22;
-        public static final double L4_POSITION_RADIANS = 2.65;
+        public static final double L4_POSITION_RADIANS = 2.3;
         public static final double ALGAE_REMOVAL = 1.57;
 
-        public static final double REEF_TRANSITION_RADIANS = Math.PI/2;
-        public static final double UNDER_TRANSITION_RADIANS = Math.PI/2;
+        public static final double REEF_TRANSITION_RADIANS = 1.6;
+        public static final double UNDER_TRANSITION_RADIANS = 1.1;
     }
 
 
@@ -686,7 +685,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
 
     }
 
@@ -751,35 +750,6 @@ public final class Constants {
         public static final double TALONFX_SLOW_UPDATE_FREQ_HZ = 4; // TODO: FIND THE SWEET SPOT
 
         public static final HashMap<Integer, Kraken> KRAKEN_MOTOR_MAP = new HashMap<Integer, Kraken>();
-
-        public static final HashMap<String, List<Kraken>> KRAKEN_MOTOR_GROUPS = new HashMap<String, List<Kraken>>();
-
-        public static Map<String, List<Kraken>> initializeMotorGroupMap() {
-            KRAKEN_MOTOR_GROUPS.put("Drive", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.FRONT_LEFT_DRIVING_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.FRONT_RIGHT_DRIVING_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_LEFT_DRIVING_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_RIGHT_DRIVING_CAN_ID));
-            }});
-            KRAKEN_MOTOR_GROUPS.put("Turn", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.FRONT_LEFT_TURNING_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.FRONT_RIGHT_TURNING_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_LEFT_TURNING_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(MK4cSwerveModuleConstants.REAR_RIGHT_TURNING_CAN_ID));
-            }});
-            KRAKEN_MOTOR_GROUPS.put("Elevator", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.LEADER_CAN_ID));
-                add(KRAKEN_MOTOR_MAP.get(ElevatorConstants.FOLLOWER_CAN_ID));
-            }});
-            KRAKEN_MOTOR_GROUPS.put("Wrist", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(WristConstants.CAN_ID));
-            }});
-            KRAKEN_MOTOR_GROUPS.put("Climb", new ArrayList<Kraken>() {{
-                add(KRAKEN_MOTOR_MAP.get(ClimbConstants.CAN_ID));
-            }});
-
-            return KRAKEN_MOTOR_GROUPS;
-        }
 
     }
 

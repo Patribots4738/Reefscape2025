@@ -13,13 +13,13 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
 import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.subsystems.superstructure.claw.ClawIOInputsAutoLogged;
 import frc.robot.util.Constants.CoralClawConstants;
+import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
 import frc.robot.util.custom.LoggedTunableNumber;
 
@@ -29,8 +29,6 @@ public class CoralClaw extends SubsystemBase {
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
     
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("CoralClaw/BrakeMotor", CoralClawConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber intakePercent = new LoggedTunableNumber("CoralClaw/IntakePercent", CoralClawConstants.INTAKE_PERCENT);
-    private final LoggedTunableNumber outtakePercent = new LoggedTunableNumber("CoralClaw/OuttakePercent", CoralClawConstants.OUTTAKE_PERCENT);
     private final LoggedTunableNumber currentThresholdHasPieceAmps = new LoggedTunableNumber("CoralCLaw/CurrentThresholdHasPieceAmps", CoralClawConstants.CURRENT_THRESHOLD_HAS_PIECE_AMPS);
 
     private double percentOutput = 0.0;
@@ -42,7 +40,7 @@ public class CoralClaw extends SubsystemBase {
     public CoralClaw(ClawIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        hasPieceDebouncer = new Debouncer(0.25);
+        hasPieceDebouncer = new Debouncer(0.75);
         hasPiece = DriverStation.isFMSAttached();
     }
 
@@ -53,13 +51,14 @@ public class CoralClaw extends SubsystemBase {
 
         // If claw is running, update hasPiece with timed debouncing function.
         // If it isn't running, assume the coral is in the same state that it was when the claw stopped.
-        if (Robot.gameMode == GameMode.DISABLED && 
+        if (FieldConstants.IS_SIMULATION && inputs.percentOutput != 0.0) {
+            hasPiece = hasPieceDebouncer.calculate(inputs.percentOutput > 0.0);
+        } else if (Robot.gameMode == GameMode.DISABLED && 
             inputs.velocityRotationsPerSecond > 0 &&
             inputs.statorCurrentAmps < currentThresholdHasPieceAmps.get()) 
         {
             hasPiece = true;
-        } 
-        else if (percentOutput != 0.0 && Robot.gameMode != GameMode.DISABLED && inputs.statorCurrentAmps < CoralClawConstants.CURRENT_THRESHOLD_HAS_PIECE_AMPS) {
+        } else if (percentOutput != 0.0 && Robot.gameMode != GameMode.DISABLED) {
             hasPiece = hasPieceDebouncer.calculate(MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, CoralClawConstants.CORAL_CLAW_CURRENT_DEADBAND));
         }
 
@@ -90,26 +89,6 @@ public class CoralClaw extends SubsystemBase {
 
     public Command setNeutralCommand() {
         return runOnce(this::setNeutral);
-    }
-
-    public Command intakeCommand() {
-        return setPercentCommand(intakePercent::get);
-    }
-
-    public Command outtakeCommand() {
-        return setPercentCommand(outtakePercent::get);
-    }
-
-    public Command stopCommand() {
-        return setPercentCommand(0.0);
-    }
-
-    public Command outtakeTimeCommand(double time){
-        return Commands.sequence(
-            outtakeCommand(),
-            Commands.waitSeconds(time),
-            stopCommand()
-        );
     }
 
     @AutoLogOutput (key = "Subsystems/CoralClaw/HasCoral")

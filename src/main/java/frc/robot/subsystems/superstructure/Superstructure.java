@@ -36,22 +36,22 @@ public class Superstructure {
     private final LoggedTunableNumber wristUnderTransition = new LoggedTunableNumber("Wrist/UnderTransitionPosition", WristConstants.UNDER_TRANSITION_RADIANS);
     private final LoggedTunableNumber wristReefTransition = new LoggedTunableNumber("Wrist/ReefTransitionPosition", WristConstants.REEF_TRANSITION_RADIANS);
 
-    public final LoggedSuperState STOW;
-    public final LoggedSuperState INTAKE;
-    public final LoggedSuperState L1;
-    public final LoggedSuperState L2;
-    public final LoggedSuperState L3;
-    public final LoggedSuperState L4;
-    public final LoggedSuperState L1_PLACE;
-    public final LoggedSuperState L2_PLACE;
-    public final LoggedSuperState L3_PLACE;
-    public final LoggedSuperState L4_PLACE;
-    public final LoggedSuperState L2_ALGAE;
-    public final LoggedSuperState L3_ALGAE;
-    public final LoggedSuperState L2_ALGAE_IN;
-    public final LoggedSuperState L3_ALGAE_IN;
-    public final LoggedSuperState CLIMB_READY;
-    public final LoggedSuperState CLIMB_FINAL;
+    public final SuperState STOW;
+    public final SuperState INTAKE;
+    public final SuperState L1;
+    public final SuperState L2;
+    public final SuperState L3;
+    public final SuperState L4;
+    public final SuperState L1_PLACE;
+    public final SuperState L2_PLACE;
+    public final SuperState L3_PLACE;
+    public final SuperState L4_PLACE;
+    public final SuperState L2_ALGAE;
+    public final SuperState L3_ALGAE;
+    public final SuperState L2_ALGAE_IN;
+    public final SuperState L3_ALGAE_IN;
+    public final SuperState CLIMB_READY;
+    public final SuperState CLIMB_FINAL;
 
     private SuperState targetState;
     private ArmState targetArmState;
@@ -84,7 +84,7 @@ public class Superstructure {
         L2_ALGAE = new LoggedSuperState("L2_ALGAE", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.STOP);
         L3_ALGAE = new LoggedSuperState("L3_ALGAE", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.STOP);
         L2_ALGAE_IN = new LoggedSuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
-        L3_ALGAE_IN = new LoggedSuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
+        L3_ALGAE_IN = new LoggedSuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         CLIMB_READY = new LoggedSuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.STOP);
         CLIMB_FINAL = new LoggedSuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.STOP);
 
@@ -144,8 +144,8 @@ public class Superstructure {
 
     }
 
-    // This command allows us to always transition between superstructure states.
-    // Note that this command is not safe if the end positions are not possible, for example if the final goal has the claw inside the climb.
+    // This command allows us to consistently transition between superstructure states.
+    // Note that this command is not safe if the end configuration is not possible, for example if the final goal has the claw inside the climb.
     public Command setSuperState(SuperState nextState) {
         // Update logged state
         return Commands.runOnce(() -> this.targetState = nextState).alongWith(
@@ -187,7 +187,8 @@ public class Superstructure {
                 // Stop blocking sequence when wrist is in a safe position
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> state.elevatorPosition),
-                // Only effectual if wrist just transitioned
+                // Below here is only effectual if wrist just transitioned
+                Commands.waitUntil(() -> !shouldEvadeReef()).onlyIf(() -> state.wristPosition < wristReefTransition.get()),
                 wrist.setPositionCommand(() -> state.wristPosition)
             )
         );
@@ -234,9 +235,9 @@ public class Superstructure {
 
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
         return Commands.either(
-            wrist.setPositionCommand(wristReefTransition.get()),
-            wrist.setPositionCommand(wristUnderTransition.get()),  
-            () -> shouldEvadeReef() || wrist.getPosition() > wristUnderTransition.get()
+            wrist.setPositionCommand(wristReefTransition::get),
+            wrist.setPositionCommand(wristUnderTransition::get),  
+            () -> shouldEvadeReef() || targetWristPosition.getAsDouble() > wristUnderTransition.get()
         );
     }
 
@@ -297,8 +298,6 @@ public class Superstructure {
         return stopState;
     }
 
-    
-
     public Command outtakeCommand() {
         // Figure out the correct SuperState at runtime, so defer
         return Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb));
@@ -312,8 +311,8 @@ public class Superstructure {
     public Command coralPlaceCommand() {
         return Commands.sequence(
             outtakeCommand(),
-            Commands.waitUntil(coralClaw::hasPiece),
-            stopOuttakeCommand()
+            Commands.waitUntil(() -> !coralClaw.hasPiece()),
+            setSuperState(STOW)
         );
     }
 

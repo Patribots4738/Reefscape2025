@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 
 public class Module {
@@ -39,7 +38,7 @@ public class Module {
     }
 
     /**
-     * Corrects the rotation2d and speed of the MK4c 
+     * Corrects the rotation2d and speed of the MK4c
      * 
      * @param desiredState stored rotation 2d and speed 
      */
@@ -50,9 +49,7 @@ public class Module {
         correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
 
         // Optimize the reference state to avoid spinning further than 90 degrees.
-        if (!FieldConstants.IS_SIMULATION) {
-            correctedDesiredState.optimize(new Rotation2d(inputs.turnEncoderAbsPositionRads));
-        }
+        correctedDesiredState.optimize(new Rotation2d(inputs.turnEncoderAbsPositionRads));
 
         // Command driving and turning TalonFX towards their respective setpoints.
         io.runDriveVelocity(correctedDesiredState.speedMetersPerSecond, feedforward);
