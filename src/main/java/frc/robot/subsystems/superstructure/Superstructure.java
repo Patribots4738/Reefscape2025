@@ -35,7 +35,6 @@ public class Superstructure {
 
     private final LoggedTunableNumber wristUnderTransition = new LoggedTunableNumber("Wrist/UnderTransitionPosition", WristConstants.UNDER_TRANSITION_RADIANS);
     private final LoggedTunableNumber wristReefTransition = new LoggedTunableNumber("Wrist/ReefTransitionPosition", WristConstants.REEF_TRANSITION_RADIANS);
-    private final LoggedTunableNumber coralClawPlaceTime = new LoggedTunableNumber("CoralClaw/PlaceTime", CoralClawConstants.PLACING_NAMED_COMMAND_TIME);
 
     public final LoggedSuperState STOW;
     public final LoggedSuperState INTAKE;
@@ -257,12 +256,12 @@ public class Superstructure {
         );
     }
 
-    public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
+    public Command coralIntakeCommand() {
         return 
             Commands.sequence(
                 setSuperState(INTAKE),
-                Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
-                setSuperState(STOW)
+                Commands.waitUntil(coralClaw::hasPiece),
+                setSuperState(L3)
             );
     }
 
@@ -271,7 +270,7 @@ public class Superstructure {
     }
 
     public Command coralAutoIntakeStopCommand(){
-        return setSuperState(STOW);
+        return setSuperState(L3);
     }
 
     public SuperState getPlacementState() {
@@ -298,21 +297,23 @@ public class Superstructure {
         return stopState;
     }
 
-    public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {
-        return Commands.sequence(
-            // Figure out the correct SuperState at runtime, so defer
-            Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb)),
-            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
-            Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
-        );
+    
+
+    public Command outtakeCommand() {
+        // Figure out the correct SuperState at runtime, so defer
+        return Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb));
     }
 
-    public Command coralAutoPlaceCommand() {
+    public Command stopOuttakeCommand() {
+        // Figure out the correct SuperState at runtime, so defer
+        return Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb));
+    }
+
+    public Command coralPlaceCommand() {
         return Commands.sequence(
-            // Figure out the correct SuperState at runtime, so defer
-            Commands.defer(() -> setSuperState(getPlacementState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb)),
-            Commands.waitSeconds(coralClawPlaceTime.get()),
-            Commands.defer(() -> setSuperState(getStopState()), Set.of(elevator, wrist, coralClaw, algaeClaw, climb))
+            outtakeCommand(),
+            Commands.waitUntil(coralClaw::hasPiece),
+            stopOuttakeCommand()
         );
     }
 

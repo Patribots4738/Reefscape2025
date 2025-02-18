@@ -449,7 +449,7 @@ public final class Constants {
         public static final double TURNING_P = !FieldConstants.IS_SIMULATION ? 1500d : 2400d;
         public static final double TURNING_I = 0;
         public static final double TURNING_D = !FieldConstants.IS_SIMULATION ? 30d : 250d;
-        public static final double TURNING_S = 2.800419999999998;
+        public static final double TURNING_S = !FieldConstants.IS_SIMULATION ? 2.800419999999998 : 1.0199330000001938;
 
         public static final GainConstants TURNING_GAINS = new GainConstants(
             TURNING_P,
@@ -678,6 +678,8 @@ public final class Constants {
         // https://docs.google.com/spreadsheets/d/1Lytrh6q9jkz4u1gmF1Sk8kTpj8DxW-uwRE_QMnTt8Lk
         public static final double CONTROLLER_CORNER_SLOPE_1 = 1 / 0.7;
         public static final double CONTROLLER_CORNER_SLOPE_2 = 0.7;
+
+        public static final double DRIVER_ALIGN_CANCEL_DEADBAND = 0.5;
 
         public enum DriverMode {
             DOUBLE,

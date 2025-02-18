@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot.GameMode;
 import frc.robot.commands.characterization.StaticCharacterization;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
@@ -43,6 +44,7 @@ import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
 import frc.robot.util.auto.PathPlannerStorage;
+import frc.robot.util.auto.Alignment.AlignmentMode;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.ActiveConditionalCommand;
 import frc.robot.util.custom.PatriBoxController;
@@ -187,20 +189,24 @@ public class RobotContainer {
         }
     }
 
-    private void configureTimedEvents() {}
+    private void configureTimedEvents() {
+        new Trigger(() -> alignment.getAlignmentMode() != AlignmentMode.NONE)
+            .whileTrue(driver.setRumble(() -> 1)
+                .finallyDo(() -> driver.setRumble(0)));
+    }
 
     private void configureDriverBindings(PatriBoxController controller) {
         
         controller.start()
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
-
+        
         controller.rightStick()
             .toggleOnTrue(
                 new ActiveConditionalCommand(
                     alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
                     alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
                     () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
-                ));
+                ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
         controller.a()
             .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
@@ -210,18 +216,24 @@ public class RobotContainer {
 
         controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
+
+        controller.rightTrigger()
+            .onTrue(superstructure.coralPlaceCommand());
+
+        controller.b()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
       
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
+        controller.leftBumper().onTrue(superstructure.coralIntakeCommand());
 
         controller.a().onTrue(superstructure.algaeL2Command(controller::getAButton));
 
         controller.y().onTrue(superstructure.algaeL3Command(controller::getYButton));
 
-        controller.rightBumper().onTrue(superstructure.coralPlaceCommand(controller::getRightBumper));
+        controller.rightBumper().onTrue(superstructure.coralPlaceCommand());
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -326,7 +338,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL2", superstructure.setSuperState(superstructure.L2));
         NamedCommands.registerCommand("CoralL3", superstructure.setSuperState(superstructure.L3));
         NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
-        NamedCommands.registerCommand("PlaceCoral", superstructure.coralAutoPlaceCommand());
+        NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommand());
 
         
         for (int i = 0; i < 12; i++) {

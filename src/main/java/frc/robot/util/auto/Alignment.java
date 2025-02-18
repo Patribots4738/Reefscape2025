@@ -20,7 +20,7 @@ import frc.robot.util.custom.ReefSide;
 public class Alignment {
 
     private final Swerve swerve;
-    private AlignmentMode mode = AlignmentMode.NONE;
+    private AlignmentMode alignmentMode = AlignmentMode.NONE;
     private int alignmentIndex = -1;
 
     public Alignment(Swerve swerve) {
@@ -191,7 +191,7 @@ public class Alignment {
         alignmentIndex += increment;
         // Clamp index based on number of alignment poses in the current mode
         alignmentIndex = 
-            switch (mode) {
+            switch (alignmentMode) {
                 case CAGE -> MathUtil.clamp(alignmentIndex, 0, FieldConstants.GET_CAGE_POSITIONS().size() - 1);
                 case REEF -> MathUtil.clamp(alignmentIndex, 0, 1);
                 default -> alignmentIndex = -1;
@@ -205,7 +205,7 @@ public class Alignment {
     public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds, Supplier<ChassisSpeeds> controllerSpeeds) {
         return 
             Commands.sequence(
-                Commands.runOnce(() -> this.mode = mode),
+                Commands.runOnce(() -> this.alignmentMode = mode),
                 swerve.getDriveCommand(
                 () -> 
                     normalizeChassisSpeeds(
@@ -217,7 +217,7 @@ public class Alignment {
             ).finallyDo(() -> {
                 resetHDC();
                 swerve.setDesiredPose(new Pose2d());
-                this.mode = AlignmentMode.NONE;
+                this.alignmentMode = AlignmentMode.NONE;
                 this.alignmentIndex = -1;
             });
     }
@@ -252,6 +252,10 @@ public class Alignment {
                 AlignmentMode.REEF, 
                 this::getReefAutoSpeeds, 
                 () -> getReefControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble()));
+    }
+
+    public AlignmentMode getAlignmentMode() {
+        return alignmentMode;
     }
 
 }
