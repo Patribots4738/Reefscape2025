@@ -314,7 +314,7 @@ public class Superstructure {
         return Commands.sequence(
             outtakeCommand(),
             Commands.waitUntil(() -> !coralClaw.hasPiece()),
-            setSuperState(STOW)
+            stopOuttakeCommand()
         );
     }
 

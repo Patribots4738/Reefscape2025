@@ -16,44 +16,18 @@
         0.0
     ],
     "cameras": [
+        
         {
-            "name": "BackLL4_1",
+            "name": "BackLL4",
             "fov": 82,
             "resolution": [
                 1280, 
                 560
             ],
             "position": [
-                -0.19685,
-                0.31115,
-                0.5842
-            ],
-            "rotations": [
-                {
-                    "axis": "x",
-                    "degrees": 0
-                },
-                {
-                    "axis": "y",
-                    "degrees": 17.5
-                },
-                {
-                    "axis": "z",
-                    "degrees": 180
-                }
-            ]
-        },
-        {
-            "name": "BackLL4_2",
-            "fov": 82,
-            "resolution": [
-                1280, 
-                560
-            ],
-            "position": [
-                -0.33655,
+                -0.28702,
                 0,
-                0.0762
+                0.1911680708
             ],
             "rotations": [
                 {

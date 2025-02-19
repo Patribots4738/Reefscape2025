@@ -260,7 +260,7 @@ public class RobotContainer {
         controller.start()
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
 
-        controller.y().onTrue(superstructure.coralIntakeCommand());
+        controller.y().onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -284,7 +284,7 @@ public class RobotContainer {
             .onTrue(superstructure.coralPlaceCommand());
 
         controller.leftTrigger()
-            .onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
+            .onTrue(superstructure.coralIntakeCommand());
 
         controller.rightStick()
             .toggleOnTrue(

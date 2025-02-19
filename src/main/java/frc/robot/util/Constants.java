@@ -14,7 +14,9 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.revrobotics.spark.SparkBase;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -510,7 +512,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double GEAR_RATIO = 16.0;
-        public static final double MAX_DISPLACEMENT_METERS = 0.6109564362;
+        public static final double MAX_DISPLACEMENT_METERS = 0.580;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
@@ -520,7 +522,7 @@ public final class Constants {
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double G = !FieldConstants.IS_SIMULATION ? 4d : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -597,9 +599,9 @@ public final class Constants {
         public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
-        public static final double MAX_ANGLE_RADIANS = 2.40720302912;
+        public static final double MAX_ANGLE_RADIANS = 2.5;
 
-        public static final double RESET_ANGLE_RADIANS = 2.40720302912;
+        public static final double RESET_ANGLE_RADIANS = 2.5;
 
         public static final double CLIMB_RADIANS = 1.1;
 
@@ -632,9 +634,9 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
-        public static final double MAX_ANGLE_RADIANS = 1.5;
+        public static final double MAX_ANGLE_RADIANS = 2.698;
 
-        public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 25d : 1000d; // Chef Cushman
+        public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 32d : 1000d; // Chef Cushman
         public static final double I_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double D_SLOW = !FieldConstants.IS_SIMULATION ? 2d : 500d;
         public static final double A_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -642,7 +644,7 @@ public final class Constants {
         public static final double V_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double G_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
-        public static final double P_FAST = !FieldConstants.IS_SIMULATION ? 25d : 1000d;
+        public static final double P_FAST = !FieldConstants.IS_SIMULATION ? 32d : 1000d;
         public static final double I_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double D_FAST = !FieldConstants.IS_SIMULATION ? 2d : 500d;
         public static final double A_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -678,8 +680,8 @@ public final class Constants {
         public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 1.5;
-        public static final double FINAL_POSITION_RADIANS = 0.169;
+        public static final double READY_POSITION_RADIANS = 2.6;
+        public static final double FINAL_POSITION_RADIANS = 0.920;
 
         public static final double Y_CHASSIS_OFFSET = 0.0508;
 
@@ -714,7 +716,17 @@ public final class Constants {
 
     public static final class CameraConstants {
 
-        
+        public static Pose3d LL4_POSE = new Pose3d(
+            -0.28702,
+            0,
+            0.1911680708,
+            new Rotation3d(
+                0, 
+                15, 
+                180
+            )
+        );
+
 
     }
 
