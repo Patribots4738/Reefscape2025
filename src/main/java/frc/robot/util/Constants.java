@@ -599,9 +599,9 @@ public final class Constants {
         public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
-        public static final double MAX_ANGLE_RADIANS = 2.5;
+        public static final double MAX_ANGLE_RADIANS = 2.65;
 
-        public static final double RESET_ANGLE_RADIANS = 2.5;
+        public static final double RESET_ANGLE_RADIANS = 2.65;
 
         public static final double CLIMB_RADIANS = 1.1;
 
@@ -716,13 +716,16 @@ public final class Constants {
 
     public static final class CameraConstants {
 
+        public static final int ENABLED_THROTTLE = 0; // Process every frame
+        public static final int DISABLED_THROTTLE = 50; // Process 1 of every 50 frames
+
         public static Pose3d LL4_POSE = new Pose3d(
             -0.28702,
             0,
             0.1911680708,
             new Rotation3d(
                 0, 
-                15, 
+                -15, 
                 180
             )
         );

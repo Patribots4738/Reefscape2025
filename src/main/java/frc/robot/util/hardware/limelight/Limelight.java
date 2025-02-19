@@ -11,24 +11,16 @@ public class Limelight {
     private final String name;
     private final boolean isLimelight4;
     private boolean useMT2 = false;
-    private int disabledThrottle = 0;
-    private int enabledThrottle = 0;
 
     private PoseEstimate latestPoseEstimate;
 
     public Limelight(String name, boolean isLimelight4) {
         this.name = name;
         this.isLimelight4 = isLimelight4;
-
     }
 
-    public void configureThrottle(int disabledThrottle, int enabledThrottle) {
-        this.disabledThrottle = disabledThrottle;
-        this.enabledThrottle = enabledThrottle;
-    }
-
-    public void configureThrottle(int disabledThrottle) {
-        configureThrottle(disabledThrottle, 0);
+    public void setThrottle(int throttle) {
+        LimelightHelpers.setThrottle(name, throttle);
     }
 
     public void setPipelineIndex(int newIndex) {
@@ -120,6 +112,10 @@ public class Limelight {
 
     public RawFiducial[] getRawFiducials() {
         return latestPoseEstimate != null ? latestPoseEstimate.rawFiducials : new RawFiducial[0];
+    }
+
+    public double getThrottle() {
+        return LimelightHelpers.getThrottle(name);
     }
 
     public boolean getUseMT2() {

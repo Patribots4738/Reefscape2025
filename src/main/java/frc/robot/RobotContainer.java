@@ -171,9 +171,21 @@ public class RobotContainer {
                 swerve, 
                 swerve::runTurnCharacterization, 
                 swerve::getTurnCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("WristFFCharacterization", wrist.sysIdQuasistatic());
-        pathPlannerStorage.getAutoChooser().addOption("ElevatorFFCharacterization", elevator.sysIdQuasistatic());
-        pathPlannerStorage.getAutoChooser().addOption("ClimbFFCharacterization", climb.sysIdQuasistatic());
+
+        pathPlannerStorage.getAutoChooser().addOption("WristQFCharacterization", wrist.sysIdQuasistaticForward());
+        pathPlannerStorage.getAutoChooser().addOption("WristQRCharacterization", wrist.sysIdQuasistaticReverse());
+        pathPlannerStorage.getAutoChooser().addOption("WristDFCharacterization", wrist.sysIdDynamicForward());
+        pathPlannerStorage.getAutoChooser().addOption("WristDRCharacterization", wrist.sysIdDynamicReverse());
+
+        pathPlannerStorage.getAutoChooser().addOption("ElevatorQFCharacterization", elevator.sysIdQuasistaticForward());
+        pathPlannerStorage.getAutoChooser().addOption("ElevatorQRCharacterization", elevator.sysIdQuasistaticReverse());
+        pathPlannerStorage.getAutoChooser().addOption("ElevatorDFCharacterization", elevator.sysIdDynamicForward());
+        pathPlannerStorage.getAutoChooser().addOption("ElevatorDRCharacterization", elevator.sysIdDynamicReverse());
+
+        pathPlannerStorage.getAutoChooser().addOption("ClimbQFCharacterization", climb.sysIdQuasistaticForward());
+        pathPlannerStorage.getAutoChooser().addOption("ClimbQRCharacterization", climb.sysIdQuasistaticReverse());
+        pathPlannerStorage.getAutoChooser().addOption("ClimbDFCharacterization", climb.sysIdDynamicForward());
+        pathPlannerStorage.getAutoChooser().addOption("ClimbDRCharacterization", climb.sysIdDynamicReverse());
 
     }
 

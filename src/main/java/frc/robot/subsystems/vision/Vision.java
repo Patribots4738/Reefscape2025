@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
 import frc.robot.RobotContainer;
+import frc.robot.util.Constants.CameraConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.LoggedTunableNumber;
 
@@ -61,6 +62,16 @@ public class Vision extends SubsystemBase {
         double currentYawDegrees = poseEstimator.getEstimatedPosition().getRotation().getDegrees();
         for (int i = 0; i < cameras.length; i++) {
             VisionIO camera = cameras[i];
+
+            if (Robot.gameMode == GameMode.DISABLED) {
+                // If robot is disabled, only process some frames
+                // This should minimize overheating issues with the LL4
+                camera.setThrottle(CameraConstants.DISABLED_THROTTLE);
+            } else {
+                // If robot is enabled, process every frame
+                camera.setThrottle(CameraConstants.ENABLED_THROTTLE);
+            }
+
             camera.setUseMegaTag2(shouldUseMT2);
             camera.setRobotOrientation(currentYawDegrees);
             camera.updateInputs(inputs[i]);
@@ -142,7 +153,10 @@ public class Vision extends SubsystemBase {
         if (!inputs[cameraIndex].robotPoseValid
             || Double.isNaN(inputs[cameraIndex].robotPose.getX()) 
             || Double.isNaN(inputs[cameraIndex].robotPose.getY()) 
-            || Double.isNaN(inputs[cameraIndex].robotPose.getRotation().getRadians()))
+            || Double.isNaN(inputs[cameraIndex].robotPose.getRotation().getRadians())
+            || inputs[cameraIndex].robotPose.getX() == 0
+            || inputs[cameraIndex].robotPose.getY() == 0
+            || inputs[cameraIndex].robotPose.getRotation().getRadians() == 0)
         {
             return false;
         }

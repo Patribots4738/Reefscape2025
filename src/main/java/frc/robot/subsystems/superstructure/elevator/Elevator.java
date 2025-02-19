@@ -140,7 +140,7 @@ public class Elevator extends SubsystemBase {
         return new SysIdRoutine(
             new SysIdRoutine.Config(
                 // Gaslight SysId since motor is actually running amps instead of volts, feedforwards should still be accurate
-                Volts.of(0.1).per(Second),
+                Volts.of(0.5).per(Second),
                 null, 
                 Seconds.of(2),
                 (state) -> Logger.recordOutput("ElevatorSysIdState", state.toString())
@@ -153,11 +153,19 @@ public class Elevator extends SubsystemBase {
         );
     }
 
-    public Command sysIdQuasistatic() {
+    public Command sysIdQuasistaticForward() {
         return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kForward);
     }
 
-    public Command sysIdDynamic() {
-        return getSysIdRoutine().dynamic(SysIdRoutine.Direction.kForward);
+    public Command sysIdQuasistaticReverse() {
+        return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kReverse);
+    }
+
+    public Command sysIdDynamicForward() {
+        return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kForward);
+    }
+
+    public Command sysIdDynamicReverse() {
+        return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kReverse);
     }
 }

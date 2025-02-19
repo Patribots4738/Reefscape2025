@@ -22,6 +22,8 @@ public interface VisionIO {
     
     public default void setPipelineIndex(int index) {}
 
+    public default void setThrottle(int throttle) {}
+
     public default void setRobotOrientation(double yawDegrees) {}
 
     public default void setUseMegaTag2(boolean megaTag2) {}

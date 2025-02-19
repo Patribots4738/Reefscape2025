@@ -35,6 +35,11 @@ public class VisionIOLimelight implements VisionIO {
     }
 
     @Override
+    public void setThrottle(int throttle) {
+        camera.setThrottle(throttle);
+    }
+
+    @Override
     public void setRobotOrientation(double yawDegrees) {
         camera.setRobotOrientation(yawDegrees);
     }

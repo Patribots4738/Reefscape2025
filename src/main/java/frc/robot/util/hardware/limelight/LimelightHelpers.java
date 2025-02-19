@@ -1353,6 +1353,10 @@ public class LimelightHelpers {
     public static void setThrottle(String limelightName, int throttle) {
         setLimelightNTDouble(limelightName, "throttle_set", throttle);
     }
+
+    public static double getThrottle(String limelightName) {
+        return getLimelightNTDouble(limelightName, "throttle_set");
+    }
     
     public static void setPriorityTagID(String limelightName, int ID) {
         setLimelightNTDouble(limelightName, "priorityid", ID);
