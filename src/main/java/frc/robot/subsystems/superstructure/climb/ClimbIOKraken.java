@@ -10,7 +10,7 @@ public class ClimbIOKraken implements ClimbIO {
     private final Kraken motor;
 
     public ClimbIOKraken() {
-        motor = new Kraken(ClimbConstants.CAN_ID, true, false, ControlPreference.TORQUE_CURRENT);
+        motor = new Kraken(ClimbConstants.CAN_ID, true, false, ControlPreference.MM_TORQUE_CURRENT);
         
         configMotor();
     }
@@ -21,7 +21,8 @@ public class ClimbIOKraken implements ClimbIO {
         motor.setSoftLimits(ClimbConstants.MIN_ANGLE_RADIANS, ClimbConstants.MAX_ANGLE_RADIANS);
         motor.setMotorInverted(ClimbConstants.MOTOR_INVERTED);
         motor.resetEncoder(0);
-        motor.setGains(ClimbConstants.GAINS);
+        motor.setGains(ClimbConstants.SLOW_GAINS, 0);
+        motor.setGains(ClimbConstants.FAST_GAINS, 1);
         motor.setStatorCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-ClimbConstants.CURRENT_LIMIT, ClimbConstants.CURRENT_LIMIT);
         configureProfile(ClimbConstants.VELOCITY, ClimbConstants.ACCELERATION, ClimbConstants.JERK);
@@ -47,8 +48,8 @@ public class ClimbIOKraken implements ClimbIO {
     }
 
     @Override
-    public void setPosition(double position) {
-        motor.setTargetPosition(position);
+    public void setPosition(double position, int slot) {
+        motor.setTargetPosition(position, slot);
     }
 
     @Override
@@ -67,8 +68,8 @@ public class ClimbIOKraken implements ClimbIO {
     }
 
     @Override
-    public void setGains(GainConstants constants) {
-        motor.setGains(constants);
+    public void setGains(GainConstants constants, int slot) {
+        motor.setGains(constants, slot);
     }
 
     @Override

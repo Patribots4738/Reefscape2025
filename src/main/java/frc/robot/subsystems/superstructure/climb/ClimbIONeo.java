@@ -18,7 +18,8 @@ public class ClimbIONeo implements ClimbIO {
         motor.setOutputInverted(ClimbConstants.MOTOR_INVERTED);
         motor.setPositionConversionFactor(ClimbConstants.POSITION_CONVERSION_FACTOR);
         motor.setVelocityConversionFactor(ClimbConstants.VELOCITY_CONVERSION_FACTOR / 60.0);
-        motor.setPID(ClimbConstants.GAINS);
+        motor.setPID(ClimbConstants.SLOW_GAINS, 0);
+        motor.setPID(ClimbConstants.FAST_GAINS, 1);
         motor.setSmartCurrentLimit((int) ClimbConstants.CURRENT_LIMIT);
         setBrakeMode(ClimbConstants.BRAKE_MOTOR);
     }
@@ -50,8 +51,8 @@ public class ClimbIONeo implements ClimbIO {
     }
 
     @Override
-    public void setGains(GainConstants constants) {
-        motor.setPID(constants);
+    public void setGains(GainConstants constants, int slot) {
+        motor.setPID(constants, slot);
     }
 
 

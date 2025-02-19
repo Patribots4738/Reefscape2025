@@ -519,6 +519,7 @@ public final class Constants {
         public static final double D = !FieldConstants.IS_SIMULATION ? 20d : 200d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
@@ -527,7 +528,7 @@ public final class Constants {
             D,
             A,
             S,
-            0.0,
+            V,
             G
         );
 
@@ -566,6 +567,7 @@ public final class Constants {
         public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 500d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
@@ -574,7 +576,7 @@ public final class Constants {
             D,
             A,
             S,
-            0.0,
+            V,
             G
         );
 
@@ -632,27 +634,48 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 1.5;
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 25d : 1000d; // Chef Curry
-        public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 2d : 500d;
-        public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
-        public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 25d : 1000d; // Chef Cushman
+        public static final double I_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double D_SLOW = !FieldConstants.IS_SIMULATION ? 2d : 500d;
+        public static final double A_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double S_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double V_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
+        public static final double G_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+
+        public static final double P_FAST = !FieldConstants.IS_SIMULATION ? 25d : 1000d;
+        public static final double I_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double D_FAST = !FieldConstants.IS_SIMULATION ? 2d : 500d;
+        public static final double A_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double S_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
+        public static final double V_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double G_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
         public static final double VELOCITY = 0.0;
         public static final double ACCELERATION = 0.0;
         public static final double JERK = 0.0;
 
-        public static final GainConstants GAINS = new GainConstants(
-            P,
-            I,
-            D,
-            A,
-            S,
-            G
+        public static final GainConstants SLOW_GAINS = new GainConstants(
+            P_SLOW,
+            I_SLOW,
+            D_SLOW,
+            A_SLOW,
+            S_SLOW,
+            V_SLOW,
+            G_SLOW
         );
 
-        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ClimbConstants.GAINS, "Climb");
+        public static final GainConstants FAST_GAINS = new GainConstants(
+            P_FAST,
+            I_FAST,
+            D_FAST,
+            A_FAST,
+            S_FAST,
+            V_FAST,
+            G_FAST
+        );
+
+        public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
+        public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = 1.5;

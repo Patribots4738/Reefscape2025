@@ -155,6 +155,7 @@ public class GainConstants {
         this.P = P;
         this.I = I;
         this.D = D;
+        this.A = A;
         this.S = S;
         this.V = V;
         this.G = G;

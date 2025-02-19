@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -41,7 +42,8 @@ public class Climb extends SubsystemBase {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
         velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
-        ClimbConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_GAINS.get())).ignoringDisable(true));
+        ClimbConstants.LOGGED_SLOW_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_SLOW_GAINS.get(), 0)).ignoringDisable(true));
+        ClimbConstants.LOGGED_FAST_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_FAST_GAINS.get(), 1)).ignoringDisable(true));
     }
 
     @Override
@@ -56,10 +58,10 @@ public class Climb extends SubsystemBase {
         );
     }
 
-    public void setPosition(double position) {
+    public void setPosition(double position, boolean slam) {
         position = MathUtil.clamp(position, ClimbConstants.MIN_ANGLE_RADIANS, ClimbConstants.MAX_ANGLE_RADIANS);
         targetPosition = position;
-        io.setPosition(targetPosition);
+        io.setPosition(targetPosition, slam ? 1 : 0);
 
         RobotContainer.desiredComponents3d[LoggingConstants.CLIMB_INDEX] = new Pose3d(
             LoggingConstants.CLIMB_OFFSET,
@@ -75,12 +77,12 @@ public class Climb extends SubsystemBase {
         io.resetEncoder(0);
     }
 
-    public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
+    public Command setPositionCommand(DoubleSupplier positionSupplier, BooleanSupplier slamSupplier) {
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble(), slamSupplier.getAsBoolean())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
-    public Command setPositionCommand(double position) {
-        return setPositionCommand(() -> position);
+    public Command setPositionCommand(double position, boolean slam) {
+        return setPositionCommand(() -> position, () -> slam);
     }
 
     public Command setNeutralCommand() {

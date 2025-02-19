@@ -113,14 +113,16 @@ public class Superstructure {
 
     public enum ClimbState {
 
-        STOW (ClimbConstants.STOW_POSITION_RADIANS),
-        READY (ClimbConstants.READY_POSITION_RADIANS),
-        FINAL (ClimbConstants.FINAL_POSITION_RADIANS);
+        STOW (ClimbConstants.STOW_POSITION_RADIANS, false),
+        READY (ClimbConstants.READY_POSITION_RADIANS, false),
+        FINAL (ClimbConstants.FINAL_POSITION_RADIANS, true);
 
         double climbPosition;
+        boolean slam;
 
-        ClimbState(double climbPosition) {
+        ClimbState(double climbPosition, boolean slam) {
             this.climbPosition = climbPosition;
+            this.slam = slam;
         }
 
     }
@@ -196,7 +198,7 @@ public class Superstructure {
 
     public Command setClimbState(ClimbState state) {
         return Commands.runOnce(() -> targetClimbState = state)
-                .alongWith(climb.setPositionCommand(() -> state.climbPosition));
+                .alongWith(climb.setPositionCommand(() -> state.climbPosition, () -> state.slam));
     }
 
     public Command avoidClimb(ArmState armState, ClimbState climbState) {
