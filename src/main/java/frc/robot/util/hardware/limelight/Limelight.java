@@ -11,12 +11,24 @@ public class Limelight {
     private final String name;
     private final boolean isLimelight4;
     private boolean useMT2 = false;
+    private int disabledThrottle = 0;
+    private int enabledThrottle = 0;
 
     private PoseEstimate latestPoseEstimate;
 
     public Limelight(String name, boolean isLimelight4) {
         this.name = name;
         this.isLimelight4 = isLimelight4;
+
+    }
+
+    public void configureThrottle(int disabledThrottle, int enabledThrottle) {
+        this.disabledThrottle = disabledThrottle;
+        this.enabledThrottle = enabledThrottle;
+    }
+
+    public void configureThrottle(int disabledThrottle) {
+        configureThrottle(disabledThrottle, 0);
     }
 
     public void setPipelineIndex(int newIndex) {

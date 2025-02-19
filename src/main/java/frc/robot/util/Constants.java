@@ -652,8 +652,8 @@ public final class Constants {
         public static final double V_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
-        public static final double VELOCITY = 0.0;
-        public static final double ACCELERATION = 0.0;
+        public static final double VELOCITY = Math.PI;
+        public static final double ACCELERATION = Math.PI * 2;
         public static final double JERK = 0.0;
 
         public static final GainConstants SLOW_GAINS = new GainConstants(

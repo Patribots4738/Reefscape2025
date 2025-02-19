@@ -614,7 +614,7 @@ public class LimelightHelpers {
     static boolean profileJSON = false;
 
     static final String sanitizeName(String name) {
-        if (name == "" || name == null) {
+        if ("".equals(name) || name == null) {
             return "limelight";
         }
         return name;
@@ -1346,13 +1346,13 @@ public class LimelightHelpers {
         return new IMUData(imuData);
     }
 
-    /////
-    /////
-
     public static void setPipelineIndex(String limelightName, int pipelineIndex) {
         setLimelightNTDouble(limelightName, "pipeline", pipelineIndex);
     }
 
+    public static void setThrottle(String limelightName, int throttle) {
+        setLimelightNTDouble(limelightName, "throttle_set", throttle);
+    }
     
     public static void setPriorityTagID(String limelightName, int ID) {
         setLimelightNTDouble(limelightName, "priorityid", ID);
@@ -1598,7 +1598,7 @@ public class LimelightHelpers {
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            if (snapshotName != null && snapshotName != "") {
+            if (snapshotName != null && !"".equals(snapshotName)) {
                 connection.setRequestProperty("snapname", snapshotName);
             }
 
