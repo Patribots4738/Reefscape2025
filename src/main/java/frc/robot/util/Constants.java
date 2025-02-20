@@ -236,11 +236,6 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "3-J4-K4-L4-A4",
-            "5-E4-D4-C4-B4",
-            "3-J4-L4-A4",
-            "5-E4-C4-B4",
-            "4-H4",
             "Only Driving 3-J4-K4-L4-A4",
             "Only Driving 5-E4-D4-C4-B4",
             "Only Driving 3-J4-L4-A4",
@@ -820,7 +815,7 @@ public final class Constants {
         // 2d height
         public static final double FIELD_MAX_HEIGHT = 8.0518;
 
-        public static final double INTAKE_ALIGNMENT_DISTANCE_METERS = 1.5;
+        public static final double INTAKE_ALIGNMENT_DISTANCE_METERS = 1d;
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 

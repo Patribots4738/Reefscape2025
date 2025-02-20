@@ -193,7 +193,7 @@ public class Swerve extends SubsystemBase {
             this::getPose,
             this::resetOdometryAuto,
             this::getRobotRelativeVelocity,
-            (speeds, feedforwards) -> driveWithSetpoints(speeds),
+            (speeds, feedforwards) -> driveWithSetpoints(speeds, feedforwards),
             AutoConstants.AUTO_HDC,
             config,
             Robot::isRedAlliance,
@@ -318,13 +318,13 @@ public class Swerve extends SubsystemBase {
         );
     }
 
-    public void driveWithSetpoints(ChassisSpeeds robotRelativeSpeeds) {
+    public void driveWithSetpoints(ChassisSpeeds robotRelativeSpeeds, DriveFeedforwards feedforwards) {
         previousSetpoint = setpointGenerator.generateSetpoint(
             previousSetpoint,
             robotRelativeSpeeds,
             Timer.getFPGATimestamp() - Robot.previousTimestamp
         );
-        setModuleStates(previousSetpoint.moduleStates());
+        setModuleStates(previousSetpoint.moduleStates(), feedforwards.torqueCurrentsAmps());
     }
 
     // Drive method used in teleop
@@ -474,17 +474,21 @@ public class Swerve extends SubsystemBase {
      *
      * @param desiredStates The desired SwerveModule states.
      */
-    public void setModuleStates(SwerveModuleState[] desiredStates) {
+    public void setModuleStates(SwerveModuleState[] desiredStates, double[] feedforwards) {
         SwerveDriveKinematics.desaturateWheelSpeeds(
             desiredStates,
             getMaxLinearVelocity()
         );
-        frontLeft.setDesiredState(desiredStates[0]);
-        frontRight.setDesiredState(desiredStates[1]);
-        rearLeft.setDesiredState(desiredStates[2]);
-        rearRight.setDesiredState(desiredStates[3]);
+        frontLeft.setDesiredState(desiredStates[0], feedforwards[0]);
+        frontRight.setDesiredState(desiredStates[1], feedforwards[1]);
+        rearLeft.setDesiredState(desiredStates[2], feedforwards[2]);
+        rearRight.setDesiredState(desiredStates[3], feedforwards[3]);
 
         RobotContainer.swerveDesiredStates = desiredStates;
+    }
+
+    public void setModuleStates(SwerveModuleState[] desiredStates) {
+        setModuleStates(desiredStates, new double[] { 0, 0, 0, 0 });
     }
 
     public void resetOdometry(Pose2d pose) {

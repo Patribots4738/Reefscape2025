@@ -98,8 +98,10 @@ public class Alignment {
     }
 
     public ChassisSpeeds getReefRotationalAutoSpeeds() {
-        Rotation2d reefRotation = PoseCalculations.getClosestReefSide(swerve.getPose()).getRotation();
-        return getAutoRotationalSpeeds(reefRotation);
+        Pose2d reefCenter = FieldConstants.GET_REEF_POSITION();
+        Pose2d relativePose = swerve.getPose().relativeTo(reefCenter);
+        Rotation2d desiredRotation = new Rotation2d(relativePose.getX(), relativePose.getY()).plus(new Rotation2d(Math.PI));
+        return getAutoRotationalSpeeds(desiredRotation);
     }
     
     public ChassisSpeeds getCageAutoSpeeds() {
@@ -123,6 +125,7 @@ public class Alignment {
         return getAutoSpeeds(desiredPose);
     }
 
+    // TODO: Make this less 🤮 because MY LORD
     public ChassisSpeeds getReefAutoSpeeds() {
         Pose2d currentPose = swerve.getPose();
         ReefSide reefSide = PoseCalculations.getClosestReefSide(swerve.getPose());

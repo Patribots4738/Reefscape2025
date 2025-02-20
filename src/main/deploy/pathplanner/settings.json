@@ -13,8 +13,8 @@
     "Full Auto",
     "Only Driving"
   ],
-  "defaultMaxVel": 3.5,
-  "defaultMaxAccel": 8.8,
+  "defaultMaxVel": 2.0,
+  "defaultMaxAccel": 7.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 851.0,
   "defaultNominalVoltage": 12.0,
