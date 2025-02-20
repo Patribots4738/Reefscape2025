@@ -399,10 +399,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.280518;
-        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283203;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081787;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.114990;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.28271484375;
+        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081055;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.139404296875;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
