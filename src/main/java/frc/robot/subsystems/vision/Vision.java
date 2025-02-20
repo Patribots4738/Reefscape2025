@@ -6,6 +6,7 @@ package frc.robot.subsystems.vision;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -19,6 +20,8 @@ import frc.robot.Robot.GameMode;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.CameraConstants;
 import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.auto.Alignment.AlignmentMode;
+import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.LoggedTunableNumber;
 
 public class Vision extends SubsystemBase {
@@ -41,11 +44,13 @@ public class Vision extends SubsystemBase {
     private final LoggedTunableNumber minSingleTagArea = new LoggedTunableNumber("Vision/minSingleTagArea", 0.14);
 
     private final SwerveDrivePoseEstimator poseEstimator;
+    private final Supplier<AlignmentMode> alignmentSupplier;
 
     @AutoLogOutput (key="Subsystems/Vision/RotationUpdated")
     private boolean rotationUpdated = false;
 
-    public Vision(SwerveDrivePoseEstimator poseEstimator, VisionIO... io) {
+    public Vision(SwerveDrivePoseEstimator poseEstimator, Supplier<AlignmentMode> alignmentSupplier, VisionIO... io) {
+        this.alignmentSupplier = alignmentSupplier;
         int cameraCount = io.length;
         cameras = new VisionIO[cameraCount];
         inputs = new VisionIOInputsAutoLogged[cameraCount];
@@ -76,6 +81,19 @@ public class Vision extends SubsystemBase {
             camera.setRobotOrientation(currentYawDegrees);
             camera.updateInputs(inputs[i]);
             Logger.processInputs("SubsystemInputs/Vision/Camera" + i, inputs[i]);
+
+            int reefTag = closestReefTag();
+            boolean hasReefTag = false;
+            for (int id : inputs[i].tagIds) {
+                if (id == reefTag) 
+                    hasReefTag = true;
+            }
+            boolean useReefTagEstimate = alignmentSupplier.get() == AlignmentMode.REEF && hasReefTag;
+            if (useReefTagEstimate) {
+                camera.setUsedTags(new int[] { reefTag });
+            } else {
+                camera.setUsedTags(FieldConstants.VALID_TAGS);
+            }
         }
 
         if (!FieldConstants.IS_SIMULATION) {
@@ -161,6 +179,11 @@ public class Vision extends SubsystemBase {
             return false;
         }
         return true;
+    }
+
+    @AutoLogOutput (key = "Subsystems/Vision/ClosestReefTag")
+    private int closestReefTag() {
+        return PoseCalculations.getClosestReefSide(poseEstimator.getEstimatedPosition()).getTagId();
     }
 
     @AutoLogOutput (key = "Subsystems/Vision/MT1")

@@ -900,12 +900,12 @@ public final class Constants {
             // All relative to the blue origin
             // Positions go from blueReef1 (the farthest from blue driverstation) clockwise around
             // even = high, odd = low
-            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L);
-            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I);
-            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G);
-            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E);
-            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D);
-            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B);
+            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L, 19);
+            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I, 20);
+            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G, 21);
+            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E, 22);
+            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D, 17);
+            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B, 18);
 
             // Blue Reef
             add(blueReef1);
@@ -916,12 +916,12 @@ public final class Constants {
             add(blueReef6);
 
             // Red Reef
-            add(blueReef1.otherAlliance()); 
-            add(blueReef2.otherAlliance());
-            add(blueReef3.otherAlliance());
-            add(blueReef4.otherAlliance());
-            add(blueReef5.otherAlliance());
-            add(blueReef6.otherAlliance());
+            add(blueReef1.otherAlliance(7)); 
+            add(blueReef2.otherAlliance(8));
+            add(blueReef3.otherAlliance(9));
+            add(blueReef4.otherAlliance(10));
+            add(blueReef5.otherAlliance(11));
+            add(blueReef6.otherAlliance(6));
         }};
 
         public static final List<ReefSide> GET_REEF_FACE_POSITIONS() {
@@ -1000,6 +1000,9 @@ public final class Constants {
         }
 
         public static final double NEAR_REEF_METERS = 1.4; 
+
+        // D:
+        public static final int[] VALID_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 }; // D:
 
     }
 

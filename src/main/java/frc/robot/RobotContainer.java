@@ -107,15 +107,14 @@ public class RobotContainer {
         pdh.setSwitchableChannel(false);
 
         swerve = new Swerve();
-        vision = new Vision(swerve.getPoseEstimator(), new VisionIOLimelight("limelight-four", true));
+        alignment = new Alignment(swerve);
+        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true));
         coralClaw = new CoralClaw(new CoralClawIOKraken());
         algaeClaw = new AlgaeClaw(new AlgaeClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-
         superstructure = new Superstructure(algaeClaw, coralClaw, elevator, wrist, climb, swerve::getPose);
-        alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
 
