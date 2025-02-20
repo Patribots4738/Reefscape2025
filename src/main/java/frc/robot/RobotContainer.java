@@ -94,7 +94,8 @@ public class RobotContainer {
     public static SwerveModuleState[] swerveDesiredStates;
     @AutoLogOutput (key = "Draggables/GameModeStart")
     public static double gameModeStart = 0;
-
+    @AutoLogOutput (key = "Draggables/AutoStartingPose")
+    public static Pose2d autoStartingPose = new Pose2d();
     
     public RobotContainer() {
 
