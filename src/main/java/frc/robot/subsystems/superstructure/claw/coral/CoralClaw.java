@@ -40,7 +40,7 @@ public class CoralClaw extends SubsystemBase {
     public CoralClaw(ClawIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        hasPieceDebouncer = new Debouncer(0.75);
+        hasPieceDebouncer = new Debouncer(0.8);
         hasPiece = DriverStation.isFMSAttached();
     }
 

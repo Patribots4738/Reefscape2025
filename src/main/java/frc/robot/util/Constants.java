@@ -412,7 +412,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9548910849480585 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8885017491997822 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -476,6 +476,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double INTAKE_PERCENT = 0.35;
+        public static final double HOLD_PERCENT = 0.0;
         public static final double OUTTAKE_PERCENT = -0.75;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
@@ -518,11 +519,11 @@ public final class Constants {
 
         public static final double P = !FieldConstants.IS_SIMULATION ? 180d : 800d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 20d : 200d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 30d : 200d;
         public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G = !FieldConstants.IS_SIMULATION ? 4d : 0d;
+        public static final double G = !FieldConstants.IS_SIMULATION ? 7.5 : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -537,8 +538,8 @@ public final class Constants {
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
         public static final double VELOCITY = 1d;
-        public static final double ACCELERATION = 2d;
-        public static final double JERK = 0d;
+        public static final double ACCELERATION = 2.5;
+        public static final double JERK = 25;
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
@@ -567,10 +568,10 @@ public final class Constants {
         public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 2200d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 500d;
-        public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double A = !FieldConstants.IS_SIMULATION ? 3d : 0d;
+        public static final double S = !FieldConstants.IS_SIMULATION ? 1.5052 : 0d;
         public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double G = !FieldConstants.IS_SIMULATION ? 5.6 : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -584,9 +585,9 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
-        public static final double VELOCITY = 10d;
-        public static final double ACCELERATION = !FieldConstants.IS_SIMULATION ? 20d : 15d;
-        public static final double JERK = 0d;
+        public static final double VELOCITY = 11d;
+        public static final double ACCELERATION = !FieldConstants.IS_SIMULATION ? 90d : 15d;
+        public static final double JERK = 900d;
 
         public static final double GEAR_RATIO = 60.0;
     
@@ -607,7 +608,7 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.07;
-        public static final double INTAKE_POSITION_RADIANS = -0.18;
+        public static final double INTAKE_POSITION_RADIANS = -0.2;
         public static final double L1_POSITION_RADIANS = 2.40720302912;
         public static final double L2_POSITION_RADIANS = 2.2;
         public static final double L3_POSITION_RADIANS = 2.22;
@@ -636,25 +637,25 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 2.698;
 
-        public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 32d : 1000d; // Chef Cushman
+        public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 25d : 1000d; // Chef Cushman
         public static final double I_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double D_SLOW = !FieldConstants.IS_SIMULATION ? 2d : 500d;
-        public static final double A_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double A_SLOW = !FieldConstants.IS_SIMULATION ? 1d : 0d;
         public static final double S_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double V_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double G_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
-        public static final double P_FAST = !FieldConstants.IS_SIMULATION ? 32d : 1000d;
+        public static final double P_FAST = !FieldConstants.IS_SIMULATION ? 25d : 1000d;
         public static final double I_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double D_FAST = !FieldConstants.IS_SIMULATION ? 2d : 500d;
-        public static final double A_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double A_FAST = !FieldConstants.IS_SIMULATION ? 1d : 0d;
         public static final double S_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double V_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
 
         public static final double VELOCITY = Math.PI;
-        public static final double ACCELERATION = Math.PI * 2;
-        public static final double JERK = 0.0;
+        public static final double ACCELERATION = 20d;
+        public static final double JERK = 200d;
 
         public static final GainConstants SLOW_GAINS = new GainConstants(
             P_SLOW,
@@ -694,8 +695,8 @@ public final class Constants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
         public static final int OPERATOR_CONTROLLER_PORT = 1;
 
-        public static final double DRIVER_DEADBAND = 0.15;
-        public static final double OPERATOR_DEADBAND = 0.15;
+        public static final double DRIVER_DEADBAND = 0.08;
+        public static final double OPERATOR_DEADBAND = 0.08;
 
         // See https://www.desmos.com/calculator/e07raajzh5
         // And
@@ -703,14 +704,14 @@ public final class Constants {
         public static final double CONTROLLER_CORNER_SLOPE_1 = 1 / 0.7;
         public static final double CONTROLLER_CORNER_SLOPE_2 = 0.7;
 
-        public static final double DRIVER_ALIGN_CANCEL_DEADBAND = 0.5;
+        public static final double DRIVER_ALIGN_CANCEL_DEADBAND = 0.2;
 
         public enum DriverMode {
             DOUBLE,
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 

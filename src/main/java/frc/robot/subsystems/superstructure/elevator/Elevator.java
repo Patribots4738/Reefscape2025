@@ -162,10 +162,10 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command sysIdDynamicForward() {
-        return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kForward);
+        return getSysIdRoutine().dynamic(SysIdRoutine.Direction.kForward);
     }
 
     public Command sysIdDynamicReverse() {
-        return getSysIdRoutine().quasistatic(SysIdRoutine.Direction.kReverse);
+        return getSysIdRoutine().dynamic(SysIdRoutine.Direction.kReverse);
     }
 }

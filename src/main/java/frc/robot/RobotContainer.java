@@ -203,7 +203,7 @@ public class RobotContainer {
 
     private void configureMiscTriggers() {
         new Trigger(() -> alignment.getAlignmentMode() != AlignmentMode.NONE)
-            .whileTrue(Commands.run(() -> driver.setRumble(0.5))
+            .whileTrue(Commands.run(() -> driver.setRumble(0.2))
                 .finallyDo(() -> driver.setRumble(0)));
     }
 
@@ -230,19 +230,13 @@ public class RobotContainer {
             .onTrue(alignment.updateIndexCommand(1));
 
         controller.rightTrigger()
-            .onTrue(superstructure.coralPlaceCommand());
+            .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
       
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        controller.leftBumper().onTrue(superstructure.coralIntakeCommand());
-
-        controller.a().onTrue(superstructure.algaeL2Command(controller::getAButton));
-
-        controller.y().onTrue(superstructure.algaeL3Command(controller::getYButton));
-
-        controller.rightBumper().onTrue(superstructure.coralPlaceCommand());
+        controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -259,11 +253,8 @@ public class RobotContainer {
         controller.b()
             .onTrue(superstructure.setSuperState(superstructure.STOW));
 
-        controller.leftTrigger()
-            .onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
-
-        controller.rightTrigger()
-            .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
+        controller.x()
+            .onTrue(superstructure.coralPrepCommand());
 
     }
 
@@ -293,10 +284,10 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
 
         controller.rightTrigger()
-            .onTrue(superstructure.coralPlaceCommand());
+            .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
 
         controller.leftTrigger()
-            .onTrue(superstructure.coralIntakeCommand());
+            .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 
         controller.rightStick()
             .toggleOnTrue(
@@ -378,7 +369,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL2", superstructure.setSuperState(superstructure.L2));
         NamedCommands.registerCommand("CoralL3", superstructure.setSuperState(superstructure.L3));
         NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
-        NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommand());
+        NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommandAuto());
 
         
         for (int i = 0; i < 12; i++) {

@@ -94,17 +94,17 @@ public class Superstructure {
 
         INTAKE = new LoggedSuperState("INTAKE", ArmState.INTAKE, ClimbState.STOW, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
 
-        L1_PREP = new LoggedSuperState("L1_PREP", ArmState.L1_PREP, ClimbState.STOW, ClawState.STOP);
-        L2_PREP = new LoggedSuperState("L2_PREP", ArmState.L2_PREP, ClimbState.STOW, ClawState.STOP);
-        L3_PREP = new LoggedSuperState("L3_PREP", ArmState.L3_PREP, ClimbState.STOW, ClawState.STOP);
-        L4_PREP = new LoggedSuperState("L4_PREP", ArmState.L4_PREP, ClimbState.STOW, ClawState.STOP);
+        L1_PREP = new LoggedSuperState("L1_PREP", ArmState.L1_PREP, ClimbState.STOW, ClawState.CORAL_HOLD);
+        L2_PREP = new LoggedSuperState("L2_PREP", ArmState.L2_PREP, ClimbState.STOW, ClawState.CORAL_HOLD);
+        L3_PREP = new LoggedSuperState("L3_PREP", ArmState.L3_PREP, ClimbState.STOW, ClawState.CORAL_HOLD);
+        L4_PREP = new LoggedSuperState("L4_PREP", ArmState.L4_PREP, ClimbState.STOW, ClawState.CORAL_HOLD);
 
         currentPrepState = L4_PREP;
 
-        L1 = new LoggedSuperState("L1", ArmState.L1, ClimbState.STOW, ClawState.STOP);
-        L2 = new LoggedSuperState("L2", ArmState.L2, ClimbState.STOW, ClawState.STOP);
-        L3 = new LoggedSuperState("L3", ArmState.L3, ClimbState.STOW, ClawState.STOP);
-        L4 = new LoggedSuperState("L4", ArmState.L4, ClimbState.STOW, ClawState.STOP);
+        L1 = new LoggedSuperState("L1", ArmState.L1, ClimbState.STOW, ClawState.CORAL_HOLD);
+        L2 = new LoggedSuperState("L2", ArmState.L2, ClimbState.STOW, ClawState.CORAL_HOLD);
+        L3 = new LoggedSuperState("L3", ArmState.L3, ClimbState.STOW, ClawState.CORAL_HOLD);
+        L4 = new LoggedSuperState("L4", ArmState.L4, ClimbState.STOW, ClawState.CORAL_HOLD);
 
         L1_PLACE = new LoggedSuperState("L1_PLACE", ArmState.L1, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
         L2_PLACE = new LoggedSuperState("L2_PLACE", ArmState.L2, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
@@ -172,6 +172,7 @@ public class Superstructure {
     public enum ClawState {
 
         STOP (0, 0),
+        CORAL_HOLD (CoralClawConstants.HOLD_PERCENT, 0),
         CORAL_IN (CoralClawConstants.INTAKE_PERCENT, 0),
         CORAL_OUT (CoralClawConstants.OUTTAKE_PERCENT, 0),
         ALGAE_IN (0, AlgaeClawConstants.INTAKE_PERCENT),
@@ -301,13 +302,17 @@ public class Superstructure {
         );
     }
 
-    public Command coralIntakeCommand() {
+    public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
                 setSuperState(INTAKE),
-                Commands.waitUntil(coralClaw::hasPiece),
-                Commands.defer(() -> setSuperState(currentPrepState), requirements)
+                Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
+                setSuperState(STOW)
             );
+    }
+
+    public Command coralPrepCommand() {
+        return Commands.defer(() -> setSuperState(currentPrepState), requirements);
     }
 
     public Command coralAutoIntakeStartCommand(){
@@ -365,10 +370,20 @@ public class Superstructure {
         return Commands.defer(() -> setSuperState(getExitState()), requirements);
     }
 
-    public Command coralPlaceCommand() {
+    public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {
         return Commands.sequence(
             outtakeCommand(),
-            Commands.waitUntil(() -> !coralClaw.hasPiece()),
+            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
+            stopOuttakeCommand(),
+            Commands.waitUntil(() -> !shouldEvadeReef()),
+            setSuperState(STOW)
+        );
+    }
+
+    public Command coralPlaceCommandAuto() {
+        return Commands.sequence(
+            outtakeCommand(),
+            Commands.waitSeconds(0.75),
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
             setSuperState(STOW)
