@@ -42,9 +42,10 @@ import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
+import frc.robot.util.LED;
 import frc.robot.util.auto.Alignment;
-import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.auto.Alignment.AlignmentMode;
+import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.ActiveConditionalCommand;
 import frc.robot.util.custom.PatriBoxController;
@@ -72,6 +73,7 @@ public class RobotContainer {
     private final Climb climb;
     private final Superstructure superstructure;
     private final Alignment alignment;
+    private final LED led;
 
     public static Field2d field2d = new Field2d();
 
@@ -116,6 +118,7 @@ public class RobotContainer {
 
         superstructure = new Superstructure(algaeClaw, coralClaw, elevator, wrist, climb, swerve::getPose);
         alignment = new Alignment(swerve);
+        led = new LED();
 
         SmartDashboard.putData(field2d);
 
@@ -231,6 +234,9 @@ public class RobotContainer {
 
         controller.rightTrigger()
             .onTrue(superstructure.coralPlaceCommand());
+
+        controller.b()
+            .onTrue(led.patriColors());
       
     }
 
