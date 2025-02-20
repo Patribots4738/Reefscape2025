@@ -483,7 +483,11 @@ public final class Constants {
 
         public static final double CURRENT_THRESHOLD_HAS_PIECE_AMPS = 5.0;
 
-        public static final double CORAL_CLAW_CURRENT_DEADBAND = 10.101205;
+        public static final double CORAL_CLAW_CURRENT_DEADBAND = 15d;
+
+        public static final double HAS_PIECE_INTAKE_THRESHOLD = 5d;
+
+        public static final double HAS_PIECE_OUTTAKE_THRESHOLD = 30d;
 
     }
 
@@ -602,7 +606,7 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
         public static final double MAX_ANGLE_RADIANS = 2.65;
 
-        public static final double RESET_ANGLE_RADIANS = 2.65;
+        public static final double RESET_ANGLE_RADIANS = 2.829;
 
         public static final double CLIMB_RADIANS = 1.1;
 
@@ -612,11 +616,11 @@ public final class Constants {
         public static final double L1_POSITION_RADIANS = 2.40720302912;
         public static final double L2_POSITION_RADIANS = 2.2;
         public static final double L3_POSITION_RADIANS = 2.22;
-        public static final double L4_POSITION_RADIANS = 2.3;
+        public static final double L4_POSITION_RADIANS = 2.479;
         public static final double ALGAE_REMOVAL = 1.57;
 
-        public static final double REEF_TRANSITION_RADIANS = 1.6;
-        public static final double UNDER_TRANSITION_RADIANS = 1.1;
+        public static final double REEF_TRANSITION_RADIANS = 1.779;
+        public static final double UNDER_TRANSITION_RADIANS = 1.7;
     }
 
 
@@ -718,7 +722,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 50; // Process 1 of every 50 frames
+        public static final int DISABLED_THROTTLE = 80; // Process 1 of every 80 frames
 
         public static Pose3d LL4_POSE = new Pose3d(
             -0.28702,

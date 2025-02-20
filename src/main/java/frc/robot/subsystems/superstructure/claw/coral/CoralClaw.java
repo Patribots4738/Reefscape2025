@@ -21,7 +21,6 @@ import frc.robot.subsystems.superstructure.claw.ClawIOInputsAutoLogged;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
-import frc.robot.util.custom.LoggedTunableNumber;
 
 public class CoralClaw extends SubsystemBase {
 
@@ -29,7 +28,6 @@ public class CoralClaw extends SubsystemBase {
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
     
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("CoralClaw/BrakeMotor", CoralClawConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber currentThresholdHasPieceAmps = new LoggedTunableNumber("CoralCLaw/CurrentThresholdHasPieceAmps", CoralClawConstants.CURRENT_THRESHOLD_HAS_PIECE_AMPS);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
@@ -40,7 +38,7 @@ public class CoralClaw extends SubsystemBase {
     public CoralClaw(ClawIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        hasPieceDebouncer = new Debouncer(0.8);
+        hasPieceDebouncer = new Debouncer(0.5);
         hasPiece = DriverStation.isFMSAttached();
     }
 
@@ -49,17 +47,18 @@ public class CoralClaw extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/CoralClaw", inputs);
 
-        // If claw is running, update hasPiece with timed debouncing function.
-        // If it isn't running, assume the coral is in the same state that it was when the claw stopped.
         if (FieldConstants.IS_SIMULATION && inputs.percentOutput != 0.0) {
             hasPiece = hasPieceDebouncer.calculate(inputs.percentOutput > 0.0);
-        } else if (Robot.gameMode == GameMode.DISABLED && 
-            inputs.velocityRotationsPerSecond > 0 &&
-            inputs.statorCurrentAmps < currentThresholdHasPieceAmps.get()) 
-        {
-            hasPiece = true;
-        } else if (percentOutput != 0.0 && Robot.gameMode != GameMode.DISABLED) {
-            hasPiece = hasPieceDebouncer.calculate(MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, CoralClawConstants.CORAL_CLAW_CURRENT_DEADBAND));
+        } else if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSec != 0) {
+            hasPiece = inputs.velocityRotationsPerSec > 0;
+        } else if (Robot.gameMode != GameMode.DISABLED && percentOutput != 0.0) {
+            if (percentOutput > 0) {
+                hasPiece = hasPieceDebouncer.calculate(
+                    MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, CoralClawConstants.CORAL_CLAW_CURRENT_DEADBAND) 
+                    && Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_INTAKE_THRESHOLD);
+            } else {
+                hasPiece = Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_OUTTAKE_THRESHOLD;
+            }
         }
 
         // Run setpoint on RIO to minimize CAN utilization
