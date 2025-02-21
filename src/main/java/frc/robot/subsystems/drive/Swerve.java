@@ -396,14 +396,7 @@ public class Swerve extends SubsystemBase {
      * Sets the wheels into an X formation to prevent movement.
      */
     public void setWheelsX() {
-        SwerveModuleState[] desiredStates = new SwerveModuleState[] {
-            new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(-135))
-        };
-
-        setModuleStates(desiredStates);
+        setModuleStates(DriveConstants.X_WHEEL_STATES);
     }
 
 
@@ -412,14 +405,7 @@ public class Swerve extends SubsystemBase {
     }   
 
     public void setWheelsO() {
-        SwerveModuleState[] desiredStates = new SwerveModuleState[] {
-            new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(-135)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(-45))
-        };
-
-        setModuleStates(desiredStates);
+        setModuleStates(DriveConstants.O_WHEEL_STATES);
     }
 
     public Command setWheelsOCommand() {
@@ -485,9 +471,6 @@ public class Swerve extends SubsystemBase {
 
     // Fear.
     private void resetOdometryAuto(Pose2d pose) {
-        // if (!FieldConstants.IS_SIMULATION) {
-        //     return;
-        // }
         resetOdometry(pose);
     }
 
