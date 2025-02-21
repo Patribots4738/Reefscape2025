@@ -838,8 +838,6 @@ public class Kraken extends TalonFX {
                 BaseStatusSignal.refreshAll(
                     voltageSignal,
                     percentSignal,
-                    supplyCurrentSignal,
-                    statorCurrentSignal,
                     torqueCurrentSignal,
                     temperatureSignal
                 );
@@ -848,7 +846,6 @@ public class Kraken extends TalonFX {
                     voltageSignal,
                     positionSignal,
                     velocitySignal,
-                    supplyCurrentSignal,
                     torqueCurrentSignal,
                     temperatureSignal
                 );
@@ -858,8 +855,6 @@ public class Kraken extends TalonFX {
                     velocitySignal,
                     voltageSignal,
                     percentSignal,
-                    supplyCurrentSignal,
-                    statorCurrentSignal,
                     torqueCurrentSignal,
                     temperatureSignal
                 );

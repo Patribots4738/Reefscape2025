@@ -12,8 +12,6 @@ public interface ClawIO {
         public double targetPercentOutput = 0.0;
         public double velocityRotationsPerSec = 0.0;
         public double appliedOutputVolts = 0.0;
-        public double supplyCurrentAmps = 0.0;
-        public double statorCurrentAmps = 0.0;
         public double torqueCurrentAmps = 0.0;
         public double temperatureCelsius = 0.0;
 

@@ -232,6 +232,8 @@ public class RobotContainer {
 
         controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
 
+        controller.rightBumper().onTrue(superstructure.coralPlaceCommand(controller::getRightBumper));
+
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
         

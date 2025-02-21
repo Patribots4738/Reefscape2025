@@ -90,9 +90,7 @@ public class Vision extends SubsystemBase {
             }
         }
 
-        if (!FieldConstants.IS_SIMULATION) {
-            updatePoseEstimator();
-        }
+        updatePoseEstimator();
     }
 
     private void updatePoseEstimator() {
