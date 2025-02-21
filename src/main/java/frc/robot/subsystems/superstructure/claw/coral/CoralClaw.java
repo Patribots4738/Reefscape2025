@@ -46,20 +46,7 @@ public class CoralClaw extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/CoralClaw", inputs);
 
-        if (FieldConstants.IS_SIMULATION && inputs.percentOutput != 0.0) {
-            hasPiece = hasPieceDebouncer.calculate(inputs.percentOutput > 0.0);
-        } else if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSec != 0) {
-            hasPiece = hasPieceDebouncer.calculate(inputs.velocityRotationsPerSec > 0);
-        } else if (Robot.gameMode != GameMode.DISABLED && percentOutput != 0.0) {
-            if (percentOutput > 0) {
-                hasPiece = hasPieceDebouncer.calculate(
-                    MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.torqueCurrentAmps, CoralClawConstants.CORAL_CLAW_CURRENT_DEADBAND) 
-                    && Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_INTAKE_THRESHOLD);
-            } else {
-                hasPiece = Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_OUTTAKE_THRESHOLD;
-            }
-        }
-
+        updateHasPiece();
         Logger.recordOutput("Subsystems/CoralClaw/HasCoral", hasPiece());
 
         // Run setpoint on RIO to minimize CAN utilization
@@ -91,7 +78,24 @@ public class CoralClaw extends SubsystemBase {
         return runOnce(this::setNeutral);
     }
 
+    public void updateHasPiece() {
+        if (FieldConstants.IS_SIMULATION && inputs.percentOutput != 0.0) {
+            hasPiece = hasPieceDebouncer.calculate(inputs.percentOutput > 0.0);
+        } else if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSec != 0) {
+            hasPiece = inputs.velocityRotationsPerSec > 0;
+        } else if (Robot.gameMode != GameMode.DISABLED && percentOutput != 0.0) {
+            if (percentOutput > 0) {
+                hasPiece = hasPieceDebouncer.calculate(
+                    MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.torqueCurrentAmps, CoralClawConstants.CORAL_CLAW_CURRENT_DEADBAND) 
+                    && Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_INTAKE_THRESHOLD);
+            } else {
+                hasPiece = Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_OUTTAKE_THRESHOLD;
+            }
+        }
+    }
+
+    @AutoLogOutput (key = "Subsystems/CoralClaw/HasCoral")
     public boolean hasPiece() {
-        return hasPiece;
+        return hasPiece;    
     }
 }

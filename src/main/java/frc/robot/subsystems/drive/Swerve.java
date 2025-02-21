@@ -191,7 +191,7 @@ public class Swerve extends SubsystemBase {
             this::getPose,
             this::resetOdometryAuto,
             this::getRobotRelativeVelocity,
-            (speeds, feedforwards) -> driveWithSetpoints(speeds, feedforwards),
+            (speeds, feedforwards) -> driveWithSetpoints(speeds),
             AutoConstants.AUTO_HDC,
             config,
             Robot::isRedAlliance,
@@ -311,13 +311,13 @@ public class Swerve extends SubsystemBase {
         );
     }
 
-    public void driveWithSetpoints(ChassisSpeeds robotRelativeSpeeds, DriveFeedforwards feedforwards) {
+    public void driveWithSetpoints(ChassisSpeeds robotRelativeSpeeds) {
         previousSetpoint = setpointGenerator.generateSetpoint(
             previousSetpoint,
             robotRelativeSpeeds,
             Timer.getFPGATimestamp() - Robot.previousTimestamp
         );
-        setModuleStates(previousSetpoint.moduleStates(), feedforwards.torqueCurrentsAmps());
+        setModuleStates(previousSetpoint.moduleStates());
     }
 
     // Drive method used in teleop
@@ -485,9 +485,9 @@ public class Swerve extends SubsystemBase {
 
     // Fear.
     private void resetOdometryAuto(Pose2d pose) {
-        if (!FieldConstants.IS_SIMULATION) {
-            return;
-        }
+        // if (!FieldConstants.IS_SIMULATION) {
+        //     return;
+        // }
         resetOdometry(pose);
     }
 

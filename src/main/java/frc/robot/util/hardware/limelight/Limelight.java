@@ -114,10 +114,6 @@ public class Limelight {
         return latestPoseEstimate != null ? latestPoseEstimate.rawFiducials : new RawFiducial[0];
     }
 
-    public double getThrottle() {
-        return LimelightHelpers.getThrottle(name);
-    }
-
     public boolean getUseMT2() {
         return useMT2;
     }
