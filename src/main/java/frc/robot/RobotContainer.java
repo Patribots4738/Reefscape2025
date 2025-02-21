@@ -94,7 +94,8 @@ public class RobotContainer {
     public static SwerveModuleState[] swerveDesiredStates;
     @AutoLogOutput (key = "Draggables/GameModeStart")
     public static double gameModeStart = 0;
-
+    @AutoLogOutput (key = "Draggables/AutoStartingPose")
+    public static Pose2d autoStartingPose = new Pose2d();
     
     public RobotContainer() {
 
@@ -107,15 +108,14 @@ public class RobotContainer {
         pdh.setSwitchableChannel(false);
 
         swerve = new Swerve();
-        vision = new Vision(swerve.getPoseEstimator(), new VisionIOLimelight("limelight-four", true));
+        alignment = new Alignment(swerve);
+        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true));
         coralClaw = new CoralClaw(new CoralClawIOKraken());
         algaeClaw = new AlgaeClaw(new AlgaeClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
         wrist = new Wrist(new WristIOKraken());
         climb = new Climb(new ClimbIOKraken());
-
         superstructure = new Superstructure(algaeClaw, coralClaw, elevator, wrist, climb, swerve::getPose);
-        alignment = new Alignment(swerve);
 
         SmartDashboard.putData(field2d);
 
@@ -172,20 +172,20 @@ public class RobotContainer {
                 swerve::runTurnCharacterization, 
                 swerve::getTurnCharacterizationVelocity));
 
-        pathPlannerStorage.getAutoChooser().addOption("WristQFCharacterization", wrist.sysIdQuasistaticForward());
-        pathPlannerStorage.getAutoChooser().addOption("WristQRCharacterization", wrist.sysIdQuasistaticReverse());
-        pathPlannerStorage.getAutoChooser().addOption("WristDFCharacterization", wrist.sysIdDynamicForward());
-        pathPlannerStorage.getAutoChooser().addOption("WristDRCharacterization", wrist.sysIdDynamicReverse());
+        // pathPlannerStorage.getAutoChooser().addOption("WristQFCharacterization", wrist.sysIdQuasistaticForward());
+        // pathPlannerStorage.getAutoChooser().addOption("WristQRCharacterization", wrist.sysIdQuasistaticReverse());
+        // pathPlannerStorage.getAutoChooser().addOption("WristDFCharacterization", wrist.sysIdDynamicForward());
+        // pathPlannerStorage.getAutoChooser().addOption("WristDRCharacterization", wrist.sysIdDynamicReverse());
 
-        pathPlannerStorage.getAutoChooser().addOption("ElevatorQFCharacterization", elevator.sysIdQuasistaticForward());
-        pathPlannerStorage.getAutoChooser().addOption("ElevatorQRCharacterization", elevator.sysIdQuasistaticReverse());
-        pathPlannerStorage.getAutoChooser().addOption("ElevatorDFCharacterization", elevator.sysIdDynamicForward());
-        pathPlannerStorage.getAutoChooser().addOption("ElevatorDRCharacterization", elevator.sysIdDynamicReverse());
+        // pathPlannerStorage.getAutoChooser().addOption("ElevatorQFCharacterization", elevator.sysIdQuasistaticForward());
+        // pathPlannerStorage.getAutoChooser().addOption("ElevatorQRCharacterization", elevator.sysIdQuasistaticReverse());
+        // pathPlannerStorage.getAutoChooser().addOption("ElevatorDFCharacterization", elevator.sysIdDynamicForward());
+        // pathPlannerStorage.getAutoChooser().addOption("ElevatorDRCharacterization", elevator.sysIdDynamicReverse());
 
-        pathPlannerStorage.getAutoChooser().addOption("ClimbQFCharacterization", climb.sysIdQuasistaticForward());
-        pathPlannerStorage.getAutoChooser().addOption("ClimbQRCharacterization", climb.sysIdQuasistaticReverse());
-        pathPlannerStorage.getAutoChooser().addOption("ClimbDFCharacterization", climb.sysIdDynamicForward());
-        pathPlannerStorage.getAutoChooser().addOption("ClimbDRCharacterization", climb.sysIdDynamicReverse());
+        // pathPlannerStorage.getAutoChooser().addOption("ClimbQFCharacterization", climb.sysIdQuasistaticForward());
+        // pathPlannerStorage.getAutoChooser().addOption("ClimbQRCharacterization", climb.sysIdQuasistaticReverse());
+        // pathPlannerStorage.getAutoChooser().addOption("ClimbDFCharacterization", climb.sysIdDynamicForward());
+        // pathPlannerStorage.getAutoChooser().addOption("ClimbDRCharacterization", climb.sysIdDynamicReverse());
 
     }
 

@@ -31,7 +31,7 @@ public class CoralClawIOKraken implements ClawIO {
         inputs.statorCurrentAmps = motor.getStatorCurrentAsDouble();
         inputs.torqueCurrentAmps = motor.getTorqueCurrentAsDouble();
         inputs.temperatureCelsius = motor.getTemperatureAsDouble();
-        inputs.velocityRotationsPerSecond = motor.getVelocityAsDouble();
+        inputs.velocityRotationsPerSec = motor.getVelocityAsDouble();
     }
 
     @Override

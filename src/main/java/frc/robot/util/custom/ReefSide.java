@@ -12,8 +12,9 @@ public class ReefSide {
     private Pose2d center;
     private Pose2d left;
     private Pose2d right;
+    private int tagId;
 
-    public ReefSide(Pose2d center, Pose2d left, Pose2d right) {
+    public ReefSide(Pose2d center, Pose2d left, Pose2d right, int tagId) {
         this.center = center;
         this.right = right;
         this.left = left;
@@ -35,17 +36,16 @@ public class ReefSide {
         return center.getRotation();
     }
 
-    public void flipAlliance() {
-        center = PoseCalculations.mirrorPose(center);
-        left = PoseCalculations.mirrorPose(left);
-        right = PoseCalculations.mirrorPose(right);
+    public int getTagId() {
+        return tagId;
     }
 
-    public ReefSide otherAlliance() {
+    public ReefSide otherAlliance(int newTagId) {
         return new ReefSide(
             PoseCalculations.mirrorPose(center),
             PoseCalculations.mirrorPose(left),
-            PoseCalculations.mirrorPose(right)
+            PoseCalculations.mirrorPose(right),
+            newTagId
         );
     }
 

@@ -64,11 +64,6 @@ public class PoseCalculations {
         return new Translation2d(FieldConstants.FIELD_MAX_LENGTH - pos.getX(), FieldConstants.FIELD_MAX_HEIGHT - pos.getY());
     }
 
-    public static ReefSide flipAlliance(ReefSide side) {
-        side.flipAlliance();
-        return side;
-    }
-
     public static Rotation2d flipFieldRotation(Rotation2d rotation) {
         return new Rotation2d(Math.PI).minus(rotation);
     }

@@ -173,9 +173,9 @@ public final class Constants {
 
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
-            9.0, 
+            6, 
             0.0, 
-            0.2
+            0.09
         );
 
         public static final GainConstants TELE_XY_GAINS = new GainConstants(
@@ -236,16 +236,11 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "3-J4-K4-L4-A4",
-            "5-E4-D4-C4-B4",
-            "3-J4-L4-A4",
-            "5-E4-C4-B4",
-            "4-H4",
-            "Only Driving 3-J4-K4-L4-A4",
             "Only Driving 5-E4-D4-C4-B4",
             "Only Driving 3-J4-L4-A4",
             "Only Driving 5-E4-C4-B4",
-            "Only Driving 4-H4"
+            "Only Driving 4-H4",
+            "Only Driving 5-E4"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
@@ -399,10 +394,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.280518;
-        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283203;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081787;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.114990;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.28271484375;
+        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081055;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.139404296875;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -483,7 +478,11 @@ public final class Constants {
 
         public static final double CURRENT_THRESHOLD_HAS_PIECE_AMPS = 5.0;
 
-        public static final double CORAL_CLAW_CURRENT_DEADBAND = 10.101205;
+        public static final double CORAL_CLAW_CURRENT_DEADBAND = 15d;
+
+        public static final double HAS_PIECE_INTAKE_THRESHOLD = 5d;
+
+        public static final double HAS_PIECE_OUTTAKE_THRESHOLD = 30d;
 
     }
 
@@ -602,7 +601,7 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
         public static final double MAX_ANGLE_RADIANS = 2.65;
 
-        public static final double RESET_ANGLE_RADIANS = 2.65;
+        public static final double RESET_ANGLE_RADIANS = 2.829;
 
         public static final double CLIMB_RADIANS = 1.1;
 
@@ -612,11 +611,11 @@ public final class Constants {
         public static final double L1_POSITION_RADIANS = 2.40720302912;
         public static final double L2_POSITION_RADIANS = 2.2;
         public static final double L3_POSITION_RADIANS = 2.22;
-        public static final double L4_POSITION_RADIANS = 2.3;
+        public static final double L4_POSITION_RADIANS = 2.479;
         public static final double ALGAE_REMOVAL = 1.57;
 
-        public static final double REEF_TRANSITION_RADIANS = 1.6;
-        public static final double UNDER_TRANSITION_RADIANS = 1.1;
+        public static final double REEF_TRANSITION_RADIANS = 1.779;
+        public static final double UNDER_TRANSITION_RADIANS = 1.7;
     }
 
 
@@ -718,7 +717,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 50; // Process 1 of every 50 frames
+        public static final int DISABLED_THROTTLE = 80; // Process 1 of every 80 frames
 
         public static Pose3d LL4_POSE = new Pose3d(
             -0.28702,
@@ -816,7 +815,7 @@ public final class Constants {
         // 2d height
         public static final double FIELD_MAX_HEIGHT = 8.0518;
 
-        public static final double INTAKE_ALIGNMENT_DISTANCE_METERS = 1.5;
+        public static final double INTAKE_ALIGNMENT_DISTANCE_METERS = 1d;
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 
@@ -896,12 +895,12 @@ public final class Constants {
             // All relative to the blue origin
             // Positions go from blueReef1 (the farthest from blue driverstation) clockwise around
             // even = high, odd = low
-            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L);
-            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I);
-            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G);
-            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E);
-            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D);
-            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B);
+            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L, 19);
+            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I, 20);
+            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G, 21);
+            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E, 22);
+            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D, 17);
+            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B, 18);
 
             // Blue Reef
             add(blueReef1);
@@ -912,12 +911,12 @@ public final class Constants {
             add(blueReef6);
 
             // Red Reef
-            add(blueReef1.otherAlliance()); 
-            add(blueReef2.otherAlliance());
-            add(blueReef3.otherAlliance());
-            add(blueReef4.otherAlliance());
-            add(blueReef5.otherAlliance());
-            add(blueReef6.otherAlliance());
+            add(blueReef1.otherAlliance(7)); 
+            add(blueReef2.otherAlliance(8));
+            add(blueReef3.otherAlliance(9));
+            add(blueReef4.otherAlliance(10));
+            add(blueReef5.otherAlliance(11));
+            add(blueReef6.otherAlliance(6));
         }};
 
         public static final List<ReefSide> GET_REEF_FACE_POSITIONS() {
@@ -996,6 +995,9 @@ public final class Constants {
         }
 
         public static final double NEAR_REEF_METERS = 1.4; 
+
+        // D:
+        public static final int[] VALID_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 }; // D:
 
     }
 

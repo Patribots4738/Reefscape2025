@@ -65,5 +65,10 @@ public class VisionIOLimelight implements VisionIO {
         camera.setUseMT2(useMT2);
     }
 
+    @Override
+    public void setUsedTags(int[] tagIds) {
+        camera.setValidTags(tagIds);
+    }
+
 
 }

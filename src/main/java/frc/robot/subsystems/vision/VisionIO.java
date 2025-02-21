@@ -27,5 +27,7 @@ public interface VisionIO {
     public default void setRobotOrientation(double yawDegrees) {}
 
     public default void setUseMegaTag2(boolean megaTag2) {}
+
+    public default void setUsedTags(int[] tagIds) {}
     
 }
