@@ -14,8 +14,6 @@ public interface ModuleIO {
         public double drivePositionMeters = 0.0; 
         public double driveVelocityMPS = 0.0;
         public double driveAppliedVolts = 0.0;
-        public double driveSupplyCurrentAmps = 0.0;
-        public double driveStatorCurrentAmps = 0.0;
         public double driveTorqueCurrentAmps = 0.0;
         public double driveTempCelcius = 0.0;
 
@@ -23,15 +21,11 @@ public interface ModuleIO {
         public double turnInternalPositionRads = 0.0;
         public double turnInternalVelocityRadsPerSec = 0.0;
         public double turnAppliedVolts = 0.0;
-        public double turnSupplyCurrentAmps = 0.0;
-        public double turnStatorCurrentAmps = 0.0;
         public double turnTorqueCurrentAmps = 0.0;
         public double turnTempCelcius = 0.0;
 
         public boolean turnEncoderConnected = false;
-        public double turnEncoderPositionRads = 0.0;
         public double turnEncoderAbsPositionRads = 0.0;
-        public double turnEncoderVelocityRadsPerSec = 0.0;
         
     }
 

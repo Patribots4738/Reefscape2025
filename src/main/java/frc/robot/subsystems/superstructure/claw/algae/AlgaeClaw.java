@@ -39,7 +39,7 @@ public class AlgaeClaw extends SubsystemBase {
         Logger.recordOutput("Subsystems/AlgaeClaw/HasPiece", hasPiece());
 
         if (percentOutput != 0.0) {
-            hasPiece = MathUtil.isNear(AlgaeClawConstants.CURRENT_LIMIT, inputs.statorCurrentAmps, 10);
+            hasPiece = MathUtil.isNear(AlgaeClawConstants.CURRENT_LIMIT, inputs.torqueCurrentAmps, 10);
         }
 
         // Run setpoint on RIO to minimize CAN utilization

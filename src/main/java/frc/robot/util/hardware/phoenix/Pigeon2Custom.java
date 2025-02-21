@@ -2,11 +2,6 @@ package frc.robot.util.hardware.phoenix;
 
 import java.util.function.Supplier;
 
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.Radians;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -151,51 +146,51 @@ public class Pigeon2Custom extends Pigeon2 {
     }
 
     public double getYawDegrees() {
-        return yawSignal.getValue().in(Degrees);
+        return yawSignal.getValueAsDouble();
     }
 
     public double getYawRadians() {
-        return yawSignal.getValue().in(Radians);
+        return getYawDegrees() * Math.PI / 180;
     }
 
     public double getPitchDegrees() {
-        return pitchSignal.getValue().in(Degrees);
+        return pitchSignal.getValueAsDouble();
     }
 
     public double getPitchRadians() {
-        return pitchSignal.getValue().in(Radians);
+        return getPitchDegrees() * Math.PI / 180;
     }
 
     public double getRollDegrees() {
-        return rollSignal.getValue().in(Degrees);
+        return rollSignal.getValueAsDouble();
     }
 
     public double getRollRadians() {
-        return rollSignal.getValue().in(Radians);
+        return getRollDegrees() * Math.PI / 180;
     }
 
     public double getYawVelocityDegreesPerSec() {
-        return yawVelocitySignal.getValue().in(DegreesPerSecond);
+        return yawVelocitySignal.getValueAsDouble();
     }
 
     public double getYawVelocityRadiansPerSec() {
-        return yawVelocitySignal.getValue().in(RadiansPerSecond);
+        return getYawVelocityDegreesPerSec() * Math.PI / 180;
     }
 
     public double getPitchVelocityDegreesPerSec() {
-        return pitchVelocitySignal.getValue().in(DegreesPerSecond);
+        return pitchVelocitySignal.getValueAsDouble();
     }
 
     public double getPitchVelocityRadiansPerSec() {
-        return pitchVelocitySignal.getValue().in(RadiansPerSecond);
+        return getPitchVelocityDegreesPerSec() * Math.PI / 180;
     }
 
     public double getRollVelocityDegreesPerSec() {
-        return rollVelocitySignal.getValue().in(DegreesPerSecond);
+        return rollVelocitySignal.getValueAsDouble();
     }
 
     public double getRollVelocityRadiansPerSec() {
-        return rollVelocitySignal.getValue().in(RadiansPerSecond);
+        return getRollVelocityDegreesPerSec() * Math.PI / 180;
     }
 
     public Rotation2d getYawRotation2d() {

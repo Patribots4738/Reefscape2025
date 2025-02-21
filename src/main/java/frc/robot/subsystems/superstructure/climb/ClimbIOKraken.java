@@ -36,8 +36,6 @@ public class ClimbIOKraken implements ClimbIO {
         inputs.velocityRadsPerSec = motor.getVelocityAsDouble();
         inputs.targetPositionRads = motor.getTargetPosition();
         inputs.appliedOutputVolts = motor.getVoltageAsDouble();
-        inputs.supplyCurrentAmps = motor.getSupplyCurrentAsDouble();
-        inputs.statorCurrentAmps = motor.getStatorCurrentAsDouble();
         inputs.torqueCurrentAmps = motor.getTorqueCurrentAsDouble();
         inputs.temperatureCelcius = motor.getTemperatureAsDouble();
     }

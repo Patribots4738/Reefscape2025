@@ -13,8 +13,6 @@ public interface ElevatorIO {
         public double leaderTargetPositionMeters = 0.0;
         public double leaderVelocityMetersPerSecond = 0.0;
         public double leaderAppliedOutputVolts = 0.0;
-        public double leaderSupplyCurrentAmps = 0.0;
-        public double leaderStatorCurrentAmps = 0.0;
         public double leaderTorqueCurrentAmps = 0.0;
         public double leaderTemperatureCelsius = 0.0;
 
@@ -23,8 +21,6 @@ public interface ElevatorIO {
         public double followerTargetPositionMeters = 0.0;
         public double followerVelocityMetersPerSecond = 0.0;
         public double followerAppliedOutputVolts = 0.0;
-        public double followerSupplyCurrentAmps = 0.0;
-        public double followerStatorCurrentAmps = 0.0;
         public double followerTorqueCurrentAmps = 0.0;
         public double followerTemperatureCelsius = 0.0;
     }

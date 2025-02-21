@@ -5,7 +5,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 
 public class Module {
@@ -23,8 +22,8 @@ public class Module {
         this.io = io;
         this.index = index;
         this.chassisAngularOffset = chassisAngularOffset;
-        MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.onChanged(Commands.runOnce(() -> io.setDriveGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get())).ignoringDisable(true));
-        MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.onChanged(Commands.runOnce(() -> io.setTurnGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get())).ignoringDisable(true));
+        // MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.onChanged(Commands.runOnce(() -> io.setDriveGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get())).ignoringDisable(true));
+        // MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.onChanged(Commands.runOnce(() -> io.setTurnGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get())).ignoringDisable(true));
     }
 
     public void updateInputs() {
@@ -44,18 +43,15 @@ public class Module {
      */
     public void setDesiredState(SwerveModuleState desiredState, double feedforward) {
         // Apply chassis angular offset to the desired state.
-        SwerveModuleState correctedDesiredState = new SwerveModuleState();
-        correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-        correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
+        this.desiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
+        this.desiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
 
         // Optimize the reference state to avoid spinning further than 90 degrees.
-        correctedDesiredState.optimize(new Rotation2d(inputs.turnEncoderAbsPositionRads));
+        this.desiredState.optimize(new Rotation2d(inputs.turnEncoderAbsPositionRads));
 
         // Command driving and turning TalonFX towards their respective setpoints.
-        io.runDriveVelocity(correctedDesiredState.speedMetersPerSecond, feedforward);
-        io.setTurnPosition(correctedDesiredState.angle.getRadians());
-
-        this.desiredState = correctedDesiredState;
+        io.runDriveVelocity(this.desiredState.speedMetersPerSecond, feedforward);
+        io.setTurnPosition(this.desiredState.angle.getRadians());
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {

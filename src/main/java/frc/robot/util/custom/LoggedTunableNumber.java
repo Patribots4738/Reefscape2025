@@ -11,7 +11,7 @@ public class LoggedTunableNumber extends LoggedNetworkNumber {
     private double previousValue;
     
     public LoggedTunableNumber(String key, double defaultValue) {
-        super("Constants/" + key, defaultValue);
+        super(key, defaultValue);
         this.previousValue = defaultValue;
     }
 
@@ -28,12 +28,20 @@ public class LoggedTunableNumber extends LoggedNetworkNumber {
     }
 
     public Trigger onChanged(Command command) {
-        return this.onChanged().onTrue(command);
+        return onChanged().onTrue(command);
     }
     
     @Override
     public void periodic() {
         previousValue = get();
         super.periodic();
+    }
+
+    public double get() {
+        return previousValue;
+    }
+
+    public void set(double val) {
+        previousValue = val;
     }
 }

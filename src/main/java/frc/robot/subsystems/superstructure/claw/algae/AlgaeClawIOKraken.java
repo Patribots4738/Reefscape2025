@@ -29,8 +29,6 @@ public class AlgaeClawIOKraken implements ClawIO {
         inputs.percentOutput = motor.getPercentAsDouble();
         inputs.targetPercentOutput = motor.getTargetPercent();
         inputs.appliedOutputVolts = motor.getVoltageAsDouble();
-        inputs.supplyCurrentAmps = motor.getSupplyCurrentAsDouble();
-        inputs.statorCurrentAmps = motor.getStatorCurrentAsDouble();
         inputs.torqueCurrentAmps = motor.getTorqueCurrentAsDouble();
         inputs.temperatureCelsius = motor.getTemperatureAsDouble();
     }

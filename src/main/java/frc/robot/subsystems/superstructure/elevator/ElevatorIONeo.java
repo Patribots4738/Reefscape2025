@@ -37,7 +37,7 @@ public class ElevatorIONeo implements ElevatorIO {
         inputs.leaderTargetPositionMeters = leader.getTargetPosition();
         inputs.leaderVelocityMetersPerSecond = leader.getVelocity();
         inputs.leaderAppliedOutputVolts = leader.getBusVoltage();
-        inputs.leaderSupplyCurrentAmps = leader.getOutputCurrent();
+        inputs.leaderTorqueCurrentAmps = leader.getOutputCurrent();
         inputs.leaderTemperatureCelsius = leader.getMotorTemperature();
 
         inputs.followerMotorConnected = true;
@@ -45,7 +45,7 @@ public class ElevatorIONeo implements ElevatorIO {
         inputs.followerTargetPositionMeters = follower.getTargetPosition();
         inputs.followerVelocityMetersPerSecond = follower.getVelocity();
         inputs.followerAppliedOutputVolts = follower.getBusVoltage();
-        inputs.followerSupplyCurrentAmps = follower.getOutputCurrent();
+        inputs.leaderTorqueCurrentAmps = follower.getOutputCurrent();
         inputs.followerTemperatureCelsius = follower.getMotorTemperature();
     }
 

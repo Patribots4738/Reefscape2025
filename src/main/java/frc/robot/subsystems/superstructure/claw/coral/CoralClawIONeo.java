@@ -25,7 +25,7 @@ public class CoralClawIONeo implements ClawIO {
         inputs.percentOutput = motor.getAppliedOutput();
         inputs.targetPercentOutput = motor.getTargetPercent();
         inputs.appliedOutputVolts = motor.getBusVoltage();
-        inputs.supplyCurrentAmps = motor.getOutputCurrent();
+        inputs.torqueCurrentAmps = motor.getOutputCurrent();
         inputs.temperatureCelsius = motor.getMotorTemperature();
     }
 

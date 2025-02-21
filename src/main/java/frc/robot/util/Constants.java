@@ -28,7 +28,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.GainConstants;
-import frc.robot.util.custom.LoggedGainConstants;
 import frc.robot.util.custom.ReefSide;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
@@ -184,7 +183,7 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
+        // public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
 
         public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
             3.725, 
@@ -198,7 +197,7 @@ public final class Constants {
             0
         );
 
-        public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
+        // public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
 
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.TELE_XY_GAINS.getP(),
@@ -441,7 +440,7 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Swerve/Drive");
+        // public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Swerve/Drive");
 
         public static final double TURNING_P = !FieldConstants.IS_SIMULATION ? 1500d : 2400d;
         public static final double TURNING_I = 0;
@@ -457,7 +456,7 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_TURNING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Swerve/Turn");
+        // public static final LoggedGainConstants LOGGED_TURNING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Swerve/Turn");
 
     }
 
@@ -534,7 +533,7 @@ public final class Constants {
             G
         );
 
-        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
+        // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
         public static final double VELOCITY = 1d;
         public static final double ACCELERATION = 2.5;
@@ -582,7 +581,7 @@ public final class Constants {
             G
         );
 
-        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
+        // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
         public static final double VELOCITY = 11d;
         public static final double ACCELERATION = !FieldConstants.IS_SIMULATION ? 90d : 15d;
@@ -676,8 +675,8 @@ public final class Constants {
             G_FAST
         );
 
-        public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
-        public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
+        // public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
+        // public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = 2.6;
@@ -783,7 +782,7 @@ public final class Constants {
         public static final double KRAKENX60_FREE_SPEED_RPM = 6000;
         public static final double KRAKENX60_FREE_SPEED_RPM_FOC = 5800;
 
-        public static final double TALONFX_FAST_UPDATE_FREQ_HZ = 100;// TODO: FIND THE SWEET SPOT
+        public static final double TALONFX_FAST_UPDATE_FREQ_HZ = 75;// TODO: FIND THE SWEET SPOT
         public static final double TALONFX_MID_UPDATE_FREQ_HZ = 50; // TODO: FIND THE SWEET SPOT
         public static final double TALONFX_SLOW_UPDATE_FREQ_HZ = 4; // TODO: FIND THE SWEET SPOT
 
@@ -793,7 +792,7 @@ public final class Constants {
 
     public static final class CANCoderConstants {
 
-        public static final double ENCODER_UPDATE_FREQ_HZ = 250; // TODO: FIND THE SWEET SPOT
+        public static final double ENCODER_UPDATE_FREQ_HZ = 100; // TODO: FIND THE SWEET SPOT
 
     }
 
