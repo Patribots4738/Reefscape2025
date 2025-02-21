@@ -245,6 +245,7 @@ public final class Constants {
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double CAGE_ALIGNMENT_MULTIPLIER = 0.5;
+        public static final double NET_ALIGNMENT_MULTIPLIER = 0.5;
 
     }
 
@@ -496,9 +497,12 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = true;
 
         public static final double INTAKE_PERCENT = 0.35;
+        public static final double HOLD_PERCENT = 0.0;
         public static final double OUTTAKE_PERCENT = -0.35;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
+
+        public static final double X_CHASSIS_OFFSET = 0.0;
 
     }
     public static final class ElevatorConstants {
@@ -616,6 +620,8 @@ public final class Constants {
 
         public static final double REEF_TRANSITION_RADIANS = 1.779;
         public static final double UNDER_TRANSITION_RADIANS = 1.7;
+
+        public static final double NET_RADIANS = 0.0;
     }
 
 
@@ -819,19 +825,21 @@ public final class Constants {
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 
-        public static final Pose2d BLUE_PROCESSER = new Pose2d(6.00, 0.00, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_PROCESSOR = new Pose2d(6.00, 0.00, Rotation2d.fromRadians(0));
 
-        public static final List<Pose2d> PROCESSER_POSITIONS = new ArrayList<Pose2d>() {{
-            // Blue Processer
-            add(BLUE_PROCESSER);
-            // Red Processer
-            add(PoseCalculations.mirrorPose(BLUE_PROCESSER));
+        public static final List<Pose2d> PROCESSOR_POSITIONS = new ArrayList<Pose2d>() {{
+            // Blue Processor
+            add(BLUE_PROCESSOR);
+            // Red Processor
+            add(PoseCalculations.mirrorPose(BLUE_PROCESSOR));
         }};
 
-        public static final Pose2d GET_PROCESSER_POSITION() {
+        public static final Pose2d GET_PROCESSOR_POSITION() {
             int index = Robot.isRedAlliance() ? 1 : 0;
-            return PROCESSER_POSITIONS.get(index);
+            return PROCESSOR_POSITIONS.get(index);
         }
+
+        public static final Pose2d NET_X = new Pose2d(8.28, 0.0, Rotation2d.fromRadians(0));
 
 
         public static final Pose2d CORAL_STATION_1 = new Pose2d(0.82, 7.39, Rotation2d.fromDegrees(125));
@@ -998,6 +1006,8 @@ public final class Constants {
 
         // D:
         public static final int[] VALID_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 }; // D:
+
+        
 
     }
 

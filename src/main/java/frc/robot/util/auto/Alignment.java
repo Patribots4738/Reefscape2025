@@ -1,5 +1,6 @@
 package frc.robot.util.auto;
 
+import java.lang.reflect.Field;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -11,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Swerve;
+import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
+import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.FieldConstants;
@@ -32,6 +35,7 @@ public class Alignment {
         CAGE,
         REEF,
         REEF_SOFT,
+        NET,
         NONE
     }
 
@@ -121,6 +125,20 @@ public class Alignment {
                 ? cagePose.getY() - ClimbConstants.Y_CHASSIS_OFFSET 
                 : cagePose.getY() + ClimbConstants.Y_CHASSIS_OFFSET, 
             cagePose.getRotation()
+        );
+        return getAutoSpeeds(desiredPose);
+    }
+
+    public ChassisSpeeds getNetAutoSpeeds() {
+        Pose2d netPose;
+        netPose = FieldConstants.NET_X;
+        Pose2d desiredPose = new Pose2d(
+
+            Robot.isRedAlliance()
+                ? netPose.getX() - AlgaeClawConstants.X_CHASSIS_OFFSET
+                : netPose.getX() + AlgaeClawConstants.X_CHASSIS_OFFSET,
+            swerve.getPose().getY(),
+            netPose.getRotation()     
         );
         return getAutoSpeeds(desiredPose);
     }
@@ -247,6 +265,14 @@ public class Alignment {
                 AlignmentMode.CAGE, 
                 this::getCageAutoSpeeds, 
                 () -> getControllerSpeeds(0, driverY.getAsDouble() * AutoConstants.CAGE_ALIGNMENT_MULTIPLIER));
+    }
+
+    public Command netAlignmentCommand(DoubleSupplier driverX) {
+        return 
+            autoAlignmentCommand(
+                AlignmentMode.NET, 
+                this::getNetAutoSpeeds, 
+                () -> getControllerSpeeds(0, driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER));
     }
 
     public Command reefAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {

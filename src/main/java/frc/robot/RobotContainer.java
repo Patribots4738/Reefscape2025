@@ -231,7 +231,7 @@ public class RobotContainer {
 
         controller.rightTrigger()
             .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
-      
+    
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {

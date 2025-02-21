@@ -69,6 +69,10 @@ public class Superstructure {
     public final SuperState CLIMB_READY;
     public final SuperState CLIMB_FINAL;
 
+    public final SuperState NET;
+    public final SuperState NET_PLACE;
+    public final SuperState NET_EXIT;
+
     private SuperState targetState;
     private ArmState targetArmState;
     private ClimbState targetClimbState;
@@ -123,6 +127,10 @@ public class Superstructure {
         CLIMB_READY = new LoggedSuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.STOP);
         CLIMB_FINAL = new LoggedSuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.STOP);
 
+        NET = new LoggedSuperState("NET", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_HOLD);
+        NET_PLACE = new LoggedSuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, this::armAtTargetPosition, () -> false);
+        NET_EXIT = new LoggedSuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.STOP);
+
     }
 
     public enum ArmState {
@@ -142,7 +150,10 @@ public class Superstructure {
         L4_EXIT (ElevatorConstants.L4_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL),
-        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL);
+        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL),
+        NET (ElevatorConstants.L4_POSITION_METERS, WristConstants.NET_RADIANS),
+        NET_EXIT (ElevatorConstants.L4_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS);
+    
 
         double elevatorPosition, wristPosition;
 
@@ -175,6 +186,7 @@ public class Superstructure {
         CORAL_HOLD (CoralClawConstants.HOLD_PERCENT, 0),
         CORAL_IN (CoralClawConstants.INTAKE_PERCENT, 0),
         CORAL_OUT (CoralClawConstants.OUTTAKE_PERCENT, 0),
+        ALGAE_HOLD (0, AlgaeClawConstants.HOLD_PERCENT),
         ALGAE_IN (0, AlgaeClawConstants.INTAKE_PERCENT),
         ALGAE_OUT (0, AlgaeClawConstants.OUTTAKE_PERCENT),
         BOTH_IN (CoralClawConstants.INTAKE_PERCENT, AlgaeClawConstants.INTAKE_PERCENT),
@@ -354,6 +366,7 @@ public class Superstructure {
             case L2 -> L2_EXIT;
             case L3 -> L3_EXIT;
             case L4 -> L4_EXIT;
+            case NET -> NET_EXIT;
             default -> L1;
         };
 
