@@ -78,7 +78,6 @@ public class CoralClaw extends SubsystemBase {
         return runOnce(this::setNeutral);
     }
 
-    @AutoLogOutput (key = "Subsystems/CoralClaw/HasCoral")
     public void updateHasPiece() {
         if (FieldConstants.IS_SIMULATION && inputs.percentOutput != 0.0) {
             hasPiece = hasPieceDebouncer.calculate(inputs.percentOutput > 0.0);
@@ -93,5 +92,10 @@ public class CoralClaw extends SubsystemBase {
                 hasPiece = Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_OUTTAKE_THRESHOLD;
             }
         }
+    }
+
+    @AutoLogOutput (key = "Subsystems/CoralClaw/HasCoral")
+    public boolean hasPiece() {
+        return hasPiece;    
     }
 }
