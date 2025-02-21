@@ -173,9 +173,9 @@ public final class Constants {
 
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
-            9.0, 
+            6, 
             0.0, 
-            0.2
+            0.09
         );
 
         public static final GainConstants TELE_XY_GAINS = new GainConstants(
@@ -236,11 +236,11 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "Only Driving 3-J4-K4-L4-A4",
             "Only Driving 5-E4-D4-C4-B4",
             "Only Driving 3-J4-L4-A4",
             "Only Driving 5-E4-C4-B4",
-            "Only Driving 4-H4"
+            "Only Driving 4-H4",
+            "Only Driving 5-E4"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
