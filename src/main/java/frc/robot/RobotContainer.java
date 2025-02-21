@@ -133,21 +133,21 @@ public class RobotContainer {
             () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
         ));
 
-        // AutoConstants.LOGGED_TELE_XY_GAINS.onChanged(Commands.parallel(
-        //     Commands.run(() -> AutoConstants.TELE_HDC.getXController().setPID(
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getD())),
-        //     Commands.run(() -> AutoConstants.TELE_HDC.getYController().setPID(
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))).ignoringDisable(true));
+        AutoConstants.LOGGED_TELE_XY_GAINS.onChanged(Commands.parallel(
+            Commands.run(() -> AutoConstants.TELE_HDC.getXController().setPID(
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getD())),
+            Commands.run(() -> AutoConstants.TELE_HDC.getYController().setPID(
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))).ignoringDisable(true));
 
-        // AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(
-        //     Commands.run(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
-        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getP(),
-        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getI(),
-        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
+        AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(
+            Commands.run(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
+                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getP(),
+                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getI(),
+                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
 
         configureButtonBindings();
         configureMiscTriggers();
@@ -212,16 +212,16 @@ public class RobotContainer {
         controller.start()
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
         
-        // controller.rightStick()
-        //     .toggleOnTrue(
-        //         new ActiveConditionalCommand(
-        //             alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
-        //             alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
-        //             () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
-        //         ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
+        controller.rightStick()
+            .toggleOnTrue(
+                new ActiveConditionalCommand(
+                    alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
+                ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
-        // controller.a()
-        //     .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+        controller.a()
+            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
         controller.leftBumper()
             .onTrue(alignment.updateIndexCommand(-1));
@@ -229,14 +229,14 @@ public class RobotContainer {
         controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
 
-        // controller.rightTrigger()
-        //     .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
+        controller.rightTrigger()
+            .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
       
     }
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        // controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
+        controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
