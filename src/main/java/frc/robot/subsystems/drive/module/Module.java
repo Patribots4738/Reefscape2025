@@ -43,18 +43,15 @@ public class Module {
      */
     public void setDesiredState(SwerveModuleState desiredState, double feedforward) {
         // Apply chassis angular offset to the desired state.
-        SwerveModuleState correctedDesiredState = new SwerveModuleState();
-        correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-        correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
+        this.desiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
+        this.desiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
 
         // Optimize the reference state to avoid spinning further than 90 degrees.
-        correctedDesiredState.optimize(new Rotation2d(inputs.turnEncoderAbsPositionRads));
+        this.desiredState.optimize(new Rotation2d(inputs.turnEncoderAbsPositionRads));
 
         // Command driving and turning TalonFX towards their respective setpoints.
-        io.runDriveVelocity(correctedDesiredState.speedMetersPerSecond, feedforward);
-        io.setTurnPosition(correctedDesiredState.angle.getRadians());
-
-        this.desiredState = correctedDesiredState;
+        io.runDriveVelocity(this.desiredState.speedMetersPerSecond, feedforward);
+        io.setTurnPosition(this.desiredState.angle.getRadians());
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
