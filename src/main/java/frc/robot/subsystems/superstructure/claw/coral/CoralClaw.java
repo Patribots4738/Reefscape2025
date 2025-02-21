@@ -6,7 +6,6 @@ package frc.robot.subsystems.superstructure.claw.coral;
 
 import java.util.function.DoubleSupplier;
 
-import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
@@ -61,6 +60,8 @@ public class CoralClaw extends SubsystemBase {
             }
         }
 
+        Logger.recordOutput("Subsystems/CoralClaw/HasCoral", hasPiece());
+
         // Run setpoint on RIO to minimize CAN utilization
         if (shouldRunSetpoint) {
             io.setPercent(percentOutput);
@@ -90,7 +91,6 @@ public class CoralClaw extends SubsystemBase {
         return runOnce(this::setNeutral);
     }
 
-    @AutoLogOutput (key = "Subsystems/CoralClaw/HasCoral")
     public boolean hasPiece() {
         return hasPiece;
     }

@@ -13,8 +13,6 @@ public interface WristIO {
         public double velocityRadsPerSec = 0.0;
         public double targetPositionRads = 0.0;
         public double appliedOutputVolts = 0.0;
-        public double supplyCurrentAmps = 0.0;
-        public double statorCurrentAmps = 0.0;
         public double torqueCurrentAmps = 0.0;
         public double temperatureCelsius = 0.0;
     }

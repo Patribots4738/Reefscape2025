@@ -5,7 +5,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
 
 public class Module {
@@ -23,8 +22,8 @@ public class Module {
         this.io = io;
         this.index = index;
         this.chassisAngularOffset = chassisAngularOffset;
-        MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.onChanged(Commands.runOnce(() -> io.setDriveGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get())).ignoringDisable(true));
-        MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.onChanged(Commands.runOnce(() -> io.setTurnGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get())).ignoringDisable(true));
+        // MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.onChanged(Commands.runOnce(() -> io.setDriveGains(MK4cSwerveModuleConstants.LOGGED_DRIVING_GAINS.get())).ignoringDisable(true));
+        // MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.onChanged(Commands.runOnce(() -> io.setTurnGains(MK4cSwerveModuleConstants.LOGGED_TURNING_GAINS.get())).ignoringDisable(true));
     }
 
     public void updateInputs() {

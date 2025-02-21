@@ -6,11 +6,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-public class LoggedTunableBoolean {
+public class LoggedTunableBoolean extends LoggedNetworkBoolean {
 
     private boolean previousValue;
     
     public LoggedTunableBoolean(String key, boolean defaultValue) {
+        super(key, defaultValue);
         this.previousValue = defaultValue;
     }
 
@@ -22,17 +23,18 @@ public class LoggedTunableBoolean {
         return get() != previousValue && !DriverStation.isFMSAttached();
     }
 
-    public boolean onChanged() {
-        return ifChanged();
+    public Trigger onChanged() {
+        return new Trigger(this::ifChanged);
     }
 
-    public boolean onChanged(Command command) {
-        return onChanged();
+    public Trigger onChanged(Command command) {
+        return onChanged().onTrue(command);
     }
     
+    @Override
     public void periodic() {
-        // previousValue = get();
-        // super.periodic();
+        previousValue = get();
+        super.periodic();
     }
 
     public boolean get() {

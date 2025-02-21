@@ -14,7 +14,6 @@ import static edu.wpi.first.units.Units.Volts;
 
 import java.util.function.DoubleSupplier;
 import frc.robot.util.custom.LoggedTunableBoolean;
-import frc.robot.util.custom.LoggedTunableNumber;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -32,9 +31,9 @@ public class Elevator extends SubsystemBase {
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
     
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Elevator/BrakeMotor", ElevatorConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Elevator/Profile/Velocity", ElevatorConstants.VELOCITY);
-    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Elevator/Profile/Acceleration", ElevatorConstants.ACCELERATION);
-    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Elevator/Profile/Jerk", ElevatorConstants.JERK);
+    // private final LoggedTunableNumber velocity = new LoggedTunableNumber("Elevator/Profile/Velocity", ElevatorConstants.VELOCITY);
+    // private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Elevator/Profile/Acceleration", ElevatorConstants.ACCELERATION);
+    // private final LoggedTunableNumber jerk = new LoggedTunableNumber("Elevator/Profile/Jerk", ElevatorConstants.JERK);
 
     private double targetPosition = 0.0;
     
@@ -42,7 +41,7 @@ public class Elevator extends SubsystemBase {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
         // velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
-        ElevatorConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(ElevatorConstants.LOGGED_GAINS.get())).ignoringDisable(true));
+        // ElevatorConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(ElevatorConstants.LOGGED_GAINS.get())).ignoringDisable(true));
     }
 
     @Override

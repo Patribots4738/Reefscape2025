@@ -22,26 +22,25 @@ import frc.robot.util.Constants.CameraConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.auto.Alignment.AlignmentMode;
 import frc.robot.util.calc.PoseCalculations;
-import frc.robot.util.custom.LoggedTunableNumber;
 
 public class Vision extends SubsystemBase {
 
     private final VisionIOInputsAutoLogged[] inputs;
     private final VisionIO[] cameras;
 
-    private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/xyStdsDisabled", 0.001);
-    private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
-    private final LoggedTunableNumber xyStdsMultiTagTelopX = new LoggedTunableNumber("Vision/xyStdsMultiTagTelopX", 0.002);
-    private final LoggedTunableNumber xyStdsMultiTagTelopY = new LoggedTunableNumber("Vision/xyStdsMultiTagTelopY", 0.003);
-    private final LoggedTunableNumber xyStds2TagTelopX = new LoggedTunableNumber("Vision/xyStds2TagTelopX", 0.005);
-    private final LoggedTunableNumber xyStds2TagTelopY = new LoggedTunableNumber("Vision/xyStds2TagTelopY", 0.008);
-    private final LoggedTunableNumber xyStds2TagAutoX = new LoggedTunableNumber("Vision/xyStds2TagAutoX", 0.014);
-    private final LoggedTunableNumber xyStds2TagAutoY = new LoggedTunableNumber("Vision/xyStds2TagAutoY", 0.016);
-    private final LoggedTunableNumber radStdsMultiTag = new LoggedTunableNumber("Vision/RadStdsMultiTag", Units.degreesToRadians(2));
-    private final LoggedTunableNumber xyStds1TagLargeX = new LoggedTunableNumber("Vision/xyStds1TagLargeX", 0.015);
-    private final LoggedTunableNumber xyStds1TagLargeY = new LoggedTunableNumber("Vision/xyStds1TagLargeY", 0.033);
-    private final LoggedTunableNumber radStds1TagLarge = new LoggedTunableNumber("Vision/RaStds1TagLarge", Units.degreesToRadians(7));
-    private final LoggedTunableNumber minSingleTagArea = new LoggedTunableNumber("Vision/minSingleTagArea", 0.14);
+    // private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/xyStdsDisabled", 0.001);
+    // private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
+    // private final LoggedTunableNumber xyStdsMultiTagTelopX = new LoggedTunableNumber("Vision/xyStdsMultiTagTelopX", 0.002);
+    // private final LoggedTunableNumber xyStdsMultiTagTelopY = new LoggedTunableNumber("Vision/xyStdsMultiTagTelopY", 0.003);
+    // private final LoggedTunableNumber xyStds2TagTelopX = new LoggedTunableNumber("Vision/xyStds2TagTelopX", 0.005);
+    // private final LoggedTunableNumber xyStds2TagTelopY = new LoggedTunableNumber("Vision/xyStds2TagTelopY", 0.008);
+    // private final LoggedTunableNumber xyStds2TagAutoX = new LoggedTunableNumber("Vision/xyStds2TagAutoX", 0.014);
+    // private final LoggedTunableNumber xyStds2TagAutoY = new LoggedTunableNumber("Vision/xyStds2TagAutoY", 0.016);
+    // private final LoggedTunableNumber radStdsMultiTag = new LoggedTunableNumber("Vision/RadStdsMultiTag", Units.degreesToRadians(2));
+    // private final LoggedTunableNumber xyStds1TagLargeX = new LoggedTunableNumber("Vision/xyStds1TagLargeX", 0.015);
+    // private final LoggedTunableNumber xyStds1TagLargeY = new LoggedTunableNumber("Vision/xyStds1TagLargeY", 0.033);
+    // private final LoggedTunableNumber radStds1TagLarge = new LoggedTunableNumber("Vision/RaStds1TagLarge", Units.degreesToRadians(7));
+    // private final LoggedTunableNumber minSingleTagArea = new LoggedTunableNumber("Vision/minSingleTagArea", 0.14);
 
     private final SwerveDrivePoseEstimator poseEstimator;
     private final Supplier<AlignmentMode> alignmentSupplier;
@@ -82,14 +81,9 @@ public class Vision extends SubsystemBase {
             camera.updateInputs(inputs[i]);
             Logger.processInputs("SubsystemInputs/Vision/Camera" + i, inputs[i]);
 
-            int reefTag = closestReefTag();
-            boolean hasReefTag = false;
-            for (int id : inputs[i].tagIds) {
-                if (id == reefTag) 
-                    hasReefTag = true;
-            }
-            boolean useReefTagEstimate = alignmentSupplier.get() == AlignmentMode.REEF && hasReefTag;
-            if (useReefTagEstimate) {
+            if (alignmentSupplier.get() == AlignmentMode.REEF) {
+                int reefTag = closestReefTag();
+                Logger.recordOutput("Subsystems/Vision/ClosestReefTag", reefTag);
                 camera.setUsedTags(new int[] { reefTag });
             } else {
                 camera.setUsedTags(FieldConstants.VALID_TAGS);
@@ -126,28 +120,28 @@ public class Vision extends SubsystemBase {
             Robot.gameMode == GameMode.AUTONOMOUS
                 && Robot.currentTimestamp - RobotContainer.gameModeStart < 1.75)
                 && camerasToUpdate.size() > 0) {
-            xyStds = xyStdsDisabled.get();
-            radStds = radStdsDisabled.get();
+            xyStds = 0.001;
+            radStds = 0.002;
         } else if (camerasToUpdate.size() > 0) {
             // Multiple targets detected
             if (tagCount > 1) {
                 if (Robot.gameMode == GameMode.TELEOP) {
                     // Trust the vision even MORE
                     if (tagCount > 2) {
-                        xyStds = Math.hypot(xyStdsMultiTagTelopX.get(), xyStdsMultiTagTelopY.get());
+                        xyStds = Math.hypot(0.002, 0.003);
                     } else {
                         // We can only see two tags, (still trustable)
-                        xyStds = Math.hypot(xyStds2TagTelopX.get(), xyStds2TagTelopY.get());
+                        xyStds = Math.hypot(0.005, 0.008);
                     }
                 } else {
-                    xyStds = Math.hypot(xyStds2TagAutoX.get(), xyStds2TagAutoY.get());
+                    xyStds = Math.hypot(0.014, 0.016);
                 }
-                radStds = radStdsMultiTag.get();
+                radStds = Units.degreesToRadians(2);
             }
             // 1 target with large area and close to estimated roxose
-            else if (tagArea > minSingleTagArea.get()) {
-                xyStds = Math.hypot(xyStds1TagLargeX.get(), xyStds1TagLargeY.get());
-                radStds = radStds1TagLarge.get();
+            else if (tagArea > 0.14) {
+                xyStds = Math.hypot(0.015, 0.033);
+                radStds = Units.degreesToRadians(7);
             }
             // Conditions don't match to add a vision measurement
             else {
@@ -181,7 +175,6 @@ public class Vision extends SubsystemBase {
         return true;
     }
 
-    @AutoLogOutput (key = "Subsystems/Vision/ClosestReefTag")
     private int closestReefTag() {
         return PoseCalculations.getClosestReefSide(poseEstimator.getEstimatedPosition()).getTagId();
     }

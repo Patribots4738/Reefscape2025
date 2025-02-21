@@ -96,8 +96,6 @@ public class ModuleIOKraken implements ModuleIO {
         inputs.drivePositionMeters = driveMotor.getPositionAsDouble();
         inputs.driveVelocityMPS = driveMotor.getVelocityAsDouble();
         inputs.driveAppliedVolts = driveMotor.getVoltageAsDouble();
-        inputs.driveSupplyCurrentAmps = driveMotor.getSupplyCurrentAsDouble();
-        inputs.driveStatorCurrentAmps = driveMotor.getStatorCurrentAsDouble();
         inputs.driveTorqueCurrentAmps = driveMotor.getTorqueCurrentAsDouble();
         inputs.driveTempCelcius = driveMotor.getTemperatureAsDouble();
         
@@ -106,19 +104,17 @@ public class ModuleIOKraken implements ModuleIO {
         inputs.turnInternalPositionRads = turnMotor.getPositionAsDouble();
         inputs.turnInternalVelocityRadsPerSec = turnMotor.getVelocityAsDouble();
         inputs.turnAppliedVolts = turnMotor.getVoltageAsDouble();
-        inputs.turnSupplyCurrentAmps = turnMotor.getSupplyCurrentAsDouble();
-        inputs.turnStatorCurrentAmps = turnMotor.getStatorCurrentAsDouble();
         inputs.turnTorqueCurrentAmps = driveMotor.getTorqueCurrentAsDouble();
         inputs.turnTempCelcius = turnMotor.getTemperatureAsDouble();
 
-        // Call refreshALl() to refresh all status signals (only if he is real)
-        if (!FieldConstants.IS_SIMULATION) {
-            inputs.turnEncoderConnected = turnEncoder.refreshSignals().isOK();
-        }
+        inputs.turnEncoderConnected = turnEncoder.refreshSignals().isOK() && !FieldConstants.IS_SIMULATION;
 
-        inputs.turnEncoderAbsPositionRads = inputs.turnEncoderConnected ? turnEncoder.getAbsolutePositionAsDouble() : inputs.turnInternalPositionRads;
-        inputs.turnEncoderPositionRads = inputs.turnEncoderConnected ? turnEncoder.getPositionAsDouble() : inputs.turnInternalPositionRads;
-        inputs.turnEncoderVelocityRadsPerSec = inputs.turnEncoderConnected ? turnEncoder.getVelocityAsDouble() : inputs.turnInternalVelocityRadsPerSec;
+        // // Call refreshALl() to refresh all status signals (only if he is real)
+        if (inputs.turnEncoderConnected) {
+            inputs.turnEncoderAbsPositionRads = turnEncoder.getAbsolutePositionAsDouble();
+        } else {
+            inputs.turnEncoderAbsPositionRads = inputs.turnInternalPositionRads;
+        }
 
     }
 

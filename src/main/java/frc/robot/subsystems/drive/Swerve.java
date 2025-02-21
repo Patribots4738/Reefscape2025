@@ -23,11 +23,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -50,7 +47,6 @@ import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
-import frc.robot.util.custom.LoggedTunableNumber;
 
 public class Swerve extends SubsystemBase {
 
@@ -70,10 +66,12 @@ public class Swerve extends SubsystemBase {
     private final SwerveSetpointGenerator setpointGenerator;
     private SwerveSetpoint previousSetpoint;
 
-    private final LoggedTunableNumber driveMultiplier = new LoggedTunableNumber("Swerve/DriveMultiplier", 1.0);
-    private final LoggedTunableNumber driveMaxLinearVelocity = new LoggedTunableNumber("Swerve/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
-    private final LoggedTunableNumber driveMaxAngularVelocity = new LoggedTunableNumber("Swerve/DriveAngularVelocity", DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND);
-    private final LoggedTunableNumber turnMaxVelocity = new LoggedTunableNumber("Swerve/MaxTurnVelocity", MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC);
+    // private final LoggedTunableNumber driveMultiplier = new LoggedTunableNumber("Swerve/DriveMultiplier", 1.0);
+    // private final LoggedTunableNumber driveMaxLinearVelocity = new LoggedTunableNumber("Swerve/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
+    // private final LoggedTunableNumber driveMaxAngularVelocity = new LoggedTunableNumber("Swerve/DriveAngularVelocity", DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND);
+    // private final LoggedTunableNumber turnMaxVelocity = new LoggedTunableNumber("Swerve/MaxTurnVelocity", MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC);
+
+    private ChassisSpeeds speeds;
 
     /**
      * Creates a new DriveSubsystem.
@@ -217,19 +215,18 @@ public class Swerve extends SubsystemBase {
             poseEstimator.updateWithTime(Timer.getFPGATimestamp(), gyroRotation2d, getModulePositions());
         }
         
-        logPositions();
+        logData();
     }
 
-    @AutoLogOutput(key = "Subsystems/Swerve/CurrentPose2d")
     Pose2d currentPose = new Pose2d();
 
-    public void logPositions() {
+    public void logData() {
 
         currentPose = getPose();
 
         RobotContainer.swerveMeasuredStates = getModuleStates();
 
-        ChassisSpeeds speeds = DriveConstants.DRIVE_KINEMATICS.toChassisSpeeds(RobotContainer.swerveMeasuredStates);
+        speeds = DriveConstants.DRIVE_KINEMATICS.toChassisSpeeds(RobotContainer.swerveMeasuredStates);
 
         if (FieldConstants.IS_SIMULATION) {
             resetOdometry(
@@ -254,36 +251,32 @@ public class Swerve extends SubsystemBase {
             RobotContainer.robotPose2d = currentPose;
         }
 
-        double pitch = gyro.getPitch();
-        double roll = gyro.getRoll();
+        // double pitch = gyro.getPitch();
+        // double roll = gyro.getRoll();
 
-        Rotation3d rotation3d = FieldConstants.IS_SIMULATION 
-            ?  new Rotation3d(
-                Units.degreesToRadians(0), 
-                Units.degreesToRadians(0), 
-                currentPose.getRotation().getRadians())
-            :  new Rotation3d(
-                Units.degreesToRadians(roll), 
-                Units.degreesToRadians(pitch), 
-                currentPose.getRotation().getRadians());
+        // Rotation3d rotation3d = FieldConstants.IS_SIMULATION 
+        //     ?  new Rotation3d(
+        //         Units.degreesToRadians(0), 
+        //         Units.degreesToRadians(0), 
+        //         currentPose.getRotation().getRadians())
+        //     :  new Rotation3d(
+        //         Units.degreesToRadians(roll), 
+        //         Units.degreesToRadians(pitch), 
+        //         currentPose.getRotation().getRadians());
 
-        RobotContainer.robotPose3d = new Pose3d(
-                new Translation3d(
-                        currentPose.getX(),
-                        currentPose.getY(),
-                        Math.hypot(
-                            Rotation2d.fromDegrees(roll).getSin()
-                                    * DriveConstants.ROBOT_LENGTH_METERS / 2.0,
-                            Rotation2d.fromDegrees(pitch).getSin()
-                                    * DriveConstants.ROBOT_LENGTH_METERS / 2.0)),
-               rotation3d);
+        // RobotContainer.robotPose3d = new Pose3d(
+        //         new Translation3d(
+        //                 currentPose.getX(),
+        //                 currentPose.getY(),
+        //                 Math.hypot(
+        //                     Rotation2d.fromDegrees(roll).getSin()
+        //                             * DriveConstants.ROBOT_LENGTH_METERS / 2.0,
+        //                     Rotation2d.fromDegrees(pitch).getSin()
+        //                             * DriveConstants.ROBOT_LENGTH_METERS / 2.0)),
+        //        rotation3d);
 
         Logger.recordOutput("Subsystems/Swerve/ChassisSpeeds", speeds);
 
-        Logger.recordOutput("Subsystems/Swerve/Modules/FrontLeft/DesiredState", frontLeft.getDesiredState());
-        Logger.recordOutput("Subsystems/Swerve/Modules/FrontRight/DesiredState", frontRight.getDesiredState());
-        Logger.recordOutput("Subsystems/Swerve/Modules/RearLeft/DesiredState", rearLeft.getDesiredState());
-        Logger.recordOutput("Subsystems/Swerve/Modules/RearRight/DesiredState", rearRight.getDesiredState());
     }
 
     /**
@@ -378,19 +371,15 @@ public class Swerve extends SubsystemBase {
     }
 
     public double getMaxLinearVelocity() {
-        return driveMaxLinearVelocity.get();
+        return DriveConstants.MAX_SPEED_METERS_PER_SECOND;
     }
 
     public double getMaxAngularVelocity() {
-        return driveMaxAngularVelocity.get();
+        return DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND;
     }
 
     public double getDriveMultiplier() {
-        return driveMultiplier.get();
-    }
-
-    public void setDriveMultiplier(double newMultiplier) {
-        driveMultiplier.set(newMultiplier);
+        return 1.0;
     }
     
     @AutoLogOutput (key = "Subsystems/Swerve/DesiredHDCPose")
@@ -400,7 +389,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public ChassisSpeeds getRobotRelativeVelocity() {
-        return DriveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates());
+        return speeds;
     }
 
     /**
@@ -459,14 +448,6 @@ public class Swerve extends SubsystemBase {
         for (Module mod : swerveModules) {
             mod.setTurnVelocity(velocity);
         }
-    }
-
-    public void tuneTurnVelocity() {
-        setTurnVelocity(turnMaxVelocity.get());
-    }
-
-    public Command tuneTurnVelocityCommand() {
-        return run(this::tuneTurnVelocity);
     }
 
     /**
