@@ -38,7 +38,7 @@ public class CoralClaw extends SubsystemBase {
     public CoralClaw(ClawIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        hasPieceDebouncer = new Debouncer(0.5);
+        hasPieceDebouncer = new Debouncer(0.4);
         hasPiece = DriverStation.isFMSAttached();
     }
 
@@ -50,7 +50,7 @@ public class CoralClaw extends SubsystemBase {
         if (FieldConstants.IS_SIMULATION && inputs.percentOutput != 0.0) {
             hasPiece = hasPieceDebouncer.calculate(inputs.percentOutput > 0.0);
         } else if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSec != 0) {
-            hasPiece = inputs.velocityRotationsPerSec > 0;
+            hasPiece = hasPieceDebouncer.calculate(inputs.velocityRotationsPerSec > 0);
         } else if (Robot.gameMode != GameMode.DISABLED && percentOutput != 0.0) {
             if (percentOutput > 0) {
                 hasPiece = hasPieceDebouncer.calculate(

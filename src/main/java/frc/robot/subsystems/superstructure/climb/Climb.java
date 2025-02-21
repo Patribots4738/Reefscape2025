@@ -40,7 +40,7 @@ public class Climb extends SubsystemBase {
     public Climb(ClimbIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
+        // velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
         ClimbConstants.LOGGED_SLOW_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_SLOW_GAINS.get(), 0)).ignoringDisable(true));
         ClimbConstants.LOGGED_FAST_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_FAST_GAINS.get(), 1)).ignoringDisable(true));
     }
