@@ -36,12 +36,4 @@ public class LoggedTunableNumber extends LoggedNetworkNumber {
         previousValue = get();
         super.periodic();
     }
-
-    public double get() {
-        return previousValue;
-    }
-
-    public void set(double val) {
-        previousValue = val;
-    }
 }

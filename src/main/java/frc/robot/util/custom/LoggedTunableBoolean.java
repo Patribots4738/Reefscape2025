@@ -36,8 +36,4 @@ public class LoggedTunableBoolean extends LoggedNetworkBoolean {
         previousValue = get();
         super.periodic();
     }
-
-    public boolean get() {
-        return previousValue;
-    }
 }

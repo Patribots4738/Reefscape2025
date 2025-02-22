@@ -319,7 +319,7 @@ public class Superstructure {
     }
 
     public Command coralAutoIntakeStopCommand(){
-        return setSuperState(L3);
+        return setSuperState(STOW);
     }
 
     public SuperState getPlacementState() {
@@ -382,10 +382,8 @@ public class Superstructure {
     public Command coralPlaceCommandAuto() {
         return Commands.sequence(
             outtakeCommand(),
-            Commands.waitSeconds(0.75),
-            stopOuttakeCommand(),
-            Commands.waitUntil(() -> !shouldEvadeReef()),
-            setSuperState(STOW)
+            Commands.waitSeconds(0.3),
+            stopOuttakeCommand()
         );
     }
 

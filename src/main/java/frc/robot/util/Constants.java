@@ -29,6 +29,7 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.GainConstants;
+import frc.robot.util.custom.LoggedGainConstants;
 import frc.robot.util.custom.ReefSide;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
@@ -253,8 +254,7 @@ public final class Constants {
             "Only Driving 5-E4-D4-C4-B4",
             "Only Driving 3-J4-L4-A4",
             "Only Driving 5-E4-C4-B4",
-            "Only Driving 4-H4",
-            "Only Driving 5-E4"
+            "Only Driving 4-H4"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
@@ -690,8 +690,8 @@ public final class Constants {
             G_FAST
         );
 
-        // public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
-        // public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
+        public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
+        public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = 2.6;
@@ -724,14 +724,14 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
 
     }
 
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 80; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 30; // Process 1 of every 80 frames
 
         public static Pose3d LL4_POSE = new Pose3d(
             -0.28702,

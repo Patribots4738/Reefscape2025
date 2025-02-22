@@ -71,7 +71,7 @@ public class Swerve extends SubsystemBase {
     // private final LoggedTunableNumber driveMaxAngularVelocity = new LoggedTunableNumber("Swerve/DriveAngularVelocity", DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND);
     // private final LoggedTunableNumber turnMaxVelocity = new LoggedTunableNumber("Swerve/MaxTurnVelocity", MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC);
 
-    private ChassisSpeeds speeds;
+    private ChassisSpeeds speeds = new ChassisSpeeds();
 
     /**
      * Creates a new DriveSubsystem.

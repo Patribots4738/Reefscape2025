@@ -81,6 +81,9 @@ public class Vision extends SubsystemBase {
             camera.updateInputs(inputs[i]);
             Logger.processInputs("SubsystemInputs/Vision/Camera" + i, inputs[i]);
 
+            // Logger.recordOutput("Subsystems/Vision/Camera" + i + "MT1Pose", LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-four").pose);
+            // Logger.recordOutput("Subsystems/Vision/Camera" + i + "MT2Pose", LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-four").pose);
+
             if (alignmentSupplier.get() == AlignmentMode.REEF) {
                 int reefTag = closestReefTag();
                 Logger.recordOutput("Subsystems/Vision/ClosestReefTag", reefTag);
