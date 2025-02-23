@@ -388,7 +388,7 @@ public class Superstructure {
         return Commands.defer(() -> setSuperState(getExitState()), requirements);
     }
 
-    public Command coralPlaceCommand(BooleanSupplier continueOuttakingSupplier) {
+    public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
         return Commands.sequence(
             outtakeCommand(),
             Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),

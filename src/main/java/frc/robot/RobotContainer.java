@@ -233,7 +233,7 @@ public class RobotContainer {
             .onTrue(alignment.updateIndexCommand(1));
 
         controller.rightTrigger()
-            .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
+            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
     
     }
 
@@ -268,7 +268,8 @@ public class RobotContainer {
         controller.start()
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
 
-        controller.y().onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
+        controller.y()
+            .onTrue(superstructure.setSuperState(superstructure.NET));
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -289,7 +290,7 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
 
         controller.rightTrigger()
-            .onTrue(superstructure.coralPlaceCommand(controller::getRightTrigger));
+            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
 
         controller.leftTrigger()
             .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
