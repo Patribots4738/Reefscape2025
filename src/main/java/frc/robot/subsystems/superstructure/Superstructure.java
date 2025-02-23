@@ -347,7 +347,9 @@ public class Superstructure {
             default -> L1_PLACE;
         };
 
-        currentPrepState = getPrepState(placementState);
+        if (placementState != NET_PLACE) {
+            currentPrepState = getPrepState(placementState);
+        }
 
         return placementState;
     }
@@ -357,7 +359,6 @@ public class Superstructure {
             case L2 -> L2_PREP;
             case L3 -> L3_PREP;
             case L4 -> L4_PREP;
-            case NET -> NET_PREP;
             default -> L1_PREP;
         };
 

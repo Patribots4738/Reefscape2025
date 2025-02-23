@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -125,7 +126,8 @@ public final class Constants {
         public static final double WHEEL_BASE = Units.inchesToMeters(23.0);
 
         public static final double ROBOT_LENGTH_METERS = Units.inchesToMeters(28.5);
-        public static final double BUMPER_LENGTH_METERS = Units.inchesToMeters(2.75);
+        public static final double BUMPER_LENGTH_METERS = Units.inchesToMeters(3.5);
+        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(38);
 
         // Front positive, left positive
         public static final Translation2d FRONT_LEFT_WHEEL_POSITION = new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2);
@@ -158,6 +160,8 @@ public final class Constants {
             new SwerveModuleState(0, Rotation2d.fromDegrees(-45))
         };
 
+        public static final ChassisSpeeds ZEROED_SPEEDS = new ChassisSpeeds();
+
         // Angular offsets of the modules relative to the chassis in radians
         // add 90 degrees to change the X and Y axis
         public static final double FRONT_LEFT_CHASSIS_ANGULAR_OFFSET = Math.toRadians(180 + 90);
@@ -186,6 +190,7 @@ public final class Constants {
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
+        public static final double REEF_ALIGNMENT_MAX_SPEED = 2.5;
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
@@ -208,7 +213,7 @@ public final class Constants {
         );
 
         public static final GainConstants TELE_THETA_GAINS = new GainConstants(
-            3.725, 
+            5.5, 
             0, 
             0
         );
@@ -516,7 +521,7 @@ public final class Constants {
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
-        public static final double NET_X_CHASSIS_OFFSET = 0.5;
+        public static final double NET_X_CHASSIS_OFFSET = 1;
 
     }
     public static final class ElevatorConstants {
@@ -854,9 +859,6 @@ public final class Constants {
             int index = Robot.isRedAlliance() ? 1 : 0;
             return PROCESSOR_POSITIONS.get(index);
         }
-
-        public static final Pose2d NET_X_RED = new Pose2d(8.28, 0.0, Rotation2d.fromRadians(0));
-        public static final Pose2d NET_X_BLUE = PoseCalculations.flipPose(NET_X_RED);
 
         public static final Pose2d CORAL_STATION_1 = new Pose2d(0.82, 7.39, Rotation2d.fromDegrees(125));
         public static final Pose2d CORAL_STATION_2 = new Pose2d(0.82, 0.65, Rotation2d.fromDegrees(-125));

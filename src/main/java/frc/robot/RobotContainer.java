@@ -203,9 +203,6 @@ public class RobotContainer {
 
     private void configureDriverBindings(PatriBoxController controller) {
         
-        controller.start()
-            .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
-        
         controller.rightStick()
             .toggleOnTrue(
                 new ActiveConditionalCommand(
@@ -215,10 +212,13 @@ public class RobotContainer {
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
         controller.a()
-            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+            .whileTrue(alignment.reefAlignmentCommand2());
 
         controller.b()
             .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
+
+        controller.y()
+            .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
 
         controller.leftBumper()
             .onTrue(alignment.updateIndexCommand(-1));
@@ -281,7 +281,7 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperState(superstructure.STOW));
 
         controller.b()
-            .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
+            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
 
         controller.rightTrigger()
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
@@ -298,7 +298,7 @@ public class RobotContainer {
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
         controller.a()
-            .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
+            .whileTrue(alignment.reefAlignmentCommand2());
 
         controller.leftBumper()
             .onTrue(alignment.updateIndexCommand(-1));

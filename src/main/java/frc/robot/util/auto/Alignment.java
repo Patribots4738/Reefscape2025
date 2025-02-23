@@ -3,6 +3,8 @@ package frc.robot.util.auto;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,6 +16,7 @@ import frc.robot.subsystems.drive.Swerve;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClimbConstants;
+import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.ReefSide;
@@ -64,7 +67,7 @@ public class Alignment {
         return new ChassisSpeeds(
             MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vyMetersPerSecond, autoSpeeds.vyMetersPerSecond)), 0.01),
             -MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vxMetersPerSecond, autoSpeeds.vxMetersPerSecond)), 0.01),
-            MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.01)
+            MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.005)
         );
     }
 
@@ -102,7 +105,12 @@ public class Alignment {
     public ChassisSpeeds getReefRotationalAutoSpeeds() {
         Pose2d reefCenter = FieldConstants.GET_REEF_POSITION();
         Pose2d relativePose = swerve.getPose().relativeTo(reefCenter);
-        Rotation2d desiredRotation = new Rotation2d(relativePose.getX(), relativePose.getY()).plus(new Rotation2d(Math.PI));
+        Rotation2d desiredRotation;
+        if (relativePose.getTranslation().getNorm() > 2d) {
+            desiredRotation = new Rotation2d(relativePose.getX(), relativePose.getY());
+        } else {
+            desiredRotation = PoseCalculations.getClosestReefSide(swerve.getPose()).getRotation();
+        }
         return getAutoRotationalSpeeds(desiredRotation);
     }
     
@@ -128,21 +136,24 @@ public class Alignment {
     }
 
     public ChassisSpeeds getNetAutoSpeeds() {
-        Pose2d netPose;
-        netPose = (Robot.isRedAlliance() ? FieldConstants.NET_X_RED : FieldConstants.NET_X_BLUE);
+        boolean isRedAlliance = Robot.isRedAlliance();
+        double x = isRedAlliance 
+            ? FieldConstants.FIELD_MAX_LENGTH / 2 + AlgaeClawConstants.NET_X_CHASSIS_OFFSET
+            : FieldConstants.FIELD_MAX_LENGTH / 2 - AlgaeClawConstants.NET_X_CHASSIS_OFFSET;
+        double y = isRedAlliance
+            ? MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT / 2)
+            : MathUtil.clamp(swerve.getPose().getY(), FieldConstants.FIELD_MAX_HEIGHT / 2, FieldConstants.FIELD_MAX_HEIGHT);
+        double theta = Robot.isRedAlliance() ? Math.PI : 0;
         Pose2d desiredPose = new Pose2d(
-
-            Robot.isRedAlliance()
-                ? netPose.getX() - AlgaeClawConstants.NET_X_CHASSIS_OFFSET
-                : netPose.getX() + AlgaeClawConstants.NET_X_CHASSIS_OFFSET,
-            swerve.getPose().getY(),
-            netPose.getRotation()     
+            x,
+            y,
+            Rotation2d.fromRadians(theta)
         );
         return getAutoSpeeds(desiredPose);
     }
 
     // TODO: Make this less 🤮 because MY LORD
-    public ChassisSpeeds getReefAutoSpeeds() {
+    public ChassisSpeeds getReefAutoSpeeds1() {
         Pose2d currentPose = swerve.getPose();
         ReefSide reefSide = PoseCalculations.getClosestReefSide(swerve.getPose());
         Pose2d left = reefSide.getLeft();
@@ -175,7 +186,37 @@ public class Alignment {
         return getAutoSpeeds(desiredPose);
     }
 
-    public ChassisSpeeds getReefControllerSpeeds(double driverX, double driverY) {
+    public ChassisSpeeds getReefAutoSpeeds2() {
+        Pose2d currentPose = swerve.getPose();
+        ReefSide reefSide = PoseCalculations.getClosestReefSide(swerve.getPose());
+        Pose2d left = reefSide.getLeft();
+        Pose2d right = reefSide.getRight();
+        Pose2d node;
+        if (alignmentIndex == -1) {
+            // First alignment, find closest reef node
+            double leftDist = currentPose.getTranslation().getDistance(left.getTranslation());
+            double rightDist = currentPose.getTranslation().getDistance(right.getTranslation());
+            boolean leftCloser = leftDist < rightDist;
+            node = leftCloser ? left : right;
+            alignmentIndex = leftCloser ? 0 : 1;
+        } else {
+            // Post-alignment, use current alignmentIndex
+            node = alignmentIndex == 0 ? left : right;
+        }
+        Logger.recordOutput("Subsystems/Swerve/TargetNode", node);
+        // Get desired position from face angle
+        double distance = DriveConstants.FULL_ROBOT_LENGTH_METERS / 2;
+        double x = node.getX() + distance * node.getRotation().getCos();
+        double y = node.getY() + distance * node.getRotation().getSin();
+        Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
+        ChassisSpeeds autoSpeeds = getAutoSpeeds(desiredPose);
+        double maxVelocity = AutoConstants.REEF_ALIGNMENT_MAX_SPEED;
+        autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxVelocity, maxVelocity);
+        autoSpeeds.vyMetersPerSecond = MathUtil.clamp(autoSpeeds.vyMetersPerSecond, -maxVelocity, maxVelocity);
+        return autoSpeeds;
+    }
+
+    public ChassisSpeeds getReefControllerSpeeds1(double driverX, double driverY) {
         ReefSide reefFace = PoseCalculations.getClosestReefSide(swerve.getPose());
         // Use either driverX or driverY axis depending on reef face (driverY faces are on the Y center of the field)
         double axis = 
@@ -273,12 +314,20 @@ public class Alignment {
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0));
     }
 
-    public Command reefAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
+    public Command reefAlignmentCommand1(DoubleSupplier driverX, DoubleSupplier driverY) {
         return 
             autoAlignmentCommand(
                 AlignmentMode.REEF, 
-                this::getReefAutoSpeeds, 
-                () -> getReefControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble()));
+                this::getReefAutoSpeeds1, 
+                () -> getReefControllerSpeeds1(driverX.getAsDouble(), driverY.getAsDouble()));
+    }
+
+    public Command reefAlignmentCommand2() {
+        return
+            autoAlignmentCommand(
+                AlignmentMode.REEF, 
+                this::getReefAutoSpeeds2, 
+                () -> DriveConstants.ZEROED_SPEEDS);
     }
 
     public AlignmentMode getAlignmentMode() {
