@@ -502,7 +502,7 @@ public final class Constants {
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
-        public static final double X_CHASSIS_OFFSET = 0.0;
+        public static final double X_CHASSIS_OFFSET = 0.5;
 
     }
     public static final class ElevatorConstants {
@@ -621,7 +621,7 @@ public final class Constants {
         public static final double REEF_TRANSITION_RADIANS = 1.779;
         public static final double UNDER_TRANSITION_RADIANS = 1.7;
 
-        public static final double NET_RADIANS = 0.0;
+        public static final double NET_RADIANS = 2.09;
     }
 
 
@@ -716,7 +716,7 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
 
     }
 
@@ -839,8 +839,8 @@ public final class Constants {
             return PROCESSOR_POSITIONS.get(index);
         }
 
-        public static final Pose2d NET_X = new Pose2d(8.28, 0.0, Rotation2d.fromRadians(0));
-
+        public static final Pose2d NET_X_RED = new Pose2d(8.28, 0.0, Rotation2d.fromRadians(0));
+        public static final Pose2d NET_X_BLUE = PoseCalculations.flipPose(NET_X_RED);
 
         public static final Pose2d CORAL_STATION_1 = new Pose2d(0.82, 7.39, Rotation2d.fromDegrees(125));
         public static final Pose2d CORAL_STATION_2 = new Pose2d(0.82, 0.65, Rotation2d.fromDegrees(-125));

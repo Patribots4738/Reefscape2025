@@ -223,6 +223,9 @@ public class RobotContainer {
         controller.a()
             .whileTrue(alignment.reefAlignmentCommand(controller::getLeftX, controller::getLeftY));
 
+        controller.b()
+            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
+
         controller.leftBumper()
             .onTrue(alignment.updateIndexCommand(-1));
 
@@ -237,6 +240,8 @@ public class RobotContainer {
     private void configureOperatorBindings(PatriBoxController controller) {
 
         controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
+
+        controller.rightBumper().onTrue(superstructure.setSuperState(superstructure.NET));
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));

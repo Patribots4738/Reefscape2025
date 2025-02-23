@@ -69,6 +69,7 @@ public class Superstructure {
     public final SuperState CLIMB_READY;
     public final SuperState CLIMB_FINAL;
 
+    public final SuperState NET_PREP;
     public final SuperState NET;
     public final SuperState NET_PLACE;
     public final SuperState NET_EXIT;
@@ -127,6 +128,7 @@ public class Superstructure {
         CLIMB_READY = new LoggedSuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.STOP);
         CLIMB_FINAL = new LoggedSuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.STOP);
 
+        NET_PREP = new LoggedSuperState("NET_PREP", ArmState.NET_PREP, ClimbState.STOW, ClawState.ALGAE_HOLD);
         NET = new LoggedSuperState("NET", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_HOLD);
         NET_PLACE = new LoggedSuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, this::armAtTargetPosition, () -> false);
         NET_EXIT = new LoggedSuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.STOP);
@@ -151,6 +153,7 @@ public class Superstructure {
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL),
         L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL),
+        NET_PREP (ElevatorConstants.L3_POSITION_METERS, WristConstants.REEF_TRANSITION_RADIANS),
         NET (ElevatorConstants.L4_POSITION_METERS, WristConstants.NET_RADIANS),
         NET_EXIT (ElevatorConstants.L4_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS);
     
@@ -341,6 +344,7 @@ public class Superstructure {
             case L2, L2_PREP -> L2_PLACE;
             case L3, L3_PREP -> L3_PLACE;
             case L4, L4_PREP -> L4_PLACE;
+            case NET, NET_PREP -> NET_PLACE;
             default -> L1_PLACE;
         };
 
@@ -354,6 +358,7 @@ public class Superstructure {
             case L2 -> L2_PREP;
             case L3 -> L3_PREP;
             case L4 -> L4_PREP;
+            case NET -> NET_PREP;
             default -> L1_PREP;
         };
 

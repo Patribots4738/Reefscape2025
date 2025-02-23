@@ -131,7 +131,7 @@ public class Alignment {
 
     public ChassisSpeeds getNetAutoSpeeds() {
         Pose2d netPose;
-        netPose = FieldConstants.NET_X;
+        netPose = (Robot.isRedAlliance() ? FieldConstants.NET_X_RED : FieldConstants.NET_X_BLUE);
         Pose2d desiredPose = new Pose2d(
 
             Robot.isRedAlliance()
@@ -272,7 +272,7 @@ public class Alignment {
             autoAlignmentCommand(
                 AlignmentMode.NET, 
                 this::getNetAutoSpeeds, 
-                () -> getControllerSpeeds(0, driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER));
+                () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0));
     }
 
     public Command reefAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
