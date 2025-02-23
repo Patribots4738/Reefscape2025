@@ -79,7 +79,7 @@ public class CANCoderCustom extends CANcoder {
      * @return the position as rotations * PCF
      */
     public double getPositionAsDouble() {
-        return position.getValue().magnitude() * positionConversionFactor;
+        return position.getValueAsDouble() * positionConversionFactor;
     }
 
     /**
@@ -88,7 +88,7 @@ public class CANCoderCustom extends CANcoder {
      * @return the absolute position as rotation from -0.5 to 0.5 * PCF
      */
     public double getAbsolutePositionAsDouble() {
-        return absolutePosition.getValue().magnitude() * positionConversionFactor;
+        return absolutePosition.getValueAsDouble() * positionConversionFactor;
     }
 
     /**
@@ -97,7 +97,7 @@ public class CANCoderCustom extends CANcoder {
      * @return the velocity as rps * VCF
      */
     public double getVelocityAsDouble() {
-        return velocity.getValue().magnitude() * velocityConversionFactor;
+        return velocity.getValueAsDouble() * velocityConversionFactor;
     }
 
     /**

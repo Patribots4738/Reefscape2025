@@ -13,7 +13,6 @@ import frc.robot.RobotContainer;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
-import frc.robot.util.custom.LoggedTunableNumber;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -31,17 +30,17 @@ public class Wrist extends SubsystemBase {
     private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Wrist/BrakeMotor", WristConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Wrist/Profile/Velocity", WristConstants.VELOCITY);
-    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Wrist/Profile/Acceleration", WristConstants.ACCELERATION);
-    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Wrist/Profile/Jerk", WristConstants.JERK);
+    // private final LoggedTunableNumber velocity = new LoggedTunableNumber("Wrist/Profile/Velocity", WristConstants.VELOCITY);
+    // private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Wrist/Profile/Acceleration", WristConstants.ACCELERATION);
+    // private final LoggedTunableNumber jerk = new LoggedTunableNumber("Wrist/Profile/Jerk", WristConstants.JERK);
 
     private double targetPosition = 0.0;
 
     public Wrist(WristIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        WristConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(WristConstants.LOGGED_GAINS.get().withG(0.0))).ignoringDisable(true));
-        velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
+        // WristConstants.LOGGED_GAINS.onChanged(runOnce(() -> io.setGains(WristConstants.LOGGED_GAINS.get().withG(0.0))).ignoringDisable(true));
+        // velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             LoggingConstants.WRIST_OFFSET.getX(),
@@ -61,7 +60,7 @@ public class Wrist extends SubsystemBase {
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getX(), 
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getY(),
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getZ(),
-            new Rotation3d(0, inputs.positionRads, 0)
+            new Rotation3d(0, inputs.internalPositionRads, 0)
         );
 
     }
@@ -96,7 +95,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public boolean atPosition(double position) {
-        return MathUtil.isNear(position, inputs.positionRads, WristConstants.DEADBAND_RADIANS);
+        return MathUtil.isNear(position, inputs.internalPositionRads, WristConstants.DEADBAND_RADIANS);
     }
 
     public boolean atTargetPosition() {
@@ -104,11 +103,11 @@ public class Wrist extends SubsystemBase {
     }
 
     public double getPosition() {
-        return inputs.positionRads;
+        return inputs.internalPositionRads;
     }
 
     public double getCharacterizationVelocity() {
-        return inputs.velocityRadsPerSec / WristConstants.VELOCITY_CONVERSION_FACTOR;
+        return inputs.internalVelocityRadsPerSec / WristConstants.VELOCITY_CONVERSION_FACTOR;
     }
 
     public void runCharacterization(double input) {

@@ -23,6 +23,7 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
@@ -143,6 +144,20 @@ public final class Constants {
                 WHEEL_POSITION_ARRAY
         );
 
+        public static final SwerveModuleState[] X_WHEEL_STATES = new SwerveModuleState[] {
+            new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(-135))
+        };
+
+        public static final SwerveModuleState[] O_WHEEL_STATES = new SwerveModuleState[] {
+            new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(-135)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(-45))
+        };
+
         // Angular offsets of the modules relative to the chassis in radians
         // add 90 degrees to change the X and Y axis
         public static final double FRONT_LEFT_CHASSIS_ANGULAR_OFFSET = Math.toRadians(180 + 90);
@@ -173,9 +188,9 @@ public final class Constants {
 
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
-            9.0, 
+            6, 
             0.0, 
-            0.2
+            0.09
         );
 
         public static final GainConstants TELE_XY_GAINS = new GainConstants(
@@ -184,7 +199,7 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
+        // public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
 
         public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
             3.725, 
@@ -198,7 +213,7 @@ public final class Constants {
             0
         );
 
-        public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
+        // public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
 
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.TELE_XY_GAINS.getP(),
@@ -236,8 +251,7 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "Only Driving 3-J4-K4-L4-A4",
-            "Only Driving 5-E4-D4-C4-B4",
+            "5-E4-D4-C4-B4",
             "Only Driving 3-J4-L4-A4",
             "Only Driving 5-E4-C4-B4",
             "Only Driving 4-H4"
@@ -442,7 +456,7 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Swerve/Drive");
+        // public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Swerve/Drive");
 
         public static final double TURNING_P = !FieldConstants.IS_SIMULATION ? 1500d : 2400d;
         public static final double TURNING_I = 0;
@@ -458,7 +472,7 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_TURNING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Swerve/Turn");
+        // public static final LoggedGainConstants LOGGED_TURNING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.TURNING_GAINS, "Swerve/Turn");
 
     }
 
@@ -467,7 +481,7 @@ public final class Constants {
         public static final int CAN_ID = 9;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 80.0;
+        public static final double CURRENT_LIMIT = 35.0;
 
         public static final boolean MOTOR_INVERTED = false;
 
@@ -492,12 +506,12 @@ public final class Constants {
         public static final int CAN_ID = 14;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 80-.0;
+        public static final double CURRENT_LIMIT = 80.0;
 
-        public static final boolean MOTOR_INVERTED = true;
+        public static final boolean MOTOR_INVERTED = false;
 
-        public static final double INTAKE_PERCENT = 0.35;
         public static final double HOLD_PERCENT = 0.0;
+        public static final double INTAKE_PERCENT = 0.6;
         public static final double OUTTAKE_PERCENT = -0.35;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
@@ -538,7 +552,7 @@ public final class Constants {
             G
         );
 
-        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
+        // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
         public static final double VELOCITY = 1d;
         public static final double ACCELERATION = 2.5;
@@ -560,8 +574,9 @@ public final class Constants {
     public static final class WristConstants {
 
         public static final int CAN_ID = 12;
+        public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.575;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -586,7 +601,7 @@ public final class Constants {
             G
         );
 
-        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
+        // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
         public static final double VELOCITY = 11d;
         public static final double ACCELERATION = !FieldConstants.IS_SIMULATION ? 90d : 15d;
@@ -603,19 +618,18 @@ public final class Constants {
         public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
-        public static final double MAX_ANGLE_RADIANS = 2.65;
+        public static final double MAX_ANGLE_RADIANS = 2.508;
 
-        public static final double RESET_ANGLE_RADIANS = 2.829;
 
         public static final double CLIMB_RADIANS = 1.1;
 
         public static final double DEADBAND_RADIANS = 0.06;
-        public static final double STOW_POSITION_RADIANS = 0.07;
-        public static final double INTAKE_POSITION_RADIANS = -0.2;
-        public static final double L1_POSITION_RADIANS = 2.40720302912;
+        public static final double STOW_POSITION_RADIANS = 0.0;
+        public static final double INTAKE_POSITION_RADIANS = -0.125;
+        public static final double L1_POSITION_RADIANS = 2.407;
         public static final double L2_POSITION_RADIANS = 2.2;
         public static final double L3_POSITION_RADIANS = 2.22;
-        public static final double L4_POSITION_RADIANS = 2.479;
+        public static final double L4_POSITION_RADIANS = 2.407;
         public static final double ALGAE_REMOVAL = 1.57;
 
         public static final double REEF_TRANSITION_RADIANS = 1.779;
@@ -656,7 +670,7 @@ public final class Constants {
         public static final double A_FAST = !FieldConstants.IS_SIMULATION ? 1d : 0d;
         public static final double S_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double V_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double G_FAST = !FieldConstants.IS_SIMULATION ? -50d : 0d;
 
         public static final double VELOCITY = Math.PI;
         public static final double ACCELERATION = 20d;
@@ -716,14 +730,14 @@ public final class Constants {
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
 
     }
 
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 80; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 30; // Process 1 of every 80 frames
 
         public static Pose3d LL4_POSE = new Pose3d(
             -0.28702,
@@ -789,7 +803,7 @@ public final class Constants {
         public static final double KRAKENX60_FREE_SPEED_RPM = 6000;
         public static final double KRAKENX60_FREE_SPEED_RPM_FOC = 5800;
 
-        public static final double TALONFX_FAST_UPDATE_FREQ_HZ = 100;// TODO: FIND THE SWEET SPOT
+        public static final double TALONFX_FAST_UPDATE_FREQ_HZ = 75;// TODO: FIND THE SWEET SPOT
         public static final double TALONFX_MID_UPDATE_FREQ_HZ = 50; // TODO: FIND THE SWEET SPOT
         public static final double TALONFX_SLOW_UPDATE_FREQ_HZ = 4; // TODO: FIND THE SWEET SPOT
 
@@ -799,7 +813,7 @@ public final class Constants {
 
     public static final class CANCoderConstants {
 
-        public static final double ENCODER_UPDATE_FREQ_HZ = 250; // TODO: FIND THE SWEET SPOT
+        public static final double ENCODER_UPDATE_FREQ_HZ = 100; // TODO: FIND THE SWEET SPOT
 
     }
 

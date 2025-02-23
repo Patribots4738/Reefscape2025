@@ -23,26 +23,24 @@ import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.custom.LoggedTunableBoolean;
-import frc.robot.util.custom.LoggedTunableNumber;
-
 public class Climb extends SubsystemBase {
     
     private final ClimbIO io;
     private final ClimbIOInputsAutoLogged inputs = new ClimbIOInputsAutoLogged();
 
     private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Climb/BrakeMotor", ClimbConstants.BRAKE_MOTOR);
-    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Climb/Profile/Velocity", ClimbConstants.VELOCITY);
-    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Climb/Profile/Acceleration", ClimbConstants.ACCELERATION);
-    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Climb/Profile/Jerk", ClimbConstants.JERK);
+    // private final LoggedTunableNumber velocity = new LoggedTunableNumber("Climb/Profile/Velocity", ClimbConstants.VELOCITY);
+    // private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Climb/Profile/Acceleration", ClimbConstants.ACCELERATION);
+    // private final LoggedTunableNumber jerk = new LoggedTunableNumber("Climb/Profile/Jerk", ClimbConstants.JERK);
 
     private double targetPosition = 0.0;
 
     public Climb(ClimbIO io) {
         this.io = io;
         brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
-        ClimbConstants.LOGGED_SLOW_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_SLOW_GAINS.get(), 0)).ignoringDisable(true));
-        ClimbConstants.LOGGED_FAST_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_FAST_GAINS.get(), 1)).ignoringDisable(true));
+        // velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
+        // ClimbConstants.LOGGED_SLOW_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_SLOW_GAINS.get(), 0)).ignoringDisable(true));
+        // ClimbConstants.LOGGED_FAST_GAINS.onChanged(runOnce(() -> io.setGains(ClimbConstants.LOGGED_FAST_GAINS.get(), 1)).ignoringDisable(true));
     }
 
     @Override

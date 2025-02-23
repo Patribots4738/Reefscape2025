@@ -29,19 +29,19 @@ public class LoggedGainConstants {
 
     public Trigger onChanged() {
         return pValue.onChanged()
-            .or(iValue.onChanged())
-            .or(dValue.onChanged())
-            .or(aValue.onChanged())
-            .or(sValue.onChanged())
-            .or(vValue.onChanged())
-            .or(gValue.onChanged());
+                .or(iValue.onChanged())
+                .or(dValue.onChanged())
+                .or(aValue.onChanged())
+                .or(sValue.onChanged())
+                .or(vValue.onChanged())
+                .or(gValue.onChanged());
     }
 
     public Trigger onChanged(Command command) {
         return this.onChanged().onTrue(command);
     }
 
-    public GainConstants get(){
+    public GainConstants get() {
         return gainConstants.withGains(
             pValue.get(),
             iValue.get(),

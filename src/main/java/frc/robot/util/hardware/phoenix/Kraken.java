@@ -2,12 +2,6 @@ package frc.robot.util.hardware.phoenix;
 
 import java.util.function.Supplier;
 
-import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.Celsius;
-import static edu.wpi.first.units.Units.Rotations;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static edu.wpi.first.units.Units.Volts;
-
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -767,7 +761,7 @@ public class Kraken extends TalonFX {
      * @return current position as rotations * PCF
      */
     public double getPositionAsDouble() {
-        return positionSignal.getValue().in(Rotations) * unitConversionFactor;        
+        return positionSignal.getValueAsDouble() * unitConversionFactor;        
     }
 
     /**
@@ -776,7 +770,7 @@ public class Kraken extends TalonFX {
      * @return current velocity as rotations per second * VCF
      */
     public double getVelocityAsDouble() {
-        return velocitySignal.getValue().in(RotationsPerSecond) * unitConversionFactor;
+        return velocitySignal.getValueAsDouble() * unitConversionFactor;
     }
 
     /**
@@ -785,7 +779,7 @@ public class Kraken extends TalonFX {
      * @return current voltage in volts
      */
     public double getVoltageAsDouble() {
-        return voltageSignal.getValue().in(Volts);
+        return voltageSignal.getValueAsDouble();
     }
 
     /**
@@ -794,7 +788,7 @@ public class Kraken extends TalonFX {
      * @return current percent from -1.0 to 1.0
      */
     public double getPercentAsDouble() {
-        return percentSignal.getValue();
+        return percentSignal.getValueAsDouble();
     }
 
     /**
@@ -803,7 +797,7 @@ public class Kraken extends TalonFX {
      * @return supply of current to Kraken in amps
      */
     public double getSupplyCurrentAsDouble() {
-        return supplyCurrentSignal.getValue().in(Amps);
+        return supplyCurrentSignal.getValueAsDouble();
     }
 
     /**
@@ -812,7 +806,7 @@ public class Kraken extends TalonFX {
      * @return stator current in amps, directly proportional to applied torque
      */
     public double getStatorCurrentAsDouble() {
-        return statorCurrentSignal.getValue().in(Amps);
+        return statorCurrentSignal.getValueAsDouble();
     }
 
     /**
@@ -821,7 +815,7 @@ public class Kraken extends TalonFX {
      * @return torque current in amps, directly proportional to applied torque
      */
     public double getTorqueCurrentAsDouble() {
-        return torqueCurrentSignal.getValue().in(Amps);
+        return torqueCurrentSignal.getValueAsDouble();
     }
 
     /**
@@ -830,7 +824,7 @@ public class Kraken extends TalonFX {
      * @return motor temp. in celcius
      */
     public double getTemperatureAsDouble() {
-        return temperatureSignal.getValue().in(Celsius);
+        return temperatureSignal.getValueAsDouble();
     }
 
     /**
@@ -839,38 +833,32 @@ public class Kraken extends TalonFX {
      * @return The status code indicating the success or failure of the signal refresh.
      */
     public StatusCode refreshSignals() {
-        return 
-            switch(telemetryPreference) {
-                case NO_ENCODER -> 
-                    BaseStatusSignal.refreshAll(
-                        voltageSignal,
-                        percentSignal,
-                        supplyCurrentSignal,
-                        statorCurrentSignal,
-                        torqueCurrentSignal,
-                        temperatureSignal
-                    );
-                case SWERVE ->
-                    BaseStatusSignal.refreshAll(
-                        voltageSignal,
-                        positionSignal,
-                        velocitySignal,
-                        supplyCurrentSignal,
-                        torqueCurrentSignal,
-                        temperatureSignal
-                    );
-                default ->
-                    BaseStatusSignal.refreshAll(
-                        positionSignal,
-                        velocitySignal,
-                        voltageSignal,
-                        percentSignal,
-                        supplyCurrentSignal,
-                        statorCurrentSignal,
-                        torqueCurrentSignal,
-                        temperatureSignal
-                    );
-            };
+        return switch(telemetryPreference) {
+            case NO_ENCODER -> 
+                BaseStatusSignal.refreshAll(
+                    voltageSignal,
+                    percentSignal,
+                    torqueCurrentSignal,
+                    temperatureSignal
+                );
+            case SWERVE ->
+                BaseStatusSignal.refreshAll(
+                    voltageSignal,
+                    positionSignal,
+                    velocitySignal,
+                    torqueCurrentSignal,
+                    temperatureSignal
+                );
+            default ->
+                BaseStatusSignal.refreshAll(
+                    positionSignal,
+                    velocitySignal,
+                    voltageSignal,
+                    percentSignal,
+                    torqueCurrentSignal,
+                    temperatureSignal
+                );
+        };
     }
 
     /**

@@ -30,23 +30,7 @@ public class Gyro {
         return inputs.yawRotation2d.getRadians();
     }
 
-    public double getPitch() {
-        return inputs.pitchRads;
-    }
-
-    public double getRoll() {
-        return inputs.rollRads;
-    }
-
     public double getYawVelocity() {
-        return inputs.yawVelocityRadsPerSec;
-    }
-
-    public double getPitchVelocity() {
-        return inputs.yawVelocityRadsPerSec;
-    }
-
-    public double getRollVelocity() {
         return inputs.yawVelocityRadsPerSec;
     }
 }

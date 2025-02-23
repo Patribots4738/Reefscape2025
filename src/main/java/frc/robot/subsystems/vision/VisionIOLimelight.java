@@ -46,10 +46,6 @@ public class VisionIOLimelight implements VisionIO {
 
     @Override 
     public void setUseMegaTag2(boolean useMT2) {
-        boolean changed = camera.getUseMT2() == useMT2;
-        if (!changed) {
-            return;
-        }
         boolean isLL4 = camera.getIsLL4();
         if (useMT2) {
             if (isLL4) {

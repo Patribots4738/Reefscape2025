@@ -6,13 +6,10 @@ import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.event.EventLoop;
@@ -21,7 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Robot.GameMode;
 import frc.robot.commands.characterization.StaticCharacterization;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
@@ -86,8 +82,6 @@ public class RobotContainer {
     public static boolean freshCode = true;
     @AutoLogOutput (key = "Draggables/RobotPose2d")
     public static Pose2d robotPose2d = new Pose2d();
-    @AutoLogOutput (key = "Draggables/RobotPose3d")
-    public static Pose3d robotPose3d = new Pose3d();
     @AutoLogOutput (key = "Draggables/SwerveMeasuredStates")
     public static SwerveModuleState[] swerveMeasuredStates;
     @AutoLogOutput (key = "Draggables/SwerveDesiredStates")
@@ -133,21 +127,21 @@ public class RobotContainer {
             () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
         ));
 
-        AutoConstants.LOGGED_TELE_XY_GAINS.onChanged(Commands.parallel(
-            Commands.run(() -> AutoConstants.TELE_HDC.getXController().setPID(
-                AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
-                AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
-                AutoConstants.LOGGED_TELE_XY_GAINS.get().getD())),
-            Commands.run(() -> AutoConstants.TELE_HDC.getYController().setPID(
-                AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
-                AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
-                AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))).ignoringDisable(true));
+        // AutoConstants.LOGGED_TELE_XY_GAINS.onChanged(Commands.parallel(
+        //     Commands.run(() -> AutoConstants.TELE_HDC.getXController().setPID(
+        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
+        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
+        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getD())),
+        //     Commands.run(() -> AutoConstants.TELE_HDC.getYController().setPID(
+        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
+        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
+        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))).ignoringDisable(true));
 
-        AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(
-            Commands.run(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
-                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getP(),
-                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getI(),
-                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
+        // AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(
+        //     Commands.run(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
+        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getP(),
+        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getI(),
+        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
 
         configureButtonBindings();
         configureMiscTriggers();
@@ -314,36 +308,6 @@ public class RobotContainer {
 
     }
 
-    public void updateNTGains() {
-        double AUTO_HDC_XY_P = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/0-P").getDouble(-1);
-        double AUTO_HDC_XY_I = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/1-I").getDouble(-1);
-        double AUTO_HDC_XY_D = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/2-D").getDouble(-1);
-        double AUTO_HDC_TH_P = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/0-P").getDouble(-1);
-        double AUTO_HDC_TH_I = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/1-I").getDouble(-1);
-        double AUTO_HDC_TH_D = NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/2-D").getDouble(-1);
-
-        if (AUTO_HDC_XY_P == -1 || AUTO_HDC_XY_I == -1 || AUTO_HDC_XY_D == -1 || AUTO_HDC_TH_P == -1 || AUTO_HDC_TH_I == -1 || AUTO_HDC_TH_D == -1) {
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/0-P").setDouble(AutoConstants.AUTO_XY_GAINS.getP());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/1-I").setDouble(AutoConstants.AUTO_XY_GAINS.getI());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Translation/2-D").setDouble(AutoConstants.AUTO_XY_GAINS.getD());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/0-P").setDouble(AutoConstants.AUTO_THETA_GAINS.getP());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/1-I").setDouble(AutoConstants.AUTO_THETA_GAINS.getI());
-            NetworkTableInstance.getDefault().getTable("Calibration").getEntry("Auto/Rotation/2-D").setDouble(AutoConstants.AUTO_THETA_GAINS.getD());
-            return;
-        } else {
-
-            AutoConstants.AUTO_HDC = new PPHolonomicDriveController(
-                new PIDConstants(
-                    AUTO_HDC_XY_P,
-                    AUTO_HDC_XY_I,
-                    AUTO_HDC_XY_D),
-                new PIDConstants(
-                    AUTO_HDC_TH_P,
-                    AUTO_HDC_TH_I,
-                    AUTO_HDC_TH_D));
-        }
-    }
-
     public Command getAutonomousCommand() {
         return pathPlannerStorage.getSelectedAuto();
     }
@@ -352,12 +316,6 @@ public class RobotContainer {
         swerve.stopDriving();
         pathPlannerStorage.updatePathViewerCommand().schedule();
         pathPlannerStorage.configureAutoChooser();
-
-        // TODO: Extract this into a command file
-        Commands.run(this::updateNTGains)
-            .until(() -> Robot.gameMode != GameMode.DISABLED)
-            .ignoringDisable(true)
-            .schedule();
     }
 
     public void onEnabled() {
@@ -376,7 +334,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL3", superstructure.setSuperState(superstructure.L3));
         NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommandAuto());
-
+        NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(coralClaw::hasPiece));
         
         for (int i = 0; i < 12; i++) {
             char currentNode = AutoConstants.REEF_NODES.charAt(i);
@@ -389,19 +347,19 @@ public class RobotContainer {
             }
         }
 
-        for (int start = 1; start <= 7; start++) {
-            int currentPreload = start;
+        // for (int start = 1; start <= 7; start++) {
+        //     int currentPreload = start;
 
-            for (int i = 0; i < 12; i++) {
-                char currentNode = AutoConstants.REEF_NODES.charAt(i);
+        //     for (int i = 0; i < 12; i++) {
+        //         char currentNode = AutoConstants.REEF_NODES.charAt(i);
 
-                for (int level = 1; level <= 4; level++) {
-                    String currentLevel = "L" + level;
-                    String commandName = currentPreload + "-" + currentNode + Integer.toString(level);
+        //         for (int level = 1; level <= 4; level++) {
+        //             String currentLevel = "L" + level;
+        //             String commandName = currentPreload + "-" + currentNode + Integer.toString(level);
 
-                    NamedCommands.registerCommand(commandName, pathPlannerStorage.preload(currentPreload, currentNode, currentLevel));
-                }
-            }
-        }
+        //             NamedCommands.registerCommand(commandName, pathPlannerStorage.preload(currentPreload, currentNode, currentLevel));
+        //         }
+        //     }
+        // }
     }
 }

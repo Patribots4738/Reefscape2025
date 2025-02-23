@@ -61,16 +61,26 @@ public class PathPlannerStorage {
 
         return Commands.defer(
             () -> Commands.sequence(
-                Commands.waitSeconds(.5),
-                NamedCommands.getCommand("CoralIntakeStop"),
                 Commands.parallel(
                     AutoBuilder.followPath(pathToReef),
-                    NamedCommands.getCommand("Coral" + reefLevel)
+                    Commands.sequence(
+                        NamedCommands.getCommand("CoralIntakeStop"),
+                        Commands.waitSeconds(0.3),
+                        NamedCommands.getCommand("Coral" + reefLevel)
+                    )
                 ),
                 NamedCommands.getCommand("PlaceCoral"),
                 Commands.parallel(
-                    AutoBuilder.followPath(pathToStation),
-                    NamedCommands.getCommand("CoralIntakeStart")
+                    Commands.sequence(
+                        AutoBuilder.followPath(pathToStation),
+                        NamedCommands.getCommand("WaitForCoral"),
+                        Commands.waitSeconds(0.5),
+                        NamedCommands.getCommand("WaitForCoral")
+                    ),
+                    Commands.sequence(
+                        Commands.waitSeconds(0.2),
+                        NamedCommands.getCommand("CoralIntakeStart")
+                    )
                 )
             ), requirements);
     }
@@ -161,7 +171,8 @@ public class PathPlannerStorage {
             Commands.runOnce(() -> {
                 List<Pose2d> autoPoses = getAutoPoses(getSelectedAutoName());
                 RobotContainer.field2d.getObject("path").setPoses(autoPoses);
-                RobotContainer.autoStartingPose = autoPoses.get(0);
+                if (autoPoses.size() > 0)
+                    RobotContainer.autoStartingPose = autoPoses.get(0);
             }),
             Commands.runOnce(() -> {
                 RobotContainer.field2d.getObject("path").setPoses(new ArrayList<>());

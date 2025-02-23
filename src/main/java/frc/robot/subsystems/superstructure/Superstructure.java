@@ -21,7 +21,6 @@ import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.calc.PoseCalculations;
-import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
 public class Superstructure {
@@ -36,8 +35,8 @@ public class Superstructure {
     
     private final Supplier<Pose2d> robotPoseSupplier;
 
-    private final LoggedTunableNumber wristUnderTransition = new LoggedTunableNumber("Wrist/UnderTransitionPosition", WristConstants.UNDER_TRANSITION_RADIANS);
-    private final LoggedTunableNumber wristReefTransition = new LoggedTunableNumber("Wrist/ReefTransitionPosition", WristConstants.REEF_TRANSITION_RADIANS);
+    // private final LoggedTunableNumber wristUnderTransition = new LoggedTunableNumber("Wrist/UnderTransitionPosition", WristConstants.UNDER_TRANSITION_RADIANS);
+    // private final LoggedTunableNumber wristReefTransition = new LoggedTunableNumber("Wrist/ReefTransitionPosition", WristConstants.REEF_TRANSITION_RADIANS);
 
     public final SuperState STOW;
     public final SuperState INTAKE;
@@ -242,13 +241,13 @@ public class Superstructure {
                     wrist.setPositionCommand(() -> state.wristPosition), 
                     () -> 
                         // Only transition wrist if elevator needs to move in addition to other conditions
-                        (shouldEvadeReef() || state.wristPosition < wristUnderTransition.get()) 
+                        (shouldEvadeReef() || state.wristPosition < WristConstants.UNDER_TRANSITION_RADIANS) 
                         && !elevator.atPosition(state.elevatorPosition)
                 // Stop blocking sequence when wrist is in a safe position
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> state.elevatorPosition),
                 // Below here is only effectual if wrist just transitioned
-                Commands.waitUntil(() -> !shouldEvadeReef()).onlyIf(() -> state.wristPosition < wristReefTransition.get()),
+                Commands.waitUntil(() -> !shouldEvadeReef()).onlyIf(() -> state.wristPosition < WristConstants.REEF_TRANSITION_RADIANS),
                 wrist.setPositionCommand(() -> state.wristPosition)
             )
         );
@@ -295,9 +294,9 @@ public class Superstructure {
 
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
         return Commands.either(
-            wrist.setPositionCommand(wristReefTransition::get),
-            wrist.setPositionCommand(wristUnderTransition::get),  
-            () -> shouldEvadeReef() || targetWristPosition.getAsDouble() > wristUnderTransition.get()
+            wrist.setPositionCommand(WristConstants.REEF_TRANSITION_RADIANS),
+            wrist.setPositionCommand(WristConstants.UNDER_TRANSITION_RADIANS),  
+            () -> shouldEvadeReef() || targetWristPosition.getAsDouble() > WristConstants.UNDER_TRANSITION_RADIANS
         );
     }
 
@@ -335,7 +334,7 @@ public class Superstructure {
     }
 
     public Command coralAutoIntakeStopCommand(){
-        return setSuperState(L3);
+        return setSuperState(STOW);
     }
 
     public SuperState getPlacementState() {
@@ -401,10 +400,8 @@ public class Superstructure {
     public Command coralPlaceCommandAuto() {
         return Commands.sequence(
             outtakeCommand(),
-            Commands.waitSeconds(0.75),
-            stopOuttakeCommand(),
-            Commands.waitUntil(() -> !shouldEvadeReef()),
-            setSuperState(STOW)
+            Commands.waitSeconds(0.6),
+            stopOuttakeCommand()
         );
     }
 
@@ -426,8 +423,8 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
-        return (shouldEvadeReef() && wrist.atPosition(wristReefTransition.get())) 
-            || (!shouldEvadeReef() && (wrist.atPosition(wristUnderTransition.get()) || wrist.getPosition() > wristUnderTransition.get()));
+        return (shouldEvadeReef() && wrist.atPosition(WristConstants.REEF_TRANSITION_RADIANS)) 
+            || (!shouldEvadeReef() && (wrist.atPosition(WristConstants.UNDER_TRANSITION_RADIANS) || wrist.getPosition() > WristConstants.UNDER_TRANSITION_RADIANS));
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")

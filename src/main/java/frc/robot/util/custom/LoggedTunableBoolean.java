@@ -11,7 +11,7 @@ public class LoggedTunableBoolean extends LoggedNetworkBoolean {
     private boolean previousValue;
     
     public LoggedTunableBoolean(String key, boolean defaultValue) {
-        super("Constants/" + key, defaultValue);
+        super(key, defaultValue);
         this.previousValue = defaultValue;
     }
 
@@ -28,7 +28,7 @@ public class LoggedTunableBoolean extends LoggedNetworkBoolean {
     }
 
     public Trigger onChanged(Command command) {
-        return this.onChanged().onTrue(command);
+        return onChanged().onTrue(command);
     }
     
     @Override

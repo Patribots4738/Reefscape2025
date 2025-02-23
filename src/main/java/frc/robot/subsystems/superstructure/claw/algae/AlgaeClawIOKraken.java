@@ -11,7 +11,7 @@ public class AlgaeClawIOKraken implements ClawIO {
     private final Kraken motor;
 
     public AlgaeClawIOKraken() {
-        motor = new Kraken(AlgaeClawConstants.CAN_ID, true, false, ControlPreference.VOLTAGE);
+        motor = new Kraken(AlgaeClawConstants.CAN_ID, true, true, ControlPreference.VOLTAGE);
         configMotor();
     }
 
@@ -29,8 +29,6 @@ public class AlgaeClawIOKraken implements ClawIO {
         inputs.percentOutput = motor.getPercentAsDouble();
         inputs.targetPercentOutput = motor.getTargetPercent();
         inputs.appliedOutputVolts = motor.getVoltageAsDouble();
-        inputs.supplyCurrentAmps = motor.getSupplyCurrentAsDouble();
-        inputs.statorCurrentAmps = motor.getStatorCurrentAsDouble();
         inputs.torqueCurrentAmps = motor.getTorqueCurrentAsDouble();
         inputs.temperatureCelsius = motor.getTemperatureAsDouble();
     }
