@@ -152,9 +152,9 @@ public class Superstructure {
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL),
         L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL),
-        NET_PREP (ElevatorConstants.L3_POSITION_METERS, WristConstants.REEF_TRANSITION_RADIANS),
-        NET (ElevatorConstants.L4_POSITION_METERS, WristConstants.NET_RADIANS),
-        NET_EXIT (ElevatorConstants.L4_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS);
+        NET_PREP (ElevatorConstants.NET_PREP_METERS, WristConstants.REEF_TRANSITION_RADIANS),
+        NET (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
+        NET_EXIT (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS);
     
 
         double elevatorPosition, wristPosition;

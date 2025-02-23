@@ -516,7 +516,7 @@ public final class Constants {
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
-        public static final double X_CHASSIS_OFFSET = 0.5;
+        public static final double NET_X_CHASSIS_OFFSET = 0.5;
 
     }
     public static final class ElevatorConstants {
@@ -566,6 +566,8 @@ public final class Constants {
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
         public static final double L3_POSITION_REMOVE_ALGAE = 0.18;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.0;
+        public static final double NET_PREP_METERS = 0.32;
+        public static final double NET_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double DEADBAND_METERS = 0.02;
 

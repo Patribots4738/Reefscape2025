@@ -1,6 +1,5 @@
 package frc.robot.util.auto;
 
-import java.lang.reflect.Field;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Swerve;
-import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClimbConstants;
@@ -135,8 +133,8 @@ public class Alignment {
         Pose2d desiredPose = new Pose2d(
 
             Robot.isRedAlliance()
-                ? netPose.getX() - AlgaeClawConstants.X_CHASSIS_OFFSET
-                : netPose.getX() + AlgaeClawConstants.X_CHASSIS_OFFSET,
+                ? netPose.getX() - AlgaeClawConstants.NET_X_CHASSIS_OFFSET
+                : netPose.getX() + AlgaeClawConstants.NET_X_CHASSIS_OFFSET,
             swerve.getPose().getY(),
             netPose.getRotation()     
         );
