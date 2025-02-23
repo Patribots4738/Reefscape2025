@@ -471,6 +471,9 @@ public class Swerve extends SubsystemBase {
 
     // Fear.
     private void resetOdometryAuto(Pose2d pose) {
+        if (!FieldConstants.IS_SIMULATION) {
+            return;
+        }
         resetOdometry(pose);
     }
 

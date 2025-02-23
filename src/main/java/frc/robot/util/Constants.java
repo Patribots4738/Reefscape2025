@@ -251,7 +251,7 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "Only Driving 5-E4-D4-C4-B4",
+            "5-E4-D4-C4-B4",
             "Only Driving 3-J4-L4-A4",
             "Only Driving 5-E4-C4-B4",
             "Only Driving 4-H4"
@@ -480,7 +480,7 @@ public final class Constants {
         public static final int CAN_ID = 9;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 80.0;
+        public static final double CURRENT_LIMIT = 35.0;
 
         public static final boolean MOTOR_INVERTED = false;
 
@@ -505,11 +505,11 @@ public final class Constants {
         public static final int CAN_ID = 14;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 80-.0;
+        public static final double CURRENT_LIMIT = 80.0;
 
-        public static final boolean MOTOR_INVERTED = true;
+        public static final boolean MOTOR_INVERTED = false;
 
-        public static final double INTAKE_PERCENT = 0.35;
+        public static final double INTAKE_PERCENT = 0.6;
         public static final double OUTTAKE_PERCENT = -0.35;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
@@ -570,8 +570,9 @@ public final class Constants {
     public static final class WristConstants {
 
         public static final int CAN_ID = 12;
+        public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.0;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.575;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -613,19 +614,18 @@ public final class Constants {
         public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
-        public static final double MAX_ANGLE_RADIANS = 2.65;
+        public static final double MAX_ANGLE_RADIANS = 2.508;
 
-        public static final double RESET_ANGLE_RADIANS = 2.829;
 
         public static final double CLIMB_RADIANS = 1.1;
 
         public static final double DEADBAND_RADIANS = 0.06;
-        public static final double STOW_POSITION_RADIANS = 0.07;
-        public static final double INTAKE_POSITION_RADIANS = -0.2;
-        public static final double L1_POSITION_RADIANS = 2.40720302912;
+        public static final double STOW_POSITION_RADIANS = 0.0;
+        public static final double INTAKE_POSITION_RADIANS = -0.125;
+        public static final double L1_POSITION_RADIANS = 2.407;
         public static final double L2_POSITION_RADIANS = 2.2;
         public static final double L3_POSITION_RADIANS = 2.22;
-        public static final double L4_POSITION_RADIANS = 2.479;
+        public static final double L4_POSITION_RADIANS = 2.407;
         public static final double ALGAE_REMOVAL = 1.57;
 
         public static final double REEF_TRANSITION_RADIANS = 1.779;
@@ -664,7 +664,7 @@ public final class Constants {
         public static final double A_FAST = !FieldConstants.IS_SIMULATION ? 1d : 0d;
         public static final double S_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double V_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double G_FAST = !FieldConstants.IS_SIMULATION ? -50d : 0d;
 
         public static final double VELOCITY = Math.PI;
         public static final double ACCELERATION = 20d;

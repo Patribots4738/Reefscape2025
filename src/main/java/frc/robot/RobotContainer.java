@@ -330,7 +330,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL3", superstructure.setSuperState(superstructure.L3));
         NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommandAuto());
-
+        NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(coralClaw::hasPiece));
         
         for (int i = 0; i < 12; i++) {
             char currentNode = AutoConstants.REEF_NODES.charAt(i);
@@ -343,19 +343,19 @@ public class RobotContainer {
             }
         }
 
-        for (int start = 1; start <= 7; start++) {
-            int currentPreload = start;
+        // for (int start = 1; start <= 7; start++) {
+        //     int currentPreload = start;
 
-            for (int i = 0; i < 12; i++) {
-                char currentNode = AutoConstants.REEF_NODES.charAt(i);
+        //     for (int i = 0; i < 12; i++) {
+        //         char currentNode = AutoConstants.REEF_NODES.charAt(i);
 
-                for (int level = 1; level <= 4; level++) {
-                    String currentLevel = "L" + level;
-                    String commandName = currentPreload + "-" + currentNode + Integer.toString(level);
+        //         for (int level = 1; level <= 4; level++) {
+        //             String currentLevel = "L" + level;
+        //             String commandName = currentPreload + "-" + currentNode + Integer.toString(level);
 
-                    NamedCommands.registerCommand(commandName, pathPlannerStorage.preload(currentPreload, currentNode, currentLevel));
-                }
-            }
-        }
+        //             NamedCommands.registerCommand(commandName, pathPlannerStorage.preload(currentPreload, currentNode, currentLevel));
+        //         }
+        //     }
+        // }
     }
 }

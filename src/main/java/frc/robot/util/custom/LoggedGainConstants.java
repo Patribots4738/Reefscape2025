@@ -41,7 +41,7 @@ public class LoggedGainConstants {
         return this.onChanged().onTrue(command);
     }
 
-    public GainConstants get(){
+    public GainConstants get() {
         return gainConstants.withGains(
             pValue.get(),
             iValue.get(),

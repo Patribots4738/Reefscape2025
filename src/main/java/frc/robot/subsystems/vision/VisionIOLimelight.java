@@ -49,7 +49,7 @@ public class VisionIOLimelight implements VisionIO {
         boolean isLL4 = camera.getIsLL4();
         if (useMT2) {
             if (isLL4) {
-                camera.setIMUMode(3);
+                camera.setIMUMode(2);
             }
         } else {
             if (isLL4) {

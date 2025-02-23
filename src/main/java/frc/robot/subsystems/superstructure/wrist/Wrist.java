@@ -60,7 +60,7 @@ public class Wrist extends SubsystemBase {
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getX(), 
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getY(),
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getZ(),
-            new Rotation3d(0, inputs.positionRads, 0)
+            new Rotation3d(0, inputs.internalPositionRads, 0)
         );
 
     }
@@ -95,7 +95,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public boolean atPosition(double position) {
-        return MathUtil.isNear(position, inputs.positionRads, WristConstants.DEADBAND_RADIANS);
+        return MathUtil.isNear(position, inputs.internalPositionRads, WristConstants.DEADBAND_RADIANS);
     }
 
     public boolean atTargetPosition() {
@@ -103,11 +103,11 @@ public class Wrist extends SubsystemBase {
     }
 
     public double getPosition() {
-        return inputs.positionRads;
+        return inputs.internalPositionRads;
     }
 
     public double getCharacterizationVelocity() {
-        return inputs.velocityRadsPerSec / WristConstants.VELOCITY_CONVERSION_FACTOR;
+        return inputs.internalVelocityRadsPerSec / WristConstants.VELOCITY_CONVERSION_FACTOR;
     }
 
     public void runCharacterization(double input) {

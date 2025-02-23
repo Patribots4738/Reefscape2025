@@ -4,19 +4,10 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 public class ThroughBoreEncoder extends DutyCycleEncoder {
 
-    private double positionOffset = 0.0;
     private double positionConversionFactor = 1.0;
     
-    public ThroughBoreEncoder(int dioPin) {
-        super(dioPin);
-    }
-
-    public void setPositionOffsetRotations(double offset) {
-        positionOffset = offset;
-    }
-
-    public void zeroEncoder() {
-        positionOffset = -get();
+    public ThroughBoreEncoder(int dioPin, double zeroedPositionRotations) {
+        super(dioPin, 1.0, zeroedPositionRotations);
     }
 
     public void setPositionConversionFactor(double newFactor) {
@@ -24,7 +15,7 @@ public class ThroughBoreEncoder extends DutyCycleEncoder {
     }
 
     public double getPosition() {
-        return (get() + positionOffset) * positionConversionFactor;
+        return get() * positionConversionFactor;
     }
 
 }

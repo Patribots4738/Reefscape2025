@@ -28,11 +28,11 @@ public class LoggedSuperState extends SuperState {
         coralPercent = new LoggedTunableNumber(clawKey + "CoralPercent", clawState.coralPercent);
         algaePercent = new LoggedTunableNumber(clawKey + "AlgaePercent", clawState.algaePercent);
 
-        elevatorPosition.onChanged(Commands.runOnce(() -> this.armState.elevatorPosition = elevatorPosition.get()));
-        wristPosition.onChanged(Commands.runOnce(() -> this.armState.wristPosition = wristPosition.get()));
-        climbPosition.onChanged(Commands.runOnce(() -> this.climbState.climbPosition = climbPosition.get()));
-        coralPercent.onChanged(Commands.runOnce(() -> this.clawState.coralPercent = coralPercent.get()));
-        algaePercent.onChanged(Commands.runOnce(() -> this.clawState.algaePercent = algaePercent.get()));
+        elevatorPosition.onChanged(Commands.runOnce(() -> this.armState.elevatorPosition = elevatorPosition.get()).ignoringDisable(true));
+        wristPosition.onChanged(Commands.runOnce(() -> this.armState.wristPosition = wristPosition.get()).ignoringDisable(true));
+        climbPosition.onChanged(Commands.runOnce(() -> this.climbState.climbPosition = climbPosition.get()).ignoringDisable(true));
+        coralPercent.onChanged(Commands.runOnce(() -> this.clawState.coralPercent = coralPercent.get()).ignoringDisable(true));
+        algaePercent.onChanged(Commands.runOnce(() -> this.clawState.algaePercent = algaePercent.get()).ignoringDisable(true));
     }
 
     public LoggedSuperState(String key, ArmState armState, ClimbState climbState, ClawState clawState) {

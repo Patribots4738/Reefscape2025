@@ -11,7 +11,7 @@ public class AlgaeClawIOKraken implements ClawIO {
     private final Kraken motor;
 
     public AlgaeClawIOKraken() {
-        motor = new Kraken(AlgaeClawConstants.CAN_ID, true, false, ControlPreference.VOLTAGE);
+        motor = new Kraken(AlgaeClawConstants.CAN_ID, true, true, ControlPreference.VOLTAGE);
         configMotor();
     }
 
