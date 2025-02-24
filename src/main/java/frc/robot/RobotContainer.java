@@ -254,11 +254,8 @@ public class RobotContainer {
         controller.x()
             .onTrue(superstructure.coralPrepCommand());
 
-        controller.y()
-            .onTrue(superstructure.algaeL3Command(controller::getYButton));
-
         controller.a()
-            .onTrue(superstructure.algaeL2Command(controller::getAButton));
+            .onTrue(superstructure.algaeRemovalCommand(controller::getAButton));
 
         controller.start().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
         controller.back().onTrue(coralClaw.setPercentCommand(CoralClawConstants.INTAKE_PERCENT));

@@ -315,6 +315,14 @@ public class Superstructure {
             setSuperState(L3_ALGAE)
         );
     }
+    
+    public Command algaeRemovalCommand(BooleanSupplier continueIntakingSupplier) {
+        return Commands.either(
+            algaeL3Command(continueIntakingSupplier),
+            algaeL2Command(continueIntakingSupplier),
+            () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
+        );
+    }
 
     public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
