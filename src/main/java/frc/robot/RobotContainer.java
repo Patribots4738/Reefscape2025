@@ -36,6 +36,7 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
@@ -128,17 +129,17 @@ public class RobotContainer {
         ));
 
         // AutoConstants.LOGGED_TELE_XY_GAINS.onChanged(Commands.parallel(
-        //     Commands.run(() -> AutoConstants.TELE_HDC.getXController().setPID(
+        //     Commands.runOnce(() -> AutoConstants.TELE_HDC.getXController().setPID(
         //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
         //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
         //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getD())),
-        //     Commands.run(() -> AutoConstants.TELE_HDC.getYController().setPID(
+        //     Commands.runOnce(() -> AutoConstants.TELE_HDC.getYController().setPID(
         //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
         //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
         //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))).ignoringDisable(true));
 
         // AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(
-        //     Commands.run(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
+        //     Commands.runOnce(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
         //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getP(),
         //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getI(),
         //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
@@ -235,8 +236,6 @@ public class RobotContainer {
 
         controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
 
-        controller.rightBumper().onTrue(superstructure.setSuperState(superstructure.NET));
-
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
         
@@ -255,15 +254,21 @@ public class RobotContainer {
         controller.x()
             .onTrue(superstructure.coralPrepCommand());
 
+        controller.y()
+            .onTrue(superstructure.algaeL3Command(controller::getYButton));
+
+        controller.a()
+            .onTrue(superstructure.algaeL2Command(controller::getAButton));
+
+        controller.start().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
+        controller.back().onTrue(coralClaw.setPercentCommand(CoralClawConstants.INTAKE_PERCENT));
+
     }
 
     private void configureDevBindings(PatriBoxController controller) {
 
         controller.start()
             .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
-
-        controller.y()
-            .onTrue(superstructure.setSuperState(superstructure.NET));
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -280,14 +285,20 @@ public class RobotContainer {
         controller.x()
             .onTrue(superstructure.setSuperState(superstructure.STOW));
 
-        controller.b()
-            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
-
         controller.rightTrigger()
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
 
         controller.leftTrigger()
             .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
+
+        controller.a()
+            .whileTrue(alignment.reefAlignmentCommand2());
+
+        // controller.y()
+        //     .onTrue(superstructure.algaeL3Command(controller::getYButton));
+
+        // controller.a()
+        //     .onTrue(superstructure.algaeL2Command(controller::getAButton));
 
         controller.rightStick()
             .toggleOnTrue(
@@ -296,9 +307,6 @@ public class RobotContainer {
                     alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
                     () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
-
-        controller.a()
-            .whileTrue(alignment.reefAlignmentCommand2());
 
         controller.leftBumper()
             .onTrue(alignment.updateIndexCommand(-1));

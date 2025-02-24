@@ -3,6 +3,7 @@ package frc.robot.util.auto;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
@@ -24,7 +25,9 @@ import frc.robot.util.custom.ReefSide;
 public class Alignment {
 
     private final Swerve swerve;
+    @AutoLogOutput (key = "Subsystems/Swerve/AlignmentMode")
     private AlignmentMode alignmentMode = AlignmentMode.NONE;
+    @AutoLogOutput (key = "Subsystems/Swerve/AlignmentIndex")
     private int alignmentIndex = -1;
 
     public Alignment(Swerve swerve) {
@@ -62,12 +65,33 @@ public class Alignment {
             1
         );
     }
+
+    public double normalizeSpeed(double autoInput) {
+        // Normalize HDC input between -1 and 1
+        autoInput /= swerve.getMaxLinearVelocity();
+
+        // Combine speeds and normalize them between -1 and 1
+        return MathUtil.clamp(
+            autoInput,
+            -1,
+            1
+        );
+    }
     
     public ChassisSpeeds normalizeChassisSpeeds(ChassisSpeeds autoSpeeds, ChassisSpeeds controllerSpeeds) {
         return new ChassisSpeeds(
             MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vyMetersPerSecond, autoSpeeds.vyMetersPerSecond)), 0.01),
             -MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vxMetersPerSecond, autoSpeeds.vxMetersPerSecond)), 0.01),
             MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.005)
+        );
+    }
+
+    public ChassisSpeeds normalizeChassisSpeeds(ChassisSpeeds autoSpeeds) {
+        return new ChassisSpeeds(
+            MathUtil.applyDeadband((normalizeSpeed(autoSpeeds.vyMetersPerSecond)), 0.01),
+            -MathUtil.applyDeadband((normalizeSpeed(autoSpeeds.vxMetersPerSecond)), 0.01),
+            MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.005)
+
         );
     }
 
@@ -107,7 +131,7 @@ public class Alignment {
         Pose2d relativePose = swerve.getPose().relativeTo(reefCenter);
         Rotation2d desiredRotation;
         if (relativePose.getTranslation().getNorm() > 2d) {
-            desiredRotation = new Rotation2d(relativePose.getX(), relativePose.getY());
+            desiredRotation = new Rotation2d(relativePose.getX(), relativePose.getY()).plus(new Rotation2d(Math.PI));
         } else {
             desiredRotation = PoseCalculations.getClosestReefSide(swerve.getPose()).getRotation();
         }
@@ -213,6 +237,7 @@ public class Alignment {
         double maxVelocity = AutoConstants.REEF_ALIGNMENT_MAX_SPEED;
         autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxVelocity, maxVelocity);
         autoSpeeds.vyMetersPerSecond = MathUtil.clamp(autoSpeeds.vyMetersPerSecond, -maxVelocity, maxVelocity);
+        Logger.recordOutput("Subsystems/Swerve/AutoSpeeds", autoSpeeds);
         return autoSpeeds;
     }
 
@@ -282,6 +307,22 @@ public class Alignment {
             });
     }
 
+    public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds) {
+        return 
+            Commands.sequence(
+                Commands.runOnce(() -> this.alignmentMode = mode),
+                    swerve.getDriveCommand(
+                    () -> normalizeChassisSpeeds(autoSpeeds.get()), 
+                    () -> false
+                )
+            ).finallyDo(() -> {
+                resetHDC();
+                swerve.setDesiredPose(new Pose2d());
+                this.alignmentMode = AlignmentMode.NONE;
+                this.alignmentIndex = -1;
+            });
+    }
+
     public Command intakeAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
         return autoAlignmentCommand(
             AlignmentMode.INTAKE, 
@@ -326,8 +367,7 @@ public class Alignment {
         return
             autoAlignmentCommand(
                 AlignmentMode.REEF, 
-                this::getReefAutoSpeeds2, 
-                () -> DriveConstants.ZEROED_SPEEDS);
+                this::getReefAutoSpeeds2);
     }
 
     public AlignmentMode getAlignmentMode() {

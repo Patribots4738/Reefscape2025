@@ -127,7 +127,7 @@ public final class Constants {
 
         public static final double ROBOT_LENGTH_METERS = Units.inchesToMeters(28.5);
         public static final double BUMPER_LENGTH_METERS = Units.inchesToMeters(3.5);
-        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(38);
+        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(35);
 
         // Front positive, left positive
         public static final Translation2d FRONT_LEFT_WHEEL_POSITION = new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2);
@@ -161,6 +161,7 @@ public final class Constants {
         };
 
         public static final ChassisSpeeds ZEROED_SPEEDS = new ChassisSpeeds();
+        public static final ChassisSpeeds MAX_SPEEDS = new ChassisSpeeds(DriveConstants.MAX_SPEED_METERS_PER_SECOND, DriveConstants.MAX_SPEED_METERS_PER_SECOND, DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND);
 
         // Angular offsets of the modules relative to the chassis in radians
         // add 90 degrees to change the X and Y axis
@@ -190,7 +191,7 @@ public final class Constants {
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
-        public static final double REEF_ALIGNMENT_MAX_SPEED = 2.5;
+        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.0;
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
@@ -257,9 +258,7 @@ public final class Constants {
 
         public static final String[] AUTO_NAMES = new String[] {
             "5-E4-D4-C4-B4",
-            "Only Driving 3-J4-L4-A4",
-            "Only Driving 5-E4-C4-B4",
-            "Only Driving 4-H4"
+            "3-J4-K4-L4-A4"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
@@ -486,12 +485,12 @@ public final class Constants {
         public static final int CAN_ID = 9;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 35.0;
+        public static final double CURRENT_LIMIT = 45.0;
 
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double INTAKE_PERCENT = 0.35;
-        public static final double HOLD_PERCENT = 0.0;
+        public static final double HOLD_PERCENT = 0.15;
         public static final double OUTTAKE_PERCENT = -0.75;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
@@ -515,9 +514,9 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double HOLD_PERCENT = 0.0;
-        public static final double INTAKE_PERCENT = 0.6;
-        public static final double OUTTAKE_PERCENT = -0.35;
+        public static final double HOLD_PERCENT = 1.0;
+        public static final double INTAKE_PERCENT = 1.0;
+        public static final double OUTTAKE_PERCENT = -1.0;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
@@ -535,7 +534,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double GEAR_RATIO = 16.0;
-        public static final double MAX_DISPLACEMENT_METERS = 0.580;
+        public static final double MAX_DISPLACEMENT_METERS = 0.588;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
@@ -566,11 +565,11 @@ public final class Constants {
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
         public static final double L1_POSITION_METERS = 0.0;
-        public static final double L2_POSITION_METERS = 0.12;
-        public static final double L3_POSITION_METERS = 0.32;
+        public static final double L2_POSITION_METERS = 0.05;
+        public static final double L3_POSITION_METERS = 0.25;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
-        public static final double L3_POSITION_REMOVE_ALGAE = 0.18;
-        public static final double L2_POSITION_REMOVE_ALGAE = 0.0;
+        public static final double L3_POSITION_REMOVE_ALGAE = 0.16;
+        public static final double L2_POSITION_REMOVE_ALGAE = 0;
         public static final double NET_PREP_METERS = 0.32;
         public static final double NET_METERS = MAX_DISPLACEMENT_METERS;
 
@@ -625,24 +624,24 @@ public final class Constants {
         public static final double CG_OFFSET_ANGLE_RADIANS = 0.187;
 
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
-        public static final double MAX_ANGLE_RADIANS = 2.508;
+        public static final double MAX_ANGLE_RADIANS = 2.6;
 
 
         public static final double CLIMB_RADIANS = 1.1;
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.125;
+        public static final double INTAKE_POSITION_RADIANS = -0.35;
         public static final double L1_POSITION_RADIANS = 2.407;
-        public static final double L2_POSITION_RADIANS = 2.2;
-        public static final double L3_POSITION_RADIANS = 2.22;
-        public static final double L4_POSITION_RADIANS = 2.407;
-        public static final double ALGAE_REMOVAL = 1.57;
+        public static final double L2_POSITION_RADIANS = 2.41;
+        public static final double L3_POSITION_RADIANS = 2.404;
+        public static final double L4_POSITION_RADIANS = 2.404;
+        public static final double ALGAE_REMOVAL = 1.2;
 
         public static final double REEF_TRANSITION_RADIANS = 1.779;
         public static final double UNDER_TRANSITION_RADIANS = 1.7;
 
-        public static final double NET_RADIANS = 2.09;
+        public static final double NET_RADIANS = 1.85;
     }
 
 

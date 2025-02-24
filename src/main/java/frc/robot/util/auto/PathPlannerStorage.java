@@ -63,24 +63,18 @@ public class PathPlannerStorage {
             () -> Commands.sequence(
                 Commands.parallel(
                     AutoBuilder.followPath(pathToReef),
-                    Commands.sequence(
-                        NamedCommands.getCommand("CoralIntakeStop"),
-                        Commands.waitSeconds(0.3),
-                        NamedCommands.getCommand("Coral" + reefLevel)
-                    )
+                    NamedCommands.getCommand("Coral" + reefLevel)
                 ),
                 NamedCommands.getCommand("PlaceCoral"),
                 Commands.parallel(
                     Commands.sequence(
                         AutoBuilder.followPath(pathToStation),
-                        NamedCommands.getCommand("WaitForCoral"),
-                        Commands.waitSeconds(0.5),
                         NamedCommands.getCommand("WaitForCoral")
                     ),
                     Commands.sequence(
                         Commands.waitSeconds(0.2),
                         NamedCommands.getCommand("CoralIntakeStart")
-                    )
+                    )   
                 )
             ), requirements);
     }
