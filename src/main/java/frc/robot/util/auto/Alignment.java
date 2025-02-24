@@ -87,12 +87,12 @@ public class Alignment {
     }
 
     public ChassisSpeeds normalizeChassisSpeeds(ChassisSpeeds autoSpeeds) {
-        return new ChassisSpeeds(
+        ChassisSpeeds normalizedSpeeds = new ChassisSpeeds(
             MathUtil.applyDeadband((normalizeSpeed(autoSpeeds.vyMetersPerSecond)), 0.01),
             -MathUtil.applyDeadband((normalizeSpeed(autoSpeeds.vxMetersPerSecond)), 0.01),
-            MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.005)
-
-        );
+            MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.005));
+        Logger.recordOutput("Subsystems/Swerve/NormalizedSpeeds", normalizedSpeeds);
+        return normalizedSpeeds;
     }
 
     public ChassisSpeeds getAutoSpeeds(Pose2d position) {
@@ -131,7 +131,10 @@ public class Alignment {
         Pose2d relativePose = swerve.getPose().relativeTo(reefCenter);
         Rotation2d desiredRotation;
         if (relativePose.getTranslation().getNorm() > 2d) {
-            desiredRotation = new Rotation2d(relativePose.getX(), relativePose.getY()).plus(new Rotation2d(Math.PI));
+            desiredRotation = new Rotation2d(relativePose.getX(), relativePose.getY());
+            if (Robot.isRedAlliance()) {
+                desiredRotation = desiredRotation.plus(Rotation2d.fromRadians(Math.PI));
+            }
         } else {
             desiredRotation = PoseCalculations.getClosestReefSide(swerve.getPose()).getRotation();
         }
@@ -309,10 +312,10 @@ public class Alignment {
 
     public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds) {
         return 
-            Commands.sequence(
+            Commands.parallel(
                 Commands.runOnce(() -> this.alignmentMode = mode),
-                    swerve.getDriveCommand(
-                    () -> normalizeChassisSpeeds(autoSpeeds.get()), 
+                swerve.getDriveCommand(
+                    () -> normalizeChassisSpeeds(autoSpeeds.get()),
                     () -> false
                 )
             ).finallyDo(() -> {

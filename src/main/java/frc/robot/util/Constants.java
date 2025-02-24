@@ -191,7 +191,7 @@ public final class Constants {
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
-        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.0;
+        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.5;
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
