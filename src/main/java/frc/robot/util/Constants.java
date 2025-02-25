@@ -201,9 +201,9 @@ public final class Constants {
         );
 
         public static final GainConstants TELE_XY_GAINS = new GainConstants(
-            4.0, 
+            6.0, 
             0, 
-            0.0
+            0.09
         );
 
         // public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
@@ -215,7 +215,7 @@ public final class Constants {
         );
 
         public static final GainConstants TELE_THETA_GAINS = new GainConstants(
-            5.5, 
+            3.725, 
             0, 
             0
         );

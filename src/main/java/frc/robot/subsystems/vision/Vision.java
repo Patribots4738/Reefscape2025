@@ -15,6 +15,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
@@ -68,7 +69,7 @@ public class Vision extends SubsystemBase {
         for (int i = 0; i < cameras.length; i++) {
             VisionIO camera = cameras[i];
 
-            if (Robot.gameMode == GameMode.DISABLED) {
+            if (Robot.gameMode == GameMode.DISABLED && !DriverStation.isFMSAttached()) {
                 // If robot is disabled, only process some frames
                 // This should minimize overheating issues with the LL4
                 camera.setThrottle(CameraConstants.DISABLED_THROTTLE);
@@ -168,7 +169,8 @@ public class Vision extends SubsystemBase {
             || Double.isNaN(inputs[cameraIndex].robotPose.getX()) 
             || Double.isNaN(inputs[cameraIndex].robotPose.getY()) 
             || Double.isNaN(inputs[cameraIndex].robotPose.getRotation().getRadians())
-            || !inputs[cameraIndex].robotPose.equals(Pose2d.kZero))
+            || !inputs[cameraIndex].robotPose.equals(Pose2d.kZero)
+            || (shouldUseMT1() && inputs[cameraIndex].tagIds.length == 1 && inputs[cameraIndex].averageTA < 0.14))
         {
             return false;
         }
