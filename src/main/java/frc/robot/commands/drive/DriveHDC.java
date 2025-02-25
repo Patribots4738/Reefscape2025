@@ -24,7 +24,7 @@ public class DriveHDC extends Command {
     private final DoubleSupplier rotationSupplier;
     private final BooleanSupplier shouldMirror;
 
-    private Pose2d desiredPose = new Pose2d();
+    private Pose2d desiredPose = Pose2d.kZero;
 
     public DriveHDC (
             Swerve swerve,

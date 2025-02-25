@@ -311,7 +311,7 @@ public class Alignment {
                 )
             ).finallyDo(() -> {
                 resetHDC();
-                swerve.setDesiredPose(new Pose2d());
+                swerve.setDesiredPose(Pose2d.kZero);
                 this.alignmentMode = AlignmentMode.NONE;
                 this.alignmentIndex = -1;
             });
@@ -327,7 +327,7 @@ public class Alignment {
                 )
             ).finallyDo(() -> {
                 resetHDC();
-                swerve.setDesiredPose(new Pose2d());
+                swerve.setDesiredPose(Pose2d.kZero);
                 this.alignmentMode = AlignmentMode.NONE;
                 this.alignmentIndex = -1;
             });
