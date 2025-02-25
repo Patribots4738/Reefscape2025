@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -167,9 +168,7 @@ public class Vision extends SubsystemBase {
             || Double.isNaN(inputs[cameraIndex].robotPose.getX()) 
             || Double.isNaN(inputs[cameraIndex].robotPose.getY()) 
             || Double.isNaN(inputs[cameraIndex].robotPose.getRotation().getRadians())
-            || inputs[cameraIndex].robotPose.getX() == 0
-            || inputs[cameraIndex].robotPose.getY() == 0
-            || inputs[cameraIndex].robotPose.getRotation().getRadians() == 0)
+            || !inputs[cameraIndex].robotPose.equals(Pose2d.kZero))
         {
             return false;
         }

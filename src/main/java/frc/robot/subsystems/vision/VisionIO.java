@@ -9,7 +9,7 @@ public interface VisionIO {
     @AutoLog
     class VisionIOInputs {
 
-        public Pose2d robotPose = new Pose2d();
+        public Pose2d robotPose = Pose2d.kZero;
         public boolean robotPoseValid = false;
         public double timestampSeconds = 0.0;
         public double averageTA = 0.0;

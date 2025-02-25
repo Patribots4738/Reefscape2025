@@ -91,7 +91,7 @@ public class Limelight {
     }
 
     public Pose2d getRobotPose() {
-        return latestPoseEstimate != null ? latestPoseEstimate.pose : new Pose2d();
+        return latestPoseEstimate != null ? latestPoseEstimate.pose : Pose2d.kZero;
     }
 
     public double getTimestamp() {

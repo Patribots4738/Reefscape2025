@@ -82,7 +82,7 @@ public class RobotContainer {
     @AutoLogOutput (key = "Draggables/FreshCode")
     public static boolean freshCode = true;
     @AutoLogOutput (key = "Draggables/RobotPose2d")
-    public static Pose2d robotPose2d = new Pose2d();
+    public static Pose2d robotPose2d = Pose2d.kZero;
     @AutoLogOutput (key = "Draggables/SwerveMeasuredStates")
     public static SwerveModuleState[] swerveMeasuredStates;
     @AutoLogOutput (key = "Draggables/SwerveDesiredStates")
@@ -90,7 +90,7 @@ public class RobotContainer {
     @AutoLogOutput (key = "Draggables/GameModeStart")
     public static double gameModeStart = 0;
     @AutoLogOutput (key = "Draggables/AutoStartingPose")
-    public static Pose2d autoStartingPose = new Pose2d();
+    public static Pose2d autoStartingPose = Pose2d.kZero;
     
     public RobotContainer() {
 

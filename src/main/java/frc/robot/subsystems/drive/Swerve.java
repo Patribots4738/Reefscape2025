@@ -130,7 +130,7 @@ public class Swerve extends SubsystemBase {
             DriveConstants.DRIVE_KINEMATICS,
             gyro.getYawRotation2D(),
             getModulePositions(),
-            new Pose2d(),
+            Pose2d.kZero,
             // State measurements
             /*
              * See https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-observers.html#process-and-measurement-noise-covariance-matrices
@@ -218,7 +218,7 @@ public class Swerve extends SubsystemBase {
         logData();
     }
 
-    Pose2d currentPose = new Pose2d();
+    Pose2d currentPose = Pose2d.kZero;
 
     public void logData() {
 
@@ -383,7 +383,7 @@ public class Swerve extends SubsystemBase {
     }
     
     @AutoLogOutput (key = "Subsystems/Swerve/DesiredHDCPose")
-    Pose2d desiredHDCPose = new Pose2d();
+    Pose2d desiredHDCPose = Pose2d.kZero;
     public void setDesiredPose(Pose2d pose) {
         desiredHDCPose = pose;
     }

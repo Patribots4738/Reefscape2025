@@ -191,8 +191,8 @@ public final class Constants {
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
-        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.5;
-        public static final double INTAKE_ALIGNMENT_MAX_SPEED = 1.5;
+        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.0;
+        public static final double INTAKE_ALIGNMENT_MAX_SPEED = 1.0;
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
@@ -491,7 +491,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double INTAKE_PERCENT = 0.35;
-        public static final double HOLD_PERCENT = 0.15;
+        public static final double HOLD_PERCENT = 0.2;
         public static final double OUTTAKE_PERCENT = -0.75;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
@@ -863,8 +863,8 @@ public final class Constants {
             return PROCESSOR_POSITIONS.get(index);
         }
 
-        public static final Pose2d CORAL_STATION_1 = new Pose2d(1.669, 7.372, Rotation2d.fromDegrees(125));
-        public static final Pose2d CORAL_STATION_2 = new Pose2d(1.668, 0.659, Rotation2d.fromDegrees(-125));
+        public static final Pose2d CORAL_STATION_1 = new Pose2d(1.653, 7.364, Rotation2d.fromDegrees(125));
+        public static final Pose2d CORAL_STATION_2 = new Pose2d(1.653, 0.699, Rotation2d.fromDegrees(-125));
 
         public static final double CORAL_STATION_HEIGHT = 0.95;
 
