@@ -229,6 +229,20 @@ public class RobotContainer {
 
         controller.rightTrigger()
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
+
+        controller.leftTrigger()
+            .onTrue(superstructure.tossAlgaeCommand(controller::getLeftTrigger));
+
+        controller.povUp()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
+
+        controller.povDown()
+            .onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
+
+        controller.povRight().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
+        
+        controller.povLeft().onTrue(coralClaw.setPercentCommand(CoralClawConstants.INTAKE_PERCENT));
+    
     
     }
 

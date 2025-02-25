@@ -191,8 +191,8 @@ public final class Constants {
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
-        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.8;
-        public static final double INTAKE_ALIGNMENT_MAX_SPEED = 1.8;
+        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.5;
+        public static final double INTAKE_ALIGNMENT_MAX_SPEED = 1.5;
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
@@ -567,9 +567,9 @@ public final class Constants {
         public static final double INTAKE_POSITION_METERS = 0.0;
         public static final double L1_POSITION_METERS = 0.0;
         public static final double L2_POSITION_METERS = 0.05;
-        public static final double L3_POSITION_METERS = 0.25;
+        public static final double L3_POSITION_METERS = 0.27;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
-        public static final double L3_POSITION_REMOVE_ALGAE = 0.16;
+        public static final double L3_POSITION_REMOVE_ALGAE = 0.13;
         public static final double L2_POSITION_REMOVE_ALGAE = 0;
         public static final double NET_PREP_METERS = 0.32;
         public static final double NET_METERS = MAX_DISPLACEMENT_METERS;
@@ -577,6 +577,7 @@ public final class Constants {
         public static final double DEADBAND_METERS = 0.02;
 
     }
+
 
     public static final class WristConstants {
 
@@ -635,12 +636,14 @@ public final class Constants {
         public static final double INTAKE_POSITION_RADIANS = -0.35;
         public static final double L1_POSITION_RADIANS = 2.407;
         public static final double L2_POSITION_RADIANS = 2.41;
-        public static final double L3_POSITION_RADIANS = 2.404;
+        public static final double L3_POSITION_RADIANS = 2.41;
         public static final double L4_POSITION_RADIANS = 2.404;
-        public static final double ALGAE_REMOVAL = 1.2;
+        public static final double L2_ALGAE_REMOVAL = 0.9;
+        public static final double L3_ALGAE_REMOVAL = 1.2;
+        public static final double ALGAE_TOSS = 0;
 
-        public static final double REEF_TRANSITION_RADIANS = 1.779;
-        public static final double UNDER_TRANSITION_RADIANS = 1.7;
+        public static final double TRANSITION_RADIANS = 1.57;
+        public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
         public static final double NET_RADIANS = 1.85;
     }
@@ -661,7 +664,7 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
-        public static final double MAX_ANGLE_RADIANS = 2.698;
+        public static final double MAX_ANGLE_RADIANS = 2.5;
 
         public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 25d : 1000d; // Chef Cushman
         public static final double I_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -707,8 +710,8 @@ public final class Constants {
         public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 2.6;
-        public static final double FINAL_POSITION_RADIANS = 0.920;
+        public static final double READY_POSITION_RADIANS = 5;
+        public static final double FINAL_POSITION_RADIANS = 0.7;
 
         public static final double Y_CHASSIS_OFFSET = 0.0508;
 

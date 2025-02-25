@@ -73,6 +73,8 @@ public class Superstructure {
     public final SuperState NET_PLACE;
     public final SuperState NET_EXIT;
 
+    public final SuperState ALGAE_TOSS;
+
     private SuperState targetState;
     private ArmState targetArmState;
     private ClimbState targetClimbState;
@@ -132,16 +134,18 @@ public class Superstructure {
         NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, this::armAtTargetPosition, () -> false);
         NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.STOP);
 
+        ALGAE_TOSS = new SuperState("ALGAE_TOSS", ArmState.ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
+
     }
 
     public enum ArmState {
 
         STOW (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS),
         INTAKE (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS),
-        L1_PREP (ElevatorConstants.L1_POSITION_METERS, WristConstants.REEF_TRANSITION_RADIANS),
-        L2_PREP (ElevatorConstants.L2_POSITION_METERS, WristConstants.REEF_TRANSITION_RADIANS),
-        L3_PREP (ElevatorConstants.L3_POSITION_METERS, WristConstants.REEF_TRANSITION_RADIANS),
-        L4_PREP (ElevatorConstants.L3_POSITION_METERS, WristConstants.REEF_TRANSITION_RADIANS),
+        L1_PREP (ElevatorConstants.L1_POSITION_METERS, WristConstants.TRANSITION_RADIANS),
+        L2_PREP (ElevatorConstants.L2_POSITION_METERS, WristConstants.TRANSITION_RADIANS),
+        L3_PREP (ElevatorConstants.L3_POSITION_METERS, WristConstants.TRANSITION_RADIANS),
+        L4_PREP (ElevatorConstants.L3_POSITION_METERS, WristConstants.TRANSITION_RADIANS),
         L1 (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS),
         L2 (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS),
         L3 (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
@@ -150,11 +154,12 @@ public class Superstructure {
         L3_EXIT (ElevatorConstants.L3_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
         L4_EXIT (ElevatorConstants.L4_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
-        L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL),
-        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.ALGAE_REMOVAL),
-        NET_PREP (ElevatorConstants.NET_METERS, WristConstants.ALGAE_REMOVAL),
+        L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L2_ALGAE_REMOVAL),
+        L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_ALGAE_REMOVAL),
+        NET_PREP (ElevatorConstants.NET_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
-        NET_EXIT (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS);
+        NET_EXIT (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
+        ALGAE_TOSS (ElevatorConstants.STOW_POSITION_METERS, WristConstants.ALGAE_TOSS);
     
 
         double elevatorPosition, wristPosition;
@@ -241,13 +246,11 @@ public class Superstructure {
                     wrist.setPositionCommand(() -> state.wristPosition), 
                     () -> 
                         // Only transition wrist if elevator needs to move in addition to other conditions
-                        (shouldEvadeReef() || state.wristPosition < WristConstants.UNDER_TRANSITION_RADIANS) 
-                        && !elevator.atPosition(state.elevatorPosition)
+                        state.wristPosition < WristConstants.UNDER_THRESHOLD_RADIANS && !elevator.atPosition(state.elevatorPosition)
                 // Stop blocking sequence when wrist is in a safe position
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> state.elevatorPosition),
                 // Below here is only effectual if wrist just transitioned
-                Commands.waitUntil(() -> !shouldEvadeReef()).onlyIf(() -> state.wristPosition < WristConstants.REEF_TRANSITION_RADIANS),
                 wrist.setPositionCommand(() -> state.wristPosition)
             )
         );
@@ -288,11 +291,7 @@ public class Superstructure {
     }
 
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
-        return Commands.either(
-            wrist.setPositionCommand(WristConstants.REEF_TRANSITION_RADIANS),
-            wrist.setPositionCommand(WristConstants.UNDER_TRANSITION_RADIANS),  
-            () -> shouldEvadeReef() || targetWristPosition.getAsDouble() > WristConstants.UNDER_TRANSITION_RADIANS
-        );
+        return wrist.setPositionCommand(WristConstants.TRANSITION_RADIANS);
     }
 
     public Command algaeL2Command(BooleanSupplier continueIntakingSupplier)  {
@@ -323,7 +322,7 @@ public class Superstructure {
         return 
             Commands.sequence(
                 setSuperState(INTAKE),
-                Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
+                Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean() && coralClaw.hasPiece()),
                 setSuperState(STOW)
             );
     }
@@ -346,7 +345,6 @@ public class Superstructure {
             case L2, L2_PREP, L2_EXIT -> L2_PLACE;
             case L3, L3_PREP, L3_EXIT -> L3_PLACE;
             case L4, L4_PREP, L4_EXIT -> L4_PLACE;
-            case NET, NET_PREP -> NET_PLACE;
             default -> L1_PLACE;
         };
 
@@ -374,8 +372,7 @@ public class Superstructure {
             case L2 -> L2_EXIT;
             case L3 -> L3_EXIT;
             case L4 -> L4_EXIT;
-            case NET -> NET_EXIT;
-            default -> L1;
+            default -> STOW;
         };
 
         return exitState;
@@ -394,9 +391,17 @@ public class Superstructure {
     public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
         return Commands.sequence(
             outtakeCommand(),
-            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean()),
+            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean() && !coralClaw.hasPiece()),
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
+            setSuperState(STOW)
+        );
+    }
+
+    public Command tossAlgaeCommand(BooleanSupplier continueOuttakingSupplier) {
+        return Commands.sequence(
+            setSuperState(ALGAE_TOSS),
+            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean() && !algaeClaw.hasPiece()),
             setSuperState(STOW)
         );
     }
@@ -427,8 +432,7 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
-        return (shouldEvadeReef() && wrist.atPosition(WristConstants.REEF_TRANSITION_RADIANS)) 
-            || (!shouldEvadeReef() && (wrist.atPosition(WristConstants.UNDER_TRANSITION_RADIANS) || wrist.getPosition() > WristConstants.UNDER_TRANSITION_RADIANS));
+        return (wrist.atPosition(WristConstants.UNDER_THRESHOLD_RADIANS) || wrist.getPosition() > WristConstants.UNDER_THRESHOLD_RADIANS);
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")
