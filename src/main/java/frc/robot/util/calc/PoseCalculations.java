@@ -44,6 +44,10 @@ public class PoseCalculations {
         return isHighAlgaeIndex(FieldConstants.GET_REEF_FACE_POSITIONS().indexOf(side));
     }
 
+    public static boolean isHighAlgaeReefSide(Pose2d pos) {
+        return isHighAlgaeReefSide(getClosestReefSide(pos));
+    }
+
     public static Pose2d getClosestCage(Pose2d pos) {
         return pos.nearest(FieldConstants.GET_CAGE_POSITIONS());
     }
