@@ -213,7 +213,7 @@ public class RobotContainer {
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
         controller.a()
-            .whileTrue(alignment.reefAlignmentCommand2());
+            .whileTrue(alignment.reefFullAlignmentCommand());
 
         controller.x()
             .whileTrue(alignment.intakeAlignmentCommand());
@@ -240,7 +240,7 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperState(superstructure.CLIMB_FINAL));
 
         controller.povRight().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
-        
+
         controller.povLeft().onTrue(coralClaw.setPercentCommand(CoralClawConstants.INTAKE_PERCENT));
     
     
@@ -303,7 +303,7 @@ public class RobotContainer {
             .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 
         controller.a()
-            .whileTrue(alignment.reefAlignmentCommand2());
+            .whileTrue(alignment.reefAlignmentCommand());
 
         // controller.y()
         //     .onTrue(superstructure.algaeL3Command(controller::getYButton));
