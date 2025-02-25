@@ -211,7 +211,7 @@ public class Superstructure {
             Commands.sequence(
                 // Run these commands in parallel, cancel all when first command argument ends
                 Commands.deadline(
-                    setArmState(nextState.armState),
+                    fixArmAndClimb(nextState.armState, nextState.climbState),
                     // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
                     Commands.sequence(
                         Commands.waitUntil(() -> nextState.coralInterruptSupplier.getAsBoolean() || nextState.clawState.coralPercent == 0),
@@ -272,16 +272,11 @@ public class Superstructure {
 
     public Command fixArmAndClimb(ArmState armState, ClimbState climbState) {
         return Commands.either(
-            // Climb needs to move to achieve goal state
-            Commands.either(
-                // Arm goal is unsafe for climb, give way to climb then move arm back in
-                Commands.sequence(
-                    avoidClimb(ArmState.CLIMB, climbState),
-                    setArmState(armState)
-                ), 
-                // Arm goal is safe for climb, move to arm goal then set climb state
-                avoidClimb(armState, climbState), 
-                () -> armState.wristPosition < ArmState.CLIMB.wristPosition
+            // Climb needs to move to achieve goal state()
+            Commands.sequence(
+                setArmState(ArmState.CLIMB),
+                setClimbState(climbState),
+                setArmState(armState)
             ), 
             // Climb doesn't need to move, set goal arm state and update climb control loop JIC
             Commands.parallel(
@@ -313,6 +308,14 @@ public class Superstructure {
             setSuperState(L3_ALGAE_IN),
             Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
             setSuperState(L3_ALGAE)
+        );
+    }
+    
+    public Command algaeRemovalCommand(BooleanSupplier continueIntakingSupplier) {
+        return Commands.either(
+            algaeL3Command(continueIntakingSupplier),
+            algaeL2Command(continueIntakingSupplier),
+            () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
         );
     }
 

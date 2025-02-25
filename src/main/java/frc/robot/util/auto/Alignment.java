@@ -36,6 +36,7 @@ public class Alignment {
 
     public enum AlignmentMode {
         INTAKE,
+        INTAKE_SOFT,
         CAGE,
         REEF,
         REEF_SOFT,
@@ -121,7 +122,7 @@ public class Alignment {
             );
     }
 
-    public ChassisSpeeds getIntakeAutoSpeeds() {
+    public ChassisSpeeds getIntakeRotationalAutoSpeeds() {
         Rotation2d intakeRotation = PoseCalculations.getClosestCoralStation(swerve.getPose()).getRotation();
         return getAutoRotationalSpeeds(intakeRotation);
     }
@@ -139,6 +140,15 @@ public class Alignment {
             desiredRotation = PoseCalculations.getClosestReefSide(swerve.getPose()).getRotation();
         }
         return getAutoRotationalSpeeds(desiredRotation);
+    }
+
+    public ChassisSpeeds getIntakeAutoSpeeds() {
+        Pose2d intakeStation = PoseCalculations.getClosestCoralStation(swerve.getPose());
+        ChassisSpeeds autoSpeeds = getAutoSpeeds(intakeStation);
+        double maxSpeed = AutoConstants.INTAKE_ALIGNMENT_MAX_SPEED;
+        autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxSpeed, maxSpeed);
+        autoSpeeds.vyMetersPerSecond = MathUtil.clamp(autoSpeeds.vyMetersPerSecond, -maxSpeed, maxSpeed);
+        return autoSpeeds;
     }
     
     public ChassisSpeeds getCageAutoSpeeds() {
@@ -215,20 +225,14 @@ public class Alignment {
 
     public ChassisSpeeds getReefAutoSpeeds2() {
         Pose2d currentPose = swerve.getPose();
-        ReefSide reefSide = PoseCalculations.getClosestReefSide(swerve.getPose());
-        Pose2d left = reefSide.getLeft();
-        Pose2d right = reefSide.getRight();
+        ReefSide reefSide = PoseCalculations.getClosestReefSide(currentPose);
         Pose2d node;
         if (alignmentIndex == -1) {
-            // First alignment, find closest reef node
-            double leftDist = currentPose.getTranslation().getDistance(left.getTranslation());
-            double rightDist = currentPose.getTranslation().getDistance(right.getTranslation());
-            boolean leftCloser = leftDist < rightDist;
-            node = leftCloser ? left : right;
-            alignmentIndex = leftCloser ? 0 : 1;
+            // First alignment, go to center
+            node = reefSide.getCenter();
         } else {
             // Post-alignment, use current alignmentIndex
-            node = alignmentIndex == 0 ? left : right;
+            node = alignmentIndex == 0 ? reefSide.getLeft() : reefSide.getRight();
         }
         Logger.recordOutput("Subsystems/Swerve/TargetNode", node);
         // Get desired position from face angle
@@ -276,6 +280,9 @@ public class Alignment {
     }
 
     public void updateIndex(int increment) {
+        if (alignmentIndex == -1) {
+            alignmentIndex = 0;
+        }
         alignmentIndex += increment;
         // Clamp index based on number of alignment poses in the current mode
         alignmentIndex = 
@@ -326,10 +333,10 @@ public class Alignment {
             });
     }
 
-    public Command intakeAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
+    public Command intakeRotationalAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
         return autoAlignmentCommand(
-            AlignmentMode.INTAKE, 
-            this::getIntakeAutoSpeeds, 
+            AlignmentMode.INTAKE_SOFT, 
+            this::getIntakeRotationalAutoSpeeds, 
             () -> getControllerSpeeds(driverX.getAsDouble(), driverY.getAsDouble())
         );
     }
@@ -371,6 +378,13 @@ public class Alignment {
             autoAlignmentCommand(
                 AlignmentMode.REEF, 
                 this::getReefAutoSpeeds2);
+    }
+
+    public Command intakeAlignmentCommand() {
+        return
+            autoAlignmentCommand(
+                AlignmentMode.INTAKE, 
+                this::getIntakeAutoSpeeds);
     }
 
     public AlignmentMode getAlignmentMode() {
