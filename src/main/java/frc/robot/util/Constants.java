@@ -191,7 +191,8 @@ public final class Constants {
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
-        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.5;
+        public static final double REEF_ALIGNMENT_MAX_SPEED = 1.8;
+        public static final double INTAKE_ALIGNMENT_MAX_SPEED = 1.8;
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
@@ -729,14 +730,14 @@ public final class Constants {
         public static final double CONTROLLER_CORNER_SLOPE_1 = 1 / 0.7;
         public static final double CONTROLLER_CORNER_SLOPE_2 = 0.7;
 
-        public static final double DRIVER_ALIGN_CANCEL_DEADBAND = 0.2;
+        public static final double DRIVER_ALIGN_CANCEL_DEADBAND = 0.15;
 
         public enum DriverMode {
             DOUBLE,
             DEV
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 
@@ -859,8 +860,8 @@ public final class Constants {
             return PROCESSOR_POSITIONS.get(index);
         }
 
-        public static final Pose2d CORAL_STATION_1 = new Pose2d(0.82, 7.39, Rotation2d.fromDegrees(125));
-        public static final Pose2d CORAL_STATION_2 = new Pose2d(0.82, 0.65, Rotation2d.fromDegrees(-125));
+        public static final Pose2d CORAL_STATION_1 = new Pose2d(1.669, 7.372, Rotation2d.fromDegrees(125));
+        public static final Pose2d CORAL_STATION_2 = new Pose2d(1.668, 0.659, Rotation2d.fromDegrees(-125));
 
         public static final double CORAL_STATION_HEIGHT = 0.95;
 

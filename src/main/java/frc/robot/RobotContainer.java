@@ -198,7 +198,7 @@ public class RobotContainer {
 
     private void configureMiscTriggers() {
         new Trigger(() -> alignment.getAlignmentMode() != AlignmentMode.NONE)
-            .whileTrue(Commands.run(() -> driver.setRumble(0.2))
+            .whileTrue(Commands.run(() -> driver.setRumble(0.1))
                 .finallyDo(() -> driver.setRumble(0)));
     }
 
@@ -208,15 +208,15 @@ public class RobotContainer {
             .toggleOnTrue(
                 new ActiveConditionalCommand(
                     alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
-                    alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    alignment.intakeRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
                     () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
         controller.a()
             .whileTrue(alignment.reefAlignmentCommand2());
 
-        controller.b()
-            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
+        controller.x()
+            .whileTrue(alignment.intakeAlignmentCommand());
 
         controller.y()
             .whileTrue(alignment.cageAlignmentCommand(controller::getLeftY));
@@ -304,7 +304,7 @@ public class RobotContainer {
             .toggleOnTrue(
                 new ActiveConditionalCommand(
                     alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
-                    alignment.intakeAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    alignment.intakeRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
                     () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
