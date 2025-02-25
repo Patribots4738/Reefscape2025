@@ -640,7 +640,8 @@ public final class Constants {
         public static final double L4_POSITION_RADIANS = 2.404;
         public static final double L2_ALGAE_REMOVAL = 0.9;
         public static final double L3_ALGAE_REMOVAL = 1.2;
-        public static final double ALGAE_TOSS = 0;
+        public static final double BACK_ALGAE_TOSS = 0;
+        public static final double FRONT_ALGAE_TOSS = 2.407;
 
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;

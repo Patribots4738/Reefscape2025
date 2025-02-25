@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Robot;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -73,7 +74,8 @@ public class Superstructure {
     public final SuperState NET_PLACE;
     public final SuperState NET_EXIT;
 
-    public final SuperState ALGAE_TOSS;
+    public final SuperState BACK_ALGAE_TOSS;
+    public final SuperState FRONT_ALGAE_TOSS;
 
     private SuperState targetState;
     private ArmState targetArmState;
@@ -134,7 +136,8 @@ public class Superstructure {
         NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, this::armAtTargetPosition, () -> false);
         NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.STOP);
 
-        ALGAE_TOSS = new SuperState("ALGAE_TOSS", ArmState.ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
+        BACK_ALGAE_TOSS = new SuperState("BACK_ALGAE_TOSS", ArmState.BACK_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
+        FRONT_ALGAE_TOSS = new SuperState("FRONT_ALGAE_TOSS", ArmState.FRONT_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
 
     }
 
@@ -159,8 +162,8 @@ public class Superstructure {
         NET_PREP (ElevatorConstants.NET_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
         NET_EXIT (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
-        ALGAE_TOSS (ElevatorConstants.STOW_POSITION_METERS, WristConstants.ALGAE_TOSS);
-    
+        BACK_ALGAE_TOSS (ElevatorConstants.STOW_POSITION_METERS, WristConstants.BACK_ALGAE_TOSS),
+        FRONT_ALGAE_TOSS (ElevatorConstants.STOW_POSITION_METERS, WristConstants.FRONT_ALGAE_TOSS);
 
         double elevatorPosition, wristPosition;
 
@@ -400,7 +403,11 @@ public class Superstructure {
 
     public Command tossAlgaeCommand(BooleanSupplier continueOuttakingSupplier) {
         return Commands.sequence(
-            setSuperState(ALGAE_TOSS),
+            Commands.either(
+                setSuperState(BACK_ALGAE_TOSS), 
+                setSuperState(FRONT_ALGAE_TOSS), 
+                () -> Robot.isRedAlliance() ^ (robotPoseSupplier.get().getRotation().getRadians() > Math.PI / 2d || robotPoseSupplier.get().getRotation().getRadians() < -Math.PI / 2d)
+            ),
             Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean() && !algaeClaw.hasPiece()),
             setSuperState(STOW)
         );
