@@ -196,7 +196,7 @@ public class RobotContainer {
     }
 
     private void configureMiscTriggers() {
-        new Trigger(() -> alignment.getAlignmentMode() != AlignmentMode.NONE)
+        new Trigger(() -> alignment.getAlignmentMode() != AlignmentMode.NONE && swerve.atHDCPose())
             .whileTrue(Commands.run(() -> driver.setRumble(0.1))
                 .finallyDo(() -> driver.setRumble(0)));
     }
