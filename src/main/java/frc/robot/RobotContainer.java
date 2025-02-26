@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
-
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -215,6 +214,9 @@ public class RobotContainer {
         controller.a()
             .whileTrue(alignment.reefFullAlignmentCommand());
 
+        controller.b()
+            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
+
         controller.x()
             .whileTrue(alignment.intakeAlignmentCommand());
 
@@ -270,6 +272,9 @@ public class RobotContainer {
 
         controller.a()
             .onTrue(superstructure.algaeRemovalCommand(controller::getAButton));
+
+        controller.y()
+            .onTrue(superstructure.setSuperState(superstructure.NET_PREP));
 
         controller.start().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
         controller.back().onTrue(coralClaw.setPercentCommand(CoralClawConstants.INTAKE_PERCENT));

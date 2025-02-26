@@ -70,7 +70,6 @@ public class Superstructure {
     public final SuperState CLIMB_FINAL;
 
     public final SuperState NET_PREP;
-    public final SuperState NET;
     public final SuperState NET_PLACE;
     public final SuperState NET_EXIT;
 
@@ -131,10 +130,9 @@ public class Superstructure {
         CLIMB_READY = new SuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.STOP);
         CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.STOP);
 
-        NET_PREP = new SuperState("NET_PREP", ArmState.NET_PREP, ClimbState.STOW, ClawState.ALGAE_HOLD, () -> false, () -> true);
-        NET = new SuperState("NET", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_HOLD, () -> false, () -> true);
-        NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, this::armAtTargetPosition, () -> false);
-        NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.STOP);
+        NET_PREP = new SuperState("NET_PREP", ArmState.NET_PREP, ClimbState.STOW, ClawState.BOTH_HOLD, () -> true, () -> true);
+        NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.CORAL_HOLD_ALGAE_OUT, () -> false, elevator::atTargetPosition);
+        NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.CORAL_HOLD, () -> true, () -> true);
 
         BACK_ALGAE_TOSS = new SuperState("BACK_ALGAE_TOSS", ArmState.BACK_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
         FRONT_ALGAE_TOSS = new SuperState("FRONT_ALGAE_TOSS", ArmState.FRONT_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
@@ -200,7 +198,9 @@ public class Superstructure {
         ALGAE_IN (0, AlgaeClawConstants.INTAKE_PERCENT),
         ALGAE_OUT (0, AlgaeClawConstants.OUTTAKE_PERCENT),
         BOTH_IN (CoralClawConstants.INTAKE_PERCENT, AlgaeClawConstants.INTAKE_PERCENT),
-        BOTH_OUT (CoralClawConstants.OUTTAKE_PERCENT, AlgaeClawConstants.INTAKE_PERCENT);
+        BOTH_OUT (CoralClawConstants.OUTTAKE_PERCENT, AlgaeClawConstants.INTAKE_PERCENT),
+        BOTH_HOLD (CoralClawConstants.HOLD_PERCENT, AlgaeClawConstants.HOLD_PERCENT),
+        CORAL_HOLD_ALGAE_OUT (CoralClawConstants.HOLD_PERCENT, AlgaeClawConstants.OUTTAKE_PERCENT);
 
         double coralPercent, algaePercent;
 
@@ -348,6 +348,7 @@ public class Superstructure {
             case L2, L2_PREP, L2_EXIT -> L2_PLACE;
             case L3, L3_PREP, L3_EXIT -> L3_PLACE;
             case L4, L4_PREP, L4_EXIT -> L4_PLACE;
+            case NET, NET_PREP, NET_EXIT -> NET_PLACE;
             default -> L1_PLACE;
         };
 
@@ -375,6 +376,7 @@ public class Superstructure {
             case L2 -> L2_EXIT;
             case L3 -> L3_EXIT;
             case L4 -> L4_EXIT;
+            case NET -> NET_EXIT;
             default -> STOW;
         };
 
@@ -394,7 +396,10 @@ public class Superstructure {
     public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
         return Commands.sequence(
             outtakeCommand(),
-            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean() && !coralClaw.hasPiece()),
+            Commands.waitUntil(() -> 
+                !continueOuttakingSupplier.getAsBoolean() && 
+                (targetState.clawState.coralPercent != 0 && !coralClaw.hasPiece() 
+                    || targetState.clawState.algaePercent != 0 && !algaeClaw.hasPiece())),
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
             setSuperState(STOW)

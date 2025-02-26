@@ -180,7 +180,7 @@ public class Alignment {
         double y = isRedAlliance
             ? MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT / 2)
             : MathUtil.clamp(swerve.getPose().getY(), FieldConstants.FIELD_MAX_HEIGHT / 2, FieldConstants.FIELD_MAX_HEIGHT);
-        double theta = Robot.isRedAlliance() ? Math.PI : 0;
+        double theta = Robot.isRedAlliance() ? 0 : Math.PI;
         Pose2d desiredPose = new Pose2d(
             x,
             y,
