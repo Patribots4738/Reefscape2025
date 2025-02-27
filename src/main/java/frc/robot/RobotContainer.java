@@ -188,10 +188,12 @@ public class RobotContainer {
             case DEV:
                 configureDevBindings(driver);
                 break;
-            default:
+            case DOUBLE:
                 configureDriverBindings(driver);
                 configureOperatorBindings(operator);
                 break;
+            case CALIBRATION:
+                configureCalibrationBindings(driver);
         }
     }
 
@@ -202,6 +204,8 @@ public class RobotContainer {
     }
 
     private void configureDriverBindings(PatriBoxController controller) {
+
+        controller.start().onTrue(vision.toggleMT1Command());
         
         controller.rightStick()
             .toggleOnTrue(
@@ -329,6 +333,12 @@ public class RobotContainer {
 
         controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
+
+    }
+
+    private void configureCalibrationBindings(PatriBoxController controller) {
+
+        controller.a().onTrue(vision.toggleMT1Command().ignoringDisable(true));
 
     }
 

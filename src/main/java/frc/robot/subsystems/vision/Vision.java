@@ -16,12 +16,15 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Robot.GameMode;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.CameraConstants;
 import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.Constants.OIConstants;
+import frc.robot.util.Constants.OIConstants.DriverMode;
 import frc.robot.util.auto.Alignment.AlignmentMode;
 import frc.robot.util.calc.PoseCalculations;
 
@@ -29,6 +32,7 @@ public class Vision extends SubsystemBase {
 
     private final VisionIOInputsAutoLogged[] inputs;
     private final VisionIO[] cameras;
+    private boolean useMT1Override = false;
 
     // private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/xyStdsDisabled", 0.001);
     // private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
@@ -181,9 +185,13 @@ public class Vision extends SubsystemBase {
         return PoseCalculations.getClosestReefSide(poseEstimator.getEstimatedPosition()).getTagId();
     }
 
+    public Command toggleMT1Command() {
+        return runOnce(() -> this.useMT1Override = !this.useMT1Override);
+    }
+
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
-        return Robot.gameMode == GameMode.DISABLED || !rotationUpdated;
+        return OIConstants.DRIVER_MODE != DriverMode.CALIBRATION && (Robot.gameMode == GameMode.DISABLED || !rotationUpdated) || useMT1Override;
     }
 
 }
