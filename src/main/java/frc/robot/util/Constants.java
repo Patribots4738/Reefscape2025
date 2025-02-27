@@ -1029,8 +1029,81 @@ public final class Constants {
         // D:
         public static final int[] VALID_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 }; // D:
 
+
+        static final double CORAL_RADIUS_METERS = 0.0507745;
+        static final Translation3d REEF_CENTER = new Translation3d(4.49, 4.0225, 0);
+        static final double HEXAGON_RADS = Units.degreesToRadians(360/6);
+                
+        private static Pose3d rotatePose(Pose3d pose, double angle) {
+            return pose.rotateAround(REEF_CENTER, new Rotation3d(0, 0, angle));
+        }
         
+        static final Rotation3d L2_BASE_ANGLE = new Rotation3d(0, Units.degreesToRadians(35), 0);
+        static final Pose3d L2_POSE_0 = new Pose3d(3.775, 3.855, 0.739, L2_BASE_ANGLE);
+        static final Pose3d L2_POSE_1 = new Pose3d(3.775, 4.19, 0.739, L2_BASE_ANGLE);
+        
+        public static final Pose3d[] L2_CORAL_PLACEMENT_POSITIONS = createCoralPlacementPositions(L2_POSE_0, L2_POSE_1);
 
+        static final double L2_L3_HEIGHT = 0.4031;
+        static final Pose3d L3_POSE_0 = new Pose3d(L2_POSE_0.getX(), L2_POSE_0.getY(), L2_POSE_0.getZ()+L2_L3_HEIGHT, L2_BASE_ANGLE);
+        static final Pose3d L3_POSE_1 = new Pose3d(L2_POSE_1.getX(), L2_POSE_1.getY(), L2_POSE_1.getZ()+L2_L3_HEIGHT, L2_BASE_ANGLE);
+        public static final Pose3d[] L3_CORAL_PLACEMENT_POSITIONS = createCoralPlacementPositions(L3_POSE_0, L3_POSE_1);
+
+        static final Rotation3d L4_BASE_ANGLE = new Rotation3d(0, Units.degreesToRadians(90), 0);
+        static final double L3_L4_HEIGHT = 0.616;
+        static final Pose3d L4_POSE_0 = new Pose3d(L3_POSE_0.getX()-4*CORAL_RADIUS_METERS/3, L3_POSE_0.getY(), L3_POSE_0.getZ()+L3_L4_HEIGHT, L4_BASE_ANGLE);
+        static final Pose3d L4_POSE_1 = new Pose3d(L3_POSE_1.getX()-4*CORAL_RADIUS_METERS/3, L3_POSE_1.getY(), L3_POSE_1.getZ()+L3_L4_HEIGHT, L4_BASE_ANGLE);
+        public static final Pose3d[] L4_CORAL_PLACEMENT_POSITIONS = createCoralPlacementPositions(L4_POSE_0, L4_POSE_1);
+
+        public static final Pose3d[] BLUE_CORAL_PLACEMENT_POSITIONS = combineCoralPlacementPositions(
+            L2_CORAL_PLACEMENT_POSITIONS, L3_CORAL_PLACEMENT_POSITIONS, L4_CORAL_PLACEMENT_POSITIONS
+        );
+
+        public static final Pose3d[] RED_CORAL_PLACEMENT_POSITIONS = flipCoralPlacementPositions(BLUE_CORAL_PLACEMENT_POSITIONS);
+
+        public static final Pose3d[] GET_CORAL_PLACEMENT_POSITIONS() {
+            return Robot.isRedAlliance() ? RED_CORAL_PLACEMENT_POSITIONS : BLUE_CORAL_PLACEMENT_POSITIONS;
+        }
+
+        private static Pose3d[] createCoralPlacementPositions(Pose3d pose0, Pose3d pose1) {
+            return new Pose3d[] {
+                pose0,
+                pose1,
+                rotatePose(pose0, HEXAGON_RADS),
+                rotatePose(pose1, HEXAGON_RADS),
+                rotatePose(pose0, 2 * HEXAGON_RADS),
+                rotatePose(pose1, 2 * HEXAGON_RADS),
+                rotatePose(pose0, 3 * HEXAGON_RADS),
+                rotatePose(pose1, 3 * HEXAGON_RADS),
+                rotatePose(pose0, 4 * HEXAGON_RADS),
+                rotatePose(pose1, 4 * HEXAGON_RADS),
+                rotatePose(pose0, 5 * HEXAGON_RADS),
+                rotatePose(pose1, 5 * HEXAGON_RADS),
+            };
+        }
+
+        private static Pose3d[] combineCoralPlacementPositions(Pose3d[]... positionsArrays) {
+            int totalLength = 0;
+            for (Pose3d[] positions : positionsArrays) {
+                totalLength += positions.length;
+            }
+
+            Pose3d[] combined = new Pose3d[totalLength];
+            int currentIndex = 0;
+            for (Pose3d[] positions : positionsArrays) {
+                System.arraycopy(positions, 0, combined, currentIndex, positions.length);
+                currentIndex += positions.length;
+            }
+
+            return combined;
+        }
+
+        private static Pose3d[] flipCoralPlacementPositions(Pose3d[] positions) {
+            Pose3d[] flipped = new Pose3d[positions.length];
+            for (int i = 0; i < positions.length; i++) {
+                flipped[i] = PoseCalculations.flipPose3d(positions[i]);
+            }
+            return flipped;
+        }
     }
-
 }

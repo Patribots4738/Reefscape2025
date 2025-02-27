@@ -90,6 +90,14 @@ public class RobotContainer {
     public static double gameModeStart = 0;
     @AutoLogOutput (key = "Draggables/AutoStartingPose")
     public static Pose2d autoStartingPose = Pose2d.kZero;
+    @AutoLogOutput (key = "Draggables/PlacedGamePieces")
+    public static Pose3d[] placedCoral = new Pose3d[FieldConstants.BLUE_CORAL_PLACEMENT_POSITIONS.length + FieldConstants.RED_CORAL_PLACEMENT_POSITIONS.length];
+    public static int placedCoralIndex = 0;
+    static {
+        for (int i = 0; i < placedCoral.length; i++) {
+            placedCoral[i] = new Pose3d();
+        }
+    }
     
     public RobotContainer() {
 
