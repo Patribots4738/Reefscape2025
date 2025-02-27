@@ -84,6 +84,12 @@ public class Robot extends LoggedRobot {
     public void robotPeriodic() {
         Robot.previousTimestamp = Robot.currentTimestamp;
         Robot.currentTimestamp = Timer.getFPGATimestamp();
+
+        RobotContainer.displayTime = 
+            DriverStation.isFMSAttached()
+                ? Timer.getMatchTime() // Display time left in current match mode (auto/teleop)
+                : Robot.currentTimestamp - RobotContainer.gameModeStart; // Display time since mode start
+        
         CommandScheduler.getInstance().run();
     }
 

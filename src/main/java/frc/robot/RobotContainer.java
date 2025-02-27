@@ -90,6 +90,8 @@ public class RobotContainer {
     public static double gameModeStart = 0;
     @AutoLogOutput (key = "Draggables/AutoStartingPose")
     public static Pose2d autoStartingPose = Pose2d.kZero;
+    @AutoLogOutput (key = "Draggables/Timer")
+    public static double displayTime = 0.0;
     
     public RobotContainer() {
 
