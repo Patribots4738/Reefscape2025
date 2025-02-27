@@ -20,14 +20,11 @@ import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.subsystems.superstructure.claw.ClawIOInputsAutoLogged;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.FieldConstants;
-import frc.robot.util.custom.LoggedTunableBoolean;
 
 public class CoralClaw extends SubsystemBase {
 
     private final ClawIO io;
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
-    
-    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("CoralClaw/BrakeMotor", CoralClawConstants.BRAKE_MOTOR);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
@@ -37,8 +34,7 @@ public class CoralClaw extends SubsystemBase {
     
     public CoralClaw(ClawIO io) {
         this.io = io;
-        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
-        hasPieceDebouncer = new Debouncer(0.2);
+        hasPieceDebouncer = new Debouncer(0.4);
         hasPiece = DriverStation.isFMSAttached();
     }
 

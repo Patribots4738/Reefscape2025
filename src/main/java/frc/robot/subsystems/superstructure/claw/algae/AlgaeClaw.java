@@ -14,14 +14,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.subsystems.superstructure.claw.ClawIOInputsAutoLogged;
 import frc.robot.util.Constants.AlgaeClawConstants;
-import frc.robot.util.custom.LoggedTunableBoolean;
 
 public class AlgaeClaw extends SubsystemBase {
 
     private final ClawIO io;
     private final ClawIOInputsAutoLogged inputs = new ClawIOInputsAutoLogged();
-    
-    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("AlgaeClaw/BrakeMotor", AlgaeClawConstants.BRAKE_MOTOR);
 
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
@@ -29,7 +26,6 @@ public class AlgaeClaw extends SubsystemBase {
     
     public AlgaeClaw(ClawIO io) {
         this.io = io;
-        brakeMotor.onChanged(runOnce(() -> this.io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
     }
 
     @Override
