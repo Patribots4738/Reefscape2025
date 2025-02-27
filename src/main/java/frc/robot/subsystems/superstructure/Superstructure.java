@@ -487,6 +487,8 @@ public class Superstructure {
             double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
             Pose3d endDefectorPose = new Pose3d(robotPose.getTranslation().getX(), robotPose.getTranslation().getY(), elevatorHeight, new Rotation3d());
             Pose3d scoringNode = PoseCalculations.getClosestScoringNode(endDefectorPose);
+            if (RobotContainer.placedCoralIndex >= RobotContainer.placedCoral.length)
+                RobotContainer.placedCoralIndex = 0; // Start overriding previous placements
             RobotContainer.placedCoral[RobotContainer.placedCoralIndex] = scoringNode;
             RobotContainer.placedCoralIndex++;
         });
