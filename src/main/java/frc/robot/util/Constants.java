@@ -756,11 +756,21 @@ public final class Constants {
             0.1911680708,
             new Rotation3d(
                 0, 
-                -15, 
+                15, 
                 180
             )
         );
 
+        public static Pose3d LL3G_POSE = new Pose3d(
+            0.0968974694,
+            0.28506928,
+            0.5413440786,
+            new Rotation3d(
+                0,
+                15,
+                0
+            )
+        );
 
     }
 
