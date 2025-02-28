@@ -427,7 +427,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8885017491997822 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8736002957141429 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -633,7 +633,7 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.35;
+        public static final double INTAKE_POSITION_RADIANS = -0.307;
         public static final double L1_POSITION_RADIANS = 2.75;
         public static final double L2_POSITION_RADIANS = 2.41;
         public static final double L3_POSITION_RADIANS = 2.41;
@@ -656,7 +656,7 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double GEAR_RATIO = 604.8;
+        public static final double GEAR_RATIO = 420d;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI;
@@ -742,7 +742,7 @@ public final class Constants {
             CALIBRATION
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.CALIBRATION;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 
@@ -763,7 +763,7 @@ public final class Constants {
         );
 
         public static Pose3d LL3G_POSE = new Pose3d(
-            0.0968974694,
+            -0.0968974694,
             0.28506928,
             0.5413440786,
             new Rotation3d(

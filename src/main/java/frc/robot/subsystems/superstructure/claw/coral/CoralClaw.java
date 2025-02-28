@@ -34,7 +34,7 @@ public class CoralClaw extends SubsystemBase {
     
     public CoralClaw(ClawIO io) {
         this.io = io;
-        hasPieceDebouncer = new Debouncer(0.4);
+        hasPieceDebouncer = new Debouncer(0.2);
         hasPiece = DriverStation.isFMSAttached();
     }
 
