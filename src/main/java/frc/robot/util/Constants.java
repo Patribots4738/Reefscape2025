@@ -566,7 +566,7 @@ public final class Constants {
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
         public static final double L1_POSITION_METERS = 0.1;
-        public static final double L2_POSITION_METERS = 0.05;
+        public static final double L2_POSITION_METERS = 0.09;
         public static final double L3_POSITION_METERS = 0.27;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
         public static final double L3_POSITION_REMOVE_ALGAE = 0.13;

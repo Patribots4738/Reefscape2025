@@ -174,7 +174,7 @@ public class Vision extends SubsystemBase {
             || Double.isNaN(inputs[cameraIndex].robotPose.getY()) 
             || Double.isNaN(inputs[cameraIndex].robotPose.getRotation().getRadians())
             || inputs[cameraIndex].robotPose.equals(Pose2d.kZero)
-            || (shouldUseMT1() && inputs[cameraIndex].tagIds.length == 1 && inputs[cameraIndex].averageTA < 0.14))
+            || (shouldUseMT1() && inputs[cameraIndex].tagIds.length == 1 && inputs[cameraIndex].averageTA < 0.17))
         {
             return false;
         }
