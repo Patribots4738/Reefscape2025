@@ -191,7 +191,7 @@ public class Vision extends SubsystemBase {
 
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
-        return OIConstants.DRIVER_MODE != DriverMode.CALIBRATION && (Robot.gameMode == GameMode.DISABLED || !rotationUpdated) || useMT1Override;
+        return (!(Robot.exitAuto && DriverStation.isFMSAttached())) && OIConstants.DRIVER_MODE != DriverMode.CALIBRATION && (Robot.gameMode == GameMode.DISABLED || !rotationUpdated) || useMT1Override;
     }
 
 }

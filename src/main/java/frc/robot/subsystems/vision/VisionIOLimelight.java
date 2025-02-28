@@ -1,5 +1,7 @@
 package frc.robot.subsystems.vision;
 
+import frc.robot.Robot;
+import frc.robot.Robot.GameMode;
 import frc.robot.util.hardware.limelight.Limelight;
 import frc.robot.util.hardware.limelight.LimelightHelpers.RawFiducial;
 
@@ -46,7 +48,11 @@ public class VisionIOLimelight implements VisionIO {
         boolean isLL4 = camera.getIsLL4();
         if (useMT2) {
             if (isLL4) {
-                camera.setIMUMode(2);
+                if (Robot.gameMode == GameMode.AUTONOMOUS) {
+                    camera.setIMUMode(2);
+                } else {
+                    camera.setIMUMode(3);
+                }
             }
         } else {
             if (isLL4) {
