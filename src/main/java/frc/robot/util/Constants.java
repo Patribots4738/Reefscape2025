@@ -427,7 +427,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8736002957141429 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9238428299512207 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -633,11 +633,11 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.307;
+        public static final double INTAKE_POSITION_RADIANS = -0.36;
         public static final double L1_POSITION_RADIANS = 2.75;
         public static final double L2_POSITION_RADIANS = 2.41;
         public static final double L3_POSITION_RADIANS = 2.41;
-        public static final double L4_POSITION_RADIANS = 2.404;
+        public static final double L4_POSITION_RADIANS = 2.32;
         public static final double L2_ALGAE_REMOVAL = 0.9;
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
@@ -656,7 +656,7 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double GEAR_RATIO = 420d;
+        public static final double GEAR_RATIO = 268.8;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI;
@@ -665,7 +665,7 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
-        public static final double MAX_ANGLE_RADIANS = 2;
+        public static final double MAX_ANGLE_RADIANS = 2.7;
 
         public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 100d : 1000d; // Chef Cushman
         public static final double I_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -681,7 +681,7 @@ public final class Constants {
         public static final double A_FAST = !FieldConstants.IS_SIMULATION ? 1d : 0d;
         public static final double S_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
         public static final double V_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G_FAST = !FieldConstants.IS_SIMULATION ? -30d : 0d;
+        public static final double G_FAST = !FieldConstants.IS_SIMULATION ? -50d : 0d;
 
         public static final double VELOCITY = Math.PI;
         public static final double ACCELERATION = 20d;
@@ -711,7 +711,7 @@ public final class Constants {
         public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 2;
+        public static final double READY_POSITION_RADIANS = 2.7;
         public static final double FINAL_POSITION_RADIANS = 0.7;
 
         public static final double Y_CHASSIS_OFFSET = 0.0508;
