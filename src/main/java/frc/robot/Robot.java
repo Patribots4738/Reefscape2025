@@ -37,6 +37,7 @@ public class Robot extends LoggedRobot {
 
     public static double currentTimestamp = 0;
     public static double previousTimestamp = 0;
+    public static boolean exitAuto = false;
 
     private Command autonomousCommand;
 
@@ -58,6 +59,7 @@ public class Robot extends LoggedRobot {
                 break;
             case REPLAY:
                 String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+                setUseTiming(false);
                 Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
                 Logger.addDataReceiver(new WPILOGWriter(LogFileUtil
                     .addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
@@ -84,6 +86,12 @@ public class Robot extends LoggedRobot {
     public void robotPeriodic() {
         Robot.previousTimestamp = Robot.currentTimestamp;
         Robot.currentTimestamp = Timer.getFPGATimestamp();
+
+        RobotContainer.displayTime = 
+            DriverStation.isFMSAttached()
+                ? Timer.getMatchTime() // Display time left in current match mode (auto/teleop)
+                : Robot.currentTimestamp - RobotContainer.gameModeStart; // Display time since mode start
+        
         CommandScheduler.getInstance().run();
     }
 
@@ -139,6 +147,7 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+        exitAuto = true;
     }
 
     @Override

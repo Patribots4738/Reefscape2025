@@ -90,6 +90,8 @@ public class RobotContainer {
     public static double gameModeStart = 0;
     @AutoLogOutput (key = "Draggables/AutoStartingPose")
     public static Pose2d autoStartingPose = Pose2d.kZero;
+    @AutoLogOutput (key = "Draggables/Timer")
+    public static double displayTime = 0.0;
     
     public RobotContainer() {
 
@@ -103,7 +105,7 @@ public class RobotContainer {
 
         swerve = new Swerve();
         alignment = new Alignment(swerve);
-        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true), new VisionIOLimelight("limelight-threeg", false));
+        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true));
         coralClaw = new CoralClaw(new CoralClawIOKraken());
         algaeClaw = new AlgaeClaw(new AlgaeClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
@@ -188,10 +190,12 @@ public class RobotContainer {
             case DEV:
                 configureDevBindings(driver);
                 break;
-            default:
+            case DOUBLE:
                 configureDriverBindings(driver);
                 configureOperatorBindings(operator);
                 break;
+            case CALIBRATION:
+                configureCalibrationBindings(driver);
         }
     }
 
@@ -202,6 +206,8 @@ public class RobotContainer {
     }
 
     private void configureDriverBindings(PatriBoxController controller) {
+
+        controller.start().onTrue(vision.toggleMT1Command());
         
         controller.rightStick()
             .toggleOnTrue(
@@ -329,6 +335,12 @@ public class RobotContainer {
 
         controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
+
+    }
+
+    private void configureCalibrationBindings(PatriBoxController controller) {
+
+        controller.a().onTrue(vision.toggleMT1Command().ignoringDisable(true));
 
     }
 

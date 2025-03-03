@@ -65,6 +65,7 @@ public class PathPlannerStorage {
                     AutoBuilder.followPath(pathToReef),
                     NamedCommands.getCommand("Coral" + reefLevel)
                 ),
+                Commands.waitSeconds(0.5),
                 NamedCommands.getCommand("PlaceCoral"),
                 Commands.parallel(
                     Commands.sequence(
