@@ -427,7 +427,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9238428299512207 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9121028598030858 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -490,8 +490,8 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double INTAKE_PERCENT = 0.35;
-        public static final double HOLD_PERCENT = 0.25;
+        public static final double INTAKE_PERCENT = 0.4;
+        public static final double HOLD_PERCENT = 0.35;
         public static final double OUTTAKE_PERCENT = -0.75;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
@@ -665,7 +665,7 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
-        public static final double MAX_ANGLE_RADIANS = 2.7;
+        public static final double MAX_ANGLE_RADIANS = 2.5;
 
         public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 100d : 1000d; // Chef Cushman
         public static final double I_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
@@ -711,7 +711,7 @@ public final class Constants {
         public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 2.7;
+        public static final double READY_POSITION_RADIANS = 2.5;
         public static final double FINAL_POSITION_RADIANS = 0.7;
 
         public static final double Y_CHASSIS_OFFSET = 0.0508;
