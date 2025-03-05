@@ -168,6 +168,8 @@ public class RobotContainer {
                 swerve::runTurnCharacterization, 
                 swerve::getTurnCharacterizationVelocity));
 
+        // pathPlannerStorage.getAutoChooser().addOption("ElevatorStaticCharacterization", new StaticCharacterization(elevator, elevator::runCharacterization, elevator::getCharacterizationVelocity));
+
         // pathPlannerStorage.getAutoChooser().addOption("WristQFCharacterization", wrist.sysIdQuasistaticForward());
         // pathPlannerStorage.getAutoChooser().addOption("WristQRCharacterization", wrist.sysIdQuasistaticReverse());
         // pathPlannerStorage.getAutoChooser().addOption("WristDFCharacterization", wrist.sysIdDynamicForward());

@@ -48,7 +48,7 @@ public class CoralClaw extends SubsystemBase {
 
         // Run setpoint on RIO to minimize CAN utilization
         if (shouldRunSetpoint) {
-            io.setPercent(percentOutput);
+            // io.setPercent(percentOutput);
         } else {
             io.setNeutral();
         }
