@@ -535,14 +535,14 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double GEAR_RATIO = 9.0;
-        public static final double MAX_DISPLACEMENT_METERS = 0.574;
+        public static final double MAX_DISPLACEMENT_METERS = 0.58;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 180d : 800d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 400d : 800d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 35d : 200d;
-        public static final double A = !FieldConstants.IS_SIMULATION ? 1.0 : 0d;
+        public static final double D = !FieldConstants.IS_SIMULATION ? 30d : 200d;
+        public static final double A = !FieldConstants.IS_SIMULATION ? 0.75 : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 10d : 0d;
@@ -560,8 +560,8 @@ public final class Constants {
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
         public static final double VELOCITY = 1.6d;
-        public static final double ACCELERATION = 6d;
-        public static final double JERK = 60d;
+        public static final double ACCELERATION = 8d;
+        public static final double JERK = 80d;
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
