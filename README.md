@@ -59,6 +59,11 @@ ______
 ### Utilities
 
 ## Controls 🎮
+![image](https://github.com/user-attachments/assets/590642e6-7ad0-47f0-adc2-b79603a9b17d)
+![image](https://github.com/user-attachments/assets/3db3ddbe-14d3-4eb4-9c93-6a3d28a0b647)
+
 
 ## Components & Tools 🛠️
+![image](https://github.com/user-attachments/assets/73cc0088-d5e0-48d7-adc0-f5bda248e3e5)
+![image](https://github.com/user-attachments/assets/a7313f5c-6d63-4da5-b680-fecf20fb1eaf)
 

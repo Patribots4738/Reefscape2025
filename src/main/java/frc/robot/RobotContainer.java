@@ -98,6 +98,8 @@ public class RobotContainer {
             placedCoral[i] = new Pose3d();
         }
     }
+    @AutoLogOutput (key = "Draggables/Timer")
+    public static double displayTime = 0.0;
     
     public RobotContainer() {
 
@@ -111,7 +113,7 @@ public class RobotContainer {
 
         swerve = new Swerve();
         alignment = new Alignment(swerve);
-        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true), new VisionIOLimelight("limelight-threeg", false));
+        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true));
         coralClaw = new CoralClaw(new CoralClawIOKraken());
         algaeClaw = new AlgaeClaw(new AlgaeClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
@@ -174,6 +176,8 @@ public class RobotContainer {
                 swerve::runTurnCharacterization, 
                 swerve::getTurnCharacterizationVelocity));
 
+        // pathPlannerStorage.getAutoChooser().addOption("ElevatorStaticCharacterization", new StaticCharacterization(elevator, elevator::runCharacterization, elevator::getCharacterizationVelocity));
+
         // pathPlannerStorage.getAutoChooser().addOption("WristQFCharacterization", wrist.sysIdQuasistaticForward());
         // pathPlannerStorage.getAutoChooser().addOption("WristQRCharacterization", wrist.sysIdQuasistaticReverse());
         // pathPlannerStorage.getAutoChooser().addOption("WristDFCharacterization", wrist.sysIdDynamicForward());
@@ -196,10 +200,12 @@ public class RobotContainer {
             case DEV:
                 configureDevBindings(driver);
                 break;
-            default:
+            case DOUBLE:
                 configureDriverBindings(driver);
                 configureOperatorBindings(operator);
                 break;
+            case CALIBRATION:
+                configureCalibrationBindings(driver);
         }
     }
 
@@ -210,6 +216,8 @@ public class RobotContainer {
     }
 
     private void configureDriverBindings(PatriBoxController controller) {
+
+        controller.start().onTrue(vision.toggleMT1Command());
         
         controller.rightStick()
             .toggleOnTrue(
@@ -337,6 +345,12 @@ public class RobotContainer {
 
         controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
+
+    }
+
+    private void configureCalibrationBindings(PatriBoxController controller) {
+
+        controller.a().onTrue(vision.toggleMT1Command().ignoringDisable(true));
 
     }
 

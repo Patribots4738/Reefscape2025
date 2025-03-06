@@ -7,6 +7,8 @@ package frc.robot.subsystems.superstructure.elevator;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.LoggingConstants;
+import frc.robot.util.custom.LoggedTunableBoolean;
+import frc.robot.util.custom.LoggedTunableNumber;
 
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
@@ -28,11 +30,18 @@ public class Elevator extends SubsystemBase {
 
     private final ElevatorIO io;
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
+    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Elevator/Profile/Velocity", ElevatorConstants.VELOCITY);
+    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Elevator/Profile/Acceleration", ElevatorConstants.ACCELERATION);
+    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Elevator/Profile/Jerk", ElevatorConstants.JERK);
+    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Elevator/BrakeMotor", ElevatorConstants.BRAKE_MOTOR);
 
     private double targetPosition = 0.0;
     
     public Elevator(ElevatorIO io) {
         this.io = io;
+        ElevatorConstants.LOGGED_GAINS.onChanged(Commands.runOnce(() -> io.setGains(ElevatorConstants.LOGGED_GAINS.get())).ignoringDisable(true));
+        velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(Commands.runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
+        brakeMotor.onChanged(Commands.runOnce(() -> io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
     }
 
     @Override
