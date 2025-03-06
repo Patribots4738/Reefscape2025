@@ -81,7 +81,7 @@
             "position": [
                 -0.1991243414,
                 -0.2982595,
-                0.7264964896
+                0.7
             ],
             "rotations": [
                 {
@@ -90,17 +90,17 @@
                 },
                 {
                     "axis": "y",
-                    "degrees": 15
+                    "degrees": 20
                 },
                 {
                     "axis": "z",
-                    "degrees": 15
+                    "degrees": 146.9
                 }
             ]
         },
         {
             "name": "BackLL4_TopRight",
-            "fov": 56.2,
+            "fov": 85,
             "resolution": [
                 1280, 
                 560
@@ -108,7 +108,7 @@
             "position": [
                 -0.1991243414,
                 0.2982595,
-                0.7264964896
+                0.7
             ],
             "rotations": [
                 {
@@ -117,11 +117,11 @@
                 },
                 {
                     "axis": "y",
-                    "degrees": 15
+                    "degrees": 20
                 },
                 {
                     "axis": "z",
-                    "degrees": -15
+                    "degrees": 213.1
                 }
             ]
         }

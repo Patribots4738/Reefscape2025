@@ -51,7 +51,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.COMPBOT;
+        private static RobotType robotType = RobotType.DEVBOT;
 
         public static RobotType getRobot() {
             if (!FieldConstants.IS_SIMULATION && robotType == RobotType.SIMBOT) {
@@ -535,7 +535,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double GEAR_RATIO = 9.0;
-        public static final double MAX_DISPLACEMENT_METERS = 0.588;
+        public static final double MAX_DISPLACEMENT_METERS = 0.574;
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
