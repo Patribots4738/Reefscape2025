@@ -4,6 +4,7 @@
 
 package frc.robot.util.calc;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -11,8 +12,11 @@ import java.util.List;
 
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
 
@@ -56,6 +60,18 @@ public class PoseCalculations {
         return new Pose2d(flipTranslation(pos.getTranslation()), flipFieldRotation(pos.getRotation()));
     }
 
+    // Note: this method works for the use case it was designed for (mirroring reef node poses for placing coral)
+    // but I haven't tested it with any edge case, or any case where roll != 0
+    public static Pose3d flipPose3d(Pose3d pos) {
+        Translation2d translation = flipTranslation(pos.getTranslation().toTranslation2d());
+        Rotation2d yaw = flipFieldRotation(Rotation2d.fromRadians(pos.getRotation().getZ()));
+        Rotation2d pitch = flipFieldRotation(Rotation2d.fromRadians(pos.getRotation().getY())).unaryMinus();
+        Rotation2d roll = flipFieldRotation(Rotation2d.fromRadians(pos.getRotation().getX()));
+        Translation3d translation3d = new Translation3d(translation.getX(), translation.getY(), pos.getZ());
+        Rotation3d rotation3d = new Rotation3d(roll.getRadians(), pitch.getRadians(), yaw.getRadians());
+        return new Pose3d(translation3d, rotation3d);
+    }
+
     public static Pose2d mirrorPose(Pose2d pos) {
         return new Pose2d(mirrorTranslation(pos.getTranslation()), mirrorFieldRotation(pos.getRotation()));
     }
@@ -86,16 +102,31 @@ public class PoseCalculations {
                         Math.abs(pos.getRotation().minus(other.getRotation()).getRadians())));
     }
 
+    public static Pose3d nearestPose3d(Pose3d pos, List<Pose3d> poses) {
+        return Collections.min(
+            poses,
+            Comparator.comparing(
+                    (Pose3d other) -> pos.getTranslation().getDistance(other.getTranslation()))
+                .thenComparing(
+                    (Pose3d other) ->
+                    // I don't want to do the math for the other axis
+                        Math.abs(pos.getRotation().toRotation2d().minus(other.getRotation().toRotation2d()).getRadians())));
+    }
+
     public static boolean nearReef(Pose2d pos) {
         return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < FieldConstants.NEAR_REEF_METERS;
     }
   
     public static Pose2d getClosestCoralStation(Pose2d pos) {
-    return pos.nearest(FieldConstants.GET_CORAL_STATION_POSITIONS());
-}
+        return pos.nearest(FieldConstants.GET_CORAL_STATION_POSITIONS());
+    }
 
     public static boolean shouldReefAlign(Pose2d pos) {
         return pos.getTranslation().getDistance(getClosestCoralStation(pos).getTranslation()) > FieldConstants.INTAKE_ALIGNMENT_DISTANCE_METERS;
+    }
+
+    public static Pose3d getClosestScoringNode(Pose3d pos) {
+        return nearestPose3d(pos, Arrays.asList(FieldConstants.GET_CORAL_PLACEMENT_POSITIONS()));
     }
   
 }
