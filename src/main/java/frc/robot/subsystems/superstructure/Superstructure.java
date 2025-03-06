@@ -485,8 +485,8 @@ public class Superstructure {
         return Commands.runOnce(() -> {
             Pose2d robotPose = robotPoseSupplier.get();
             double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
-            Pose3d endDefectorPose = new Pose3d(robotPose.getTranslation().getX(), robotPose.getTranslation().getY(), elevatorHeight, new Rotation3d());
-            Pose3d scoringNode = PoseCalculations.getClosestScoringNode(endDefectorPose);
+            Pose3d endEffectorPose = new Pose3d(robotPose.getTranslation().getX(), robotPose.getTranslation().getY(), elevatorHeight, new Rotation3d());
+            Pose3d scoringNode = PoseCalculations.getClosestScoringNode(endEffectorPose);
             if (RobotContainer.placedCoralIndex >= RobotContainer.placedCoral.length)
                 RobotContainer.placedCoralIndex = 0; // Start overriding previous placements
             RobotContainer.placedCoral[RobotContainer.placedCoralIndex] = scoringNode;
