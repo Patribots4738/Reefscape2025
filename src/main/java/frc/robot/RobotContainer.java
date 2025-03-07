@@ -287,7 +287,7 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperState(superstructure.STOW));
 
         controller.x()
-            .onTrue(superstructure.coralPrepCommand());
+            .onTrue(superstructure.setSuperState(superstructure.PROCESSOR_PREP));
 
         controller.a()
             .onTrue(superstructure.algaeRemovalCommand(controller::getAButton));

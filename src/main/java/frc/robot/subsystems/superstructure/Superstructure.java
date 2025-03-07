@@ -69,6 +69,10 @@ public class Superstructure {
     public final SuperState L2_ALGAE_IN;
     public final SuperState L3_ALGAE_IN;
 
+    public final SuperState PROCESSOR_PREP;
+    public final SuperState PROCESSOR_PLACE;
+    public final SuperState PROCESSOR_EXIT;
+
     public final SuperState CLIMB_READY;
     public final SuperState CLIMB_FINAL;
 
@@ -130,6 +134,10 @@ public class Superstructure {
         L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
 
+        PROCESSOR_PREP = new LoggedSuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_HOLD);
+        PROCESSOR_PLACE = new LoggedSuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_OUT);
+        PROCESSOR_EXIT = new LoggedSuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.STOP);
+
         CLIMB_READY = new SuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.STOP);
         CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.STOP);
 
@@ -160,6 +168,7 @@ public class Superstructure {
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L2_ALGAE_REMOVAL),
         L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_ALGAE_REMOVAL),
+        PROCESSOR (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
         NET_PREP (ElevatorConstants.NET_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
         NET_EXIT (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
@@ -352,6 +361,7 @@ public class Superstructure {
             case L3, L3_PREP, L3_EXIT -> L3_PLACE;
             case L4, L4_PREP, L4_EXIT -> L4_PLACE;
             case NET, NET_PREP, NET_EXIT -> NET_PLACE;
+            case PROCESSOR -> PROCESSOR_PLACE;
             default -> L1_PLACE;
         };
 
@@ -380,6 +390,7 @@ public class Superstructure {
             case L3 -> L3_EXIT;
             case L4 -> L4_EXIT;
             case NET -> NET_EXIT;
+            case PROCESSOR -> PROCESSOR_EXIT;
             default -> STOW;
         };
 

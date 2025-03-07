@@ -571,6 +571,7 @@ public final class Constants {
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
         public static final double L3_POSITION_REMOVE_ALGAE = 0.13;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.04;
+        public static final double PROCESSOR_METERS = 0;
         public static final double NET_PREP_METERS = 0.32;
         public static final double NET_METERS = MAX_DISPLACEMENT_METERS;
 
@@ -628,7 +629,6 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
         public static final double MAX_ANGLE_RADIANS = 2.75;
 
-
         public static final double CLIMB_RADIANS = 1.1;
 
         public static final double DEADBAND_RADIANS = 0.06;
@@ -642,6 +642,7 @@ public final class Constants {
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
         public static final double FRONT_ALGAE_TOSS = 2.407;
+        public static final double PROCESSOR_RADIANS = -0.36;
 
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
