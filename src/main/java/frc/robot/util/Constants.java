@@ -592,7 +592,7 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = FieldConstants.IS_REAL ? 1500d : 2200d;
+        public static final double P = FieldConstants.IS_REAL ? 1500d : 5000d;
         public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double D = FieldConstants.IS_REAL ? 100d : 500d;
         public static final double A = FieldConstants.IS_REAL ? 3d : 0d;
@@ -612,8 +612,10 @@ public final class Constants {
 
         // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
-        public static final double VELOCITY = 11d;
-        public static final double ACCELERATION = FieldConstants.IS_REAL ? 90d : 15d;
+        public static final double FAST_VELOCITY = 11d;
+        public static final double FAST_ACCELERATION = FieldConstants.IS_REAL ? 90d : 15d;
+        public static final double SLOW_VELOCITY = 5d;
+        public static final double SLOW_ACCELERATION = FieldConstants.IS_REAL ? 10d : 15d;
         public static final double JERK = 900d;
 
         public static final double GEAR_RATIO = 60.0;
