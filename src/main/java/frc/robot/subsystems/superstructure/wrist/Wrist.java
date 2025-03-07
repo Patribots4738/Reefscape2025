@@ -46,7 +46,7 @@ public class Wrist extends SubsystemBase {
 
     private LoggedTunableNumber fastVelocity = new LoggedTunableNumber("Wrist/FastProfile/Velocity", WristConstants.FAST_VELOCITY);
     private LoggedTunableNumber fastAcceleration = new LoggedTunableNumber("Wrist/FastProfile/Acceleration", WristConstants.FAST_ACCELERATION);
-    private LoggedTunableNumber slowVelocity = new LoggedTunableNumber("Wrist/SlowProfile/Velocity", WristConstants.SLOW_ACCELERATION);
+    private LoggedTunableNumber slowVelocity = new LoggedTunableNumber("Wrist/SlowProfile/Velocity", WristConstants.SLOW_VELOCITY);
     private LoggedTunableNumber slowAcceleration = new LoggedTunableNumber("Wrist/SlowProfile/Acceleration", WristConstants.SLOW_ACCELERATION);
 
     public Wrist(WristIO io) {

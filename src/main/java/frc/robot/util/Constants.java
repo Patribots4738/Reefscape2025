@@ -614,7 +614,7 @@ public final class Constants {
         public static final double FAST_VELOCITY = 11d;
         public static final double FAST_ACCELERATION = FieldConstants.IS_REAL ? 90d : 15d;
         public static final double SLOW_VELOCITY = 5d;
-        public static final double SLOW_ACCELERATION = FieldConstants.IS_REAL ? 90d : 15d;
+        public static final double SLOW_ACCELERATION = FieldConstants.IS_REAL ? 10d : 15d;
         public static final double JERK = 900d;
 
         public static final double GEAR_RATIO = 60.0;
