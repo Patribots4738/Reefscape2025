@@ -470,11 +470,11 @@ public class Swerve extends SubsystemBase {
     }
 
     // Fear.
+    // (The cameras do this for us, but we don't have cameras in sim)
     private void resetOdometryAuto(Pose2d pose) {
-        if (FieldConstants.IS_REAL) {
-            return;
+        if (FieldConstants.IS_SIMULATION) {
+            resetOdometry(pose);
         }
-        resetOdometry(pose);
     }
 
     public Command resetOdometryCommand(Supplier<Pose2d> pose) {

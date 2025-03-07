@@ -847,6 +847,7 @@ public final class Constants {
 
     public static final class GeneralHardwareConstants {
         public static final boolean SAFE_HARDWARE_MODE = false;
+        public static final double TIMEOUT_SECONDS = 1.0;
     }
 
     public static final class FieldConstants {

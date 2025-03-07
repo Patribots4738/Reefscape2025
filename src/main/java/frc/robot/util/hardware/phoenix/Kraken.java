@@ -49,6 +49,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.Constants.GeneralHardwareConstants;
 import frc.robot.util.Constants.KrakenMotorConstants;
 import frc.robot.util.custom.GainConstants;
 
@@ -59,7 +60,7 @@ public class Kraken extends TalonFX {
     private double targetPercent = 0.0;
 
     private double unitConversionFactor = 1.0;
-    private double timeoutSeconds = 1.0;
+    private double timeoutSeconds = GeneralHardwareConstants.TIMEOUT_SECONDS;
 
     private final TalonFXConfigurator configurator = getConfigurator();
     private final TalonFXSimState sim = getSimState();

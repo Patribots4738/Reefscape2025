@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.Constants.GeneralHardwareConstants;
 import frc.robot.util.Constants.PigeonConstants;
 
 public class Pigeon2Custom extends Pigeon2 {
@@ -30,7 +31,7 @@ public class Pigeon2Custom extends Pigeon2 {
     private final StatusSignal<AngularVelocity> pitchVelocitySignal;
     private final StatusSignal<AngularVelocity> rollVelocitySignal;
 
-    private double timeoutSeconds = 1.0;
+    private double timeoutSeconds = GeneralHardwareConstants.TIMEOUT_SECONDS;
 
     public enum TelemetryPreference {
         DEFAULT,

@@ -16,6 +16,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import frc.robot.util.Constants.CANCoderConstants;
 import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.Constants.GeneralHardwareConstants;
 
 public class CANCoderCustom extends CANcoder {
 
@@ -29,7 +30,7 @@ public class CANCoderCustom extends CANcoder {
 
     private double positionConversionFactor = 1.0;
     private double velocityConversionFactor = 1.0;
-    private double timeoutSeconds = 1.0;
+    private double timeoutSeconds = GeneralHardwareConstants.TIMEOUT_SECONDS;
 
 
     public CANCoderCustom(int id) {
