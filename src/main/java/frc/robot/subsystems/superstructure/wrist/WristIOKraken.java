@@ -14,7 +14,7 @@ public class WristIOKraken implements WristIO {
     private boolean encoderUpdated = false;
 
     public WristIOKraken() {
-        motor = new Kraken(WristConstants.CAN_ID, true, false, !FieldConstants.IS_SIMULATION ? ControlPreference.MM_TORQUE_CURRENT : ControlPreference.TORQUE_CURRENT);
+        motor = new Kraken(WristConstants.CAN_ID, true, false, FieldConstants.IS_REAL ? ControlPreference.MM_TORQUE_CURRENT : ControlPreference.TORQUE_CURRENT);
         encoder = new DutyCycleEncoder(WristConstants.ENCODER_DIO_PIN, WristConstants.ENCODER_POSITION_CONVERSION_FACTOR, WristConstants.ENCODER_POSITION_OFFSET_ROTATIONS);
         configMotor();
     }
