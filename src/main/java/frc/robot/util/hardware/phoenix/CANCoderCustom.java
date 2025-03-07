@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import frc.robot.util.Constants.CANCoderConstants;
+import frc.robot.util.Constants.FieldConstants;
 
 public class CANCoderCustom extends CANcoder {
 
@@ -28,6 +29,7 @@ public class CANCoderCustom extends CANcoder {
 
     private double positionConversionFactor = 1.0;
     private double velocityConversionFactor = 1.0;
+    private double timeoutSeconds = 1.0;
 
 
     public CANCoderCustom(int id) {
@@ -44,22 +46,25 @@ public class CANCoderCustom extends CANcoder {
     public CANCoderCustom(int id, String canBus) {
         super(id, canBus);
 
-        restoreFactoryDefaults();
+        if (FieldConstants.IS_REAL) {
+            restoreFactoryDefaults();
+        }
 
         position = getPosition();
         absolutePosition = getAbsolutePosition();
         velocity = getVelocity();
-
-        applySignalFrequency(
-            CANCoderConstants.ENCODER_UPDATE_FREQ_HZ,
-            absolutePosition,
-            position,
-            velocity
-        );
-        applyParameter(
-            () -> optimizeBusUtilization(0, 1.0),
-            "Optimize Bus Utilization"
-        );
+        if (FieldConstants.IS_REAL) {
+            applySignalFrequency(
+                CANCoderConstants.ENCODER_UPDATE_FREQ_HZ,
+                absolutePosition,
+                position,
+                velocity
+            );
+            applyParameter(
+                () -> optimizeBusUtilization(0, timeoutSeconds),
+                "Optimize Bus Utilization"
+            );
+        }
 
     }
 
@@ -165,8 +170,8 @@ public class CANCoderCustom extends CANcoder {
         magnetSensorConfigs.MagnetOffset = offset;
         magnetSensorConfigs.SensorDirection = sensorDirectionValue;
         return applyParameter(
-            () -> configurator.apply(magnetSensorConfigs, 1.0), 
-            () -> configurator.refresh(magnetSensorConfigs, 1.0),
+            () -> configurator.apply(magnetSensorConfigs, timeoutSeconds), 
+            () -> configurator.refresh(magnetSensorConfigs, timeoutSeconds),
             () -> magnetSensorConfigs.AbsoluteSensorDiscontinuityPoint == 0.5 &&
                   (magnetSensorConfigs.MagnetOffset != 0 ^ offset == 0) &&
                   magnetSensorConfigs.SensorDirection == sensorDirectionValue,
@@ -181,7 +186,7 @@ public class CANCoderCustom extends CANcoder {
      */
     public StatusCode restoreFactoryDefaults() {
         return applyParameter(
-            () -> configurator.apply(new CANcoderConfiguration(), 1.0),
+            () -> configurator.apply(new CANcoderConfiguration(), timeoutSeconds),
             "Factory Defaults"
         );
     }
