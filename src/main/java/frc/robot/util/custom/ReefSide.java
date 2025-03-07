@@ -18,6 +18,7 @@ public class ReefSide {
         this.center = center;
         this.right = right;
         this.left = left;
+        this.tagId = tagId;
     }
 
     public Pose2d getCenter() { 
