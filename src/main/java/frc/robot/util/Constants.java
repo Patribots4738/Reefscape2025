@@ -591,10 +591,10 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 2200d;
+        public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 5000d;
         public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 500d;
-        public static final double A = !FieldConstants.IS_SIMULATION ? 3d : 0d;
+        public static final double A = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double S = !FieldConstants.IS_SIMULATION ? 1.5052 : 0d;
         public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
         public static final double G = !FieldConstants.IS_SIMULATION ? 5.6 : 0d;
@@ -611,8 +611,10 @@ public final class Constants {
 
         // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
-        public static final double VELOCITY = 11d;
-        public static final double ACCELERATION = !FieldConstants.IS_SIMULATION ? 90d : 15d;
+        public static final double FAST_VELOCITY = 11d;
+        public static final double FAST_ACCELERATION = !FieldConstants.IS_SIMULATION ? 90d : 15d;
+        public static final double SLOW_VELOCITY = 5d;
+        public static final double SLOW_ACCELERATION = !FieldConstants.IS_SIMULATION ? 90d : 20d;
         public static final double JERK = 900d;
 
         public static final double GEAR_RATIO = 60.0;

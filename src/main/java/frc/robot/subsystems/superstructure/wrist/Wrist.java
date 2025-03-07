@@ -7,17 +7,23 @@ package frc.robot.subsystems.superstructure.wrist;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.WristConstants;
+import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.util.Constants.LoggingConstants;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,10 +34,26 @@ public class Wrist extends SubsystemBase {
     private final WristIO io;
     private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 
-    private double targetPosition = 0.0;
+    private State targetState = new State(0, 0);
+    private State setpoint = new State(0, 0);
+    @AutoLogOutput (key = "Subsystems/Wrist/ShouldRunSetpoint")
+    private boolean shouldRunSetpoint = false;
+    @AutoLogOutput (key = "Subsystems/Wrist/ShouldRunFastProfile")
+    private boolean shouldRunFast = true;
+
+    private TrapezoidProfile fastProfile = new TrapezoidProfile(new Constraints(WristConstants.FAST_VELOCITY, WristConstants.FAST_ACCELERATION));
+    private TrapezoidProfile slowProfile = new TrapezoidProfile(new Constraints(WristConstants.SLOW_VELOCITY, WristConstants.SLOW_ACCELERATION));
+
+    private LoggedTunableNumber fastVelocity = new LoggedTunableNumber("Wrist/FastProfile/Velocity", WristConstants.FAST_VELOCITY);
+    private LoggedTunableNumber fastAcceleration = new LoggedTunableNumber("Wrist/FastProfile/Acceleration", WristConstants.FAST_ACCELERATION);
+    private LoggedTunableNumber slowVelocity = new LoggedTunableNumber("Wrist/SlowProfile/Velocity", WristConstants.SLOW_ACCELERATION);
+    private LoggedTunableNumber slowAcceleration = new LoggedTunableNumber("Wrist/SlowProfile/Acceleration", WristConstants.SLOW_ACCELERATION);
 
     public Wrist(WristIO io) {
         this.io = io;
+
+        fastVelocity.onChanged().or(fastAcceleration.onChanged()).onTrue(Commands.runOnce(() -> fastProfile = new TrapezoidProfile(new Constraints(fastVelocity.get(), fastAcceleration.get()))).ignoringDisable(true));
+        slowVelocity.onChanged().or(slowAcceleration.onChanged()).onTrue(Commands.runOnce(() -> slowProfile = new TrapezoidProfile(new Constraints(slowVelocity.get(), slowAcceleration.get()))).ignoringDisable(true));
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             LoggingConstants.WRIST_OFFSET.getX(),
@@ -45,7 +67,19 @@ public class Wrist extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Wrist", inputs);
+
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
+        Logger.recordOutput("Subsystems/Wrist/TargetPosition", targetState.position);
+
+        if (shouldRunSetpoint) {
+            setpoint = (shouldRunFast ? fastProfile : slowProfile).calculate(0.02, setpoint, targetState);
+            Logger.recordOutput("Subsystems/Wrist/Step/Velocity", setpoint.velocity);
+            Logger.recordOutput("Subsystems/Wrist/Step/Position", setpoint.position);
+            io.setPosition(setpoint.position, 0);
+        } else {
+            setpoint.position = inputs.internalPositionRads;
+            io.setNeutral();
+        }
 
         RobotContainer.components3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.components3d[LoggingConstants.WRIST_INDEX].getX(), 
@@ -56,10 +90,11 @@ public class Wrist extends SubsystemBase {
 
     }
 
-    public void setPosition(double position) {
+    public void setPosition(double position, boolean runFast) {
         position = MathUtil.clamp(position, WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
-        targetPosition = position;
-        io.setPosition(targetPosition, 0);
+        targetState.position = position;
+        shouldRunSetpoint = true;
+        shouldRunFast = runFast;
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX].getX(), 
@@ -70,15 +105,15 @@ public class Wrist extends SubsystemBase {
     }
 
     public void setNeutral() {
-        io.setNeutral();
+        shouldRunSetpoint = false;
     }
 
-    public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
+    public Command setPositionCommand(DoubleSupplier positionSupplier, BooleanSupplier runFastSupplier) {
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble(), runFastSupplier.getAsBoolean())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
-    public Command setPositionCommand(double position) {
-        return setPositionCommand(() -> position);
+    public Command setPositionCommand(double position, BooleanSupplier runFastSupplier) {
+        return setPositionCommand(() -> position, runFastSupplier);
     }
     
     public Command setNeutralCommand() {
@@ -90,7 +125,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public boolean atTargetPosition() {
-        return atPosition(targetPosition);
+        return atPosition(targetState.position);
     }
 
     public double getPosition() {
