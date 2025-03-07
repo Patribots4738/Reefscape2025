@@ -1,7 +1,6 @@
 package frc.robot.subsystems.superstructure.wrist;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
@@ -14,7 +13,7 @@ public class WristIOKraken implements WristIO {
     private boolean encoderUpdated = false;
 
     public WristIOKraken() {
-        motor = new Kraken(WristConstants.CAN_ID, true, false, FieldConstants.IS_REAL ? ControlPreference.MM_TORQUE_CURRENT : ControlPreference.TORQUE_CURRENT);
+        motor = new Kraken(WristConstants.CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
         encoder = new DutyCycleEncoder(WristConstants.ENCODER_DIO_PIN, WristConstants.ENCODER_POSITION_CONVERSION_FACTOR, WristConstants.ENCODER_POSITION_OFFSET_ROTATIONS);
         configMotor();
     }
@@ -28,7 +27,6 @@ public class WristIOKraken implements WristIO {
         motor.setGains(WristConstants.GAINS);
         motor.setStatorCurrentLimit(WristConstants.CURRENT_LIMIT);
         motor.setTorqueCurrentLimits(-WristConstants.CURRENT_LIMIT, WristConstants.CURRENT_LIMIT);
-        configureProfile(WristConstants.VELOCITY, WristConstants.ACCELERATION, WristConstants.JERK);
         setBrakeMode(WristConstants.BRAKE_MOTOR);
     }
 

@@ -249,7 +249,7 @@ public class Superstructure {
                     // Move wrist to nearest transition pose, unless the arm was previously stowed up (which is a safe spot)
                     transitionWrist(() -> state.wristPosition), 
                     // Move wrist straight to target position
-                    wrist.setPositionCommand(() -> state.wristPosition), 
+                    wrist.setPositionCommand(() -> state.wristPosition, this::shouldRunWristFast), 
                     () -> 
                         // Only transition wrist if elevator needs to move in addition to other conditions
                         state.wristPosition < WristConstants.UNDER_THRESHOLD_RADIANS && !elevator.atPosition(state.elevatorPosition)
@@ -257,7 +257,7 @@ public class Superstructure {
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> state.elevatorPosition),
                 // Below here is only effectual if wrist just transitioned
-                wrist.setPositionCommand(() -> state.wristPosition)
+                wrist.setPositionCommand(() -> state.wristPosition, this::shouldRunWristFast)
             )
         );
     }
@@ -297,7 +297,7 @@ public class Superstructure {
     }
 
     public Command transitionWrist(DoubleSupplier targetWristPosition) {
-        return wrist.setPositionCommand(WristConstants.TRANSITION_RADIANS);
+        return wrist.setPositionCommand(WristConstants.TRANSITION_RADIANS, this::shouldRunWristFast);
     }
 
     public Command algaeL2Command(BooleanSupplier continueIntakingSupplier)  {
@@ -440,6 +440,11 @@ public class Superstructure {
                 algaeClaw.setNeutralCommand(),
                 coralClaw.setNeutralCommand()
             );
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/ShouldRunWristFast")
+    public boolean shouldRunWristFast() {
+        return !algaeClaw.hasPiece() || targetArmState == ArmState.NET;
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ArmAtTargetPosition")
