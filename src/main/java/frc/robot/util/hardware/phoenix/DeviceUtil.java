@@ -6,6 +6,7 @@ import java.util.function.BooleanSupplier;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 
+import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.GeneralHardwareConstants;
 
 public class DeviceUtil {
@@ -21,6 +22,7 @@ public class DeviceUtil {
      * @return The status code after applying the parameter.
      */
     public static StatusCode applyParameter(Supplier<StatusCode> applySupplier, Supplier<StatusCode> refreshSupplier, BooleanSupplier parameterCheckSupplier, String name, int deviceId) {
+        if (FieldConstants.IS_SIMULATION) return applySupplier.get();
         StatusCode applyStatus = StatusCode.TaskIsBusy;
         StatusCode refreshStatus = StatusCode.TaskIsBusy;
         boolean parameterCheck = false;
@@ -62,6 +64,7 @@ public class DeviceUtil {
      * @return The status code indicating the result of the operation.
      */
     public static StatusCode applySignalFrequency(double frequency, int deviceId, BaseStatusSignal... signals) {
+        if (FieldConstants.IS_SIMULATION) return StatusCode.OK;
         return applyParameter(
             () -> BaseStatusSignal.setUpdateFrequencyForAll(frequency, signals),
             frequency + " Hz Signal Frequency",

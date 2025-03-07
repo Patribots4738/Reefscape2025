@@ -343,7 +343,7 @@ public class SafeSpark extends SparkBase {
      * @return The position of the encoder
      */
     public double getPosition() {
-        if (useAbsoluteEncoder && !FieldConstants.IS_SIMULATION) {
+        if (useAbsoluteEncoder && FieldConstants.IS_REAL) {
             return getAbsoluteEncoder().getPosition();
         } else {
             return getRelativeEncoder().getPosition();

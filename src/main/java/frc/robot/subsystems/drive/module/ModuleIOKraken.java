@@ -56,7 +56,7 @@ public class ModuleIOKraken implements ModuleIO {
         turnMotor.setTelemetryPreference(TelemetryPreference.SWERVE);
 
         // We only want to ask for the abs encoder in real life
-        if (!FieldConstants.IS_SIMULATION) {
+        if (FieldConstants.IS_REAL) {
             turnMotor.setEncoder(turnEncoder.getDeviceID(), MK4cSwerveModuleConstants.TURNING_MOTOR_REDUCTION);
         } else {
             turnMotor.setGearRatio(MK4cSwerveModuleConstants.TURNING_MOTOR_REDUCTION);
@@ -107,7 +107,7 @@ public class ModuleIOKraken implements ModuleIO {
         inputs.turnTorqueCurrentAmps = driveMotor.getTorqueCurrentAsDouble();
         inputs.turnTempCelcius = turnMotor.getTemperatureAsDouble();
 
-        inputs.turnEncoderConnected = turnEncoder.refreshSignals().isOK() && !FieldConstants.IS_SIMULATION;
+        inputs.turnEncoderConnected = turnEncoder.refreshSignals().isOK() && FieldConstants.IS_REAL;
 
         // // Call refreshALl() to refresh all status signals (only if he is real)
         if (inputs.turnEncoderConnected) {
