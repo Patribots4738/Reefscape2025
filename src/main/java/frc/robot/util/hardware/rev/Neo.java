@@ -115,7 +115,7 @@ public class Neo extends SafeSpark {
      * @param slot                 The PID slot to use for control.
      */
     public void setTargetPosition(double position, double arbitraryFeedForward, int slot) {
-        if (!FieldConstants.IS_SIMULATION) {
+        if (FieldConstants.IS_REAL) {
             setPIDReference(position, ControlType.kPosition, slot, arbitraryFeedForward, ArbFFUnits.kVoltage);
         }
         targetPosition = position;

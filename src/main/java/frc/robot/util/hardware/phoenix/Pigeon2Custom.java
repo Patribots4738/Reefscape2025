@@ -14,6 +14,8 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.Constants.GeneralHardwareConstants;
 import frc.robot.util.Constants.PigeonConstants;
 
 public class Pigeon2Custom extends Pigeon2 {
@@ -28,6 +30,8 @@ public class Pigeon2Custom extends Pigeon2 {
     private final StatusSignal<AngularVelocity> yawVelocitySignal;
     private final StatusSignal<AngularVelocity> pitchVelocitySignal;
     private final StatusSignal<AngularVelocity> rollVelocitySignal;
+
+    private double timeoutSeconds = GeneralHardwareConstants.TIMEOUT_SECONDS;
 
     public enum TelemetryPreference {
         DEFAULT,
@@ -46,8 +50,10 @@ public class Pigeon2Custom extends Pigeon2 {
      */
     public Pigeon2Custom(int id, String canBus) {
         super(id, canBus);
-
-        restoreFactoryDefaults();
+        
+        if (FieldConstants.IS_REAL) {
+            restoreFactoryDefaults();
+        }
 
         yawSignal = getYaw();
         pitchSignal = getPitch();
@@ -57,10 +63,12 @@ public class Pigeon2Custom extends Pigeon2 {
         rollVelocitySignal = getAngularVelocityXWorld();
 
         setTelemetryPreference(TelemetryPreference.DEFAULT);
-        applyParameter(
-            () -> optimizeBusUtilization(0, 1.0),
-            "Optimize Bus Utilization"
-        );
+        if (FieldConstants.IS_REAL) {
+            applyParameter(
+                () -> optimizeBusUtilization(0, timeoutSeconds),
+                "Optimize Bus Utilization"
+            );
+        }
     }
 
     /**
@@ -103,7 +111,7 @@ public class Pigeon2Custom extends Pigeon2 {
      */
     public StatusCode restoreFactoryDefaults() {
         return applyParameter(
-            () -> configurator.apply(new Pigeon2Configuration(), 1.0),
+            () -> configurator.apply(new Pigeon2Configuration(), timeoutSeconds),
             "Factory Defaults"
         );
     }

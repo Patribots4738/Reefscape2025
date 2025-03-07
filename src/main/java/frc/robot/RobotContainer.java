@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -104,6 +105,7 @@ public class RobotContainer {
     public RobotContainer() {
 
         System.out.println("Constructing Robot Container...");
+        double containerConstructionTime = Timer.getFPGATimestamp();
 
         driver = new PatriBoxController(OIConstants.DRIVER_CONTROLLER_PORT, OIConstants.DRIVER_DEADBAND);
         operator = new PatriBoxController(OIConstants.OPERATOR_CONTROLLER_PORT, OIConstants.OPERATOR_DEADBAND);
@@ -193,6 +195,7 @@ public class RobotContainer {
         // pathPlannerStorage.getAutoChooser().addOption("ClimbDFCharacterization", climb.sysIdDynamicForward());
         // pathPlannerStorage.getAutoChooser().addOption("ClimbDRCharacterization", climb.sysIdDynamicReverse());
 
+        System.out.println("\nRobotContainer Configuration took " + (Timer.getFPGATimestamp() - containerConstructionTime) + " seconds.");
     }
 
     private void configureButtonBindings(){

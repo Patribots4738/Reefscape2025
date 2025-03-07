@@ -54,7 +54,7 @@ public final class Constants {
         private static RobotType robotType = RobotType.DEVBOT;
 
         public static RobotType getRobot() {
-            if (!FieldConstants.IS_SIMULATION && robotType == RobotType.SIMBOT) {
+            if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
                 System.out.println("Incorrect robot type selected, changing to real robot");
                 robotType = RobotType.COMPBOT;
             }
@@ -463,10 +463,10 @@ public final class Constants {
 
         // public static final LoggedGainConstants LOGGED_DRIVING_GAINS = new LoggedGainConstants(MK4cSwerveModuleConstants.DRIVING_GAINS, "Swerve/Drive");
 
-        public static final double TURNING_P = !FieldConstants.IS_SIMULATION ? 1500d : 2400d;
+        public static final double TURNING_P = FieldConstants.IS_REAL ? 1500d : 2400d;
         public static final double TURNING_I = 0;
-        public static final double TURNING_D = !FieldConstants.IS_SIMULATION ? 30d : 250d;
-        public static final double TURNING_S = !FieldConstants.IS_SIMULATION ? 2.800419999999998 : 1.0199330000001938;
+        public static final double TURNING_D = FieldConstants.IS_REAL ? 30d : 250d;
+        public static final double TURNING_S = FieldConstants.IS_REAL ? 2.800419999999998 : 1.0199330000001938;
 
         public static final GainConstants TURNING_GAINS = new GainConstants(
             TURNING_P,
@@ -539,13 +539,13 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 400d : 800d;
-        public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 30d : 200d;
-        public static final double A = !FieldConstants.IS_SIMULATION ? 0.75 : 0d;
-        public static final double S = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G = !FieldConstants.IS_SIMULATION ? 10d : 0d;
+        public static final double P = FieldConstants.IS_REAL ? 400d : 800d;
+        public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double D = FieldConstants.IS_REAL ? 30d : 200d;
+        public static final double A = FieldConstants.IS_REAL ? 0.75 : 0d;
+        public static final double S = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double G = FieldConstants.IS_REAL ? 10d : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -591,13 +591,13 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = !FieldConstants.IS_SIMULATION ? 1500d : 2200d;
-        public static final double I = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D = !FieldConstants.IS_SIMULATION ? 100d : 500d;
-        public static final double A = !FieldConstants.IS_SIMULATION ? 3d : 0d;
-        public static final double S = !FieldConstants.IS_SIMULATION ? 1.5052 : 0d;
-        public static final double V = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G = !FieldConstants.IS_SIMULATION ? 5.6 : 0d;
+        public static final double P = FieldConstants.IS_REAL ? 1500d : 2200d;
+        public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double D = FieldConstants.IS_REAL ? 100d : 500d;
+        public static final double A = FieldConstants.IS_REAL ? 3d : 0d;
+        public static final double S = FieldConstants.IS_REAL ? 1.5052 : 0d;
+        public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double G = FieldConstants.IS_REAL ? 5.6 : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -612,7 +612,7 @@ public final class Constants {
         // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
         public static final double VELOCITY = 11d;
-        public static final double ACCELERATION = !FieldConstants.IS_SIMULATION ? 90d : 15d;
+        public static final double ACCELERATION = FieldConstants.IS_REAL ? 90d : 15d;
         public static final double JERK = 900d;
 
         public static final double GEAR_RATIO = 60.0;
@@ -667,21 +667,21 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = 0.0;
         public static final double MAX_ANGLE_RADIANS = 2.5;
 
-        public static final double P_SLOW = !FieldConstants.IS_SIMULATION ? 100d : 1000d; // Chef Cushman
-        public static final double I_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D_SLOW = !FieldConstants.IS_SIMULATION ? 2d : 500d;
-        public static final double A_SLOW = !FieldConstants.IS_SIMULATION ? 1d : 0d;
-        public static final double S_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double V_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
-        public static final double G_SLOW = !FieldConstants.IS_SIMULATION ? 0d : 0d;
+        public static final double P_SLOW = FieldConstants.IS_REAL ? 100d : 1000d; // Chef Cushman
+        public static final double I_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double D_SLOW = FieldConstants.IS_REAL ? 2d : 500d;
+        public static final double A_SLOW = FieldConstants.IS_REAL ? 1d : 0d;
+        public static final double S_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double V_SLOW = FieldConstants.IS_REAL ? 0d : 0d; 
+        public static final double G_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
 
-        public static final double P_FAST = !FieldConstants.IS_SIMULATION ? 100d : 1000d;
-        public static final double I_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double D_FAST = !FieldConstants.IS_SIMULATION ? 2d : 500d;
-        public static final double A_FAST = !FieldConstants.IS_SIMULATION ? 1d : 0d;
-        public static final double S_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d; 
-        public static final double V_FAST = !FieldConstants.IS_SIMULATION ? 0d : 0d;
-        public static final double G_FAST = !FieldConstants.IS_SIMULATION ? -50d : 0d;
+        public static final double P_FAST = FieldConstants.IS_REAL ? 100d : 1000d;
+        public static final double I_FAST = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double D_FAST = FieldConstants.IS_REAL ? 2d : 500d;
+        public static final double A_FAST = FieldConstants.IS_REAL ? 1d : 0d;
+        public static final double S_FAST = FieldConstants.IS_REAL ? 0d : 0d; 
+        public static final double V_FAST = FieldConstants.IS_REAL ? 0d : 0d;
+        public static final double G_FAST = FieldConstants.IS_REAL ? -50d : 0d;
 
         public static final double VELOCITY = Math.PI;
         public static final double ACCELERATION = 20d;
@@ -847,11 +847,13 @@ public final class Constants {
 
     public static final class GeneralHardwareConstants {
         public static final boolean SAFE_HARDWARE_MODE = false;
+        public static final double TIMEOUT_SECONDS = 1.0;
     }
 
     public static final class FieldConstants {
 
         public static final boolean IS_SIMULATION = Robot.isSimulation();
+        public static final boolean IS_REAL = !IS_SIMULATION;
 
         public static final double FIELD_MAX_LENGTH = 17.55;
         // 2d height
