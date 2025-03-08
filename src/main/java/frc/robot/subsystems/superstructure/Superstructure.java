@@ -236,7 +236,7 @@ public class Superstructure {
                     fixArmAndClimb(nextState.armState, nextState.climbState),
                     // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
                     Commands.sequence(
-                        Commands.waitUntil(() -> nextState.coralInterruptSupplier.getAsBoolean() || nextState.clawState.coralPercent == 0),
+                        Commands.waitUntil(() -> nextState.coralInterruptSupplier.getAsBoolean() || nextState.clawState.coralPercent == 0 || structureAtTargetPosition()),
                         Commands.either(
                             coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent),
                             Commands.either(
@@ -248,7 +248,7 @@ public class Superstructure {
                         )
                     ),
                     Commands.sequence(
-                        Commands.waitUntil(() -> nextState.algaeInterruptSupplier.getAsBoolean() || nextState.clawState.algaePercent == 0),
+                        Commands.waitUntil(() -> nextState.algaeInterruptSupplier.getAsBoolean() || nextState.clawState.algaePercent == 0 || structureAtTargetPosition()),
                         Commands.either(
                             algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent),
                             Commands.either(
@@ -258,27 +258,6 @@ public class Superstructure {
                             ), 
                             () -> nextState.clawState.algaePercent != 0
                         )
-                    )
-                ),
-                // This is for if the suppliers never return true, then make the claws do their state thing
-                Commands.parallel(
-                    Commands.either(
-                        coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent),
-                        Commands.either(
-                            coralClaw.setPercentCommand(CoralClawConstants.HOLD_PERCENT), 
-                            coralClaw.setPercentCommand(0), 
-                            coralClaw::hasPiece
-                        ), 
-                        () -> nextState.clawState.coralPercent != 0
-                    ),
-                    Commands.either(
-                        algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent),
-                        Commands.either(
-                            algaeClaw.setPercentCommand(AlgaeClawConstants.HOLD_PERCENT), 
-                            algaeClaw.setPercentCommand(0), 
-                            algaeClaw::hasPiece
-                        ), 
-                        () -> nextState.clawState.algaePercent != 0
                     )
                 )
             )
@@ -504,6 +483,11 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/ArmAtTargetPosition")
     public boolean armAtTargetPosition() {
         return elevator.atPosition(targetState.armState.elevatorPosition) && wrist.atPosition(targetState.armState.wristPosition);
+    }
+
+    @AutoLogOutput (key = "Subsystems/SuperStructure/StructureAtDesiredPosition")
+    public boolean structureAtTargetPosition() {
+        return armAtTargetPosition() && climb.atPosition(targetState.climbState.climbPosition);
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
