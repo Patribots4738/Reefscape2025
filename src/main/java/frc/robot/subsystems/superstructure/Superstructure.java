@@ -60,6 +60,8 @@ public class Superstructure {
     public final SuperState L3_PLACE;
     public final SuperState L4_PLACE;
 
+    public final SuperState L1_CONFIRM;
+
     public final SuperState L2_EXIT;
     public final SuperState L3_EXIT;
     public final SuperState L4_EXIT;
@@ -120,10 +122,12 @@ public class Superstructure {
         L3 = new SuperState("L3", ArmState.L3, ClimbState.STOW, ClawState.CORAL_HOLD, () -> true, () -> false);
         L4 = new SuperState("L4", ArmState.L4, ClimbState.STOW, ClawState.CORAL_HOLD, () -> true, () -> false);
 
-        L1_PLACE = new SuperState("L1_PLACE", ArmState.L1, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
+        L1_PLACE = new LoggedSuperState("L1_PLACE", ArmState.L1, ClimbState.STOW, ClawState.CORAL_OUT_L1, () -> wrist.getPosition() > ArmState.L1.wristPosition || wrist.atPosition(ArmState.L1.wristPosition), () -> false);
         L2_PLACE = new SuperState("L2_PLACE", ArmState.L2, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
         L3_PLACE = new SuperState("L3_PLACE", ArmState.L3, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
         L4_PLACE = new SuperState("L4_PLACE", ArmState.L4, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
+
+        L1_CONFIRM = new LoggedSuperState("L1_CONFIRM", ArmState.L1_PLACE, ClimbState.STOW, ClawState.CORAL_OUT_L1, () -> true, () -> false);
 
         L2_EXIT = new SuperState("L2_EXIT", ArmState.L2_EXIT, ClimbState.STOW, ClawState.STOP);
         L3_EXIT = new SuperState("L3_EXIT", ArmState.L3_EXIT, ClimbState.STOW, ClawState.STOP);
@@ -134,9 +138,9 @@ public class Superstructure {
         L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
 
-        PROCESSOR_PREP = new LoggedSuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_HOLD);
-        PROCESSOR_PLACE = new LoggedSuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_OUT);
-        PROCESSOR_EXIT = new LoggedSuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.STOP);
+        PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_HOLD);
+        PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_OUT);
+        PROCESSOR_EXIT = new SuperState("PROCESSOR_EXIT", ArmState.PROCESSOR, ClimbState.STOW, ClawState.STOP);
 
         CLIMB_READY = new SuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.STOP);
         CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.STOP);
@@ -159,6 +163,7 @@ public class Superstructure {
         L3_PREP (ElevatorConstants.L3_POSITION_METERS, WristConstants.TRANSITION_RADIANS),
         L4_PREP (ElevatorConstants.L3_POSITION_METERS, WristConstants.TRANSITION_RADIANS),
         L1 (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS),
+        L1_PLACE (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
         L2 (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS),
         L3 (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
         L4 (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS),
@@ -206,6 +211,7 @@ public class Superstructure {
         CORAL_HOLD (CoralClawConstants.HOLD_PERCENT, 0),
         CORAL_IN (CoralClawConstants.INTAKE_PERCENT, 0),
         CORAL_OUT (CoralClawConstants.OUTTAKE_PERCENT, 0),
+        CORAL_OUT_L1 (CoralClawConstants.L1_OUTTAKE_PERCENT, 0),
         ALGAE_HOLD (0, AlgaeClawConstants.HOLD_PERCENT),
         ALGAE_IN (0, AlgaeClawConstants.INTAKE_PERCENT),
         ALGAE_OUT (0, AlgaeClawConstants.OUTTAKE_PERCENT),
@@ -410,6 +416,10 @@ public class Superstructure {
     public Command placeCommand(BooleanSupplier continueOuttakingSupplier) {
         return Commands.sequence(
             outtakeCommand(),
+            Commands.sequence(
+                Commands.waitSeconds(0.075),
+                setSuperState(L1_CONFIRM)
+            ).onlyIf(() -> targetArmState == ArmState.L1),
             Commands.waitUntil(() -> 
                 !continueOuttakingSupplier.getAsBoolean() && 
                 (targetState.clawState.coralPercent != 0 && !coralClaw.hasPiece() 
