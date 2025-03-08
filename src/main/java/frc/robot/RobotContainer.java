@@ -4,14 +4,17 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
+
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,8 +43,8 @@ import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.OIConstants;
 import frc.robot.util.auto.Alignment;
-import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.auto.Alignment.AlignmentMode;
+import frc.robot.util.auto.PathPlannerStorage;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.ActiveConditionalCommand;
 import frc.robot.util.custom.PatriBoxController;
@@ -177,6 +180,10 @@ public class RobotContainer {
                 swerve, 
                 swerve::runTurnCharacterization, 
                 swerve::getTurnCharacterizationVelocity));
+
+        PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+            Logger.recordOutput("PathPlanner/TargetPose", pose);
+        });
 
         // pathPlannerStorage.getAutoChooser().addOption("ElevatorStaticCharacterization", new StaticCharacterization(elevator, elevator::runCharacterization, elevator::getCharacterizationVelocity));
 
