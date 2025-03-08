@@ -270,7 +270,7 @@ public class Superstructure {
                         state.wristPosition < WristConstants.UNDER_THRESHOLD_RADIANS && !elevator.atPosition(state.elevatorPosition)
                 // Stop blocking sequence when wrist is in a safe position
                 ).until(this::wristSafe),
-                elevator.setPositionCommand(() -> state.elevatorPosition),
+                elevator.setPositionCommand(() -> state.elevatorPosition, this::shouldRunElevatorFast),
                 // Below here is only effectual if wrist just transitioned
                 wrist.setPositionCommand(() -> state.wristPosition, this::shouldRunWristFast)
             )
@@ -371,7 +371,7 @@ public class Superstructure {
             default -> L1_PLACE;
         };
 
-        if (placementState != NET_PLACE) {
+        if (placementState != NET_PLACE && placementState != PROCESSOR_PLACE) {
             currentPrepState = getPrepState(placementState);
         }
 
@@ -468,6 +468,11 @@ public class Superstructure {
         return !algaeClaw.hasPiece() || targetArmState == ArmState.NET;
     }
 
+    @AutoLogOutput (key = "Subsystems/Superstructure/ShouldRunElevatorFast")
+    public boolean shouldRunElevatorFast() {
+        return !algaeClaw.hasPiece();
+    }
+
     @AutoLogOutput (key = "Subsystems/Superstructure/ArmAtTargetPosition")
     public boolean armAtTargetPosition() {
         return elevator.atPosition(targetState.armState.elevatorPosition) && wrist.atPosition(targetState.armState.wristPosition);
@@ -475,7 +480,7 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
-        return (wrist.atPosition(WristConstants.UNDER_THRESHOLD_RADIANS) || wrist.getPosition() > WristConstants.UNDER_THRESHOLD_RADIANS);
+        return ((wrist.atPosition(WristConstants.UNDER_THRESHOLD_RADIANS) || wrist.getPosition() > WristConstants.UNDER_THRESHOLD_RADIANS)) && wrist.getVelocity() > -0.1;
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")

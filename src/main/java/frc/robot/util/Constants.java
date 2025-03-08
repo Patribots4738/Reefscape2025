@@ -543,7 +543,7 @@ public final class Constants {
         public static final double P = FieldConstants.IS_REAL ? 400d : 800d;
         public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double D = FieldConstants.IS_REAL ? 30d : 200d;
-        public static final double A = FieldConstants.IS_REAL ? 0.75 : 0d;
+        public static final double A = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double S = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double G = FieldConstants.IS_REAL ? 10d : 0d;
@@ -560,8 +560,10 @@ public final class Constants {
 
         public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
-        public static final double VELOCITY = 1.6d;
-        public static final double ACCELERATION = 4d;
+        public static final double FAST_VELOCITY = 1.6;
+        public static final double FAST_ACCELERATION = 8d;
+        public static final double SLOW_VELOCITY = 1.6;
+        public static final double SLOW_ACCELERATION = 4d;
         public static final double JERK = 40d;
 
         public static final double STOW_POSITION_METERS = 0.0;

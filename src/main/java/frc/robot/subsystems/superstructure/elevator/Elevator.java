@@ -14,13 +14,18 @@ import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,17 +35,31 @@ public class Elevator extends SubsystemBase {
 
     private final ElevatorIO io;
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-    private final LoggedTunableNumber velocity = new LoggedTunableNumber("Elevator/Profile/Velocity", ElevatorConstants.VELOCITY);
-    private final LoggedTunableNumber acceleration = new LoggedTunableNumber("Elevator/Profile/Acceleration", ElevatorConstants.ACCELERATION);
-    private final LoggedTunableNumber jerk = new LoggedTunableNumber("Elevator/Profile/Jerk", ElevatorConstants.JERK);
-    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Elevator/BrakeMotor", ElevatorConstants.BRAKE_MOTOR);
 
-    private double targetPosition = 0.0;
+    private State targetState = new State(0, 0);
+    private State setpoint = new State(0, 0);
+    @AutoLogOutput (key = "Subsystems/Elevator/ShouldRunSetpoint")
+    private boolean shouldRunSetpoint = false;
+    @AutoLogOutput (key = "Subsystems/Elevator/ShouldRunFastProfile")
+    private boolean shouldRunFast = true;
+
+    private TrapezoidProfile fastProfile = new TrapezoidProfile(new Constraints(ElevatorConstants.FAST_VELOCITY, ElevatorConstants.FAST_ACCELERATION));
+    private TrapezoidProfile slowProfile = new TrapezoidProfile(new Constraints(ElevatorConstants.SLOW_VELOCITY, ElevatorConstants.SLOW_ACCELERATION));
+
+    private LoggedTunableNumber fastVelocity = new LoggedTunableNumber("Elevator/FastProfile/Velocity", ElevatorConstants.FAST_VELOCITY);
+    private LoggedTunableNumber fastAcceleration = new LoggedTunableNumber("Elevator/FastProfile/Acceleration", ElevatorConstants.FAST_ACCELERATION);
+    private LoggedTunableNumber slowVelocity = new LoggedTunableNumber("Elevator/SlowProfile/Velocity", ElevatorConstants.SLOW_VELOCITY);
+    private LoggedTunableNumber slowAcceleration = new LoggedTunableNumber("Elevator/SlowProfile/Acceleration", ElevatorConstants.SLOW_ACCELERATION);
+
+    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Elevator/BrakeMotor", ElevatorConstants.BRAKE_MOTOR);
     
     public Elevator(ElevatorIO io) {
         this.io = io;
+
+        fastVelocity.onChanged().or(fastAcceleration.onChanged()).onTrue(Commands.runOnce(() -> fastProfile = new TrapezoidProfile(new Constraints(fastVelocity.get(), fastAcceleration.get()))).ignoringDisable(true));
+        slowVelocity.onChanged().or(slowAcceleration.onChanged()).onTrue(Commands.runOnce(() -> slowProfile = new TrapezoidProfile(new Constraints(slowVelocity.get(), slowAcceleration.get()))).ignoringDisable(true));
+
         ElevatorConstants.LOGGED_GAINS.onChanged(Commands.runOnce(() -> io.setGains(ElevatorConstants.LOGGED_GAINS.get())).ignoringDisable(true));
-        velocity.onChanged().or(acceleration.onChanged()).or(jerk.onChanged()).onTrue(Commands.runOnce(() -> io.configureProfile(velocity.get(), acceleration.get(), jerk.get())).ignoringDisable(true));
         brakeMotor.onChanged(Commands.runOnce(() -> io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
     }
 
@@ -48,7 +67,19 @@ public class Elevator extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("SubsystemInputs/Elevator", inputs);
+
         Logger.recordOutput("Subsystems/Elevator/AtTargetPosition", atTargetPosition());
+        Logger.recordOutput("Subsystems/Elevator/TargetPosition", targetState.position);
+
+        if (shouldRunSetpoint) {
+            setpoint = (shouldRunFast ? fastProfile : slowProfile).calculate(0.02, setpoint, targetState);
+            Logger.recordOutput("Subsystems/Elevator/Step/Velocity", setpoint.velocity);
+            Logger.recordOutput("Subsystems/Elevator/Step/Position", setpoint.position);
+            io.setPosition(setpoint.position);
+        } else {
+            setpoint.position = inputs.leaderPositionMeters;
+            io.setNeutral();
+        }
 
         RobotContainer.components3d[LoggingConstants.ELEVATOR_FIRST_STAGE_INDEX] = new Pose3d(
             0, 
@@ -70,10 +101,11 @@ public class Elevator extends SubsystemBase {
         );
     }
 
-    public void setPosition(double position) {
+    public void setPosition(double position, boolean runFast) {
         position = MathUtil.clamp(position, 0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
-        targetPosition = position;
-        io.setPosition(targetPosition);
+        targetState.position = position;
+        shouldRunSetpoint = true;
+        shouldRunFast = runFast;
 
         RobotContainer.desiredComponents3d[LoggingConstants.ELEVATOR_FIRST_STAGE_INDEX] = new Pose3d(
             0, 
@@ -96,15 +128,15 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setNeutral() {
-        io.setNeutral();
+        shouldRunSetpoint = false;
     }
 
-    public Command setPositionCommand(DoubleSupplier positionSupplier) {
-        return runOnce(() -> setPosition(positionSupplier.getAsDouble())).andThen(Commands.waitUntil(this::atTargetPosition));
+    public Command setPositionCommand(DoubleSupplier positionSupplier, BooleanSupplier runFastSupplier) {
+        return runOnce(() -> setPosition(positionSupplier.getAsDouble(), runFastSupplier.getAsBoolean())).andThen(Commands.waitUntil(this::atTargetPosition));
     }
 
-    public Command setPositionCommand(double position) {
-        return setPositionCommand(() -> position);
+    public Command setPositionCommand(double position, BooleanSupplier runFastSupplier) {
+        return setPositionCommand(() -> position, runFastSupplier);
     }
 
     public Command setNeutralCommand() {
@@ -120,7 +152,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public boolean atTargetPosition() {
-        return atPosition(targetPosition);
+        return atPosition(targetState.position);
     }
 
     public double getPosition() {
