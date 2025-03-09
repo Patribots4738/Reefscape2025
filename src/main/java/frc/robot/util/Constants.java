@@ -195,11 +195,14 @@ public final class Constants {
 
     public static final class AutoConstants {
 
+        //allignment trapazoidal profile constants
+        public static final double HDC_XY_ACCELERATION = 2.5;
+        public static final double HDC_XY_VELOCITY = 1;
+
+        public static final double HDC_THETA_ACCELERATION =  Units.degreesToRadians(450d);
+        public static final double HDC_THETA_VELOCITY =  Units.degreesToRadians(270d);
+
         public static final String REEF_NODES = "ABCDEFGHIJKL";
-        
-        // Below is gotten from choreo
-        public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.degreesToRadians(1137.21);
-        public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Units.degreesToRadians(792.90);
 
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
@@ -219,7 +222,7 @@ public final class Constants {
             0.0
         );
 
-        // public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
+        public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
 
         public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
             3.725, 
@@ -233,7 +236,7 @@ public final class Constants {
             0
         );
 
-        // public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
+        public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
 
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.TELE_XY_GAINS.getP(),
@@ -247,8 +250,8 @@ public final class Constants {
             AutoConstants.TELE_THETA_GAINS.getI(),
             AutoConstants.TELE_THETA_GAINS.getD(),
             new TrapezoidProfile.Constraints(
-                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
-                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)) 
+                AutoConstants.HDC_THETA_VELOCITY,
+                AutoConstants.HDC_THETA_ACCELERATION)) 
             {{
                 setIZone(Units.degreesToRadians(45));
             }};
