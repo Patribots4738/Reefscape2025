@@ -333,7 +333,11 @@ public class RobotContainer {
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
-        controller.leftBumper().onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
+        controller.leftBumper()
+            .onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
+
+        controller.rightBumper()
+            .onTrue(superstructure.algaeTreeCommand());
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -354,7 +358,7 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperState(superstructure.PROCESSOR_PREP));
 
         controller.a()
-            .onTrue(superstructure.algaeRemovalCommand(controller::getAButton));
+            .onTrue(superstructure.algaeRemovalCommand());
 
         controller.y()
             .onTrue(superstructure.setSuperState(superstructure.NET_PREP));
