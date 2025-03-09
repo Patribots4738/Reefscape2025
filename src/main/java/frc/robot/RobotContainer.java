@@ -263,9 +263,9 @@ public class RobotContainer {
                 double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
                 Pose3d endEffectorPose = new Pose3d(robotPose2d.getTranslation().getX(), robotPose2d.getTranslation().getY(), elevatorHeight, new Rotation3d());
                 Pose3d removalNode = PoseCalculations.getClosestAlgaeRemovalNode(endEffectorPose);
-                for (int i = 1; i-1 < FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY.length; i++) {
-                    if (removalNode.equals(FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY[i-1])) {
-                        RobotContainer.placedAlgae[i] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d());
+                for (int i = 0; i < FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY.length; i++) {
+                    if (removalNode.equals(FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY[i])) {
+                        RobotContainer.placedAlgae[i + 1] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d());
                         break;
                     }
                 }
