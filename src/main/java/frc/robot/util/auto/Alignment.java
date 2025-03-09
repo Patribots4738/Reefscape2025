@@ -355,7 +355,7 @@ public class Alignment {
         Pose2d currentPose = swerve.getPose();
         Pose2d prepPose = currentPose.nearest(FieldConstants.GET_REEF_PREP_POSITIONS());
 
-        return Commands.defer(() -> AutoBuilder.pathfindToPose(prepPose, AutoConstants.prepReefConstraints), Set.of(swerve)); 
+        return Commands.defer(() -> AutoBuilder.pathfindToPose(prepPose, AutoConstants.prepReefConstraints, 0.0), Set.of(swerve)); 
     }
 
     public Command reefAlignmentCommand() {

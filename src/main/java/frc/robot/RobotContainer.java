@@ -238,7 +238,7 @@ public class RobotContainer {
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
         controller.a()
-            .whileTrue(alignment.reefFullAlignmentCommand());
+            .whileTrue(alignment.findPrepPoseReef());
 
         controller.b()
             .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
