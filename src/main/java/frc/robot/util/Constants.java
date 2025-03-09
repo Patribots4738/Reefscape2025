@@ -107,6 +107,12 @@ public final class Constants {
             ROBOT_OFFSET.getZ() + 0.7836464896
         );
 
+        public static final Translation3d CORAL_OFFSET = new Translation3d(
+            0.117,
+            -0.005,
+            -0.154653
+        );
+
     }
 
     public static final class DriveConstants {
