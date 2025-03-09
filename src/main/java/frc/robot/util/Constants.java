@@ -491,7 +491,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double INTAKE_PERCENT = 0.4;
-        public static final double HOLD_PERCENT = 0.35;
+        public static final double HOLD_PERCENT = 0.1;
         public static final double OUTTAKE_PERCENT = -0.75;
         public static final double L1_OUTTAKE_PERCENT = -0.1;
 
@@ -503,7 +503,8 @@ public final class Constants {
 
         public static final double HAS_PIECE_INTAKE_THRESHOLD = 5d;
 
-        public static final double HAS_PIECE_OUTTAKE_THRESHOLD = 30d;
+        public static final double HAS_PIECE_OUTTAKE_THRESHOLD_1 = 30d;
+        public static final double HAS_PIECE_OUTTAKE_THRESHOLD_2 = 7d;
 
     }
 
@@ -516,13 +517,13 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double HOLD_PERCENT = 1.0;
+        public static final double HOLD_PERCENT = 0.75;
         public static final double INTAKE_PERCENT = 1.0;
         public static final double OUTTAKE_PERCENT = -1.0;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
-        public static final double NET_X_CHASSIS_OFFSET = 1.4;
+        public static final double NET_X_CHASSIS_OFFSET = 0.61;
 
     }
     public static final class ElevatorConstants {
@@ -638,7 +639,7 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.36;
+        public static final double INTAKE_POSITION_RADIANS = -0.355;
         public static final double L1_POSITION_RADIANS = 1.8;
         public static final double L1_PLACE_POSITION_RADIANS = 2.75;
         public static final double L2_POSITION_RADIANS = 2.41;
@@ -653,7 +654,7 @@ public final class Constants {
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
-        public static final double NET_RADIANS = 1.85;
+        public static final double NET_RADIANS = 1.7;
     }
 
 

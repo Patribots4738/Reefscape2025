@@ -70,6 +70,7 @@ public class Superstructure {
     public final SuperState L3_ALGAE;
     public final SuperState L2_ALGAE_IN;
     public final SuperState L3_ALGAE_IN;
+    public final SuperState TREE_ALGAE_IN;
 
     public final SuperState PROCESSOR_PREP;
     public final SuperState PROCESSOR_PLACE;
@@ -127,7 +128,7 @@ public class Superstructure {
         L3_PLACE = new SuperState("L3_PLACE", ArmState.L3, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
         L4_PLACE = new SuperState("L4_PLACE", ArmState.L4, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
 
-        L1_CONFIRM = new LoggedSuperState("L1_CONFIRM", ArmState.L1_PLACE, ClimbState.STOW, ClawState.CORAL_OUT_L1, () -> true, () -> false);
+        L1_CONFIRM = new LoggedSuperState("L1_CONFIRM", ArmState.L1_PLACE, ClimbState.STOW, ClawState.CORAL_OUT, () -> true, () -> false);
 
         L2_EXIT = new SuperState("L2_EXIT", ArmState.L2_EXIT, ClimbState.STOW, ClawState.DEFAULT);
         L3_EXIT = new SuperState("L3_EXIT", ArmState.L3_EXIT, ClimbState.STOW, ClawState.DEFAULT);
@@ -137,6 +138,7 @@ public class Superstructure {
         L3_ALGAE = new SuperState("L3_ALGAE", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.DEFAULT);
         L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
+        TREE_ALGAE_IN = new SuperState("TREE_ALGAE_IN", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_IN);
 
         PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClimbState.STOW, ClawState.DEFAULT);
         PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_OUT);
@@ -146,7 +148,7 @@ public class Superstructure {
         CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.DEFAULT);
 
         NET_PREP = new SuperState("NET_PREP", ArmState.NET_PREP, ClimbState.STOW, ClawState.DEFAULT);
-        NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, () -> false, elevator::atTargetPosition);
+        NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, () -> false, () -> elevator.atTargetPosition() && wrist.getPosition() > 1.5);
         NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.DEFAULT);
 
         BACK_ALGAE_TOSS = new SuperState("BACK_ALGAE_TOSS", ArmState.BACK_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
@@ -232,33 +234,11 @@ public class Superstructure {
         return Commands.runOnce(() -> this.targetState = nextState).alongWith(
             Commands.sequence(
                 // Run these commands in parallel, cancel all when first command argument ends
-                Commands.deadline(
+                Commands.parallel(
                     fixArmAndClimb(nextState.armState, nextState.climbState),
                     // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
-                    Commands.sequence(
-                        Commands.waitUntil(() -> nextState.coralInterruptSupplier.getAsBoolean() || nextState.clawState.coralPercent == 0 || structureAtTargetPosition()),
-                        Commands.either(
-                            coralClaw.setPercentCommand(() -> nextState.clawState.coralPercent),
-                            Commands.either(
-                                coralClaw.setPercentCommand(CoralClawConstants.HOLD_PERCENT), 
-                                coralClaw.setPercentCommand(0), 
-                                coralClaw::hasPiece
-                            ), 
-                            () -> nextState.clawState.coralPercent != 0
-                        )
-                    ),
-                    Commands.sequence(
-                        Commands.waitUntil(() -> nextState.algaeInterruptSupplier.getAsBoolean() || nextState.clawState.algaePercent == 0 || structureAtTargetPosition()),
-                        Commands.either(
-                            algaeClaw.setPercentCommand(() -> nextState.clawState.algaePercent),
-                            Commands.either(
-                                algaeClaw.setPercentCommand(AlgaeClawConstants.HOLD_PERCENT), 
-                                algaeClaw.setPercentCommand(0), 
-                                algaeClaw::hasPiece
-                            ), 
-                            () -> nextState.clawState.algaePercent != 0
-                        )
-                    )
+                    setCoralClawState(nextState),
+                    setAlgaeClawState(nextState)
                 )
             )
         );
@@ -287,6 +267,36 @@ public class Superstructure {
     public Command setClimbState(ClimbState state) {
         return Commands.runOnce(() -> targetClimbState = state)
                 .alongWith(climb.setPositionCommand(() -> state.climbPosition, () -> state.slam));
+    }
+
+    public Command setCoralClawState(SuperState state) {
+        return Commands.sequence(
+            Commands.waitUntil(() -> state.coralInterruptSupplier.getAsBoolean() || state.clawState.coralPercent == 0 || structureAtTargetPosition()),
+            Commands.either(
+                coralClaw.setPercentCommand(() -> state.clawState.coralPercent),
+                Commands.either(
+                    coralClaw.setPercentCommand(CoralClawConstants.HOLD_PERCENT), 
+                    coralClaw.setPercentCommand(0), 
+                    coralClaw::hasPiece
+                ), 
+                () -> state.clawState.coralPercent != 0
+            )
+        );
+    }
+
+    public Command setAlgaeClawState(SuperState state) {
+        return Commands.sequence(
+            Commands.waitUntil(() -> state.algaeInterruptSupplier.getAsBoolean() || state.clawState.algaePercent == 0 || structureAtTargetPosition()),
+            Commands.either(
+                algaeClaw.setPercentCommand(() -> state.clawState.algaePercent),
+                Commands.either(
+                    algaeClaw.setPercentCommand(AlgaeClawConstants.HOLD_PERCENT), 
+                    algaeClaw.setPercentCommand(0), 
+                    algaeClaw::hasPiece
+                ), 
+                () -> state.clawState.algaePercent != 0
+            )
+        );
     }
 
     public Command avoidClimb(ArmState armState, ClimbState climbState) {
@@ -322,26 +332,22 @@ public class Superstructure {
         return wrist.setPositionCommand(WristConstants.TRANSITION_RADIANS, this::shouldRunWristFast);
     }
 
-    public Command algaeL2Command(BooleanSupplier continueIntakingSupplier)  {
-        return Commands.sequence(
-            setSuperState(L2_ALGAE_IN),
-            Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
-            setSuperState(L2_ALGAE)
-        );
+    public Command algaeL2Command()  {
+        return setSuperState(L2_ALGAE_IN);
     }
 
-    public Command algaeL3Command(BooleanSupplier continueIntakingSupplier)  {
-        return Commands.sequence(
-            setSuperState(L3_ALGAE_IN),
-            Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean()),
-            setSuperState(L3_ALGAE)
-        );
+    public Command algaeL3Command()  {
+        return setSuperState(L3_ALGAE_IN);
+    }
+
+    public Command algaeTreeCommand() {
+        return setSuperState(TREE_ALGAE_IN);
     }
     
-    public Command algaeRemovalCommand(BooleanSupplier continueIntakingSupplier) {
+    public Command algaeRemovalCommand() {
         return Commands.either(
-            algaeL3Command(continueIntakingSupplier),
-            algaeL2Command(continueIntakingSupplier),
+            algaeL3Command(),
+            algaeL2Command(),
             () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
         );
     }
@@ -424,7 +430,7 @@ public class Superstructure {
         return Commands.sequence(
             outtakeCommand(),
             Commands.sequence(
-                Commands.waitSeconds(0.075),
+                Commands.waitSeconds(0.1),
                 setSuperState(L1_CONFIRM)
             ).onlyIf(() -> targetArmState == ArmState.L1),
             Commands.waitUntil(() -> 
@@ -432,6 +438,7 @@ public class Superstructure {
                 (targetState.clawState.coralPercent != 0 && !coralClaw.hasPiece() 
                     || targetState.clawState.algaePercent != 0 && !algaeClaw.hasPiece())),
             logPlacementCommand(),
+            Commands.waitSeconds(0.5).onlyIf(() -> targetArmState == ArmState.NET),
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
             setSuperState(STOW)
