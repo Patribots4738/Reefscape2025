@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.SparkBase;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -183,6 +184,13 @@ public final class Constants {
     public static final class AutoConstants {
 
         public static final String REEF_NODES = "ABCDEFGHIJKL";
+
+        public static final PathConstraints prepReefConstraints = new PathConstraints(
+                10.0, 
+                20.0, 
+                Units.degreesToRadians(720), 
+                Units.degreesToRadians(720)
+            );
         
         // Below is gotten from choreo
         public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.degreesToRadians(1137.21);
@@ -972,6 +980,42 @@ public final class Constants {
         public static final List<ReefSide> GET_REEF_FACE_POSITIONS() {
             int startIndex = Robot.isRedAlliance() ? 6 : 0;
             return REEF_FACE_POSITIONS.subList(startIndex, startIndex + 6);
+        }
+
+        public static final Pose2d PREP_POSE_A_BLUE = new Pose2d(2.67, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(180));
+        public static final Pose2d PREP_POSE_B_BLUE = new Pose2d(3.59, 2.50, Rotation2d.fromDegrees(240));
+        public static final Pose2d PREP_POSE_C_BLUE = new Pose2d(5.41, 4.20, Rotation2d.fromDegrees(300));
+        public static final Pose2d PREP_POSE_D_BLUE = new Pose2d(6.30, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(0));
+        public static final Pose2d PREP_POSE_E_BLUE = new Pose2d(5.38, 5.60, Rotation2d.fromDegrees(60));
+        public static final Pose2d PREP_POSE_F_BLUE = new Pose2d(3.56, 3.85, Rotation2d.fromDegrees(120));
+
+        public static final Pose2d PREP_POSE_A_RED = PoseCalculations.mirrorPose(PREP_POSE_A_BLUE);
+        public static final Pose2d PREP_POSE_B_RED = PoseCalculations.mirrorPose(PREP_POSE_B_BLUE);
+        public static final Pose2d PREP_POSE_C_RED = PoseCalculations.mirrorPose(PREP_POSE_C_BLUE);
+        public static final Pose2d PREP_POSE_D_RED = PoseCalculations.mirrorPose(PREP_POSE_D_BLUE);
+        public static final Pose2d PREP_POSE_E_RED = PoseCalculations.mirrorPose(PREP_POSE_E_BLUE);
+        public static final Pose2d PREP_POSE_F_RED = PoseCalculations.mirrorPose(PREP_POSE_F_BLUE);
+
+        public static final List<Pose2d> REEF_PREP_POSITIONS = new ArrayList<Pose2d>() {{
+
+            add(PREP_POSE_A_BLUE);
+            add(PREP_POSE_B_BLUE);
+            add(PREP_POSE_C_BLUE);
+            add(PREP_POSE_D_BLUE);
+            add(PREP_POSE_E_BLUE);
+            add(PREP_POSE_F_BLUE);
+
+            add(PREP_POSE_A_RED);
+            add(PREP_POSE_B_RED);
+            add(PREP_POSE_C_RED);
+            add(PREP_POSE_D_RED);
+            add(PREP_POSE_E_RED);
+            add(PREP_POSE_F_RED);
+        }};
+
+        public static final List<Pose2d> GET_REEF_PREP_POSITIONS() {
+            int startIndex = Robot.isRedAlliance() ? 6 : 0;
+            return REEF_PREP_POSITIONS.subList(startIndex, startIndex + 6);
         }
 
         public static final Pose2d CAGE_1 = new Pose2d(8.77, 7.26, Rotation2d.fromDegrees(270));
