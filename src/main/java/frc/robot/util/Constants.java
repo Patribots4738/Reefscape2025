@@ -113,6 +113,12 @@ public final class Constants {
             -0.154653
         );
 
+        public static final Translation3d ALGAE_OFFSET = new Translation3d(
+            -0.325,
+            0,
+            -0.05
+        );
+
     }
 
     public static final class DriveConstants {
@@ -1056,7 +1062,8 @@ public final class Constants {
         public static final int[] VALID_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 }; // D:
 
 
-        static final double CORAL_RADIUS_METERS = 0.0507745;
+        public static final double CORAL_RADIUS_METERS = 0.0507745;
+        public static final double ALGAE_RADIUS_METERS = 0.205;
         static final Translation3d REEF_CENTER = new Translation3d(4.49, 4.0225, 0);
         static final double HEXAGON_RADS = Units.degreesToRadians(360/6);
                 

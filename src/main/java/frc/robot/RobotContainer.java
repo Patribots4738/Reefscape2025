@@ -97,14 +97,19 @@ public class RobotContainer {
     public static double gameModeStart = 0;
     @AutoLogOutput (key = "Draggables/AutoStartingPose")
     public static Pose2d autoStartingPose = Pose2d.kZero;
-    @AutoLogOutput (key = "Draggables/PlacedGamePieces")
+    @AutoLogOutput (key = "Draggables/PlacedGamePieces/Coral")
     public static Pose3d[] placedCoral = new Pose3d[FieldConstants.BLUE_CORAL_PLACEMENT_POSITIONS.length + FieldConstants.RED_CORAL_PLACEMENT_POSITIONS.length];
+    @AutoLogOutput (key = "Draggables/PlacedGamePieces/Algae")
+    public static Pose3d[] placedAlgae = new Pose3d[18+1]; // 18 on field + reserved preload location
     // Reserve index 0 for holding coral
     public static int placedCoralIndex = 1;
     static {
         for (int i = 0; i < placedCoral.length; i++) {
             // Start coral under the map so you can't see them
-            placedCoral[i] = new Pose3d(0,0,-.1, new Rotation3d());
+            placedCoral[i] = new Pose3d(0,0,-FieldConstants.CORAL_RADIUS_METERS-0.05, new Rotation3d());
+        }
+        for (int i = 0; i < placedAlgae.length; i++) {
+            placedAlgae[i] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d());
         }
     }
     @AutoLogOutput (key = "Draggables/Timer")
@@ -238,7 +243,19 @@ public class RobotContainer {
                 )
                 .ignoringDisable(true).repeatedly())
             .onFalse(Commands.runOnce(() -> 
-                placedCoral[0] = new Pose3d(0,0,-1, new Rotation3d()))
+                placedCoral[0] = new Pose3d(0,0,-FieldConstants.CORAL_RADIUS_METERS-0.05, new Rotation3d()))
+                .ignoringDisable(true)
+            );
+
+        new Trigger(algaeClaw::hasPiece)
+            .whileTrue(Commands.runOnce(() ->
+                    placedAlgae[0] = new Pose3d(robotPose2d)
+                        // Make field relative
+                        .plus(new Transform3d(new Pose3d(), components3d[LoggingConstants.WRIST_INDEX]))
+                        .plus(new Transform3d(new Pose3d(), new Pose3d(LoggingConstants.ALGAE_OFFSET, new Rotation3d())))
+                ).ignoringDisable(true).repeatedly())
+            .onFalse(Commands.runOnce(() -> 
+                placedAlgae[0] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d()))
                 .ignoringDisable(true)
             );
     }
