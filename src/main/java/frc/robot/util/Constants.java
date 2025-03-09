@@ -206,6 +206,7 @@ public final class Constants {
 
         public static final double REEF_ALIGNMENT_MAX_SPEED = 1.0;
         public static final double INTAKE_ALIGNMENT_MAX_SPEED = 1.0;
+        public static final double PROCESSOR_ALIGNMENT_MAX_SPEED = 0.0;
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
@@ -278,6 +279,7 @@ public final class Constants {
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double CAGE_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double NET_ALIGNMENT_MULTIPLIER = 0.5;
+        public static final double PROCESSER_ALIGNMENT_MULTIPLIER = 0.5;
 
     }
 
@@ -537,6 +539,7 @@ public final class Constants {
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
         public static final double NET_X_CHASSIS_OFFSET = 0.61;
+        public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
 
     }
     public static final class ElevatorConstants {
@@ -893,9 +896,11 @@ public final class Constants {
             add(PoseCalculations.mirrorPose(BLUE_PROCESSOR));
         }};
 
-        public static final Pose2d GET_PROCESSOR_POSITION() {
+
+
+        public static final List<Pose2d> GET_PROCESSOR_POSITION() {
             int index = Robot.isRedAlliance() ? 1 : 0;
-            return PROCESSOR_POSITIONS.get(index);
+            return PROCESSOR_POSITIONS.subList(index, index + 1);
         }
 
         public static final Pose2d CORAL_STATION_1 = new Pose2d(1.653, 7.364, Rotation2d.fromDegrees(125));

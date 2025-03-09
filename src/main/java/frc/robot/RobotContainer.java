@@ -417,7 +417,14 @@ public class RobotContainer {
         controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
 
+            controller.leftStick()
+            .toggleOnTrue(
+                    alignment.processorAlignmentCommand(controller::getLeftX)
+                
+                );
+
     }
+        
 
     private void configureCalibrationBindings(PatriBoxController controller) {
 

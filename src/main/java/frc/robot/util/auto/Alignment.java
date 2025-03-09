@@ -41,6 +41,7 @@ public class Alignment {
         REEF,
         REEF_SOFT,
         NET,
+        PROCESSOR,
         NONE
     }
 
@@ -189,6 +190,28 @@ public class Alignment {
         return getAutoSpeeds(desiredPose);
     }
 
+    public ChassisSpeeds getProcessorRotationalAutoSpeeds() {
+        Rotation2d processorRotation = PoseCalculations.getClosestProcessor(swerve.getPose()).getRotation();
+        return getAutoRotationalSpeeds(processorRotation);
+    }
+//fix so that the values are for processor instead of net
+//get rid of algae claw stuff
+
+    public ChassisSpeeds getProcessorAutoSpeeds() {
+        Pose2d processor = PoseCalculations.getClosestProcessor(swerve.getPose());
+        Rotation2d theta = PoseCalculations.getClosestProcessor(swerve.getPose()).getRotation(); 
+        Pose2d desiredPose = new Pose2d(
+            processor.getX() + AlgaeClawConstants.PROCESSOR_X_CHASSIS_OFFSET,
+            processor.getY(),
+            theta
+        );
+        ChassisSpeeds autoSpeeds = getAutoSpeeds(processor);
+        double maxSpeed = AutoConstants.PROCESSOR_ALIGNMENT_MAX_SPEED;
+        autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxSpeed, maxSpeed);
+        autoSpeeds.vyMetersPerSecond = MathUtil.clamp(autoSpeeds.vyMetersPerSecond, -maxSpeed, maxSpeed);
+        return autoSpeeds;
+    }
+
     // TODO: Make this less 🤮 because MY LORD
     public ChassisSpeeds getReefAxisSpeeds() {
         Pose2d currentPose = swerve.getPose();
@@ -333,6 +356,27 @@ public class Alignment {
             autoAlignmentCommand(
                 AlignmentMode.NET, 
                 this::getNetAutoSpeeds, 
+                () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
+                true
+            );
+    }
+
+    public Command processorAlignmentComand(DoubleSupplier driverX) {
+        return
+            autoAlignmentCommand(
+                AlignmentMode.PROCESSOR, 
+                this::getProcessorAutoSpeeds, 
+                () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.PROCESSER_ALIGNMENT_MULTIPLIER), 0),
+                true
+            );
+    }
+
+    //make auto constants for processor alignment
+    public Command processorAlignmentCommand(DoubleSupplier driverX) {
+        return 
+            autoAlignmentCommand(
+                AlignmentMode.PROCESSOR, 
+                this::getProcessorAutoSpeeds, 
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
                 true
             );
