@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
@@ -40,6 +41,11 @@ public class Alignment {
     private TrapezoidProfile translationProfile = new TrapezoidProfile(new Constraints(AutoConstants.HDC_XY_VELOCITY, AutoConstants.HDC_XY_ACCELERATION));
     private TrapezoidProfile rotationProfile = new TrapezoidProfile(new Constraints(AutoConstants.HDC_THETA_VELOCITY, AutoConstants.HDC_THETA_ACCELERATION));
 
+    private State xSetpoint = new State(0, 0);
+    private State ySetpoint = new State(0, 0);
+    private State targetX = new State(0, 0);
+    private State targetY = new State(0, 0);
+
     private LoggedTunableNumber translationVelocity = new LoggedTunableNumber("Alignment/TranslationVelocity", AutoConstants.HDC_XY_VELOCITY);
     private LoggedTunableNumber translationAcceleration = new LoggedTunableNumber("Alignment/TranslationAcceleration", AutoConstants.HDC_XY_ACCELERATION);
     private LoggedTunableNumber rotationVelocity = new LoggedTunableNumber("Alignment/RotationVelocity", AutoConstants.HDC_THETA_VELOCITY);
@@ -67,8 +73,12 @@ public class Alignment {
         AutoConstants.TELE_HDC.getThetaController().reset(swerve.getPose().getRotation().getRadians());
         AutoConstants.TELE_HDC.getXController().reset();
         AutoConstants.TELE_HDC.getYController().reset();
+        xSetpoint.position = 0;
+        ySetpoint.position = 0;
+        targetX.position = 0;
+        targetY.position = 0;
     }
-
+    
     public Command resetHDCCommand() {
         return Commands.runOnce(() -> resetHDC());
     }
@@ -115,20 +125,33 @@ public class Alignment {
     }
 
     public ChassisSpeeds getAutoSpeeds(Pose2d position) {
-        position = getProfiledPosition(position);
         swerve.setDesiredPose(position);
         return AutoConstants.TELE_HDC.calculate(swerve.getPose(), position, 0, position.getRotation());
     }
 
     public ChassisSpeeds getAutoRotationalSpeeds(Rotation2d rotation) {
+        Pose2d currentPose = swerve.getPose();
+        Pose2d desiredPose = new Pose2d(currentPose.getX(), currentPose.getY(), rotation);
+        return getAutoSpeeds(desiredPose);
+    }
+
+    public ChassisSpeeds getProfiledAutoSpeeds(Pose2d position) {
+        swerve.setDesiredPose(position);
+        if (xSetpoint.position == 0 && ySetpoint.position == 0 && targetX.position == 0 && targetY.position == 0) {
+            Pose2d currentPose = swerve.getPose();
+            xSetpoint.position = currentPose.getX();
+            ySetpoint.position = currentPose.getY();
+            targetX.position = position.getX();
+            targetY.position = position.getY();
+        }
+        position = getProfiledPosition(position);
+        Logger.recordOutput("Subsystems/Swerve/StepPosition", position);
+        return AutoConstants.TELE_HDC.calculate(swerve.getPose(), position, 0, position.getRotation());
+    }
+
+    public ChassisSpeeds getProfiledAutoRotationalSpeeds(Rotation2d rotation) {
         Pose2d desiredPose = new Pose2d(swerve.getPose().getX(), swerve.getPose().getY(), getProfiledRotation(rotation));
-        swerve.setDesiredPose(desiredPose);
-        return 
-            new ChassisSpeeds(
-                0,
-                0,
-                AutoConstants.TELE_HDC.getThetaController().calculate(swerve.getPose().getRotation().getRadians(), rotation.getRadians())
-            );
+        return getProfiledAutoSpeeds(desiredPose);
     }
 
     public ChassisSpeeds getControllerSpeeds(double controllerX, double controllerY) {
@@ -142,21 +165,11 @@ public class Alignment {
     }
     
     public Pose2d getProfiledPosition(Pose2d targetPose) {
-        // get current rotation and x and y
-        double posX = swerve.getPose().getX();
-        double posY = swerve.getPose().getY();
-        double posTheta = swerve.getPose().getRotation().getRadians();
-
-        double targetX = targetPose.getX();
-        double targetY = targetPose.getY();
-        double targetTheta = targetPose.getRotation().getRadians();
-
         // use the profiles on the parameters
-        Rotation2d profiledTheta = new Rotation2d(rotationProfile.calculate(0.02, new TrapezoidProfile.State(posTheta, 0), new TrapezoidProfile.State(targetTheta, 0)).position);
-        double profiledX = translationProfile.calculate(0.02, new TrapezoidProfile.State(posX, 0), new TrapezoidProfile.State(targetX, 0)).position;
-        double profiledY = translationProfile.calculate(0.02, new TrapezoidProfile.State(posY,0), new TrapezoidProfile.State(targetY,0)).position;
+        xSetpoint = translationProfile.calculate(0.02, xSetpoint, targetX);
+        ySetpoint = translationProfile.calculate(0.02, ySetpoint, targetY);
         // use the calculated states and get the positions to create a pose2d
-        return new Pose2d(profiledX, profiledY, profiledTheta);
+        return new Pose2d(xSetpoint.position, ySetpoint.position, targetPose.getRotation());
     }
 
     public Rotation2d getProfiledRotation(Rotation2d rotation) {
@@ -188,10 +201,7 @@ public class Alignment {
 
     public ChassisSpeeds getIntakeAutoSpeeds() {
         Pose2d intakeStation = PoseCalculations.getClosestCoralStation(swerve.getPose());
-        ChassisSpeeds autoSpeeds = getAutoSpeeds(intakeStation);
-        double maxSpeed = AutoConstants.INTAKE_ALIGNMENT_MAX_SPEED;
-        autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxSpeed, maxSpeed);
-        autoSpeeds.vyMetersPerSecond = MathUtil.clamp(autoSpeeds.vyMetersPerSecond, -maxSpeed, maxSpeed);
+        ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(intakeStation);
         return autoSpeeds;
     }
     
@@ -213,7 +223,7 @@ public class Alignment {
                 : cagePose.getY() + ClimbConstants.Y_CHASSIS_OFFSET, 
             cagePose.getRotation()
         );
-        return getAutoSpeeds(desiredPose);
+        return getProfiledAutoSpeeds(desiredPose);
     }
 
     public ChassisSpeeds getNetAutoSpeeds() {
@@ -283,15 +293,13 @@ public class Alignment {
         double y = node.getY() + distance * node.getRotation().getSin();
         Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
 
-        ChassisSpeeds autoSpeeds = getAutoSpeeds(desiredPose);
-        double maxVelocity = AutoConstants.REEF_ALIGNMENT_MAX_SPEED;
-        autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxVelocity, maxVelocity);
-        autoSpeeds.vyMetersPerSecond = MathUtil.clamp(autoSpeeds.vyMetersPerSecond, -maxVelocity, maxVelocity);
+        ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(desiredPose);
         Logger.recordOutput("Subsystems/Swerve/AutoSpeeds", autoSpeeds);
         return autoSpeeds;
     }
 
     public void updateIndex(int increment) {
+        resetHDC();
         if (alignmentIndex == -1) {
             alignmentIndex = 0;
         }

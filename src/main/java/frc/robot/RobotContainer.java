@@ -142,21 +142,21 @@ public class RobotContainer {
             () -> (robotRelativeSupplier.getAsBoolean() && Robot.isRedAlliance())
         ));
 
-        // AutoConstants.LOGGED_TELE_XY_GAINS.onChanged(Commands.parallel(
-        //     Commands.runOnce(() -> AutoConstants.TELE_HDC.getXController().setPID(
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getD())),
-        //     Commands.runOnce(() -> AutoConstants.TELE_HDC.getYController().setPID(
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
-        //         AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))).ignoringDisable(true));
+        AutoConstants.LOGGED_TELE_XY_GAINS.onChanged(Commands.parallel(
+            Commands.runOnce(() -> AutoConstants.TELE_HDC.getXController().setPID(
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getD())),
+            Commands.runOnce(() -> AutoConstants.TELE_HDC.getYController().setPID(
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getP(),
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getI(),
+                AutoConstants.LOGGED_TELE_XY_GAINS.get().getD()))).ignoringDisable(true));
 
-        // AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(
-        //     Commands.runOnce(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
-        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getP(),
-        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getI(),
-        //         AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
+        AutoConstants.LOGGED_TELE_THETA_GAINS.onChanged(
+            Commands.runOnce(() -> AutoConstants.TELE_HDC.getThetaController().setPID(
+                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getP(),
+                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getI(),
+                AutoConstants.LOGGED_TELE_THETA_GAINS.get().getD())).ignoringDisable(true));
 
         configureButtonBindings();
         configureMiscTriggers();
