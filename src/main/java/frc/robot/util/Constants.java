@@ -5,6 +5,7 @@
 package frc.robot.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,18 @@ public final class Constants {
             ROBOT_OFFSET.getX() - 0.166, 
             ROBOT_OFFSET.getY() + 0.007, 
             ROBOT_OFFSET.getZ() + 0.7836464896
+        );
+
+        public static final Translation3d CORAL_OFFSET = new Translation3d(
+            0.117,
+            -0.005,
+            -0.154653
+        );
+
+        public static final Translation3d ALGAE_OFFSET = new Translation3d(
+            -0.325,
+            0,
+            -0.05
         );
 
     }
@@ -1051,7 +1064,8 @@ public final class Constants {
         public static final int[] VALID_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 }; // D:
 
 
-        static final double CORAL_RADIUS_METERS = 0.0507745;
+        public static final double CORAL_RADIUS_METERS = 0.0507745;
+        public static final double ALGAE_RADIUS_METERS = 0.205;
         static final Translation3d REEF_CENTER = new Translation3d(4.49, 4.0225, 0);
         static final double HEXAGON_RADS = Units.degreesToRadians(360/6);
                 
@@ -1080,11 +1094,9 @@ public final class Constants {
             L2_CORAL_PLACEMENT_POSITIONS, L3_CORAL_PLACEMENT_POSITIONS, L4_CORAL_PLACEMENT_POSITIONS
         );
 
-        public static final Pose3d[] RED_CORAL_PLACEMENT_POSITIONS = flipCoralPlacementPositions(BLUE_CORAL_PLACEMENT_POSITIONS);
-
-        public static final Pose3d[] GET_CORAL_PLACEMENT_POSITIONS() {
-            return Robot.isRedAlliance() ? RED_CORAL_PLACEMENT_POSITIONS : BLUE_CORAL_PLACEMENT_POSITIONS;
-        }
+        public static final Pose3d[] CORAL_PLACEMENT_POSITIONS = combineCoralPlacementPositions(
+            BLUE_CORAL_PLACEMENT_POSITIONS, flipCoralPlacementPositions(BLUE_CORAL_PLACEMENT_POSITIONS)
+        );
 
         private static Pose3d[] createCoralPlacementPositions(Pose3d pose0, Pose3d pose1) {
             return new Pose3d[] {
@@ -1126,5 +1138,26 @@ public final class Constants {
             }
             return flipped;
         }
+
+        /// 
+        /// ALGAE LAND
+        /// 
+        static final Pose3d BLUE_POSE_HIGH = new Pose3d(3.81, 4.025, 1.315, new Rotation3d());
+        static final Pose3d BLUE_POSE_LOW = new Pose3d(3.81, 4.025, .905, new Rotation3d());
+        static final Pose3d[] BLUE_ALGAE_LOCATIONS = new Pose3d[] {
+            BLUE_POSE_HIGH,
+            rotatePose(BLUE_POSE_HIGH, HEXAGON_RADS*2),
+            rotatePose(BLUE_POSE_HIGH, HEXAGON_RADS*4),
+            rotatePose(BLUE_POSE_LOW, HEXAGON_RADS),
+            rotatePose(BLUE_POSE_LOW, HEXAGON_RADS*3),
+            rotatePose(BLUE_POSE_LOW, HEXAGON_RADS*5)
+        };
+
+        public static final List<Pose3d> ALGAE_REMOVAL_LOCATIONS_LIST = new ArrayList<Pose3d>() {{
+            addAll(Arrays.asList(BLUE_ALGAE_LOCATIONS));
+            addAll(Arrays.asList(flipCoralPlacementPositions(BLUE_ALGAE_LOCATIONS)));
+        }};
+        
+        public static final Pose3d[] ALGAE_REMOVAL_LOCATIONS_ARRAY = ALGAE_REMOVAL_LOCATIONS_LIST.toArray(new Pose3d[0]);
     }
 }

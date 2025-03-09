@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.subsystems.superstructure.claw.ClawIOInputsAutoLogged;
 import frc.robot.util.Constants.AlgaeClawConstants;
+import frc.robot.util.Constants.FieldConstants;
 
 public class AlgaeClaw extends SubsystemBase {
 
@@ -66,7 +67,7 @@ public class AlgaeClaw extends SubsystemBase {
     }
     
     public boolean hasPiece() {
-        return hasPiece;
+        return FieldConstants.IS_REAL ? hasPiece : percentOutput > 0;
     }
 }
 

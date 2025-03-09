@@ -8,13 +8,10 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -437,8 +434,6 @@ public class Superstructure {
                 !continueOuttakingSupplier.getAsBoolean() && 
                 (targetState.clawState.coralPercent != 0 && !coralClaw.hasPiece() 
                     || targetState.clawState.algaePercent != 0 && !algaeClaw.hasPiece())),
-            logPlacementCommand(),
-            Commands.waitSeconds(0.5).onlyIf(() -> targetArmState == ArmState.NET),
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
             setSuperState(STOW)
@@ -460,7 +455,6 @@ public class Superstructure {
     public Command coralPlaceCommandAuto() {
         return Commands.sequence(
             outtakeCommand(),
-            logPlacementCommand(),
             Commands.waitSeconds(0.5),
             stopOuttakeCommand()
         );
@@ -529,19 +523,6 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ClawState")
     public ClawState getTargetClawState() {
         return targetState.clawState;
-    }
-
-    public Command logPlacementCommand() {
-        return Commands.runOnce(() -> {
-            Pose2d robotPose = robotPoseSupplier.get();
-            double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
-            Pose3d endEffectorPose = new Pose3d(robotPose.getTranslation().getX(), robotPose.getTranslation().getY(), elevatorHeight, new Rotation3d());
-            Pose3d scoringNode = PoseCalculations.getClosestScoringNode(endEffectorPose);
-            if (RobotContainer.placedCoralIndex >= RobotContainer.placedCoral.length)
-                RobotContainer.placedCoralIndex = 0; // Start overriding previous placements
-            RobotContainer.placedCoral[RobotContainer.placedCoralIndex] = scoringNode;
-            RobotContainer.placedCoralIndex++;
-        });
     }
 
 }
