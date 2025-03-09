@@ -182,6 +182,13 @@ public final class Constants {
 
     public static final class AutoConstants {
 
+        //allignment trapazoidal profile constants
+        public static final double HDC_XY_ACCELERATION = 2d;
+        public static final double HDC_XY_VELOCITY = 2d;
+
+        public static final double HDC_THETA_ACCELERATION =  Units.degreesToRadians(792.90);
+        public static final double HDC_THETA_VELOCITY =  Units.degreesToRadians(1137.21);
+
         public static final String REEF_NODES = "ABCDEFGHIJKL";
         
         // Below is gotten from choreo

@@ -10,6 +10,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
@@ -20,7 +22,12 @@ import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.calc.PoseCalculations;
+import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.util.custom.ReefSide;
+
+// create motion profile DONE
+// create tunnable motion profile DONE
+// use setpoints and target state to run motion profile in command?
 
 public class Alignment {
 
@@ -30,8 +37,19 @@ public class Alignment {
     @AutoLogOutput (key = "Subsystems/Swerve/AlignmentIndex")
     private int alignmentIndex = -1;
 
+    private TrapezoidProfile translationProfile = new TrapezoidProfile(new Constraints(AutoConstants.HDC_XY_VELOCITY, AutoConstants.HDC_XY_ACCELERATION));
+    private TrapezoidProfile rotationProfile = new TrapezoidProfile(new Constraints(AutoConstants.HDC_THETA_VELOCITY, AutoConstants.HDC_THETA_ACCELERATION));
+
+    private LoggedTunableNumber translationVelocity = new LoggedTunableNumber("Alignment/TranslationVelocity", AutoConstants.HDC_XY_VELOCITY);
+    private LoggedTunableNumber translationAcceleration = new LoggedTunableNumber("Alignment/TranslationAcceleration", AutoConstants.HDC_XY_ACCELERATION);
+    private LoggedTunableNumber rotationVelocity = new LoggedTunableNumber("Alignment/RotationVelocity", AutoConstants.HDC_THETA_VELOCITY);
+    private LoggedTunableNumber rotationAcceleration = new LoggedTunableNumber("Alignment/RotationAcceleration", AutoConstants.HDC_THETA_ACCELERATION);
+    
     public Alignment(Swerve swerve) {
         this.swerve = swerve;
+
+        rotationVelocity.onChanged().or(rotationAcceleration.onChanged()).onTrue(Commands.runOnce(() -> rotationProfile = new TrapezoidProfile(new Constraints(rotationVelocity.get(), rotationAcceleration.get()))).ignoringDisable(true));
+        translationVelocity.onChanged().or(translationAcceleration.onChanged()).onTrue(Commands.runOnce(() -> translationProfile = new TrapezoidProfile(new Constraints(translationVelocity.get(), translationAcceleration.get()))).ignoringDisable(true));
     }
 
     public enum AlignmentMode {
@@ -97,12 +115,13 @@ public class Alignment {
     }
 
     public ChassisSpeeds getAutoSpeeds(Pose2d position) {
+        position = getProfiledPosition(position);
         swerve.setDesiredPose(position);
         return AutoConstants.TELE_HDC.calculate(swerve.getPose(), position, 0, position.getRotation());
     }
 
     public ChassisSpeeds getAutoRotationalSpeeds(Rotation2d rotation) {
-        Pose2d desiredPose = new Pose2d(swerve.getPose().getX(), swerve.getPose().getY(), rotation);
+        Pose2d desiredPose = new Pose2d(swerve.getPose().getX(), swerve.getPose().getY(), getProfiledRotation(rotation));
         swerve.setDesiredPose(desiredPose);
         return 
             new ChassisSpeeds(
@@ -120,6 +139,31 @@ public class Alignment {
                 0, 
                 swerve.getPose().getRotation()
             );
+    }
+    
+    public Pose2d getProfiledPosition(Pose2d targetPose) {
+        // get current rotation and x and y
+        double posX = swerve.getPose().getX();
+        double posY = swerve.getPose().getY();
+        double posTheta = swerve.getPose().getRotation().getRadians();
+
+        double targetX = targetPose.getX();
+        double targetY = targetPose.getY();
+        double targetTheta = targetPose.getRotation().getRadians();
+
+        // use the profiles on the parameters
+        Rotation2d profiledTheta = new Rotation2d(rotationProfile.calculate(0.02, new TrapezoidProfile.State(posTheta, 0), new TrapezoidProfile.State(targetTheta, 0)).position);
+        double profiledX = translationProfile.calculate(0.02, new TrapezoidProfile.State(posX, 0), new TrapezoidProfile.State(targetX, 0)).position;
+        double profiledY = translationProfile.calculate(0.02, new TrapezoidProfile.State(posY,0), new TrapezoidProfile.State(targetY,0)).position;
+        // use the calculated states and get the positions to create a pose2d
+        return new Pose2d(profiledX, profiledY, profiledTheta);
+    }
+
+    public Rotation2d getProfiledRotation(Rotation2d rotation) {
+        double targetTheta = rotation.getRadians();
+        double posTheta = swerve.getPose().getRotation().getRadians();
+        Rotation2d profiledTheta = new Rotation2d(rotationProfile.calculate(0.02, new TrapezoidProfile.State(posTheta, 0), new TrapezoidProfile.State(targetTheta, 0)).position);
+        return profiledTheta;
     }
 
     public ChassisSpeeds getIntakeRotationalAutoSpeeds() {
@@ -139,7 +183,7 @@ public class Alignment {
         } else {
             desiredRotation = PoseCalculations.getClosestReefSide(swerve.getPose()).getRotation();
         }
-        return getAutoRotationalSpeeds(desiredRotation);
+        return getAutoRotationalSpeeds(desiredRotation); // make profiled rotation2d
     }
 
     public ChassisSpeeds getIntakeAutoSpeeds() {
@@ -213,8 +257,12 @@ public class Alignment {
         // Get desired position from face angle
         double x = centerPose.getX() + distance * node.getRotation().getCos();
         double y = centerPose.getY() + distance * node.getRotation().getSin();
+
+        // Run motion profile to create desired pose
+
+
         Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
-        return getAutoSpeeds(desiredPose);
+        return getAutoSpeeds(desiredPose);  // put the pose generated by the trapazoidal profile in here (calculated with the target pose and setpoint)
     }
 
     public ChassisSpeeds getReefAlignmentSpeeds() {
@@ -234,6 +282,7 @@ public class Alignment {
         double x = node.getX() + distance * node.getRotation().getCos();
         double y = node.getY() + distance * node.getRotation().getSin();
         Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
+
         ChassisSpeeds autoSpeeds = getAutoSpeeds(desiredPose);
         double maxVelocity = AutoConstants.REEF_ALIGNMENT_MAX_SPEED;
         autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxVelocity, maxVelocity);
