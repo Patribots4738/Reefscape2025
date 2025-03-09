@@ -352,10 +352,17 @@ public class Alignment {
     }
 
     public Command findPrepPoseReef() {
-        Pose2d currentPose = swerve.getPose();
-        Pose2d prepPose = currentPose.nearest(FieldConstants.GET_REEF_PREP_POSITIONS());
+        return pathfindToPoseCommand(
+                () -> {
+                    Pose2d prep = swerve.getPose().nearest(FieldConstants.GET_REEF_PREP_POSITIONS());
+                    Logger.recordOutput("Subsystems/Swerve/PrepPose", prep);
+                    return prep;
+                }
+            );
+    }
 
-        return Commands.defer(() -> AutoBuilder.pathfindToPose(prepPose, AutoConstants.prepReefConstraints, 0.0), Set.of(swerve)); 
+    public Command pathfindToPoseCommand(Supplier<Pose2d> pos) {
+        return Commands.defer(() -> AutoBuilder.pathfindToPose(pos.get(), AutoConstants.prepReefConstraints, 0.0), Set.of(swerve));
     }
 
     public Command reefAlignmentCommand() {

@@ -186,10 +186,10 @@ public final class Constants {
         public static final String REEF_NODES = "ABCDEFGHIJKL";
 
         public static final PathConstraints prepReefConstraints = new PathConstraints(
-                10.0, 
-                20.0, 
-                Units.degreesToRadians(720), 
-                Units.degreesToRadians(720)
+                2.350, 
+                4.100, 
+                Units.degreesToRadians(270), 
+                Units.degreesToRadians(450)
             );
         
         // Below is gotten from choreo
@@ -984,10 +984,10 @@ public final class Constants {
 
         public static final Pose2d PREP_POSE_A_BLUE = new Pose2d(2.67, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(180));
         public static final Pose2d PREP_POSE_B_BLUE = new Pose2d(3.59, 2.50, Rotation2d.fromDegrees(240));
-        public static final Pose2d PREP_POSE_C_BLUE = new Pose2d(5.41, 4.20, Rotation2d.fromDegrees(300));
+        public static final Pose2d PREP_POSE_C_BLUE = new Pose2d(5.40, 2.50, Rotation2d.fromDegrees(300));
         public static final Pose2d PREP_POSE_D_BLUE = new Pose2d(6.30, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(0));
-        public static final Pose2d PREP_POSE_E_BLUE = new Pose2d(5.38, 5.60, Rotation2d.fromDegrees(60));
-        public static final Pose2d PREP_POSE_F_BLUE = new Pose2d(3.56, 3.85, Rotation2d.fromDegrees(120));
+        public static final Pose2d PREP_POSE_E_BLUE = new Pose2d(5.40, 5.60, Rotation2d.fromDegrees(60));
+        public static final Pose2d PREP_POSE_F_BLUE = new Pose2d(3.59, 5.60, Rotation2d.fromDegrees(120));
 
         public static final Pose2d PREP_POSE_A_RED = PoseCalculations.mirrorPose(PREP_POSE_A_BLUE);
         public static final Pose2d PREP_POSE_B_RED = PoseCalculations.mirrorPose(PREP_POSE_B_BLUE);
