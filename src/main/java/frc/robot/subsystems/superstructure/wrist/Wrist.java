@@ -132,6 +132,10 @@ public class Wrist extends SubsystemBase {
         return inputs.internalPositionRads;
     }
 
+    public double getVelocity() {
+        return inputs.internalVelocityRadsPerSec;
+    }
+
     public double getCharacterizationVelocity() {
         return inputs.internalVelocityRadsPerSec / WristConstants.VELOCITY_CONVERSION_FACTOR;
     }

@@ -1,7 +1,6 @@
 package frc.robot.subsystems.superstructure.elevator;
 
 import frc.robot.util.Constants.ElevatorConstants;
-import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.GainConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.phoenix.Kraken.ControlPreference;
@@ -12,8 +11,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     private final Kraken follower;
 
     public ElevatorIOKraken() {
-        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, false, FieldConstants.IS_REAL ? ControlPreference.MM_TORQUE_CURRENT : ControlPreference.TORQUE_CURRENT);
-        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, false, FieldConstants.IS_REAL ? ControlPreference.MM_TORQUE_CURRENT : ControlPreference.TORQUE_CURRENT);
+        leader = new Kraken(ElevatorConstants.LEADER_CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
+        follower = new Kraken(ElevatorConstants.FOLLOWER_CAN_ID, true, true, ControlPreference.TORQUE_CURRENT);
         configMotors();
     }
 
@@ -32,7 +31,6 @@ public class ElevatorIOKraken implements ElevatorIO {
         follower.setMotorInverted(!ElevatorConstants.MOTOR_INVERTED);
         configMotor(leader);
         configMotor(follower);
-        configureProfile(ElevatorConstants.VELOCITY, ElevatorConstants.ACCELERATION, ElevatorConstants.JERK);
         setBrakeMode(ElevatorConstants.BRAKE_MOTOR);
     }
 
