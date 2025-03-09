@@ -97,19 +97,22 @@ public class RobotContainer {
     public static double gameModeStart = 0;
     @AutoLogOutput (key = "Draggables/AutoStartingPose")
     public static Pose2d autoStartingPose = Pose2d.kZero;
+
     @AutoLogOutput (key = "Draggables/PlacedGamePieces/Coral")
-    public static Pose3d[] placedCoral = new Pose3d[FieldConstants.BLUE_CORAL_PLACEMENT_POSITIONS.length + FieldConstants.RED_CORAL_PLACEMENT_POSITIONS.length];
+    public static Pose3d[] placedCoral = new Pose3d[1+FieldConstants.CORAL_PLACEMENT_POSITIONS.length];
     @AutoLogOutput (key = "Draggables/PlacedGamePieces/Algae")
-    public static Pose3d[] placedAlgae = new Pose3d[18+1]; // 18 on field + reserved preload location
-    // Reserve index 0 for holding coral
+    public static Pose3d[] placedAlgae = new Pose3d[1+FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY.length];
     public static int placedCoralIndex = 1;
+    // Reserve index 0 for holding a game piece ^^^
+    
     static {
         for (int i = 0; i < placedCoral.length; i++) {
             // Start coral under the map so you can't see them
             placedCoral[i] = new Pose3d(0,0,-FieldConstants.CORAL_RADIUS_METERS-0.05, new Rotation3d());
         }
-        for (int i = 0; i < placedAlgae.length; i++) {
-            placedAlgae[i] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d());
+        placedAlgae[0] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d());
+        for (int i = 1; i < placedAlgae.length; i++) {
+            placedAlgae[i] = FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY[i-1];
         }
     }
     @AutoLogOutput (key = "Draggables/Timer")
@@ -242,12 +245,31 @@ public class RobotContainer {
                         .plus(new Transform3d(new Pose3d(), new Pose3d(LoggingConstants.CORAL_OFFSET, new Rotation3d())))
                 )
                 .ignoringDisable(true).repeatedly())
-            .onFalse(Commands.runOnce(() -> 
-                placedCoral[0] = new Pose3d(0,0,-FieldConstants.CORAL_RADIUS_METERS-0.05, new Rotation3d()))
-                .ignoringDisable(true)
+            .onFalse(Commands.runOnce(() -> {
+                    double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
+                    Pose3d endEffectorPose = new Pose3d(robotPose2d.getTranslation().getX(), robotPose2d.getTranslation().getY(), elevatorHeight, new Rotation3d());
+                    Pose3d scoringNode = PoseCalculations.getClosestCoralScoringNode(endEffectorPose);
+                    if (RobotContainer.placedCoralIndex >= RobotContainer.placedCoral.length)
+                        RobotContainer.placedCoralIndex = 1; // Start overriding previous placements (keep index 0 for currently equipped)
+                    RobotContainer.placedCoral[RobotContainer.placedCoralIndex] = scoringNode;
+                    RobotContainer.placedCoralIndex++;
+                    placedCoral[0] = new Pose3d(0,0,-FieldConstants.CORAL_RADIUS_METERS-0.05, new Rotation3d());
+                })
+                .ignoringDisable(true)  
             );
 
         new Trigger(algaeClaw::hasPiece)
+            .onTrue(Commands.runOnce(() -> {
+                double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
+                Pose3d endEffectorPose = new Pose3d(robotPose2d.getTranslation().getX(), robotPose2d.getTranslation().getY(), elevatorHeight, new Rotation3d());
+                Pose3d removalNode = PoseCalculations.getClosestAlgaeRemovalNode(endEffectorPose);
+                for (int i = 1; i-1 < FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY.length; i++) {
+                    if (removalNode.equals(FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY[i-1])) {
+                        RobotContainer.placedAlgae[i] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d());
+                        break;
+                    }
+                }
+            }))
             .whileTrue(Commands.runOnce(() ->
                     placedAlgae[0] = new Pose3d(robotPose2d)
                         // Make field relative
