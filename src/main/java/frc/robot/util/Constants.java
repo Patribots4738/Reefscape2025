@@ -5,6 +5,7 @@
 package frc.robot.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +109,18 @@ public final class Constants {
             ROBOT_OFFSET.getZ() + 0.7836464896
         );
 
+        public static final Translation3d CORAL_OFFSET = new Translation3d(
+            0.117,
+            -0.005,
+            -0.154653
+        );
+
+        public static final Translation3d ALGAE_OFFSET = new Translation3d(
+            -0.325,
+            0,
+            -0.05
+        );
+
     }
 
     public static final class DriveConstants {
@@ -183,6 +196,13 @@ public final class Constants {
 
     public static final class AutoConstants {
 
+        //allignment trapazoidal profile constants
+        public static final double HDC_XY_ACCELERATION = 2.5;
+        public static final double HDC_XY_VELOCITY = 1;
+
+        public static final double HDC_THETA_ACCELERATION =  Units.degreesToRadians(450d);
+        public static final double HDC_THETA_VELOCITY =  Units.degreesToRadians(270d);
+
         public static final String REEF_NODES = "ABCDEFGHIJKL";
 
         public static final PathConstraints prepReefConstraints = new PathConstraints(
@@ -191,10 +211,6 @@ public final class Constants {
                 Units.degreesToRadians(270), 
                 Units.degreesToRadians(450)
             );
-        
-        // Below is gotten from choreo
-        public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.degreesToRadians(1137.21);
-        public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Units.degreesToRadians(792.90);
 
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
@@ -214,7 +230,7 @@ public final class Constants {
             0.0
         );
 
-        // public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
+        public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
 
         public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
             3.725, 
@@ -228,7 +244,7 @@ public final class Constants {
             0
         );
 
-        // public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
+        public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
 
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.TELE_XY_GAINS.getP(),
@@ -242,8 +258,8 @@ public final class Constants {
             AutoConstants.TELE_THETA_GAINS.getI(),
             AutoConstants.TELE_THETA_GAINS.getD(),
             new TrapezoidProfile.Constraints(
-                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
-                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)) 
+                AutoConstants.HDC_THETA_VELOCITY,
+                AutoConstants.HDC_THETA_ACCELERATION)) 
             {{
                 setIZone(Units.degreesToRadians(45));
             }};
@@ -499,7 +515,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double INTAKE_PERCENT = 0.4;
-        public static final double HOLD_PERCENT = 0.35;
+        public static final double HOLD_PERCENT = 0.1;
         public static final double OUTTAKE_PERCENT = -0.75;
         public static final double L1_OUTTAKE_PERCENT = -0.1;
 
@@ -511,7 +527,8 @@ public final class Constants {
 
         public static final double HAS_PIECE_INTAKE_THRESHOLD = 5d;
 
-        public static final double HAS_PIECE_OUTTAKE_THRESHOLD = 30d;
+        public static final double HAS_PIECE_OUTTAKE_THRESHOLD_1 = 30d;
+        public static final double HAS_PIECE_OUTTAKE_THRESHOLD_2 = 7d;
 
     }
 
@@ -524,13 +541,13 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double HOLD_PERCENT = 1.0;
+        public static final double HOLD_PERCENT = 0.75;
         public static final double INTAKE_PERCENT = 1.0;
         public static final double OUTTAKE_PERCENT = -1.0;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
-        public static final double NET_X_CHASSIS_OFFSET = 1.4;
+        public static final double NET_X_CHASSIS_OFFSET = 0.61;
 
     }
     public static final class ElevatorConstants {
@@ -646,7 +663,7 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.36;
+        public static final double INTAKE_POSITION_RADIANS = -0.355;
         public static final double L1_POSITION_RADIANS = 1.8;
         public static final double L1_PLACE_POSITION_RADIANS = 2.75;
         public static final double L2_POSITION_RADIANS = 2.41;
@@ -661,7 +678,7 @@ public final class Constants {
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
-        public static final double NET_RADIANS = 1.85;
+        public static final double NET_RADIANS = 1.7;
     }
 
 
@@ -1094,7 +1111,8 @@ public final class Constants {
         public static final int[] VALID_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 }; // D:
 
 
-        static final double CORAL_RADIUS_METERS = 0.0507745;
+        public static final double CORAL_RADIUS_METERS = 0.0507745;
+        public static final double ALGAE_RADIUS_METERS = 0.205;
         static final Translation3d REEF_CENTER = new Translation3d(4.49, 4.0225, 0);
         static final double HEXAGON_RADS = Units.degreesToRadians(360/6);
                 
@@ -1123,11 +1141,9 @@ public final class Constants {
             L2_CORAL_PLACEMENT_POSITIONS, L3_CORAL_PLACEMENT_POSITIONS, L4_CORAL_PLACEMENT_POSITIONS
         );
 
-        public static final Pose3d[] RED_CORAL_PLACEMENT_POSITIONS = flipCoralPlacementPositions(BLUE_CORAL_PLACEMENT_POSITIONS);
-
-        public static final Pose3d[] GET_CORAL_PLACEMENT_POSITIONS() {
-            return Robot.isRedAlliance() ? RED_CORAL_PLACEMENT_POSITIONS : BLUE_CORAL_PLACEMENT_POSITIONS;
-        }
+        public static final Pose3d[] CORAL_PLACEMENT_POSITIONS = combineCoralPlacementPositions(
+            BLUE_CORAL_PLACEMENT_POSITIONS, flipCoralPlacementPositions(BLUE_CORAL_PLACEMENT_POSITIONS)
+        );
 
         private static Pose3d[] createCoralPlacementPositions(Pose3d pose0, Pose3d pose1) {
             return new Pose3d[] {
@@ -1169,5 +1185,26 @@ public final class Constants {
             }
             return flipped;
         }
+
+        /// 
+        /// ALGAE LAND
+        /// 
+        static final Pose3d BLUE_POSE_HIGH = new Pose3d(3.81, 4.025, 1.315, new Rotation3d());
+        static final Pose3d BLUE_POSE_LOW = new Pose3d(3.81, 4.025, .905, new Rotation3d());
+        static final Pose3d[] BLUE_ALGAE_LOCATIONS = new Pose3d[] {
+            BLUE_POSE_HIGH,
+            rotatePose(BLUE_POSE_HIGH, HEXAGON_RADS*2),
+            rotatePose(BLUE_POSE_HIGH, HEXAGON_RADS*4),
+            rotatePose(BLUE_POSE_LOW, HEXAGON_RADS),
+            rotatePose(BLUE_POSE_LOW, HEXAGON_RADS*3),
+            rotatePose(BLUE_POSE_LOW, HEXAGON_RADS*5)
+        };
+
+        public static final List<Pose3d> ALGAE_REMOVAL_LOCATIONS_LIST = new ArrayList<Pose3d>() {{
+            addAll(Arrays.asList(BLUE_ALGAE_LOCATIONS));
+            addAll(Arrays.asList(flipCoralPlacementPositions(BLUE_ALGAE_LOCATIONS)));
+        }};
+        
+        public static final Pose3d[] ALGAE_REMOVAL_LOCATIONS_ARRAY = ALGAE_REMOVAL_LOCATIONS_LIST.toArray(new Pose3d[0]);
     }
 }

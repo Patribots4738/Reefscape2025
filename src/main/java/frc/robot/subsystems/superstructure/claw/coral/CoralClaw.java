@@ -86,7 +86,7 @@ public class CoralClaw extends SubsystemBase {
                     MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.torqueCurrentAmps, CoralClawConstants.CORAL_CLAW_CURRENT_DEADBAND) 
                     && Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_INTAKE_THRESHOLD);
             } else {
-                hasPiece = hasPieceDebouncer.calculate(Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_OUTTAKE_THRESHOLD);
+                hasPiece = hasPieceDebouncer.calculate(Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_OUTTAKE_THRESHOLD_1);
             }
         }
     }

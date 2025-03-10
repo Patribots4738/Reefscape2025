@@ -103,6 +103,9 @@ public class PoseCalculations {
     }
 
     public static Pose3d nearestPose3d(Pose3d pos, List<Pose3d> poses) {
+        if (poses.isEmpty()) {
+            return pos;
+        }
         return Collections.min(
             poses,
             Comparator.comparing(
@@ -125,8 +128,14 @@ public class PoseCalculations {
         return pos.getTranslation().getDistance(getClosestCoralStation(pos).getTranslation()) > FieldConstants.INTAKE_ALIGNMENT_DISTANCE_METERS;
     }
 
-    public static Pose3d getClosestScoringNode(Pose3d pos) {
-        return nearestPose3d(pos, Arrays.asList(FieldConstants.GET_CORAL_PLACEMENT_POSITIONS()));
+    public static Pose3d getClosestCoralScoringNode(Pose3d pos) {
+        return nearestPose3d(pos, Arrays.asList(FieldConstants.CORAL_PLACEMENT_POSITIONS));
+    }
+
+    public static Pose3d getClosestAlgaeRemovalNode(Pose3d pos) {
+        Pose3d nearestPose = nearestPose3d(pos, FieldConstants.ALGAE_REMOVAL_LOCATIONS_LIST);
+        FieldConstants.ALGAE_REMOVAL_LOCATIONS_LIST.remove(nearestPose);
+        return nearestPose;
     }
   
 }
