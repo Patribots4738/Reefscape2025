@@ -137,5 +137,9 @@ public class PoseCalculations {
         FieldConstants.ALGAE_REMOVAL_LOCATIONS_LIST.remove(nearestPose);
         return nearestPose;
     }
+
+    public static Pose2d getPoseWithDistance(Pose2d pos, double distance) {
+        return new Pose2d(pos.getX() + distance * pos.getRotation().getCos(), pos.getY() + distance * pos.getRotation().getSin(), pos.getRotation());
+    }
   
 }
