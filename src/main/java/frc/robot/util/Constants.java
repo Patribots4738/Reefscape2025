@@ -141,7 +141,7 @@ public final class Constants {
 
         public static final double ROBOT_LENGTH_METERS = Units.inchesToMeters(28.5);
         public static final double BUMPER_LENGTH_METERS = Units.inchesToMeters(3.5);
-        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(35);
+        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(36.5865);
 
         // Front positive, left positive
         public static final Translation2d FRONT_LEFT_WHEEL_POSITION = new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2);
