@@ -186,7 +186,7 @@ public class Alignment {
 
     public ChassisSpeeds getIntakeAutoSpeeds() {
         Pose2d intakeStation = PoseCalculations.getClosestCoralStation(swerve.getPose());
-        ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(intakeStation);
+        ChassisSpeeds autoSpeeds = getAutoSpeeds(intakeStation);
         return autoSpeeds;
     }
     
@@ -208,7 +208,7 @@ public class Alignment {
                 : cagePose.getY() + ClimbConstants.Y_CHASSIS_OFFSET, 
             cagePose.getRotation()
         );
-        return getProfiledAutoSpeeds(desiredPose);
+        return getAutoSpeeds(desiredPose);
     }
 
     public ChassisSpeeds getNetAutoSpeeds() {
@@ -278,7 +278,7 @@ public class Alignment {
         double y = node.getY() + distance * node.getRotation().getSin();
         Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
 
-        ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(desiredPose);
+        ChassisSpeeds autoSpeeds = getAutoSpeeds(desiredPose);
         Logger.recordOutput("Subsystems/Swerve/AutoSpeeds", autoSpeeds);
         return autoSpeeds;
     }
