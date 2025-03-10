@@ -7,6 +7,9 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.pathfinding.Pathfinding;
+
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -14,6 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.auto.LocalADStarAK;
 import frc.robot.util.Constants.KrakenMotorConstants;
 import frc.robot.util.Constants.LoggingConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
@@ -44,13 +48,16 @@ public class Robot extends LoggedRobot {
     private RobotContainer robotContainer;
 
     @Override
-    public void robotInit() { 
+    public void robotInit() {
         // Git metadata for tracking version for AKit
         Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
         Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
         Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
         Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
         Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+
+        Pathfinding.setPathfinder(new LocalADStarAK());
+        PathfindingCommand.warmupCommand().schedule();
 
         switch (LoggingConstants.getMode()) {
             case REAL:

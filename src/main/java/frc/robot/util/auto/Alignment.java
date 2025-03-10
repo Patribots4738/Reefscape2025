@@ -1,10 +1,13 @@
 package frc.robot.util.auto;
 
+import java.util.Set;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +18,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.util.Constants.AlgaeClawConstants;
@@ -383,10 +387,24 @@ public class Alignment {
     public Command reefAxisAlignmentCommand() {
         return 
             autoAlignmentCommand(
-                AlignmentMode.REEF, 
-                this::getReefAxisSpeeds,
-                false
+            AlignmentMode.REEF, 
+            this::getReefAxisSpeeds,
+            false
+        );     
+    }
+
+    public Command findPrepPoseReef() {
+        return pathfindToPoseCommand(
+                () -> {
+                    Pose2d prep = swerve.getPose().nearest(FieldConstants.GET_REEF_PREP_POSITIONS());
+                    Logger.recordOutput("Subsystems/Swerve/PrepPose", prep);
+                    return prep;
+                }
             );
+    }
+
+    public Command pathfindToPoseCommand(Supplier<Pose2d> pos) {
+        return Commands.defer(() -> AutoBuilder.pathfindToPose(pos.get(), AutoConstants.prepReefConstraints, 0.0), Set.of(swerve));
     }
 
     public Command reefAlignmentCommand() {
@@ -408,7 +426,8 @@ public class Alignment {
     }
 
     public Command reefFullAlignmentCommand() {
-        return reefAxisAlignmentCommand().until(swerve::atHDCPose).andThen(reefAlignmentCommand()).finallyDo(() -> {
+        return
+            findPrepPoseReef().andThen(reefAlignmentCommand()).finallyDo(() -> {
             resetHDC();
             swerve.setDesiredPose(Pose2d.kZero);
             this.alignmentMode = AlignmentMode.NONE;
