@@ -957,30 +957,30 @@ public final class Constants {
         public static final Pose2d BLUE_REEF_JI = new Pose2d(4.893247, 4.746185, Rotation2d.fromDegrees(60));
         public static final Pose2d BLUE_REEF_KL = new Pose2d(4.061574, 4.746162, Rotation2d.fromDegrees(120));
 
-        public static final Pose2d BLUE_REEF_A = new Pose2d(BLUE_REEF_AB.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(180-90)), BLUE_REEF_AB.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(180-90)), Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_B = new Pose2d(BLUE_REEF_AB.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(180-90)), BLUE_REEF_AB.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(180-90)), Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_C = new Pose2d(BLUE_REEF_CD.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(240-90)), BLUE_REEF_CD.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(240-90)), Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_D = new Pose2d(BLUE_REEF_CD.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(240-90)), BLUE_REEF_CD.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(240-90)), Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_E = new Pose2d(BLUE_REEF_FE.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(300-90)), BLUE_REEF_FE.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(300-90)), Rotation2d.fromDegrees(300));
-        public static final Pose2d BLUE_REEF_F = new Pose2d(BLUE_REEF_FE.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(300-90)), BLUE_REEF_FE.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(300-90)), Rotation2d.fromDegrees(300));
-        public static final Pose2d BLUE_REEF_G = new Pose2d(BLUE_REEF_HG.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(0-90)), BLUE_REEF_HG.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(0-90)), Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_H = new Pose2d(BLUE_REEF_HG.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(0-90)), BLUE_REEF_HG.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(0-90)), Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_I = new Pose2d(BLUE_REEF_JI.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(60-90)), BLUE_REEF_JI.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(60-90)), Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_J = new Pose2d(BLUE_REEF_JI.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(60-90)), BLUE_REEF_JI.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(60-90)), Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_K = new Pose2d(BLUE_REEF_KL.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(120-90)), BLUE_REEF_KL.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(120-90)), Rotation2d.fromDegrees(120));
-        public static final Pose2d BLUE_REEF_L = new Pose2d(BLUE_REEF_KL.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(120-90)), BLUE_REEF_KL.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(120-90)), Rotation2d.fromDegrees(120));
+        // public static final Pose2d BLUE_REEF_A = new Pose2d(BLUE_REEF_AB.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(180-90)), BLUE_REEF_AB.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(180-90)), Rotation2d.fromDegrees(180));
+        // public static final Pose2d BLUE_REEF_B = new Pose2d(BLUE_REEF_AB.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(180-90)), BLUE_REEF_AB.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(180-90)), Rotation2d.fromDegrees(180));
+        // public static final Pose2d BLUE_REEF_C = new Pose2d(BLUE_REEF_CD.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(240-90)), BLUE_REEF_CD.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(240-90)), Rotation2d.fromDegrees(240));
+        // public static final Pose2d BLUE_REEF_D = new Pose2d(BLUE_REEF_CD.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(240-90)), BLUE_REEF_CD.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(240-90)), Rotation2d.fromDegrees(240));
+        // public static final Pose2d BLUE_REEF_E = new Pose2d(BLUE_REEF_FE.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(300-90)), BLUE_REEF_FE.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(300-90)), Rotation2d.fromDegrees(300));
+        // public static final Pose2d BLUE_REEF_F = new Pose2d(BLUE_REEF_FE.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(300-90)), BLUE_REEF_FE.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(300-90)), Rotation2d.fromDegrees(300));
+        // public static final Pose2d BLUE_REEF_G = new Pose2d(BLUE_REEF_HG.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(0-90)), BLUE_REEF_HG.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(0-90)), Rotation2d.fromDegrees(0));
+        // public static final Pose2d BLUE_REEF_H = new Pose2d(BLUE_REEF_HG.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(0-90)), BLUE_REEF_HG.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(0-90)), Rotation2d.fromDegrees(0));
+        // public static final Pose2d BLUE_REEF_I = new Pose2d(BLUE_REEF_JI.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(60-90)), BLUE_REEF_JI.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(60-90)), Rotation2d.fromDegrees(60));
+        // public static final Pose2d BLUE_REEF_J = new Pose2d(BLUE_REEF_JI.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(60-90)), BLUE_REEF_JI.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(60-90)), Rotation2d.fromDegrees(60));
+        // public static final Pose2d BLUE_REEF_K = new Pose2d(BLUE_REEF_KL.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(120-90)), BLUE_REEF_KL.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(120-90)), Rotation2d.fromDegrees(120));
+        // public static final Pose2d BLUE_REEF_L = new Pose2d(BLUE_REEF_KL.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(120-90)), BLUE_REEF_KL.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(120-90)), Rotation2d.fromDegrees(120));
 
         public static final List<ReefSide> REEF_FACE_POSITIONS = new ArrayList<ReefSide>() {{
             // All points are in meters and radians
             // All relative to the blue origin
             // Positions go from blueReef1 (the farthest from blue driverstation) clockwise around
             // even = high, odd = low
-            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L, 19);
-            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I, 20);
-            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G, 21);
-            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E, 22);
-            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D, 17);
-            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B, 18);
+            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, false, 19);
+            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, true, 20);
+            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, true, 21);
+            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, true, 22);
+            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, false, 17);
+            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, false, 18);
 
             // Blue Reef
             add(blueReef1);
