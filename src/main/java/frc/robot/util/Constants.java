@@ -898,10 +898,6 @@ public final class Constants {
 
 
 
-        public static final List<Pose2d> GET_PROCESSOR_POSITION() {
-            int index = Robot.isRedAlliance() ? 1 : 0;
-            return PROCESSOR_POSITIONS.subList(index, index + 1);
-        }
 
         public static final Pose2d CORAL_STATION_1 = new Pose2d(1.653, 7.364, Rotation2d.fromDegrees(125));
         public static final Pose2d CORAL_STATION_2 = new Pose2d(1.653, 0.699, Rotation2d.fromDegrees(-125));

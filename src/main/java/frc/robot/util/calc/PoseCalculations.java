@@ -59,7 +59,7 @@ public class PoseCalculations {
 
     
     public static Pose2d getClosestProcessor(Pose2d pos) {
-        return pos.nearest(FieldConstants.GET_PROCESSOR_POSITION());
+        return pos.nearest(FieldConstants.PROCESSOR_POSITIONS);
     }
 
     public static Pose2d flipPose(Pose2d pos) {
