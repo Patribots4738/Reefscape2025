@@ -4,7 +4,6 @@ import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.phoenix.Kraken.ControlPreference;
-import frc.robot.util.hardware.phoenix.Kraken.TelemetryPreference;
 
 public class AlgaeClawIOKraken implements ClawIO {
     
@@ -17,7 +16,6 @@ public class AlgaeClawIOKraken implements ClawIO {
 
     private void configMotor() {
         motor.setMotorInverted(AlgaeClawConstants.MOTOR_INVERTED);
-        motor.setTelemetryPreference(TelemetryPreference.NO_ENCODER);
         motor.setSupplyCurrentLimit(AlgaeClawConstants.CURRENT_LIMIT);
         motor.setStatorCurrentLimit(AlgaeClawConstants.CURRENT_LIMIT);
         setBrakeMode(AlgaeClawConstants.BRAKE_MOTOR);
@@ -31,6 +29,7 @@ public class AlgaeClawIOKraken implements ClawIO {
         inputs.appliedOutputVolts = motor.getVoltageAsDouble();
         inputs.torqueCurrentAmps = motor.getTorqueCurrentAsDouble();
         inputs.temperatureCelsius = motor.getTemperatureAsDouble();
+        inputs.velocityRotationsPerSec = motor.getVelocityAsDouble();
     }
 
     @Override

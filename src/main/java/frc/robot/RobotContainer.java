@@ -246,8 +246,10 @@ public class RobotContainer {
                 )
                 .ignoringDisable(true).repeatedly())
             .onFalse(Commands.runOnce(() -> {
-                    double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
-                    Pose3d endEffectorPose = new Pose3d(robotPose2d.getTranslation().getX(), robotPose2d.getTranslation().getY(), elevatorHeight, new Rotation3d());
+                    Pose3d endEffectorPose = new Pose3d(robotPose2d)
+                        .plus(new Transform3d(new Pose3d(), components3d[LoggingConstants.WRIST_INDEX]))
+                        .plus(new Transform3d(new Pose3d(), new Pose3d(LoggingConstants.END_EFFECTOR_OFFSET, new Rotation3d())));
+                    Logger.recordOutput("Subsystems/SuperStructure/EndEffectorPose", endEffectorPose);
                     Pose3d scoringNode = PoseCalculations.getClosestCoralScoringNode(endEffectorPose);
                     if (RobotContainer.placedCoralIndex >= RobotContainer.placedCoral.length)
                         RobotContainer.placedCoralIndex = 1; // Start overriding previous placements (keep index 0 for currently equipped)
@@ -370,8 +372,30 @@ public class RobotContainer {
 
     private void configureDevBindings(PatriBoxController controller) {
 
-        controller.start()
-            .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
+        controller.rightStick()
+            .toggleOnTrue(
+                new ActiveConditionalCommand(
+                    alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    alignment.intakeRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
+                ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
+
+        controller.a()
+            .whileTrue(alignment.reefFullAlignmentCommand());
+
+        controller.b()
+            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
+
+        controller.x()
+            .whileTrue(alignment.intakeAlignmentCommand());
+
+        controller.y()
+            .toggleOnTrue(
+                new ActiveConditionalCommand(
+                    superstructure.algaeRemovalCommand(),
+                    superstructure.setSuperState(superstructure.NET_PREP),
+                    () -> Robot.isRedAlliance() ? swerve.getPose().getX() > FieldConstants.FIELD_MAX_LENGTH / 2.0 + 2d : swerve.getPose().getX() < FieldConstants.FIELD_MAX_LENGTH / 2.0 - 2d
+                ).repeatedly());
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -384,38 +408,18 @@ public class RobotContainer {
 
         controller.povUp()
             .onTrue(superstructure.setSuperState(superstructure.L4));
-        
-        controller.x()
-            .onTrue(superstructure.setSuperState(superstructure.STOW));
-
-        controller.rightTrigger()
-            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
-
-        controller.leftTrigger()
-            .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
-
-        controller.a()
-            .whileTrue(alignment.reefAlignmentCommand());
-
-        // controller.y()
-        //     .onTrue(superstructure.algaeL3Command(controller::getYButton));
-
-        // controller.a()
-        //     .onTrue(superstructure.algaeL2Command(controller::getAButton));
-
-        controller.rightStick()
-            .toggleOnTrue(
-                new ActiveConditionalCommand(
-                    alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
-                    alignment.intakeRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
-                    () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
-                ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
         controller.leftBumper()
             .onTrue(alignment.updateIndexCommand(-1));
 
         controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
+
+        controller.rightTrigger()
+            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
+
+        controller.leftTrigger()
+            .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 
     }
 

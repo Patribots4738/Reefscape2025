@@ -29,13 +29,13 @@ public class ReefSide {
         Pose2d left =
             new Pose2d(
                 center.getX() + FieldConstants.POLE_DISTANCE * Math.cos(adjustedRotation),
-                center.getY() + FieldConstants.POLE_DISTANCE * Math.cos(adjustedRotation),
+                center.getY() + FieldConstants.POLE_DISTANCE * Math.sin(adjustedRotation),
                 center.getRotation()
             );
         Pose2d right = 
             new Pose2d(
                 center.getX() - FieldConstants.POLE_DISTANCE * Math.cos(adjustedRotation),
-                center.getY() - FieldConstants.POLE_DISTANCE * Math.cos(adjustedRotation),
+                center.getY() - FieldConstants.POLE_DISTANCE * Math.sin(adjustedRotation),
                 center.getRotation()
             );
         this.left = flipped ? right : left;

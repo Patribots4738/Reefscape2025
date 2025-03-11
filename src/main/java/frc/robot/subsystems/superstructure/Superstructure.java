@@ -436,7 +436,11 @@ public class Superstructure {
                     || targetState.clawState.algaePercent != 0 && !algaeClaw.hasPiece())),
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
-            setSuperState(STOW)
+            Commands.either(
+                setSuperState(L3_ALGAE), 
+                setSuperState(STOW), 
+                algaeClaw::hasPiece
+            )
         );
     }
 

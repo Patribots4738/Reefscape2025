@@ -9,12 +9,16 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.superstructure.claw.ClawIO;
 import frc.robot.subsystems.superstructure.claw.ClawIOInputsAutoLogged;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.FieldConstants;
+import frc.robot.util.Constants.LoggingConstants;
+import frc.robot.util.Constants.LoggingConstants.Mode;
 
 public class AlgaeClaw extends SubsystemBase {
 
@@ -24,9 +28,14 @@ public class AlgaeClaw extends SubsystemBase {
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
     private boolean hasPiece = false;
+
+    private final Debouncer hasPieceDebouncerRising;
+    private final Debouncer hasPieceDebouncerFalling;
     
     public AlgaeClaw(ClawIO io) {
         this.io = io;
+        hasPieceDebouncerRising = new Debouncer(0.05, DebounceType.kRising);
+        hasPieceDebouncerFalling = new Debouncer(0.25, DebounceType.kFalling);
     }
 
     @Override
@@ -35,7 +44,13 @@ public class AlgaeClaw extends SubsystemBase {
         Logger.processInputs("SubsystemInputs/AlgaeClaw", inputs);
         Logger.recordOutput("Subsystems/AlgaeClaw/HasPiece", hasPiece());
 
-        hasPiece = MathUtil.isNear(AlgaeClawConstants.CURRENT_LIMIT, inputs.torqueCurrentAmps, 10);
+        boolean hasPieceUnfiltered = MathUtil.isNear(AlgaeClawConstants.CURRENT_LIMIT, inputs.torqueCurrentAmps, 25d) && inputs.velocityRotationsPerSec < 60d;
+        Logger.recordOutput("Subsystems/AlgaeClaw/HasPieceUnfiltered", hasPieceUnfiltered);
+        if (hasPiece) {
+            hasPiece = hasPieceDebouncerFalling.calculate(hasPieceUnfiltered);
+        } else {
+            hasPiece = hasPieceDebouncerRising.calculate(hasPieceUnfiltered);
+        }
 
         // Run setpoint on RIO to minimize CAN utilization
         if (shouldRunSetpoint) {
@@ -67,7 +82,7 @@ public class AlgaeClaw extends SubsystemBase {
     }
     
     public boolean hasPiece() {
-        return FieldConstants.IS_REAL ? hasPiece : percentOutput > 0;
+        return (LoggingConstants.getMode() != Mode.REPLAY && !FieldConstants.IS_REAL) ? percentOutput > 0 : hasPiece;
     }
 }
 

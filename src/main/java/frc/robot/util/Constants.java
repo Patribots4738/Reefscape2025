@@ -53,7 +53,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.DEVBOT;
+        private static RobotType robotType = RobotType.COMPBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
@@ -115,6 +115,12 @@ public final class Constants {
             -0.154653
         );
 
+        public static final Translation3d END_EFFECTOR_OFFSET = new Translation3d(
+            0.4,
+            -0.005,
+            -0.154653
+        );
+
         public static final Translation3d ALGAE_OFFSET = new Translation3d(
             -0.325,
             0,
@@ -141,7 +147,7 @@ public final class Constants {
 
         public static final double ROBOT_LENGTH_METERS = Units.inchesToMeters(28.5);
         public static final double BUMPER_LENGTH_METERS = Units.inchesToMeters(3.5);
-        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(36.5865);
+        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(33);
 
         // Front positive, left positive
         public static final Translation2d FRONT_LEFT_WHEEL_POSITION = new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2);
@@ -441,10 +447,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.28271484375;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.278564;
         public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
         public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081055;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.139404296875;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.151367;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -518,7 +524,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double INTAKE_PERCENT = 0.4;
-        public static final double HOLD_PERCENT = 0.1;
+        public static final double HOLD_PERCENT = 0.3;
         public static final double OUTTAKE_PERCENT = -0.75;
         public static final double L1_OUTTAKE_PERCENT = -0.1;
 
@@ -544,7 +550,7 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double HOLD_PERCENT = 0.75;
+        public static final double HOLD_PERCENT = 1.0;
         public static final double INTAKE_PERCENT = 1.0;
         public static final double OUTTAKE_PERCENT = -1.0;
 
@@ -616,7 +622,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.575;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 5.716;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
