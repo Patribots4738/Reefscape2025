@@ -40,6 +40,7 @@ public class Superstructure {
     // private final LoggedTunableNumber wristReefTransition = new LoggedTunableNumber("Wrist/ReefTransitionPosition", WristConstants.REEF_TRANSITION_RADIANS);
 
     public final SuperState STOW;
+    public final SuperState READY_STOW;
     public final SuperState INTAKE;
 
     public final SuperState L1;
@@ -63,11 +64,12 @@ public class Superstructure {
     public final SuperState L3_EXIT;
     public final SuperState L4_EXIT;
 
-    public final SuperState L2_ALGAE;
-    public final SuperState L3_ALGAE;
+    public final SuperState L2_ALGAE_EXIT;
+    public final SuperState L3_ALGAE_EXIT;
     public final SuperState L2_ALGAE_IN;
     public final SuperState L3_ALGAE_IN;
     public final SuperState TREE_ALGAE_IN;
+    public final SuperState ALGAE_CARRY;
 
     public final SuperState PROCESSOR_PREP;
     public final SuperState PROCESSOR_PLACE;
@@ -108,6 +110,7 @@ public class Superstructure {
         targetArmState = ArmState.STOW;
         targetClimbState = ClimbState.STOW;
 
+        READY_STOW = new SuperState("READY_STOW", ArmState.INTAKE, ClimbState.STOW, ClawState.DEFAULT);
         INTAKE = new SuperState("INTAKE", ArmState.INTAKE, ClimbState.STOW, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
 
         L1_PREP = new SuperState("L1_PREP", ArmState.L1_PREP, ClimbState.STOW, ClawState.DEFAULT);
@@ -133,11 +136,12 @@ public class Superstructure {
         L3_EXIT = new SuperState("L3_EXIT", ArmState.L3_EXIT, ClimbState.STOW, ClawState.DEFAULT);
         L4_EXIT = new SuperState("L4_EXIT", ArmState.L4_EXIT, ClimbState.STOW, ClawState.DEFAULT);
 
-        L2_ALGAE = new SuperState("L2_ALGAE", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.DEFAULT);
-        L3_ALGAE = new SuperState("L3_ALGAE", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.DEFAULT);
+        L2_ALGAE_EXIT = new SuperState("L2_ALGAE_EXIT", ArmState.L2_ALGAE_EXIT, ClimbState.STOW, ClawState.ALGAE_IN);
+        L3_ALGAE_EXIT = new SuperState("L3_ALGAE_EXIT", ArmState.L3_ALGAE_EXIT, ClimbState.STOW, ClawState.ALGAE_IN);
         L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         TREE_ALGAE_IN = new SuperState("TREE_ALGAE_IN", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_IN);
+        ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN, () -> false, () -> true);
 
         PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClimbState.STOW, ClawState.DEFAULT);
         PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_OUT);
@@ -176,6 +180,8 @@ public class Superstructure {
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L2_ALGAE_REMOVAL),
         L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_ALGAE_REMOVAL),
+        L2_ALGAE_EXIT (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS),
+        L3_ALGAE_EXIT (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS),
         PROCESSOR (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
         NET_PREP (ElevatorConstants.NET_PREP_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET_PREP_FLICK (ElevatorConstants.NET_PLACE_METERS, WristConstants.L3_ALGAE_REMOVAL),
@@ -237,7 +243,7 @@ public class Superstructure {
             Commands.sequence(
                 // Run these commands in parallel, cancel all when first command argument ends
                 Commands.parallel(
-                    setArmState(nextState.armState),
+                    fixArmAndClimb(nextState.armState, nextState.climbState),
                     // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
                     setCoralClawState(nextState),
                     setAlgaeClawState(nextState)
@@ -335,11 +341,19 @@ public class Superstructure {
     }
 
     public Command algaeL2Command()  {
-        return setSuperState(L2_ALGAE_IN);
+        return Commands.sequence(
+            setSuperState(L2_ALGAE_IN),
+            Commands.waitUntil(algaeClaw::hasPiece),
+            setSuperState(L2_ALGAE_EXIT)
+        );
     }
 
     public Command algaeL3Command()  {
-        return setSuperState(L3_ALGAE_IN);
+        return Commands.sequence(
+            setSuperState(L3_ALGAE_IN),
+            Commands.waitUntil(algaeClaw::hasPiece),
+            setSuperState(L3_ALGAE_EXIT)
+        );
     }
 
     public Command algaeTreeCommand() {
@@ -359,7 +373,7 @@ public class Superstructure {
             Commands.sequence(
                 setSuperState(INTAKE),
                 Commands.waitUntil(() -> !continueIntakingSupplier.getAsBoolean() && coralClaw.hasPiece()),
-                setSuperState(STOW)
+                setSuperState(READY_STOW)
             );
     }
 
@@ -372,7 +386,7 @@ public class Superstructure {
     }
 
     public Command coralAutoIntakeStopCommand(){
-        return setSuperState(STOW);
+        return setSuperState(READY_STOW);
     }
 
     public SuperState getPlacementState() {
@@ -442,8 +456,8 @@ public class Superstructure {
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
             Commands.either(
-                setSuperState(L3_ALGAE), 
-                setSuperState(STOW), 
+                setSuperState(ALGAE_CARRY), 
+                setSuperState(READY_STOW), 
                 algaeClaw::hasPiece
             )
         );
@@ -457,7 +471,7 @@ public class Superstructure {
                 () -> Robot.isRedAlliance() ^ (robotPoseSupplier.get().getRotation().getRadians() > Math.PI / 2d || robotPoseSupplier.get().getRotation().getRadians() < -Math.PI / 2d)
             ),
             Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean() && !algaeClaw.hasPiece()),
-            setSuperState(STOW)
+            setSuperState(READY_STOW)
         );
     }
 

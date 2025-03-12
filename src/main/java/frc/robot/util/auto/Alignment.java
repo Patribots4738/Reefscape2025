@@ -410,12 +410,12 @@ public class Alignment {
 
     public Command pathfindToReefCommand() {
         return pathfindToPoseCommand(
-                () -> {
-                    Pose2d prep = PoseCalculations.getPoseWithDistance(PoseCalculations.getClosestReefSide(swerve.getPose()).getCenter(), AutoConstants.REEF_ALIGNMENT_PREP_DISTANCE);
-                    Logger.recordOutput("Subsystems/Swerve/PrepPose", prep);
-                    return prep;
-                }
-            );
+            () -> {
+                Pose2d prep = PoseCalculations.getPoseWithDistance(PoseCalculations.getClosestReefSide(swerve.getPose()).getCenter(), AutoConstants.REEF_ALIGNMENT_PREP_DISTANCE);
+                Logger.recordOutput("Subsystems/Swerve/PrepPose", prep);
+                return prep;
+            }
+        );
     }
   
     public Command pathfindToIntakeCommand() {
@@ -474,8 +474,7 @@ public class Alignment {
         Pose2d currentPose = swerve.getPose();
         Pose2d reefFace = PoseCalculations.getClosestReefSide(currentPose).getCenter();
         double linearDistance = currentPose.getTranslation().getDistance(reefFace.getTranslation());
-        double rotationalDistance = Math.abs(currentPose.getRotation().minus(reefFace.getRotation()).getRadians());
-        return linearDistance > AutoConstants.REEF_ALIGNMENT_PREP_DISTANCE || rotationalDistance >= Math.PI / 2;
+        return linearDistance > (AutoConstants.REEF_ALIGNMENT_PREP_DISTANCE);
     }
 
 }

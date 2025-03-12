@@ -9,15 +9,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
 
