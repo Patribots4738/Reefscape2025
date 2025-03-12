@@ -78,6 +78,8 @@ public class Superstructure {
 
     public final SuperState NET_PREP;
     public final SuperState NET_PLACE;
+    public final SuperState NET_PREP_FLICK;
+    public final SuperState NET_PLACE_FLICK;
     public final SuperState NET_EXIT;
 
     public final SuperState BACK_ALGAE_TOSS;
@@ -120,12 +122,12 @@ public class Superstructure {
         L3 = new SuperState("L3", ArmState.L3, ClimbState.STOW, ClawState.DEFAULT);
         L4 = new SuperState("L4", ArmState.L4, ClimbState.STOW, ClawState.DEFAULT);
 
-        L1_PLACE = new LoggedSuperState("L1_PLACE", ArmState.L1, ClimbState.STOW, ClawState.CORAL_OUT_L1, () -> wrist.getPosition() > ArmState.L1.wristPosition || wrist.atPosition(ArmState.L1.wristPosition), () -> false);
+        L1_PLACE = new SuperState("L1_PLACE", ArmState.L1, ClimbState.STOW, ClawState.CORAL_OUT_L1, () -> wrist.getPosition() > ArmState.L1.wristPosition || wrist.atPosition(ArmState.L1.wristPosition), () -> false);
         L2_PLACE = new SuperState("L2_PLACE", ArmState.L2, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
         L3_PLACE = new SuperState("L3_PLACE", ArmState.L3, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
         L4_PLACE = new SuperState("L4_PLACE", ArmState.L4, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
 
-        L1_CONFIRM = new LoggedSuperState("L1_CONFIRM", ArmState.L1_PLACE, ClimbState.STOW, ClawState.CORAL_OUT, () -> true, () -> false);
+        L1_CONFIRM = new SuperState("L1_CONFIRM", ArmState.L1_PLACE, ClimbState.STOW, ClawState.CORAL_OUT, () -> true, () -> false);
 
         L2_EXIT = new SuperState("L2_EXIT", ArmState.L2_EXIT, ClimbState.STOW, ClawState.DEFAULT);
         L3_EXIT = new SuperState("L3_EXIT", ArmState.L3_EXIT, ClimbState.STOW, ClawState.DEFAULT);
@@ -145,7 +147,9 @@ public class Superstructure {
         CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.DEFAULT);
 
         NET_PREP = new SuperState("NET_PREP", ArmState.NET_PREP, ClimbState.STOW, ClawState.DEFAULT);
-        NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, () -> false, () -> elevator.atTargetPosition() && wrist.getPosition() > 1.5);
+        NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, () -> false, () -> wrist.getPosition() > 1.5);
+        NET_PREP_FLICK = new SuperState("NET_PREP_FLICK", ArmState.NET_PREP_FLICK, ClimbState.STOW, ClawState.DEFAULT);
+        NET_PLACE_FLICK = new SuperState("NET_PLACE_FLICK", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, () -> false, () -> true);
         NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.DEFAULT);
 
         BACK_ALGAE_TOSS = new SuperState("BACK_ALGAE_TOSS", ArmState.BACK_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
@@ -173,9 +177,10 @@ public class Superstructure {
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L2_ALGAE_REMOVAL),
         L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_ALGAE_REMOVAL),
         PROCESSOR (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
-        NET_PREP (ElevatorConstants.NET_METERS, WristConstants.L3_ALGAE_REMOVAL),
-        NET (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
-        NET_EXIT (ElevatorConstants.NET_METERS, WristConstants.NET_RADIANS),
+        NET_PREP (ElevatorConstants.NET_PREP_METERS, WristConstants.L3_ALGAE_REMOVAL),
+        NET_PREP_FLICK (ElevatorConstants.NET_PLACE_METERS, WristConstants.L3_ALGAE_REMOVAL),
+        NET (ElevatorConstants.NET_PLACE_METERS, WristConstants.NET_RADIANS),
+        NET_EXIT (ElevatorConstants.NET_PLACE_METERS, WristConstants.NET_RADIANS),
         BACK_ALGAE_TOSS (ElevatorConstants.STOW_POSITION_METERS, WristConstants.BACK_ALGAE_TOSS),
         FRONT_ALGAE_TOSS (ElevatorConstants.STOW_POSITION_METERS, WristConstants.FRONT_ALGAE_TOSS);
 
@@ -232,7 +237,7 @@ public class Superstructure {
             Commands.sequence(
                 // Run these commands in parallel, cancel all when first command argument ends
                 Commands.parallel(
-                    fixArmAndClimb(nextState.armState, nextState.climbState),
+                    setArmState(nextState.armState),
                     // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
                     setCoralClawState(nextState),
                     setAlgaeClawState(nextState)
@@ -376,7 +381,7 @@ public class Superstructure {
             case L2, L2_PREP, L2_EXIT -> L2_PLACE;
             case L3, L3_PREP, L3_EXIT -> L3_PLACE;
             case L4, L4_PREP, L4_EXIT -> L4_PLACE;
-            case NET, NET_PREP, NET_EXIT -> NET_PLACE;
+            case NET, NET_PREP, NET_EXIT, NET_PREP_FLICK -> NET_PLACE;
             case PROCESSOR -> PROCESSOR_PLACE;
             default -> L1_PLACE;
         };
@@ -436,7 +441,11 @@ public class Superstructure {
                     || targetState.clawState.algaePercent != 0 && !algaeClaw.hasPiece())),
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
-            setSuperState(STOW)
+            Commands.either(
+                setSuperState(L3_ALGAE), 
+                setSuperState(STOW), 
+                algaeClaw::hasPiece
+            )
         );
     }
 
@@ -478,7 +487,7 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldRunElevatorFast")
     public boolean shouldRunElevatorFast() {
-        return !algaeClaw.hasPiece();
+        return !algaeClaw.hasPiece() || targetArmState == ArmState.NET;
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ArmAtTargetPosition")

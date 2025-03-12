@@ -12,7 +12,6 @@ import java.util.function.DoubleSupplier;
 
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.WristConstants;
-import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.util.Constants.LoggingConstants;
 
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -44,16 +43,16 @@ public class Wrist extends SubsystemBase {
     private TrapezoidProfile fastProfile = new TrapezoidProfile(new Constraints(WristConstants.FAST_VELOCITY, WristConstants.FAST_ACCELERATION));
     private TrapezoidProfile slowProfile = new TrapezoidProfile(new Constraints(WristConstants.SLOW_VELOCITY, WristConstants.SLOW_ACCELERATION));
 
-    private LoggedTunableNumber fastVelocity = new LoggedTunableNumber("Wrist/FastProfile/Velocity", WristConstants.FAST_VELOCITY);
-    private LoggedTunableNumber fastAcceleration = new LoggedTunableNumber("Wrist/FastProfile/Acceleration", WristConstants.FAST_ACCELERATION);
-    private LoggedTunableNumber slowVelocity = new LoggedTunableNumber("Wrist/SlowProfile/Velocity", WristConstants.SLOW_VELOCITY);
-    private LoggedTunableNumber slowAcceleration = new LoggedTunableNumber("Wrist/SlowProfile/Acceleration", WristConstants.SLOW_ACCELERATION);
+    // private LoggedTunableNumber fastVelocity = new LoggedTunableNumber("Wrist/FastProfile/Velocity", WristConstants.FAST_VELOCITY);
+    // private LoggedTunableNumber fastAcceleration = new LoggedTunableNumber("Wrist/FastProfile/Acceleration", WristConstants.FAST_ACCELERATION);
+    // private LoggedTunableNumber slowVelocity = new LoggedTunableNumber("Wrist/SlowProfile/Velocity", WristConstants.SLOW_VELOCITY);
+    // private LoggedTunableNumber slowAcceleration = new LoggedTunableNumber("Wrist/SlowProfile/Acceleration", WristConstants.SLOW_ACCELERATION);
 
     public Wrist(WristIO io) {
         this.io = io;
 
-        fastVelocity.onChanged().or(fastAcceleration.onChanged()).onTrue(Commands.runOnce(() -> fastProfile = new TrapezoidProfile(new Constraints(fastVelocity.get(), fastAcceleration.get()))).ignoringDisable(true));
-        slowVelocity.onChanged().or(slowAcceleration.onChanged()).onTrue(Commands.runOnce(() -> slowProfile = new TrapezoidProfile(new Constraints(slowVelocity.get(), slowAcceleration.get()))).ignoringDisable(true));
+        // fastVelocity.onChanged().or(fastAcceleration.onChanged()).onTrue(Commands.runOnce(() -> fastProfile = new TrapezoidProfile(new Constraints(fastVelocity.get(), fastAcceleration.get()))).ignoringDisable(true));
+        // slowVelocity.onChanged().or(slowAcceleration.onChanged()).onTrue(Commands.runOnce(() -> slowProfile = new TrapezoidProfile(new Constraints(slowVelocity.get(), slowAcceleration.get()))).ignoringDisable(true));
 
         RobotContainer.desiredComponents3d[LoggingConstants.WRIST_INDEX] = new Pose3d(
             LoggingConstants.WRIST_OFFSET.getX(),

@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.SparkBase;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -31,7 +32,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.GainConstants;
-import frc.robot.util.custom.LoggedGainConstants;
 import frc.robot.util.custom.ReefSide;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
@@ -91,8 +91,8 @@ public final class Constants {
         public static final int WRIST_INDEX = 3;
 
         public static final Translation3d ROBOT_OFFSET = new Translation3d(
-            0.0054708171,
-            0.0070311264,
+            0.0,
+            0.0,
             0.0
         );
 
@@ -110,6 +110,12 @@ public final class Constants {
 
         public static final Translation3d CORAL_OFFSET = new Translation3d(
             0.117,
+            -0.005,
+            -0.154653
+        );
+
+        public static final Translation3d END_EFFECTOR_OFFSET = new Translation3d(
+            0.4,
             -0.005,
             -0.154653
         );
@@ -140,7 +146,7 @@ public final class Constants {
 
         public static final double ROBOT_LENGTH_METERS = Units.inchesToMeters(28.5);
         public static final double BUMPER_LENGTH_METERS = Units.inchesToMeters(3.5);
-        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(35);
+        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(33);
 
         // Front positive, left positive
         public static final Translation2d FRONT_LEFT_WHEEL_POSITION = new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2);
@@ -195,11 +201,21 @@ public final class Constants {
 
     public static final class AutoConstants {
 
+        //allignment trapazoidal profile constants
+        public static final double HDC_XY_ACCELERATION = 2.5;
+        public static final double HDC_XY_VELOCITY = 1;
+
+        public static final double HDC_THETA_ACCELERATION =  Units.degreesToRadians(450d);
+        public static final double HDC_THETA_VELOCITY =  Units.degreesToRadians(270d);
+
         public static final String REEF_NODES = "ABCDEFGHIJKL";
-        
-        // Below is gotten from choreo
-        public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.degreesToRadians(1137.21);
-        public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Units.degreesToRadians(792.90);
+
+        public static final PathConstraints prepReefConstraints = new PathConstraints(
+                2.350, 
+                4.100, 
+                Units.degreesToRadians(270), 
+                Units.degreesToRadians(450)
+            );
 
         public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
@@ -207,6 +223,9 @@ public final class Constants {
         public static final double REEF_ALIGNMENT_MAX_SPEED = 1.0;
         public static final double INTAKE_ALIGNMENT_MAX_SPEED = 1.0;
         public static final double PROCESSOR_ALIGNMENT_MAX_SPEED = 0.0;
+
+        public static final double REEF_ALIGNMENT_PREP_DISTANCE = 1.0;
+
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
@@ -248,8 +267,8 @@ public final class Constants {
             AutoConstants.TELE_THETA_GAINS.getI(),
             AutoConstants.TELE_THETA_GAINS.getD(),
             new TrapezoidProfile.Constraints(
-                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
-                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)) 
+                AutoConstants.HDC_THETA_VELOCITY,
+                AutoConstants.HDC_THETA_ACCELERATION)) 
             {{
                 setIZone(Units.degreesToRadians(45));
             }};
@@ -429,10 +448,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.28271484375;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.278564;
         public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
         public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081055;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.139404296875;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.151367;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -506,7 +525,7 @@ public final class Constants {
         public static final boolean MOTOR_INVERTED = false;
 
         public static final double INTAKE_PERCENT = 0.4;
-        public static final double HOLD_PERCENT = 0.1;
+        public static final double HOLD_PERCENT = 0.3;
         public static final double OUTTAKE_PERCENT = -0.75;
         public static final double L1_OUTTAKE_PERCENT = -0.1;
 
@@ -532,14 +551,14 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double HOLD_PERCENT = 0.75;
+        public static final double HOLD_PERCENT = 1.0;
         public static final double INTAKE_PERCENT = 1.0;
         public static final double OUTTAKE_PERCENT = -1.0;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
-        public static final double NET_X_CHASSIS_OFFSET = 0.61;
         public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
+        public static final double NET_X_CHASSIS_OFFSET = 0.8;
 
     }
     public static final class ElevatorConstants {
@@ -575,7 +594,7 @@ public final class Constants {
             G
         );
 
-        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
+        // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
         public static final double FAST_VELOCITY = 1.6;
         public static final double FAST_ACCELERATION = 8d;
@@ -586,14 +605,16 @@ public final class Constants {
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
         public static final double L1_POSITION_METERS = 0.1;
-        public static final double L2_POSITION_METERS = 0.09;
-        public static final double L3_POSITION_METERS = 0.27;
+        // public static final double L2_POSITION_METERS = 0.09;
+        // public static final double L3_POSITION_METERS = 0.27;
+        public static final double L2_POSITION_METERS = 0.05;
+        public static final double L3_POSITION_METERS = 0.25;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
         public static final double L3_POSITION_REMOVE_ALGAE = 0.13;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.04;
         public static final double PROCESSOR_METERS = 0;
-        public static final double NET_PREP_METERS = 0.32;
-        public static final double NET_METERS = MAX_DISPLACEMENT_METERS;
+        public static final double NET_PREP_METERS = 0.5;
+        public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double DEADBAND_METERS = 0.02;
 
@@ -605,7 +626,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.575;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 5.716;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -655,12 +676,15 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.355;
+        public static final double INTAKE_POSITION_RADIANS = -0.35;
         public static final double L1_POSITION_RADIANS = 1.8;
         public static final double L1_PLACE_POSITION_RADIANS = 2.75;
-        public static final double L2_POSITION_RADIANS = 2.41;
-        public static final double L3_POSITION_RADIANS = 2.41;
-        public static final double L4_POSITION_RADIANS = 2.32;
+        // public static final double L2_POSITION_RADIANS = 2.41;
+        // public static final double L3_POSITION_RADIANS = 2.41;
+        // public static final double L4_POSITION_RADIANS = 2.32;
+        public static final double L2_POSITION_RADIANS = 2.5;
+        public static final double L3_POSITION_RADIANS = 2.5;
+        public static final double L4_POSITION_RADIANS = 2.4;
         public static final double L2_ALGAE_REMOVAL = 0.7;
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
@@ -671,6 +695,7 @@ public final class Constants {
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
         public static final double NET_RADIANS = 1.7;
+        public static final double NET_FLICK_RADIANS = 2.0;
     }
 
 
@@ -731,8 +756,8 @@ public final class Constants {
             G_FAST
         );
 
-        public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
-        public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
+        // public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
+        // public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = 2.5;
@@ -920,7 +945,7 @@ public final class Constants {
             return CORAL_STATION_POSITIONS.subList(startIndex, startIndex + 2);
         }
 
-        public static final Pose2d BLUE_REEF = new Pose2d(4.508, FieldConstants.FIELD_MAX_HEIGHT / 2.0, new Rotation2d());
+        public static final Pose2d BLUE_REEF = new Pose2d(4.477431, FieldConstants.FIELD_MAX_HEIGHT / 2.0, new Rotation2d());
 
         public static final List<Pose2d> REEF_POSITIONS = new ArrayList<Pose2d>() {{
             add(BLUE_REEF);
@@ -931,38 +956,40 @@ public final class Constants {
             return REEF_POSITIONS.get(Robot.isRedAlliance() ? 1 : 0);
         }
 
-        public static final Pose2d BLUE_REEF_A = new Pose2d(3.72, 4.19, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_B = new Pose2d(3.72, 3.86, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_C = new Pose2d(3.94, 3.44, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_D = new Pose2d(4.24, 3.27, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_E = new Pose2d(4.73, 3.27, Rotation2d.fromDegrees(300));
-        public static final Pose2d BLUE_REEF_F = new Pose2d(5.02, 3.44, Rotation2d.fromDegrees(300));
-        public static final Pose2d BLUE_REEF_G = new Pose2d(5.26, 3.86, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_H = new Pose2d(5.26, 4.19, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_I = new Pose2d(5.02, 4.61, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_J = new Pose2d(4.73, 4.78, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_K = new Pose2d(4.24, 4.78, Rotation2d.fromDegrees(120));
-        public static final Pose2d BLUE_REEF_L = new Pose2d(3.94, 4.61, Rotation2d.fromDegrees(120));
+        public static final double POLE_DISTANCE = 0.1643085;
 
         // Centers of each reef side, letters are ordered from driver station POV (left than right)
-        public static final Pose2d BLUE_REEF_AB = new Pose2d(3.67, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(180));
-        public static final Pose2d BLUE_REEF_CD = new Pose2d(4.09, 3.37, Rotation2d.fromDegrees(240));
-        public static final Pose2d BLUE_REEF_FE = new Pose2d(4.91, 3.34, Rotation2d.fromDegrees(300));
-        public static final Pose2d BLUE_REEF_HG = new Pose2d(5.30, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(0));
-        public static final Pose2d BLUE_REEF_JI = new Pose2d(4.88, 4.74, Rotation2d.fromDegrees(60));
-        public static final Pose2d BLUE_REEF_KL = new Pose2d(4.06, 4.72, Rotation2d.fromDegrees(120));
+        public static final Pose2d BLUE_REEF_AB = new Pose2d(3.645757, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(180));
+        public static final Pose2d BLUE_REEF_CD = new Pose2d(4.061614, 3.305661, Rotation2d.fromDegrees(240));
+        public static final Pose2d BLUE_REEF_FE = new Pose2d(4.893287, 3.305684, Rotation2d.fromDegrees(300));
+        public static final Pose2d BLUE_REEF_HG = new Pose2d(5.309104, FieldConstants.FIELD_MAX_HEIGHT / 2.0, Rotation2d.fromDegrees(0));
+        public static final Pose2d BLUE_REEF_JI = new Pose2d(4.893247, 4.746185, Rotation2d.fromDegrees(60));
+        public static final Pose2d BLUE_REEF_KL = new Pose2d(4.061574, 4.746162, Rotation2d.fromDegrees(120));
+
+        // public static final Pose2d BLUE_REEF_A = new Pose2d(BLUE_REEF_AB.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(180-90)), BLUE_REEF_AB.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(180-90)), Rotation2d.fromDegrees(180));
+        // public static final Pose2d BLUE_REEF_B = new Pose2d(BLUE_REEF_AB.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(180-90)), BLUE_REEF_AB.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(180-90)), Rotation2d.fromDegrees(180));
+        // public static final Pose2d BLUE_REEF_C = new Pose2d(BLUE_REEF_CD.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(240-90)), BLUE_REEF_CD.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(240-90)), Rotation2d.fromDegrees(240));
+        // public static final Pose2d BLUE_REEF_D = new Pose2d(BLUE_REEF_CD.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(240-90)), BLUE_REEF_CD.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(240-90)), Rotation2d.fromDegrees(240));
+        // public static final Pose2d BLUE_REEF_E = new Pose2d(BLUE_REEF_FE.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(300-90)), BLUE_REEF_FE.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(300-90)), Rotation2d.fromDegrees(300));
+        // public static final Pose2d BLUE_REEF_F = new Pose2d(BLUE_REEF_FE.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(300-90)), BLUE_REEF_FE.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(300-90)), Rotation2d.fromDegrees(300));
+        // public static final Pose2d BLUE_REEF_G = new Pose2d(BLUE_REEF_HG.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(0-90)), BLUE_REEF_HG.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(0-90)), Rotation2d.fromDegrees(0));
+        // public static final Pose2d BLUE_REEF_H = new Pose2d(BLUE_REEF_HG.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(0-90)), BLUE_REEF_HG.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(0-90)), Rotation2d.fromDegrees(0));
+        // public static final Pose2d BLUE_REEF_I = new Pose2d(BLUE_REEF_JI.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(60-90)), BLUE_REEF_JI.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(60-90)), Rotation2d.fromDegrees(60));
+        // public static final Pose2d BLUE_REEF_J = new Pose2d(BLUE_REEF_JI.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(60-90)), BLUE_REEF_JI.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(60-90)), Rotation2d.fromDegrees(60));
+        // public static final Pose2d BLUE_REEF_K = new Pose2d(BLUE_REEF_KL.getX() + POLE_DISTANCE * Math.cos(Math.toRadians(120-90)), BLUE_REEF_KL.getY() + POLE_DISTANCE * Math.sin(Math.toRadians(120-90)), Rotation2d.fromDegrees(120));
+        // public static final Pose2d BLUE_REEF_L = new Pose2d(BLUE_REEF_KL.getX() - POLE_DISTANCE * Math.cos(Math.toRadians(120-90)), BLUE_REEF_KL.getY() - POLE_DISTANCE * Math.sin(Math.toRadians(120-90)), Rotation2d.fromDegrees(120));
 
         public static final List<ReefSide> REEF_FACE_POSITIONS = new ArrayList<ReefSide>() {{
             // All points are in meters and radians
             // All relative to the blue origin
             // Positions go from blueReef1 (the farthest from blue driverstation) clockwise around
             // even = high, odd = low
-            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, BLUE_REEF_K, BLUE_REEF_L, 19);
-            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, BLUE_REEF_J, BLUE_REEF_I, 20);
-            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, BLUE_REEF_H, BLUE_REEF_G, 21);
-            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, BLUE_REEF_F, BLUE_REEF_E, 22);
-            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, BLUE_REEF_C, BLUE_REEF_D, 17);
-            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, BLUE_REEF_A, BLUE_REEF_B, 18);
+            ReefSide blueReef6 = new ReefSide(BLUE_REEF_KL, false, 19);
+            ReefSide blueReef5 = new ReefSide(BLUE_REEF_JI, true, 20);
+            ReefSide blueReef4 = new ReefSide(BLUE_REEF_HG, true, 21);
+            ReefSide blueReef3 = new ReefSide(BLUE_REEF_FE, true, 22);
+            ReefSide blueReef2 = new ReefSide(BLUE_REEF_CD, false, 17);
+            ReefSide blueReef1 = new ReefSide(BLUE_REEF_AB, false, 18);
 
             // Blue Reef
             add(blueReef1);

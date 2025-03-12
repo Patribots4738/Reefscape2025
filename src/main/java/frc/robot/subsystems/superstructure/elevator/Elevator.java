@@ -7,8 +7,6 @@ package frc.robot.subsystems.superstructure.elevator;
 import frc.robot.RobotContainer;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.LoggingConstants;
-import frc.robot.util.custom.LoggedTunableBoolean;
-import frc.robot.util.custom.LoggedTunableNumber;
 
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
@@ -46,21 +44,21 @@ public class Elevator extends SubsystemBase {
     private TrapezoidProfile fastProfile = new TrapezoidProfile(new Constraints(ElevatorConstants.FAST_VELOCITY, ElevatorConstants.FAST_ACCELERATION));
     private TrapezoidProfile slowProfile = new TrapezoidProfile(new Constraints(ElevatorConstants.SLOW_VELOCITY, ElevatorConstants.SLOW_ACCELERATION));
 
-    private LoggedTunableNumber fastVelocity = new LoggedTunableNumber("Elevator/FastProfile/Velocity", ElevatorConstants.FAST_VELOCITY);
-    private LoggedTunableNumber fastAcceleration = new LoggedTunableNumber("Elevator/FastProfile/Acceleration", ElevatorConstants.FAST_ACCELERATION);
-    private LoggedTunableNumber slowVelocity = new LoggedTunableNumber("Elevator/SlowProfile/Velocity", ElevatorConstants.SLOW_VELOCITY);
-    private LoggedTunableNumber slowAcceleration = new LoggedTunableNumber("Elevator/SlowProfile/Acceleration", ElevatorConstants.SLOW_ACCELERATION);
+    // private LoggedTunableNumber fastVelocity = new LoggedTunableNumber("Elevator/FastProfile/Velocity", ElevatorConstants.FAST_VELOCITY);
+    // private LoggedTunableNumber fastAcceleration = new LoggedTunableNumber("Elevator/FastProfile/Acceleration", ElevatorConstants.FAST_ACCELERATION);
+    // private LoggedTunableNumber slowVelocity = new LoggedTunableNumber("Elevator/SlowProfile/Velocity", ElevatorConstants.SLOW_VELOCITY);
+    // private LoggedTunableNumber slowAcceleration = new LoggedTunableNumber("Elevator/SlowProfile/Acceleration", ElevatorConstants.SLOW_ACCELERATION);
 
-    private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Elevator/BrakeMotor", ElevatorConstants.BRAKE_MOTOR);
+    // private final LoggedTunableBoolean brakeMotor = new LoggedTunableBoolean("Elevator/BrakeMotor", ElevatorConstants.BRAKE_MOTOR);
     
     public Elevator(ElevatorIO io) {
         this.io = io;
 
-        fastVelocity.onChanged().or(fastAcceleration.onChanged()).onTrue(Commands.runOnce(() -> fastProfile = new TrapezoidProfile(new Constraints(fastVelocity.get(), fastAcceleration.get()))).ignoringDisable(true));
-        slowVelocity.onChanged().or(slowAcceleration.onChanged()).onTrue(Commands.runOnce(() -> slowProfile = new TrapezoidProfile(new Constraints(slowVelocity.get(), slowAcceleration.get()))).ignoringDisable(true));
+        // fastVelocity.onChanged().or(fastAcceleration.onChanged()).onTrue(Commands.runOnce(() -> fastProfile = new TrapezoidProfile(new Constraints(fastVelocity.get(), fastAcceleration.get()))).ignoringDisable(true));
+        // slowVelocity.onChanged().or(slowAcceleration.onChanged()).onTrue(Commands.runOnce(() -> slowProfile = new TrapezoidProfile(new Constraints(slowVelocity.get(), slowAcceleration.get()))).ignoringDisable(true));
 
-        ElevatorConstants.LOGGED_GAINS.onChanged(Commands.runOnce(() -> io.setGains(ElevatorConstants.LOGGED_GAINS.get())).ignoringDisable(true));
-        brakeMotor.onChanged(Commands.runOnce(() -> io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
+        // ElevatorConstants.LOGGED_GAINS.onChanged(Commands.runOnce(() -> io.setGains(ElevatorConstants.LOGGED_GAINS.get())).ignoringDisable(true));
+        // brakeMotor.onChanged(Commands.runOnce(() -> io.setBrakeMode(brakeMotor.get())).ignoringDisable(true));
     }
 
     @Override

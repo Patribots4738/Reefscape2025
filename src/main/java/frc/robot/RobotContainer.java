@@ -237,49 +237,53 @@ public class RobotContainer {
             .whileTrue(Commands.run(() -> driver.setRumble(0.1))
                 .finallyDo(() -> driver.setRumble(0)));
 
-        new Trigger(coralClaw::hasPiece)
-            .whileTrue(Commands.runOnce(() -> 
-                    placedCoral[0] = new Pose3d(robotPose2d)
-                        // Make field relative
-                        .plus(new Transform3d(new Pose3d(), components3d[LoggingConstants.WRIST_INDEX]))
-                        .plus(new Transform3d(new Pose3d(), new Pose3d(LoggingConstants.CORAL_OFFSET, new Rotation3d())))
-                )
-                .ignoringDisable(true).repeatedly())
-            .onFalse(Commands.runOnce(() -> {
+        if (FieldConstants.IS_SIMULATION) {
+            new Trigger(coralClaw::hasPiece)
+                .whileTrue(Commands.runOnce(() -> 
+                        placedCoral[0] = new Pose3d(robotPose2d)
+                            // Make field relative
+                            .plus(new Transform3d(new Pose3d(), components3d[LoggingConstants.WRIST_INDEX]))
+                            .plus(new Transform3d(new Pose3d(), new Pose3d(LoggingConstants.CORAL_OFFSET, new Rotation3d())))
+                    )
+                    .ignoringDisable(true).repeatedly())
+                .onFalse(Commands.runOnce(() -> {
+                        Pose3d endEffectorPose = new Pose3d(robotPose2d)
+                            .plus(new Transform3d(new Pose3d(), components3d[LoggingConstants.WRIST_INDEX]))
+                            .plus(new Transform3d(new Pose3d(), new Pose3d(LoggingConstants.END_EFFECTOR_OFFSET, new Rotation3d())));
+                        Logger.recordOutput("Subsystems/SuperStructure/EndEffectorPose", endEffectorPose);
+                        Pose3d scoringNode = PoseCalculations.getClosestCoralScoringNode(endEffectorPose);
+                        if (RobotContainer.placedCoralIndex >= RobotContainer.placedCoral.length)
+                            RobotContainer.placedCoralIndex = 1; // Start overriding previous placements (keep index 0 for currently equipped)
+                        RobotContainer.placedCoral[RobotContainer.placedCoralIndex] = scoringNode;
+                        RobotContainer.placedCoralIndex++;
+                        placedCoral[0] = new Pose3d(0,0,-FieldConstants.CORAL_RADIUS_METERS-0.05, new Rotation3d());
+                    })
+                    .ignoringDisable(true)  
+                );
+
+            new Trigger(algaeClaw::hasPiece)
+                .onTrue(Commands.runOnce(() -> {
                     double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
                     Pose3d endEffectorPose = new Pose3d(robotPose2d.getTranslation().getX(), robotPose2d.getTranslation().getY(), elevatorHeight, new Rotation3d());
-                    Pose3d scoringNode = PoseCalculations.getClosestCoralScoringNode(endEffectorPose);
-                    if (RobotContainer.placedCoralIndex >= RobotContainer.placedCoral.length)
-                        RobotContainer.placedCoralIndex = 1; // Start overriding previous placements (keep index 0 for currently equipped)
-                    RobotContainer.placedCoral[RobotContainer.placedCoralIndex] = scoringNode;
-                    RobotContainer.placedCoralIndex++;
-                    placedCoral[0] = new Pose3d(0,0,-FieldConstants.CORAL_RADIUS_METERS-0.05, new Rotation3d());
-                })
-                .ignoringDisable(true)  
-            );
-
-        new Trigger(algaeClaw::hasPiece)
-            .onTrue(Commands.runOnce(() -> {
-                double elevatorHeight = elevator.getPosition()*2+0.776324; // Distance from claw at lowest pos to ground 
-                Pose3d endEffectorPose = new Pose3d(robotPose2d.getTranslation().getX(), robotPose2d.getTranslation().getY(), elevatorHeight, new Rotation3d());
-                Pose3d removalNode = PoseCalculations.getClosestAlgaeRemovalNode(endEffectorPose);
-                for (int i = 0; i < FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY.length; i++) {
-                    if (removalNode.equals(FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY[i])) {
-                        RobotContainer.placedAlgae[i + 1] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d());
-                        break;
+                    Pose3d removalNode = PoseCalculations.getClosestAlgaeRemovalNode(endEffectorPose);
+                    for (int i = 0; i < FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY.length; i++) {
+                        if (removalNode.equals(FieldConstants.ALGAE_REMOVAL_LOCATIONS_ARRAY[i])) {
+                            RobotContainer.placedAlgae[i + 1] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d());
+                            break;
+                        }
                     }
-                }
-            }))
-            .whileTrue(Commands.runOnce(() ->
-                    placedAlgae[0] = new Pose3d(robotPose2d)
-                        // Make field relative
-                        .plus(new Transform3d(new Pose3d(), components3d[LoggingConstants.WRIST_INDEX]))
-                        .plus(new Transform3d(new Pose3d(), new Pose3d(LoggingConstants.ALGAE_OFFSET, new Rotation3d())))
-                ).ignoringDisable(true).repeatedly())
-            .onFalse(Commands.runOnce(() -> 
-                placedAlgae[0] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d()))
-                .ignoringDisable(true)
-            );
+                }))
+                .whileTrue(Commands.runOnce(() ->
+                        placedAlgae[0] = new Pose3d(robotPose2d)
+                            // Make field relative
+                            .plus(new Transform3d(new Pose3d(), components3d[LoggingConstants.WRIST_INDEX]))
+                            .plus(new Transform3d(new Pose3d(), new Pose3d(LoggingConstants.ALGAE_OFFSET, new Rotation3d())))
+                    ).ignoringDisable(true).repeatedly())
+                .onFalse(Commands.runOnce(() -> 
+                    placedAlgae[0] = new Pose3d(0.5,0,-FieldConstants.ALGAE_RADIUS_METERS-0.05, new Rotation3d()))
+                    .ignoringDisable(true)
+                );
+        }
     }
 
     private void configureDriverBindings(PatriBoxController controller) {
@@ -375,8 +379,30 @@ public class RobotContainer {
 
     private void configureDevBindings(PatriBoxController controller) {
 
-        controller.start()
-            .onTrue(swerve.resetOdometryCommand(FieldConstants::GET_RESET_ODO_POSITION));
+        controller.rightStick()
+            .toggleOnTrue(
+                new ActiveConditionalCommand(
+                    alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    alignment.intakeRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
+                    () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
+                ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
+
+        controller.a()
+            .whileTrue(alignment.reefFullAlignmentCommand());
+
+        controller.b()
+            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
+
+        controller.x()
+            .whileTrue(alignment.intakeAlignmentCommand());
+
+        controller.y()
+            .toggleOnTrue(
+                new ActiveConditionalCommand(
+                    superstructure.algaeRemovalCommand(),
+                    superstructure.setSuperState(superstructure.NET_PREP),
+                    () -> Robot.isRedAlliance() ? swerve.getPose().getX() > FieldConstants.FIELD_MAX_LENGTH / 2.0 + 2d : swerve.getPose().getX() < FieldConstants.FIELD_MAX_LENGTH / 2.0 - 2d
+                ).repeatedly());
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -389,9 +415,12 @@ public class RobotContainer {
 
         controller.povUp()
             .onTrue(superstructure.setSuperState(superstructure.L4));
-        
-        controller.x()
-            .onTrue(superstructure.setSuperState(superstructure.STOW));
+
+        controller.leftBumper()
+            .onTrue(alignment.updateIndexCommand(-1));
+
+        controller.rightBumper()
+            .onTrue(alignment.updateIndexCommand(1));
 
         controller.rightTrigger()
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
@@ -399,28 +428,6 @@ public class RobotContainer {
         controller.leftTrigger()
             .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 
-        controller.a()
-            .whileTrue(alignment.reefAlignmentCommand());
-
-        // controller.y()
-        //     .onTrue(superstructure.algaeL3Command(controller::getYButton));
-
-        // controller.a()
-        //     .onTrue(superstructure.algaeL2Command(controller::getAButton));
-
-        controller.rightStick()
-            .toggleOnTrue(
-                new ActiveConditionalCommand(
-                    alignment.reefRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
-                    alignment.intakeRotationalAlignmentCommand(controller::getLeftX, controller::getLeftY),
-                    () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
-                ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
-
-        controller.leftBumper()
-            .onTrue(alignment.updateIndexCommand(-1));
-
-        controller.rightBumper()
-            .onTrue(alignment.updateIndexCommand(1));
     }
     
 

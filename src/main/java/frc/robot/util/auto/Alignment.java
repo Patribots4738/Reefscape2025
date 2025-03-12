@@ -1,15 +1,21 @@
 package frc.robot.util.auto;
 
+import java.util.Set;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
@@ -30,8 +36,23 @@ public class Alignment {
     @AutoLogOutput (key = "Subsystems/Swerve/AlignmentIndex")
     private int alignmentIndex = -1;
 
+    private TrapezoidProfile xyProfile = new TrapezoidProfile(new Constraints(AutoConstants.HDC_XY_VELOCITY, AutoConstants.HDC_XY_ACCELERATION));
+
+    private State xySetpoint = new State(0, 0);
+    private State targetXY = new State(0, 0);
+
+    private Pose2d profileStartingPose = Pose2d.kZero;
+
+    // private LoggedTunableNumber translationVelocity = new LoggedTunableNumber("Alignment/TranslationVelocity", AutoConstants.HDC_XY_VELOCITY);
+    // private LoggedTunableNumber translationAcceleration = new LoggedTunableNumber("Alignment/TranslationAcceleration", AutoConstants.HDC_XY_ACCELERATION);
+
     public Alignment(Swerve swerve) {
         this.swerve = swerve;
+
+        // translationVelocity.onChanged().or(translationAcceleration.onChanged())
+        //     .onTrue(Commands.runOnce(() -> {
+        //         xyProfile = new TrapezoidProfile(new Constraints(translationVelocity.get(), translationAcceleration.get()));
+        //     }).ignoringDisable(true));
     }
 
     public enum AlignmentMode {
@@ -40,6 +61,7 @@ public class Alignment {
         CAGE,
         REEF,
         REEF_SOFT,
+        REEF_PREP,
         NET,
         PROCESSOR,
         NONE
@@ -47,13 +69,23 @@ public class Alignment {
 
     public void resetHDC() {
         // Reset error and integral terms of HDC's PID controller
-        AutoConstants.TELE_HDC.getThetaController().reset(swerve.getPose().getRotation().getRadians());
+        AutoConstants.TELE_HDC.getThetaController().reset(swerve.getPose().getRotation().getRadians(), swerve.getRobotRelativeVelocity().omegaRadiansPerSecond);
         AutoConstants.TELE_HDC.getXController().reset();
         AutoConstants.TELE_HDC.getYController().reset();
     }
 
+    public void resetProfile() {
+        xySetpoint.position = 0;
+        targetXY.position = 0;
+        profileStartingPose = Pose2d.kZero;
+    }
+    
     public Command resetHDCCommand() {
         return Commands.runOnce(() -> resetHDC());
+    }
+
+    public Command resetProfileCommand() {
+        return Commands.runOnce(() -> resetProfile());
     }
 
     public double normalizeTwoSpeeds(double controllerInput, double autoInput) {
@@ -82,8 +114,8 @@ public class Alignment {
     
     public ChassisSpeeds normalizeChassisSpeeds(ChassisSpeeds autoSpeeds, ChassisSpeeds controllerSpeeds) {
         return new ChassisSpeeds(
-            MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vyMetersPerSecond, autoSpeeds.vyMetersPerSecond)), 0.01),
-            -MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vxMetersPerSecond, autoSpeeds.vxMetersPerSecond)), 0.01),
+            MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vyMetersPerSecond, autoSpeeds.vyMetersPerSecond)), 0.005),
+            -MathUtil.applyDeadband((normalizeTwoSpeeds(controllerSpeeds.vxMetersPerSecond, autoSpeeds.vxMetersPerSecond)), 0.005),
             MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.005)
         );
     }
@@ -103,14 +135,21 @@ public class Alignment {
     }
 
     public ChassisSpeeds getAutoRotationalSpeeds(Rotation2d rotation) {
-        Pose2d desiredPose = new Pose2d(swerve.getPose().getX(), swerve.getPose().getY(), rotation);
-        swerve.setDesiredPose(desiredPose);
-        return 
-            new ChassisSpeeds(
-                0,
-                0,
-                AutoConstants.TELE_HDC.getThetaController().calculate(swerve.getPose().getRotation().getRadians(), rotation.getRadians())
-            );
+        Pose2d currentPose = swerve.getPose();
+        Pose2d desiredPose = new Pose2d(currentPose.getX(), currentPose.getY(), rotation);
+        return getAutoSpeeds(desiredPose);
+    }
+
+    public ChassisSpeeds getProfiledAutoSpeeds(Pose2d position) {
+        swerve.setDesiredPose(position);
+        Pose2d currentPose = swerve.getPose();
+        if (targetXY.position == 0) {
+            targetXY.position = currentPose.getTranslation().getDistance(position.getTranslation());
+            profileStartingPose = currentPose;
+        }
+        position = getProfiledPosition(currentPose, position);
+        Logger.recordOutput("Subsystems/Swerve/StepPosition", position);
+        return AutoConstants.TELE_HDC.calculate(swerve.getPose(), position, 0, position.getRotation());
     }
 
     public ChassisSpeeds getControllerSpeeds(double controllerX, double controllerY) {
@@ -121,6 +160,16 @@ public class Alignment {
                 0, 
                 swerve.getPose().getRotation()
             );
+    }
+    
+    public Pose2d getProfiledPosition(Pose2d currentPose, Pose2d targetPose) {
+        xySetpoint = xyProfile.calculate(0.02, xySetpoint, targetXY);
+        double magnitude = xySetpoint.position;
+        double theta = Math.atan2(targetPose.getY() - profileStartingPose.getY(), targetPose.getX() - profileStartingPose.getX());
+        double xOffset = magnitude * Math.cos(theta);
+        double yOffset = magnitude * Math.sin(theta);
+        // use the calculated states and get the positions to create a pose2d
+        return new Pose2d(profileStartingPose.getX() + xOffset, profileStartingPose.getY() + yOffset, targetPose.getRotation());
     }
 
     public ChassisSpeeds getIntakeRotationalAutoSpeeds() {
@@ -140,15 +189,12 @@ public class Alignment {
         } else {
             desiredRotation = PoseCalculations.getClosestReefSide(swerve.getPose()).getRotation();
         }
-        return getAutoRotationalSpeeds(desiredRotation);
+        return getAutoRotationalSpeeds(desiredRotation); // make profiled rotation2d
     }
 
     public ChassisSpeeds getIntakeAutoSpeeds() {
         Pose2d intakeStation = PoseCalculations.getClosestCoralStation(swerve.getPose());
-        ChassisSpeeds autoSpeeds = getAutoSpeeds(intakeStation);
-        double maxSpeed = AutoConstants.INTAKE_ALIGNMENT_MAX_SPEED;
-        autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxSpeed, maxSpeed);
-        autoSpeeds.vyMetersPerSecond = MathUtil.clamp(autoSpeeds.vyMetersPerSecond, -maxSpeed, maxSpeed);
+        ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(intakeStation);
         return autoSpeeds;
     }
     
@@ -223,10 +269,7 @@ public class Alignment {
                 node.getY() - relativeCenter.getY() * (Robot.isRedAlliance() ? -1 : 1), 
                 node.getRotation());
         double distance = currentPose.getTranslation().getDistance(centerPose.getTranslation());
-        // Get desired position from face angle
-        double x = centerPose.getX() + distance * node.getRotation().getCos();
-        double y = centerPose.getY() + distance * node.getRotation().getSin();
-        Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
+        Pose2d desiredPose = PoseCalculations.getPoseWithDistance(centerPose, distance);
         return getAutoSpeeds(desiredPose);
     }
 
@@ -244,18 +287,16 @@ public class Alignment {
         Logger.recordOutput("Subsystems/Swerve/TargetNode", node);
         // Get desired position from face angle
         double distance = DriveConstants.FULL_ROBOT_LENGTH_METERS / 2;
-        double x = node.getX() + distance * node.getRotation().getCos();
-        double y = node.getY() + distance * node.getRotation().getSin();
-        Pose2d desiredPose = new Pose2d(x, y, node.getRotation());
-        ChassisSpeeds autoSpeeds = getAutoSpeeds(desiredPose);
-        double maxVelocity = AutoConstants.REEF_ALIGNMENT_MAX_SPEED;
-        autoSpeeds.vxMetersPerSecond = MathUtil.clamp(autoSpeeds.vxMetersPerSecond, -maxVelocity, maxVelocity);
-        autoSpeeds.vyMetersPerSecond = MathUtil.clamp(autoSpeeds.vyMetersPerSecond, -maxVelocity, maxVelocity);
+        Pose2d desiredPose = PoseCalculations.getPoseWithDistance(node, distance);
+
+        ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(desiredPose);
         Logger.recordOutput("Subsystems/Swerve/AutoSpeeds", autoSpeeds);
         return autoSpeeds;
     }
 
     public void updateIndex(int increment) {
+        resetHDC();
+        resetProfile();
         if (alignmentIndex == -1) {
             alignmentIndex = 0;
         }
@@ -264,7 +305,7 @@ public class Alignment {
         alignmentIndex = 
             switch (alignmentMode) {
                 case CAGE -> MathUtil.clamp(alignmentIndex, 0, FieldConstants.GET_CAGE_POSITIONS().size() - 1);
-                case REEF -> MathUtil.clamp(alignmentIndex, 0, 1);
+                case REEF, REEF_PREP -> MathUtil.clamp(alignmentIndex, 0, 1);
                 default -> alignmentIndex = -1;
             };
     }
@@ -276,6 +317,7 @@ public class Alignment {
     public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds, Supplier<ChassisSpeeds> controllerSpeeds, boolean resetAlignment) {
         return 
             Commands.sequence(
+                resetHDCCommand(),
                 Commands.runOnce(() -> this.alignmentMode = mode),
                 swerve.getDriveCommand(
                 () -> 
@@ -286,6 +328,7 @@ public class Alignment {
                     () -> false
                 )
             ).finallyDo(() -> {
+                resetProfile();
                 resetHDC();
                 swerve.setDesiredPose(Pose2d.kZero);
                 if (resetAlignment) {
@@ -297,7 +340,8 @@ public class Alignment {
 
     public Command autoAlignmentCommand(AlignmentMode mode, Supplier<ChassisSpeeds> autoSpeeds, boolean resetAlignment) {
         return 
-            Commands.parallel(
+            Commands.sequence(
+                resetHDCCommand(),
                 Commands.runOnce(() -> this.alignmentMode = mode),
                 swerve.getDriveCommand(
                     () -> normalizeChassisSpeeds(autoSpeeds.get()),
@@ -305,6 +349,7 @@ public class Alignment {
                 )
             ).finallyDo(() -> {
                 resetHDC();
+                resetProfile();
                 swerve.setDesiredPose(Pose2d.kZero);
                 if (resetAlignment) {
                     this.alignmentMode = AlignmentMode.NONE;
@@ -357,12 +402,30 @@ public class Alignment {
     public Command reefAxisAlignmentCommand() {
         return 
             autoAlignmentCommand(
-                AlignmentMode.REEF, 
-                this::getReefAxisSpeeds,
-                false
-            );
+            AlignmentMode.REEF, 
+            this::getReefAxisSpeeds,
+            false
+        );     
     }
 
+    public Command pathfindToReefCommand() {
+        return pathfindToPoseCommand(
+                () -> {
+                    Pose2d prep = PoseCalculations.getPoseWithDistance(PoseCalculations.getClosestReefSide(swerve.getPose()).getCenter(), AutoConstants.REEF_ALIGNMENT_PREP_DISTANCE);
+                    Logger.recordOutput("Subsystems/Swerve/PrepPose", prep);
+                    return prep;
+                }
+            );
+    }
+  
+    public Command pathfindToIntakeCommand() {
+        return pathfindToPoseCommand(() -> PoseCalculations.getClosestCoralStation(swerve.getPose()));
+    }
+
+    public Command pathfindToPoseCommand(Supplier<Pose2d> pos) {
+        return Commands.defer(() -> AutoBuilder.pathfindToPose(pos.get(), AutoConstants.prepReefConstraints, 0.0), Set.of(swerve));
+    }
+  
     public Command netAlignmentCommand(DoubleSupplier driverX) {
         return
             autoAlignmentCommand(
@@ -383,17 +446,20 @@ public class Alignment {
     }
 
     public Command intakeAlignmentCommand() {
-        return
-            autoAlignmentCommand(
-                AlignmentMode.INTAKE, 
-                this::getIntakeAutoSpeeds,
-                true
-            );
+        return Commands.sequence(
+            Commands.runOnce(() -> this.alignmentMode = AlignmentMode.INTAKE),
+            pathfindToIntakeCommand()
+        );
     }
 
     public Command reefFullAlignmentCommand() {
-        return reefAxisAlignmentCommand().until(swerve::atHDCPose).andThen(reefAlignmentCommand()).finallyDo(() -> {
+        return Commands.sequence(
+            Commands.runOnce(() -> this.alignmentMode = AlignmentMode.REEF_PREP),
+            pathfindToReefCommand().onlyIf(this::shouldPathfindToReef).until(() -> !shouldPathfindToReef()),
+            reefAlignmentCommand()
+        ).finallyDo(() -> {
             resetHDC();
+            resetProfile();
             swerve.setDesiredPose(Pose2d.kZero);
             this.alignmentMode = AlignmentMode.NONE;
             this.alignmentIndex = -1;
@@ -402,6 +468,14 @@ public class Alignment {
 
     public AlignmentMode getAlignmentMode() {
         return alignmentMode;
+    }
+
+    public boolean shouldPathfindToReef() {
+        Pose2d currentPose = swerve.getPose();
+        Pose2d reefFace = PoseCalculations.getClosestReefSide(currentPose).getCenter();
+        double linearDistance = currentPose.getTranslation().getDistance(reefFace.getTranslation());
+        double rotationalDistance = Math.abs(currentPose.getRotation().minus(reefFace.getRotation()).getRadians());
+        return linearDistance > AutoConstants.REEF_ALIGNMENT_PREP_DISTANCE || rotationalDistance >= Math.PI / 2;
     }
 
 }
