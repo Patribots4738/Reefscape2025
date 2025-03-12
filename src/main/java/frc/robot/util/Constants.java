@@ -32,7 +32,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.GainConstants;
-import frc.robot.util.custom.LoggedGainConstants;
 import frc.robot.util.custom.ReefSide;
 import frc.robot.util.hardware.phoenix.Kraken;
 import frc.robot.util.hardware.rev.Neo;
@@ -53,7 +52,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.COMPBOT;
+        private static RobotType robotType = RobotType.DEVBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
@@ -239,7 +238,7 @@ public final class Constants {
             0.0
         );
 
-        public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
+        // public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
 
         public static final GainConstants AUTO_THETA_GAINS = new GainConstants(
             3.725, 
@@ -253,7 +252,7 @@ public final class Constants {
             0
         );
 
-        public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
+        // public static final LoggedGainConstants LOGGED_TELE_THETA_GAINS = new LoggedGainConstants(AutoConstants.TELE_THETA_GAINS, "TeleTheta");
 
         public static final PIDController XY_PID = new PIDController(
             AutoConstants.TELE_XY_GAINS.getP(),
@@ -556,7 +555,7 @@ public final class Constants {
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
-        public static final double NET_X_CHASSIS_OFFSET = 0.61;
+        public static final double NET_X_CHASSIS_OFFSET = 0.8;
 
     }
     public static final class ElevatorConstants {
@@ -592,7 +591,7 @@ public final class Constants {
             G
         );
 
-        public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
+        // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(ElevatorConstants.GAINS, "Elevator");
         
         public static final double FAST_VELOCITY = 1.6;
         public static final double FAST_ACCELERATION = 8d;
@@ -603,14 +602,16 @@ public final class Constants {
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
         public static final double L1_POSITION_METERS = 0.1;
-        public static final double L2_POSITION_METERS = 0.09;
-        public static final double L3_POSITION_METERS = 0.27;
+        // public static final double L2_POSITION_METERS = 0.09;
+        // public static final double L3_POSITION_METERS = 0.27;
+        public static final double L2_POSITION_METERS = 0.05;
+        public static final double L3_POSITION_METERS = 0.25;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
         public static final double L3_POSITION_REMOVE_ALGAE = 0.13;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.04;
         public static final double PROCESSOR_METERS = 0;
-        public static final double NET_PREP_METERS = 0.32;
-        public static final double NET_METERS = MAX_DISPLACEMENT_METERS;
+        public static final double NET_PREP_METERS = 0.5;
+        public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double DEADBAND_METERS = 0.02;
 
@@ -672,12 +673,15 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.355;
+        public static final double INTAKE_POSITION_RADIANS = -0.35;
         public static final double L1_POSITION_RADIANS = 1.8;
         public static final double L1_PLACE_POSITION_RADIANS = 2.75;
-        public static final double L2_POSITION_RADIANS = 2.41;
-        public static final double L3_POSITION_RADIANS = 2.41;
-        public static final double L4_POSITION_RADIANS = 2.32;
+        // public static final double L2_POSITION_RADIANS = 2.41;
+        // public static final double L3_POSITION_RADIANS = 2.41;
+        // public static final double L4_POSITION_RADIANS = 2.32;
+        public static final double L2_POSITION_RADIANS = 2.5;
+        public static final double L3_POSITION_RADIANS = 2.5;
+        public static final double L4_POSITION_RADIANS = 2.4;
         public static final double L2_ALGAE_REMOVAL = 0.7;
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
@@ -688,6 +692,7 @@ public final class Constants {
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
         public static final double NET_RADIANS = 1.7;
+        public static final double NET_FLICK_RADIANS = 2.0;
     }
 
 
@@ -748,8 +753,8 @@ public final class Constants {
             G_FAST
         );
 
-        public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
-        public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
+        // public static final LoggedGainConstants LOGGED_SLOW_GAINS = new LoggedGainConstants(ClimbConstants.SLOW_GAINS, "Climb/SlowGains");
+        // public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double READY_POSITION_RADIANS = 2.5;

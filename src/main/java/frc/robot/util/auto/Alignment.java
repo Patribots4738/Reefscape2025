@@ -26,7 +26,6 @@ import frc.robot.util.Constants.ClimbConstants;
 import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.calc.PoseCalculations;
-import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.util.custom.ReefSide;
 
 public class Alignment {
@@ -44,16 +43,16 @@ public class Alignment {
 
     private Pose2d profileStartingPose = Pose2d.kZero;
 
-    private LoggedTunableNumber translationVelocity = new LoggedTunableNumber("Alignment/TranslationVelocity", AutoConstants.HDC_XY_VELOCITY);
-    private LoggedTunableNumber translationAcceleration = new LoggedTunableNumber("Alignment/TranslationAcceleration", AutoConstants.HDC_XY_ACCELERATION);
+    // private LoggedTunableNumber translationVelocity = new LoggedTunableNumber("Alignment/TranslationVelocity", AutoConstants.HDC_XY_VELOCITY);
+    // private LoggedTunableNumber translationAcceleration = new LoggedTunableNumber("Alignment/TranslationAcceleration", AutoConstants.HDC_XY_ACCELERATION);
 
     public Alignment(Swerve swerve) {
         this.swerve = swerve;
 
-        translationVelocity.onChanged().or(translationAcceleration.onChanged())
-            .onTrue(Commands.runOnce(() -> {
-                xyProfile = new TrapezoidProfile(new Constraints(translationVelocity.get(), translationAcceleration.get()));
-            }).ignoringDisable(true));
+        // translationVelocity.onChanged().or(translationAcceleration.onChanged())
+        //     .onTrue(Commands.runOnce(() -> {
+        //         xyProfile = new TrapezoidProfile(new Constraints(translationVelocity.get(), translationAcceleration.get()));
+        //     }).ignoringDisable(true));
     }
 
     public enum AlignmentMode {
@@ -445,7 +444,6 @@ public class Alignment {
         return alignmentMode;
     }
 
-    @AutoLogOutput (key = "Subsystems/Swerve/ShouldPathfindToReef")
     public boolean shouldPathfindToReef() {
         Pose2d currentPose = swerve.getPose();
         Pose2d reefFace = PoseCalculations.getClosestReefSide(currentPose).getCenter();
