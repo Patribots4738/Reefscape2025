@@ -63,6 +63,7 @@ public class Alignment {
         REEF_SOFT,
         REEF_PREP,
         NET,
+        PROCESSOR,
         NONE
     }
 
@@ -235,6 +236,18 @@ public class Alignment {
         return getAutoSpeeds(desiredPose);
     }
 
+    public ChassisSpeeds getProcessorAutoSpeeds() {
+        Pose2d processor = PoseCalculations.getClosestProcessor(swerve.getPose());
+        
+        Pose2d desiredPose = new Pose2d(
+            processor.getX() + AlgaeClawConstants.PROCESSOR_X_CHASSIS_OFFSET,
+            MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT),
+            processor.getRotation()
+        );
+        // double maxSpeed = AutoConstants.PROCESSOR_ALIGNMENT_MAX_SPEED;
+        return getAutoSpeeds(desiredPose);
+    }
+
     // TODO: Make this less 🤮 because MY LORD
     public ChassisSpeeds getReefAxisSpeeds() {
         Pose2d currentPose = swerve.getPose();
@@ -373,15 +386,18 @@ public class Alignment {
             );
     }
 
-    public Command netAlignmentCommand(DoubleSupplier driverX) {
-        return 
+
+    public Command processorAlignmentCommand(DoubleSupplier driverX) {
+        return
             autoAlignmentCommand(
-                AlignmentMode.NET, 
-                this::getNetAutoSpeeds, 
+                AlignmentMode.PROCESSOR, 
+                this::getProcessorAutoSpeeds, 
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
-                true
+                true   
             );
     }
+
+
 
     public Command reefAxisAlignmentCommand() {
         return 
@@ -401,13 +417,23 @@ public class Alignment {
                 }
             );
     }
-
+  
     public Command pathfindToIntakeCommand() {
         return pathfindToPoseCommand(() -> PoseCalculations.getClosestCoralStation(swerve.getPose()));
     }
 
     public Command pathfindToPoseCommand(Supplier<Pose2d> pos) {
         return Commands.defer(() -> AutoBuilder.pathfindToPose(pos.get(), AutoConstants.prepReefConstraints, 0.0), Set.of(swerve));
+    }
+  
+    public Command netAlignmentCommand(DoubleSupplier driverX) {
+        return
+            autoAlignmentCommand(
+                AlignmentMode.NET, 
+                this::getNetAutoSpeeds, 
+                () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
+                true
+            );
     }
 
     public Command reefAlignmentCommand() {

@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
 
@@ -56,9 +57,16 @@ public class PoseCalculations {
         return pos.nearest(FieldConstants.GET_CAGE_POSITIONS());
     }
 
+    
+    public static Pose2d getClosestProcessor(Pose2d pos) { 
+        return pos.nearest(FieldConstants.PROCESSOR_POSITIONS);
+    }
+
     public static Pose2d flipPose(Pose2d pos) {
         return new Pose2d(flipTranslation(pos.getTranslation()), flipFieldRotation(pos.getRotation()));
     }
+
+
 
     // Note: this method works for the use case it was designed for (mirroring reef node poses for placing coral)
     // but I haven't tested it with any edge case, or any case where roll != 0
@@ -119,7 +127,7 @@ public class PoseCalculations {
     public static boolean nearReef(Pose2d pos) {
         return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < FieldConstants.NEAR_REEF_METERS;
     }
-  
+
     public static Pose2d getClosestCoralStation(Pose2d pos) {
         return pos.nearest(FieldConstants.GET_CORAL_STATION_POSITIONS());
     }

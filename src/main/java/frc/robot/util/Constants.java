@@ -222,6 +222,7 @@ public final class Constants {
 
         public static final double REEF_ALIGNMENT_MAX_SPEED = 1.0;
         public static final double INTAKE_ALIGNMENT_MAX_SPEED = 1.0;
+        public static final double PROCESSOR_ALIGNMENT_MAX_SPEED = 0.0;
 
         public static final double REEF_ALIGNMENT_PREP_DISTANCE = 1.0;
 
@@ -297,6 +298,7 @@ public final class Constants {
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double CAGE_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double NET_ALIGNMENT_MULTIPLIER = 0.5;
+        public static final double PROCESSER_ALIGNMENT_MULTIPLIER = 0.5;
 
     }
 
@@ -555,6 +557,7 @@ public final class Constants {
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
+        public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
         public static final double NET_X_CHASSIS_OFFSET = 0.8;
 
     }
@@ -909,7 +912,7 @@ public final class Constants {
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 
-        public static final Pose2d BLUE_PROCESSOR = new Pose2d(6.00, 0.00, Rotation2d.fromRadians(0));
+        public static final Pose2d BLUE_PROCESSOR = new Pose2d(6.00, 0.00, Rotation2d.fromDegrees(90));
 
         public static final List<Pose2d> PROCESSOR_POSITIONS = new ArrayList<Pose2d>() {{
             // Blue Processor
@@ -917,11 +920,6 @@ public final class Constants {
             // Red Processor
             add(PoseCalculations.mirrorPose(BLUE_PROCESSOR));
         }};
-
-        public static final Pose2d GET_PROCESSOR_POSITION() {
-            int index = Robot.isRedAlliance() ? 1 : 0;
-            return PROCESSOR_POSITIONS.get(index);
-        }
 
         public static final Pose2d CORAL_STATION_1 = new Pose2d(1.653, 7.364, Rotation2d.fromDegrees(125));
         public static final Pose2d CORAL_STATION_2 = new Pose2d(1.653, 0.699, Rotation2d.fromDegrees(-125));
