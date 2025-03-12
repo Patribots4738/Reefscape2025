@@ -131,7 +131,7 @@ public class RobotContainer {
 
         swerve = new Swerve();
         alignment = new Alignment(swerve);
-        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true));
+        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true), new VisionIOLimelight("limelight-threeg", false));
         coralClaw = new CoralClaw(new CoralClawIOKraken());
         algaeClaw = new AlgaeClaw(new AlgaeClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());

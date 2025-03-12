@@ -8,7 +8,7 @@ public class VisionIOLimelight implements VisionIO {
     private final Limelight camera;
 
     public VisionIOLimelight(String name, boolean isLL4) {
-        this.camera = new Limelight(name, true);
+        this.camera = new Limelight(name, isLL4);
     }
 
     public void updateInputs(VisionIOInputs inputs) {
