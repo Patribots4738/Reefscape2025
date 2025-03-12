@@ -294,6 +294,11 @@ public class RobotContainer {
                     () -> PoseCalculations.shouldReefAlign(swerve.getPose()) && coralClaw.hasPiece()
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
+        controller.leftStick()
+            .whileTrue(
+                alignment.processorAlignmentCommand(controller::getLeftX)
+            );
+
         controller.a()
             .whileTrue(alignment.reefFullAlignmentCommand());
 
@@ -416,13 +421,6 @@ public class RobotContainer {
 
         controller.rightBumper()
             .onTrue(alignment.updateIndexCommand(1));
-
-            controller.leftStick()
-            .toggleOnTrue(
-                    alignment.processorAlignmentCommand(controller::getLeftX)
-                
-                );
-
     }
         
 

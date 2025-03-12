@@ -887,7 +887,7 @@ public final class Constants {
 
         // All These Positions Are For The Blue Side Unless Specified Otherwise
 
-        public static final Pose2d BLUE_PROCESSOR = new Pose2d(6.00, 0.00, Rotation2d.fromRadians(0));
+        public static final Pose2d BLUE_PROCESSOR = new Pose2d(6.00, 0.00, Rotation2d.fromDegrees(90));
 
         public static final List<Pose2d> PROCESSOR_POSITIONS = new ArrayList<Pose2d>() {{
             // Blue Processor
@@ -895,9 +895,6 @@ public final class Constants {
             // Red Processor
             add(PoseCalculations.mirrorPose(BLUE_PROCESSOR));
         }};
-
-
-
 
         public static final Pose2d CORAL_STATION_1 = new Pose2d(1.653, 7.364, Rotation2d.fromDegrees(125));
         public static final Pose2d CORAL_STATION_2 = new Pose2d(1.653, 0.699, Rotation2d.fromDegrees(-125));

@@ -58,7 +58,7 @@ public class PoseCalculations {
     }
 
     
-    public static Pose2d getClosestProcessor(Pose2d pos) {
+    public static Pose2d getClosestProcessor(Pose2d pos) { 
         return pos.nearest(FieldConstants.PROCESSOR_POSITIONS);
     }
 
@@ -127,7 +127,7 @@ public class PoseCalculations {
     public static boolean nearReef(Pose2d pos) {
         return pos.getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < FieldConstants.NEAR_REEF_METERS;
     }
-  
+
     public static Pose2d getClosestCoralStation(Pose2d pos) {
         return pos.nearest(FieldConstants.GET_CORAL_STATION_POSITIONS());
     }
