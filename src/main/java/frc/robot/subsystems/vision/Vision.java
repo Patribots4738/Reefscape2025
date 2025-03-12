@@ -33,6 +33,10 @@ public class Vision extends SubsystemBase {
     private final VisionIOInputsAutoLogged[] inputs;
     private final VisionIO[] cameras;
     private boolean useMT1Override = false;
+    private int[] closestReefTag = new int[] { 0 };
+    private int currentThrottle = -1;
+    private boolean currentUseMT2 = false;
+    private List<Integer> camerasToUpdate = new ArrayList<>();
 
     // private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/xyStdsDisabled", 0.001);
     // private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
@@ -68,21 +72,35 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        boolean shouldUseMT2 = !shouldUseMT1();
         double currentYawDegrees = poseEstimator.getEstimatedPosition().getRotation().getDegrees();
+        int desiredThrottle;
+        if (Robot.gameMode == GameMode.DISABLED && !DriverStation.isFMSAttached()) {
+            // If robot is disabled, only process some frames
+            // This should minimize overheating issues with the LL4
+            desiredThrottle = CameraConstants.DISABLED_THROTTLE;
+        } else {
+            // If robot is enabled, process every frame
+            desiredThrottle = CameraConstants.ENABLED_THROTTLE;
+        }
+        boolean updateThrottle = desiredThrottle != currentThrottle || currentThrottle == -1;
+        if (updateThrottle) {
+            currentThrottle = desiredThrottle;
+            Logger.recordOutput("Subsystems/Vision/Throttle", currentThrottle);
+        }
+        boolean desiredUseMT2 = !shouldUseMT1();
+        boolean updateUseMT2 = desiredUseMT2 != currentUseMT2;
+        if (updateUseMT2) {
+            currentUseMT2 = desiredUseMT2;
+            Logger.recordOutput("Subsystems/Vision/UseMT2", currentUseMT2);
+        }
         for (int i = 0; i < cameras.length; i++) {
             VisionIO camera = cameras[i];
-
-            if (Robot.gameMode == GameMode.DISABLED && !DriverStation.isFMSAttached()) {
-                // If robot is disabled, only process some frames
-                // This should minimize overheating issues with the LL4
-                camera.setThrottle(CameraConstants.DISABLED_THROTTLE);
-            } else {
-                // If robot is enabled, process every frame
-                camera.setThrottle(CameraConstants.ENABLED_THROTTLE);
+            if (updateThrottle) {
+                camera.setThrottle(currentThrottle);
             }
-
-            camera.setUseMegaTag2(shouldUseMT2);
+            if (updateUseMT2) {
+                camera.setUseMegaTag2(currentUseMT2);
+            }
             camera.setRobotOrientation(currentYawDegrees);
             camera.updateInputs(inputs[i]);
             Logger.processInputs("SubsystemInputs/Vision/Camera" + i, inputs[i]);
@@ -91,9 +109,9 @@ public class Vision extends SubsystemBase {
             // Logger.recordOutput("Subsystems/Vision/Camera" + i + "MT2Pose", LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-four").pose);
 
             if (alignmentSupplier.get() == AlignmentMode.REEF) {
-                int reefTag = closestReefTag();
-                Logger.recordOutput("Subsystems/Vision/ClosestReefTag", reefTag);
-                camera.setUsedTags(new int[] { reefTag });
+                closestReefTag[0] = closestReefTag();
+                Logger.recordOutput("Subsystems/Vision/ClosestReefTag", closestReefTag[0]);
+                camera.setUsedTags(closestReefTag);
             } else {
                 camera.setUsedTags(FieldConstants.VALID_TAGS);
             }
@@ -106,7 +124,7 @@ public class Vision extends SubsystemBase {
         int tagCount = 0;
         double tagArea = 0;
 
-        List<Integer> camerasToUpdate = new ArrayList<>();
+        camerasToUpdate.clear();
         for (int i = 0; i < cameras.length; i++) {
             boolean updateCamera = cameraHasTarget(i);
             Logger.recordOutput("Subsystems/Vision/UpdateCamera" + i, updateCamera);
@@ -189,7 +207,6 @@ public class Vision extends SubsystemBase {
         return runOnce(() -> this.useMT1Override = !this.useMT1Override);
     }
 
-    @AutoLogOutput (key = "Subsystems/Vision/MT1")
     private boolean shouldUseMT1() {
         return (!(Robot.exitAuto && DriverStation.isFMSAttached())) && OIConstants.DRIVER_MODE != DriverMode.CALIBRATION && (Robot.gameMode == GameMode.DISABLED || !rotationUpdated) || useMT1Override;
     }

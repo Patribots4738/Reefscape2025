@@ -72,6 +72,10 @@ public class Swerve extends SubsystemBase {
     // private final LoggedTunableNumber turnMaxVelocity = new LoggedTunableNumber("Swerve/MaxTurnVelocity", MK4cSwerveModuleConstants.MAX_TURNING_MOTOR_VELOCITY_RADIANS_PER_SEC);
 
     private ChassisSpeeds speeds = new ChassisSpeeds();
+    private SwerveModuleState[] currentStates = new SwerveModuleState[4];
+    private SwerveModulePosition[] currentPositions = new SwerveModulePosition[4];
+
+    private double[] zeroFeedforwards = new double[] { 0, 0, 0, 0 };
 
     /**
      * Creates a new DriveSubsystem.
@@ -126,10 +130,12 @@ public class Swerve extends SubsystemBase {
         resetEncoders();
         setBrakeMode();
 
+        updateCurrentModuleStates();
+
         poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.DRIVE_KINEMATICS,
             gyro.getYawRotation2D(),
-            getModulePositions(),
+            currentPositions,
             Pose2d.kZero,
             // State measurements
             /*
@@ -179,7 +185,7 @@ public class Swerve extends SubsystemBase {
 
         previousSetpoint = new SwerveSetpoint(
             getRobotRelativeVelocity(), 
-            getModuleStates(), 
+            currentStates, 
             DriveFeedforwards.zeros(config.numModules)
         );
 
@@ -210,9 +216,11 @@ public class Swerve extends SubsystemBase {
         
         gyroRotation2d = gyro.getYawRotation2D();
 
+        updateCurrentModuleStates();
+
         // TalonFX position is capped at 16000 rotations, and flips when overflowed, creating extreme pose error
         if (!getModuleDrivePositionsFlipped()) {
-            poseEstimator.updateWithTime(Timer.getFPGATimestamp(), gyroRotation2d, getModulePositions());
+            poseEstimator.updateWithTime(Timer.getFPGATimestamp(), gyroRotation2d, currentPositions);
         }
         
         logData();
@@ -224,7 +232,7 @@ public class Swerve extends SubsystemBase {
 
         currentPose = getPose();
 
-        RobotContainer.swerveMeasuredStates = getModuleStates();
+        RobotContainer.swerveMeasuredStates = currentStates;
 
         speeds = DriveConstants.DRIVE_KINEMATICS.toChassisSpeeds(RobotContainer.swerveMeasuredStates);
 
@@ -455,7 +463,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void setModuleStates(SwerveModuleState[] desiredStates) {
-        setModuleStates(desiredStates, new double[] { 0, 0, 0, 0 });
+        setModuleStates(desiredStates, zeroFeedforwards);
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -465,11 +473,10 @@ public class Swerve extends SubsystemBase {
 
         poseEstimator.resetPosition(
             gyroRotation2d,
-            getModulePositions(),
+            currentPositions,
             pose);
     }
 
-    // Fear.
     // (The cameras do this for us, but we don't have cameras in sim)
     private void resetOdometryAuto(Pose2d pose) {
         if (FieldConstants.IS_SIMULATION) {
@@ -485,32 +492,11 @@ public class Swerve extends SubsystemBase {
         return runOnce(() -> resetOdometry(new Pose2d(pose.get(), getPose().getRotation()))).ignoringDisable(true);
     }
 
-    public SwerveModuleState[] getModuleStates() {
-
-        SwerveModuleState[] states = new SwerveModuleState[4];
-
-        for (int modNum = 0; modNum < swerveModules.length; modNum++) {
-            states[modNum] = swerveModules[modNum].getState();
+    public void updateCurrentModuleStates() {
+        for (int i = 0; i < currentStates.length; i++) {
+            currentStates[i] = swerveModules[i].getState();
+            currentPositions[i] = swerveModules[i].getPosition();
         }
-        return states;
-
-    }
-
-    /**
-     * Returns an array of SwerveModulePosition objects representing the positions of all swerve modules.
-     * This is the position of the driving encoder and the turning encoder
-     *
-     * @return an array of SwerveModulePosition objects representing the positions of all swerve modules
-     */
-    public SwerveModulePosition[] getModulePositions() {
-
-        SwerveModulePosition[] positions = new SwerveModulePosition[4];
-
-        for (int modNum = 0; modNum < swerveModules.length; modNum++) {
-            positions[modNum] = swerveModules[modNum].getPosition();
-        }
-        return positions;
-
     }
     
     public void resetEncoders() {
