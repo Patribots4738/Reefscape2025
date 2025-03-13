@@ -491,8 +491,12 @@ public class RobotContainer {
     // https://www.chiefdelphi.com/t/auto-init-overrun/494848/33
     public static Command threadRTCommand() {
         return Commands.sequence(
+            // Wait 20 seconds to dodge any additional initialization after robotInit()
             Commands.waitSeconds(20),
-            Commands.runOnce(() -> Threads.setCurrentThreadPriority(true, 10))
+            Commands.runOnce(() -> {
+                Threads.setCurrentThreadPriority(true, 10);
+                System.err.println("Set main thread RT priority");
+            })
         ).ignoringDisable(true);
     }
 
