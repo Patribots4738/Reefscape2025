@@ -65,6 +65,7 @@ public class Vision extends SubsystemBase {
         inputs = new VisionIOInputsAutoLogged[cameraCount];
         for (int i = 0; i < cameraCount; i++) {
             cameras[i] = io[i];
+            cameras[i].setUseMegaTag2(false);
             inputs[i] = new VisionIOInputsAutoLogged();
         }
         this.poseEstimator = poseEstimator;
