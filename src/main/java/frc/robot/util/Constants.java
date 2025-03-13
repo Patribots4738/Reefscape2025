@@ -805,7 +805,7 @@ public final class Constants {
             -0.120619,
             0.197874,
             new Rotation3d(
-                Units.degreesToRadians(-3.7), 
+                Units.degreesToRadians(0), 
                 Units.degreesToRadians(-15), 
                 Units.degreesToRadians(141.83)
             )
@@ -816,7 +816,7 @@ public final class Constants {
             0.120619,
             0.197874,
             new Rotation3d(
-                Units.degreesToRadians(3.7),
+                Units.degreesToRadians(0),
                 Units.degreesToRadians(-15),
                 Units.degreesToRadians(218.173)
             )
