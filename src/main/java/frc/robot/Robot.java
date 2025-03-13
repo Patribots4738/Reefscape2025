@@ -80,6 +80,10 @@ public class Robot extends LoggedRobot {
 
         robotContainer = new RobotContainer();
         DriverStation.silenceJoystickConnectionWarning(true);
+
+        // Increase main thread's real time priority
+        // Note that in extreme circumstances this can prevent other threads such as NT and vendor threads from running, so caution is required
+        RobotContainer.threadRTCommand().schedule();
     }
 
     /**
