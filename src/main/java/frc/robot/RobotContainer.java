@@ -42,6 +42,7 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.Constants.AutoConstants;
+import frc.robot.util.Constants.CameraConstants;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.LoggingConstants;
@@ -132,7 +133,7 @@ public class RobotContainer {
 
         swerve = new Swerve();
         alignment = new Alignment(swerve);
-        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true));
+        vision = new Vision(swerve.getPoseEstimator(), alignment::getAlignmentMode, new VisionIOLimelight("limelight-four", true), new VisionIOLimelight("limelight-threeg", false));
         coralClaw = new CoralClaw(new CoralClawIOKraken());
         algaeClaw = new AlgaeClaw(new AlgaeClawIOKraken());
         elevator = new Elevator(new ElevatorIOKraken());
@@ -215,6 +216,9 @@ public class RobotContainer {
         // pathPlannerStorage.getAutoChooser().addOption("ClimbQRCharacterization", climb.sysIdQuasistaticReverse());
         // pathPlannerStorage.getAutoChooser().addOption("ClimbDFCharacterization", climb.sysIdDynamicForward());
         // pathPlannerStorage.getAutoChooser().addOption("ClimbDRCharacterization", climb.sysIdDynamicReverse());
+
+        // Logger.recordOutput("Subsystems/Vision/LL4_Pose", CameraConstants.LL4_POSE);
+        // Logger.recordOutput("Subsystems/Vision/LL3G_Pose", CameraConstants.LL3G_POSE);
 
         System.out.println("\nRobotContainer Configuration took " + (Timer.getFPGATimestamp() - containerConstructionTime) + " seconds.");
     }

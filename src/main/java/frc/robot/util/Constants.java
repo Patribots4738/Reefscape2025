@@ -800,25 +800,25 @@ public final class Constants {
         public static final int ENABLED_THROTTLE = 0; // Process every frame
         public static final int DISABLED_THROTTLE = 30; // Process 1 of every 80 frames
 
-        public static Pose3d LL4_POSE = new Pose3d(
-            -0.28702,
-            0,
-            0.1911680708,
+        public static Pose3d LL3G_POSE = new Pose3d(
+            -0.312655,
+            -0.120619,
+            0.197874,
             new Rotation3d(
-                0, 
-                15, 
-                180
+                Units.degreesToRadians(-3.7), 
+                Units.degreesToRadians(-15), 
+                Units.degreesToRadians(141.83)
             )
         );
 
-        public static Pose3d LL3G_POSE = new Pose3d(
-            -0.0968974694,
-            0.28506928,
-            0.5413440786,
+        public static Pose3d LL4_POSE = new Pose3d(
+            -0.312655,
+            0.120619,
+            0.197874,
             new Rotation3d(
-                0,
-                15,
-                0
+                Units.degreesToRadians(3.7),
+                Units.degreesToRadians(-15),
+                Units.degreesToRadians(218.173)
             )
         );
 
