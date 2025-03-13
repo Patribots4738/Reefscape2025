@@ -7,6 +7,8 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import com.ctre.phoenix6.SignalLogger;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 
@@ -49,6 +51,9 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void robotInit() {
+        // Disable CTRE signal logging
+        SignalLogger.enableAutoLogging(false);
+
         // Git metadata for tracking version for AKit
         Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
         Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -57,6 +62,8 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
 
         Pathfinding.setPathfinder(new LocalADStarAK());
+        // Warm up PathPlanner, he starts off cold
+        FollowPathCommand.warmupCommand().schedule();
         PathfindingCommand.warmupCommand().schedule();
 
         switch (LoggingConstants.getMode()) {
@@ -80,6 +87,10 @@ public class Robot extends LoggedRobot {
 
         robotContainer = new RobotContainer();
         DriverStation.silenceJoystickConnectionWarning(true);
+
+        // Increase main thread's real time priority
+        // Note that in extreme circumstances this can prevent other threads such as NT and vendor threads from running, so caution is required
+        RobotContainer.threadRTCommand().schedule();
     }
 
     /**

@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -486,4 +487,17 @@ public class RobotContainer {
         //     }
         // }
     }
+
+    // https://www.chiefdelphi.com/t/auto-init-overrun/494848/33
+    public static Command threadRTCommand() {
+        return Commands.sequence(
+            // Wait 20 seconds to dodge any additional initialization after robotInit()
+            Commands.waitSeconds(20),
+            Commands.runOnce(() -> {
+                Threads.setCurrentThreadPriority(true, 10);
+                System.err.println("Set main thread RT priority");
+            })
+        ).ignoringDisable(true);
+    }
+
 }
