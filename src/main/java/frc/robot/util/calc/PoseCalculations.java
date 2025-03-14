@@ -15,10 +15,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.Robot;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
 
+
+
 public class PoseCalculations {
+    
+
 
     public static int nearestIndex(Pose2d pos, List<Pose2d> compareTo) {
         double minDistance = pos.getTranslation().getDistance(compareTo.get(0).getTranslation());
@@ -146,5 +151,27 @@ public class PoseCalculations {
     public static Pose2d getPoseWithDistance(Pose2d pos, double distance) {
         return new Pose2d(pos.getX() + distance * pos.getRotation().getCos(), pos.getY() + distance * pos.getRotation().getSin(), pos.getRotation());
     }
-  
+
+    public static double getNetRotation(Pose2d pos, boolean isRedAlliance) {
+        if(pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && !isRedAlliance
+            || pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && isRedAlliance) {
+            return 0;
+        }
+
+        else {
+            return Math.PI;
+        }
+    }
+
+    public static boolean facingNet(Pose2d pos, boolean isRedAlliance) {
+        if(pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && !isRedAlliance
+            || pos.getRotation().getRadians() >= Math.PI/2 && pos.getRotation().getRadians() <= (3*(Math.PI))/2 && isRedAlliance) {
+            return true;
+        }
+
+        else {
+            return false;
+        }
+    }
+
 }

@@ -300,6 +300,8 @@ public final class Constants {
         public static final double NET_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double PROCESSER_ALIGNMENT_MULTIPLIER = 0.5;
 
+        public static final double NET_LEFT_ROTATION_THRESHOLD = Robot.isRedAlliance() 
+        public static final double NET_RIGHT_ROTATION_THRESHOLD =  
     }
 
     public static final class MAXSwerveModuleConstants {
