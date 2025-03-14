@@ -146,7 +146,7 @@ public final class Constants {
 
         public static final double ROBOT_LENGTH_METERS = Units.inchesToMeters(28.5);
         public static final double BUMPER_LENGTH_METERS = Units.inchesToMeters(3.5);
-        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(33);
+        public static final double FULL_ROBOT_LENGTH_METERS = Units.inchesToMeters(35);
 
         // Front positive, left positive
         public static final Translation2d FRONT_LEFT_WHEEL_POSITION = new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2);
@@ -448,10 +448,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.278564;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.280273;
         public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081055;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.151367;
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081299;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.152344;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -527,7 +527,7 @@ public final class Constants {
         public static final double INTAKE_PERCENT = 0.4;
         public static final double HOLD_PERCENT = 0.3;
         public static final double OUTTAKE_PERCENT = -0.75;
-        public static final double L1_OUTTAKE_PERCENT = -0.1;
+        public static final double L1_OUTTAKE_PERCENT = -0.4;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
@@ -604,7 +604,7 @@ public final class Constants {
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
-        public static final double L1_POSITION_METERS = 0.1;
+        public static final double L1_POSITION_METERS = 0.0;
         // public static final double L2_POSITION_METERS = 0.09;
         // public static final double L3_POSITION_METERS = 0.27;
         public static final double L2_POSITION_METERS = 0.05;
@@ -676,9 +676,8 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.35;
-        public static final double L1_POSITION_RADIANS = 1.8;
-        public static final double L1_PLACE_POSITION_RADIANS = 2.75;
+        public static final double INTAKE_POSITION_RADIANS = -0.28;
+        public static final double L1_POSITION_RADIANS = -0.42;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
@@ -807,7 +806,7 @@ public final class Constants {
             new Rotation3d(
                 Units.degreesToRadians(0), 
                 Units.degreesToRadians(-15), 
-                Units.degreesToRadians(141.83)
+                Units.degreesToRadians(-141.83)
             )
         );
 
@@ -818,7 +817,7 @@ public final class Constants {
             new Rotation3d(
                 Units.degreesToRadians(0),
                 Units.degreesToRadians(-15),
-                Units.degreesToRadians(218.173)
+                Units.degreesToRadians(141.83)
             )
         );
 

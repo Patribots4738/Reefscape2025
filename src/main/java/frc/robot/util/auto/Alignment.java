@@ -454,16 +454,10 @@ public class Alignment {
 
     public Command reefFullAlignmentCommand() {
         return Commands.sequence(
-            Commands.runOnce(() -> this.alignmentMode = AlignmentMode.REEF_PREP),
-            pathfindToReefCommand().onlyIf(this::shouldPathfindToReef).until(() -> !shouldPathfindToReef()),
+            // Commands.runOnce(() -> this.alignmentMode = AlignmentMode.REEF_PREP),
+            // pathfindToReefCommand().onlyIf(this::shouldPathfindToReef).until(() -> !shouldPathfindToReef()),
             reefAlignmentCommand()
-        ).finallyDo(() -> {
-            resetHDC();
-            resetProfile();
-            swerve.setDesiredPose(Pose2d.kZero);
-            this.alignmentMode = AlignmentMode.NONE;
-            this.alignmentIndex = -1;
-        });
+        );
     }
 
     public AlignmentMode getAlignmentMode() {

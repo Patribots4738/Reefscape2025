@@ -42,7 +42,6 @@ import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.Constants.AutoConstants;
-import frc.robot.util.Constants.CameraConstants;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.LoggingConstants;
