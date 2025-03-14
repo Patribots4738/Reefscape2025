@@ -78,6 +78,7 @@ public class RobotContainer {
     private final Superstructure superstructure;
     private final Alignment alignment;
 
+
     public static Field2d field2d = new Field2d();
 
     private PathPlannerStorage pathPlannerStorage;
@@ -308,8 +309,10 @@ public class RobotContainer {
 
         controller.b()
             .whileTrue(alignment.netAlignmentCommand(controller::getLeftX))
-            .onTrue(PoseCalculations.facingNet(swerve.getPose(), Robot.isRedAlliance())
-                .onlyif(superstructure.getTargetArmState() == ArmState.NET_PREP || ArmState.NET_PREP_FLICK)
+            .onTrue((PoseCalculations.facingNet(swerve.getPose(), Robot.isRedAlliance())
+                ? superstructure.setSuperState(superstructure.NET_PREP) 
+                : superstructure.setSuperState(superstructure.NET_PREP_FLICK))
+                .onlyif(superstructure.getTargetArmState() == ArmState.NET_PREP || superstructure.getTargetArmState() ==ArmState.NET_PREP_FLICK)
 
             );
 

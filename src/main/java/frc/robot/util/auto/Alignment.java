@@ -438,7 +438,6 @@ public class Alignment {
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
 
                 true
-            )
             );
             
     }

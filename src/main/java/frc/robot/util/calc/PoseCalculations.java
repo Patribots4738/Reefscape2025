@@ -163,16 +163,6 @@ public class PoseCalculations {
         }
     }
 
-    // public static Rotation2d getNetRotation(Pose2d pos, boolean isRedAlliance) {
-    //     if(pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && !isRedAlliance
-    //         || pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && isRedAlliance) {
-    //         return swerve.getPose().getRotation().0;
-    //     }
-
-    //     else {
-    //         return swerve.getPose().getRotation().Math.PI;
-    //     }
-    // }
 
     public static boolean facingNet(Pose2d pos, boolean isRedAlliance) {
         if(pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && !isRedAlliance
