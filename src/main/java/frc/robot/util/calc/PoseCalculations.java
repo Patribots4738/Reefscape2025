@@ -152,7 +152,7 @@ public class PoseCalculations {
         return new Pose2d(pos.getX() + distance * pos.getRotation().getCos(), pos.getY() + distance * pos.getRotation().getSin(), pos.getRotation());
     }
 
-    public static double getNetRotation(Pose2d pos, boolean isRedAlliance) {
+    public static double getNetRotationNumber(Pose2d pos, boolean isRedAlliance) {
         if(pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && !isRedAlliance
             || pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && isRedAlliance) {
             return 0;
@@ -162,6 +162,17 @@ public class PoseCalculations {
             return Math.PI;
         }
     }
+
+    // public static Rotation2d getNetRotation(Pose2d pos, boolean isRedAlliance) {
+    //     if(pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && !isRedAlliance
+    //         || pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && isRedAlliance) {
+    //         return swerve.getPose().getRotation().0;
+    //     }
+
+    //     else {
+    //         return swerve.getPose().getRotation().Math.PI;
+    //     }
+    // }
 
     public static boolean facingNet(Pose2d pos, boolean isRedAlliance) {
         if(pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (3*(Math.PI))/2 && !isRedAlliance

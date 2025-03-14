@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Swerve;
+import frc.robot.subsystems.superstructure.SuperState;
+import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClimbConstants;
@@ -36,7 +38,7 @@ public class Alignment {
     @AutoLogOutput (key = "Subsystems/Swerve/AlignmentIndex")
     private int alignmentIndex = -1;
 
-    private Robot robot = new Robot();
+    private SuperState currenPrepState;
 
     private TrapezoidProfile xyProfile = new TrapezoidProfile(new Constraints(AutoConstants.HDC_XY_VELOCITY, AutoConstants.HDC_XY_ACCELERATION));
 
@@ -229,7 +231,7 @@ public class Alignment {
         double y = isRedAlliance
             ? MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT / 2)
             : MathUtil.clamp(swerve.getPose().getY(), FieldConstants.FIELD_MAX_HEIGHT / 2, FieldConstants.FIELD_MAX_HEIGHT);
-        double theta = PoseCalculations.getNetRotation(swerve.getPose(), isRedAlliance);
+        double theta = PoseCalculations.getNetRotationNumber(swerve.getPose(), isRedAlliance);
         Pose2d desiredPose = new Pose2d(
             x,
             y,
@@ -436,6 +438,7 @@ public class Alignment {
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
 
                 true
+            )
             );
             
     }
