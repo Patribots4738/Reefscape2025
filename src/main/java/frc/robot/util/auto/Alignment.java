@@ -161,7 +161,7 @@ public class Alignment {
             double theta = vTheta - pTheta;
             // Project velocity vector onto direction of position vector by calculating 
             // a new component of the velocity vector that acts in the direction of pTheta
-            xySetpoint.velocity = vMagnitude * Math.cos(theta);
+            xySetpoint.velocity = MathUtil.clamp(vMagnitude * Math.cos(theta), 0, swerve.getMaxLinearVelocity());
             Logger.recordOutput("Subsystems/Swerve/SetpointStartVelocity", xySetpoint.velocity);
             profileStartingPose = currentPose;
         }

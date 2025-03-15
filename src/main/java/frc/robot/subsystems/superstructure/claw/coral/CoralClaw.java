@@ -80,7 +80,7 @@ public class CoralClaw extends SubsystemBase {
 
     public void updateHasPiece() {
         if (FieldConstants.IS_SIMULATION && inputs.percentOutput != 0.0 && LoggingConstants.getMode() != Mode.REPLAY) {
-            hasPiece = hasPieceDebouncer.calculate(inputs.percentOutput > 0.0);
+            hasPiece = inputs.percentOutput > 0.0;
         } else if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSec != 0) {
             hasPiece = hasPieceDebouncer.calculate(inputs.velocityRotationsPerSec > 0);
         } else if (Robot.gameMode != GameMode.DISABLED && percentOutput != 0.0) {
