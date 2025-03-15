@@ -1,5 +1,6 @@
 package frc.robot.util.auto;
 
+import java.security.Key;
 import java.util.Set;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -21,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.SuperState;
-import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClimbConstants;
@@ -38,7 +38,6 @@ public class Alignment {
     @AutoLogOutput (key = "Subsystems/Swerve/AlignmentIndex")
     private int alignmentIndex = -1;
 
-    private SuperState currenPrepState;
 
     private TrapezoidProfile xyProfile = new TrapezoidProfile(new Constraints(AutoConstants.HDC_XY_VELOCITY, AutoConstants.HDC_XY_ACCELERATION));
 
