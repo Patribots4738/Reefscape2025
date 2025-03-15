@@ -366,7 +366,7 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperState(superstructure.PROCESSOR_PREP));
 
         controller.a()
-            .onTrue(superstructure.algaeRemovalCommand());
+            .toggleOnTrue(superstructure.algaeRemovalCommand());
 
         controller.y()
             .onTrue(superstructure.setSuperState(superstructure.NET_PREP));

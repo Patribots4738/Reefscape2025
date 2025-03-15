@@ -144,7 +144,25 @@ public class Alignment {
         swerve.setDesiredPose(position);
         Pose2d currentPose = swerve.getPose();
         if (targetXY.position == 0) {
-            targetXY.position = currentPose.getTranslation().getDistance(position.getTranslation());
+            // First run of alignment, set up profile
+            xySetpoint.position = 0;
+            double distanceToTarget = currentPose.getTranslation().getDistance(position.getTranslation());
+            targetXY.position = distanceToTarget;
+            ChassisSpeeds robotSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(swerve.getRobotRelativeVelocity(), currentPose.getRotation());
+            double vx = robotSpeeds.vxMetersPerSecond;
+            double vy = robotSpeeds.vyMetersPerSecond;
+            // Get magnitude of velocity vector
+            double vMagnitude = Math.hypot(vx, vy);
+            // Get direction of velocity vector with the origin at the robot
+            double vTheta = Math.atan2(vy, vx);
+            // Get direction of position vector with the origin at the robot
+            double pTheta = Math.atan2(position.getY() - currentPose.getY(), position.getX() - currentPose.getX());
+            // Get angle difference
+            double theta = vTheta - pTheta;
+            // Project velocity vector onto direction of position vector by calculating 
+            // a new component of the velocity vector that acts in the direction of pTheta
+            xySetpoint.velocity = vMagnitude * Math.cos(theta);
+            Logger.recordOutput("Subsystems/Swerve/SetpointStartVelocity", xySetpoint.velocity);
             profileStartingPose = currentPose;
         }
         position = getProfiledPosition(currentPose, position);

@@ -558,7 +558,7 @@ public final class Constants {
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
         public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
-        public static final double NET_X_CHASSIS_OFFSET = 0.8;
+        public static final double NET_X_CHASSIS_OFFSET = 0.95;
 
     }
     public static final class ElevatorConstants {
@@ -639,7 +639,7 @@ public final class Constants {
         public static final double A = FieldConstants.IS_REAL ? 3d : 0d;
         public static final double S = FieldConstants.IS_REAL ? 1.5052 : 0d;
         public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double G = FieldConstants.IS_REAL ? 5.6 : 0d;
+        public static final double G = FieldConstants.IS_REAL ? 0d : 0d;
 
         public static final GainConstants GAINS = new GainConstants(
             P,
@@ -676,8 +676,8 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.28;
-        public static final double L1_POSITION_RADIANS = -0.42;
+        public static final double INTAKE_POSITION_RADIANS = -0.32;
+        public static final double L1_POSITION_RADIANS = -0.45;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
@@ -688,7 +688,7 @@ public final class Constants {
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
         public static final double FRONT_ALGAE_TOSS = 2.0;
-        public static final double PROCESSOR_RADIANS = -0.85;
+        public static final double PROCESSOR_RADIANS = -0.7;
 
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;

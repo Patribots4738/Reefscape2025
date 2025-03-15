@@ -22,6 +22,7 @@ import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.calc.PoseCalculations;
+import frc.robot.util.custom.ActiveConditionalCommand;
 import frc.robot.subsystems.superstructure.climb.Climb;
 
 public class Superstructure {
@@ -338,31 +339,22 @@ public class Superstructure {
         return wrist.setPositionCommand(WristConstants.TRANSITION_RADIANS, this::shouldRunWristFast);
     }
 
-    public Command algaeL2Command()  {
-        return Commands.sequence(
-            setSuperState(L2_ALGAE_IN),
-            Commands.waitUntil(algaeClaw::hasPiece),
-            setSuperState(L2_ALGAE_EXIT)
-        );
-    }
-
-    public Command algaeL3Command()  {
-        return Commands.sequence(
-            setSuperState(L3_ALGAE_IN),
-            Commands.waitUntil(algaeClaw::hasPiece),
-            setSuperState(L3_ALGAE_EXIT)
-        );
-    }
-
     public Command algaeTreeCommand() {
         return setSuperState(TREE_ALGAE_IN);
     }
     
     public Command algaeRemovalCommand() {
-        return Commands.either(
-            algaeL3Command(),
-            algaeL2Command(),
-            () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
+        return Commands.sequence(
+            new ActiveConditionalCommand(
+                setSuperState(L3_ALGAE_IN),
+                setSuperState(L2_ALGAE_IN),
+                () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
+            ).repeatedly().until(algaeClaw::hasPiece),
+            Commands.either(
+                setSuperState(L3_ALGAE_EXIT), 
+                setSuperState(L2_ALGAE_EXIT), 
+                () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
+            )
         );
     }
 
@@ -495,7 +487,15 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldRunWristFast")
     public boolean shouldRunWristFast() {
-        return !algaeClaw.hasPiece() || targetArmState == ArmState.NET;
+        return (
+            !algaeClaw.hasPiece() 
+                || targetArmState == ArmState.NET 
+                || targetArmState == ArmState.BACK_ALGAE_TOSS 
+                || targetArmState == ArmState.FRONT_ALGAE_TOSS
+        ) && !(
+            targetArmState == ArmState.L2_ALGAE_EXIT 
+                || targetArmState == ArmState.L3_ALGAE_EXIT
+        );
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldRunElevatorFast")
