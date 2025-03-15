@@ -309,10 +309,12 @@ public class RobotContainer {
 
         controller.b()
             .whileTrue(alignment.netAlignmentCommand(controller::getLeftX))
-            .onTrue((PoseCalculations.facingNet(swerve.getPose(), Robot.isRedAlliance())
-                ? superstructure.setSuperState(superstructure.NET_PREP) 
-                : superstructure.setSuperState(superstructure.NET_PREP_FLICK))
-                .onlyif(superstructure.getTargetArmState() == ArmState.NET_PREP || superstructure.getTargetArmState() ==ArmState.NET_PREP_FLICK)
+            .onTrue(
+                Commands.either(
+                    superstructure.setSuperState(superstructure.NET_PREP), 
+                    superstructure.setSuperState(superstructure.NET_PREP_FLICK), 
+                    () -> PoseCalculations.facingNet(swerve.getPose(), Robot.isRedAlliance()))
+                .onlyIf(() -> superstructure.getTargetArmState() == ArmState.NET_PREP || superstructure.getTargetArmState() == ArmState.NET_PREP_FLICK)
 
             );
 
@@ -374,9 +376,12 @@ public class RobotContainer {
             .onTrue(superstructure.algaeRemovalCommand());
 
         controller.y()
-            .onTrue(PoseCalculations.facingNet(swerve.getPose(), Robot.isRedAlliance()) 
-                ? superstructure.setSuperState(superstructure.NET_PREP) 
-                : superstructure.setSuperState(superstructure.NET_PREP_FLICK));
+            .onTrue(
+                Commands.either(
+                superstructure.setSuperState(superstructure.NET_PREP), 
+                superstructure.setSuperState(superstructure.NET_PREP_FLICK), 
+                () -> PoseCalculations.facingNet(swerve.getPose(), Robot.isRedAlliance()))
+            );
 
         controller.start().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
         controller.back().onTrue(coralClaw.setPercentCommand(CoralClawConstants.INTAKE_PERCENT));
