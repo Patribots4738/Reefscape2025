@@ -461,7 +461,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9121028598030858 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8679838332104803 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -527,7 +527,7 @@ public final class Constants {
         public static final double INTAKE_PERCENT = 0.4;
         public static final double HOLD_PERCENT = 0.3;
         public static final double OUTTAKE_PERCENT = -0.75;
-        public static final double L1_OUTTAKE_PERCENT = -0.4;
+        public static final double L1_OUTTAKE_PERCENT = -0.2;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
@@ -558,7 +558,7 @@ public final class Constants {
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
         public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
-        public static final double NET_X_CHASSIS_OFFSET = 0.95;
+        public static final double NET_X_CHASSIS_OFFSET = 1.0;
 
     }
     public static final class ElevatorConstants {
@@ -608,10 +608,10 @@ public final class Constants {
         // public static final double L2_POSITION_METERS = 0.09;
         // public static final double L3_POSITION_METERS = 0.27;
         public static final double L2_POSITION_METERS = 0.05;
-        public static final double L3_POSITION_METERS = 0.25;
+        public static final double L3_POSITION_METERS = 0.23;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
         public static final double L3_POSITION_REMOVE_ALGAE = 0.13;
-        public static final double L2_POSITION_REMOVE_ALGAE = 0.04;
+        public static final double L2_POSITION_REMOVE_ALGAE = 0.0;
         public static final double PROCESSOR_METERS = 0;
         public static final double NET_PREP_METERS = 0.5;
         public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
@@ -672,19 +672,19 @@ public final class Constants {
         public static final double MIN_ANGLE_RADIANS = -1.11370457898;
         public static final double MAX_ANGLE_RADIANS = 2.75;
 
-        public static final double CLIMB_RADIANS = 1.1;
+        public static final double CLIMB_RADIANS = 1.3;
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.32;
+        public static final double INTAKE_POSITION_RADIANS = -0.33;
         public static final double L1_POSITION_RADIANS = -0.45;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
         public static final double L2_POSITION_RADIANS = 2.5;
         public static final double L3_POSITION_RADIANS = 2.5;
-        public static final double L4_POSITION_RADIANS = 2.4;
-        public static final double L2_ALGAE_REMOVAL = 0.7;
+        public static final double L4_POSITION_RADIANS = 2.3;
+        public static final double L2_ALGAE_REMOVAL = 0.8;
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
         public static final double FRONT_ALGAE_TOSS = 2.0;
@@ -717,7 +717,7 @@ public final class Constants {
 
         public static final double P_SLOW = FieldConstants.IS_REAL ? 100d : 1000d; // Chef Cushman
         public static final double I_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D_SLOW = FieldConstants.IS_REAL ? 2d : 500d;
+        public static final double D_SLOW = FieldConstants.IS_REAL ? 25d : 500d;
         public static final double A_SLOW = FieldConstants.IS_REAL ? 1d : 0d;
         public static final double S_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double V_SLOW = FieldConstants.IS_REAL ? 0d : 0d; 
@@ -725,7 +725,7 @@ public final class Constants {
 
         public static final double P_FAST = FieldConstants.IS_REAL ? 100d : 1000d;
         public static final double I_FAST = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D_FAST = FieldConstants.IS_REAL ? 2d : 500d;
+        public static final double D_FAST = FieldConstants.IS_REAL ? 25d : 500d;
         public static final double A_FAST = FieldConstants.IS_REAL ? 1d : 0d;
         public static final double S_FAST = FieldConstants.IS_REAL ? 0d : 0d; 
         public static final double V_FAST = FieldConstants.IS_REAL ? 0d : 0d;

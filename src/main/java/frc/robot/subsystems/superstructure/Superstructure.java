@@ -140,7 +140,7 @@ public class Superstructure {
         L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         TREE_ALGAE_IN = new SuperState("TREE_ALGAE_IN", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_IN);
-        ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN, () -> false, () -> true);
+        ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.L2_ALGAE_EXIT, ClimbState.STOW, ClawState.ALGAE_IN, () -> false, () -> true);
 
         PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClimbState.STOW, ClawState.DEFAULT);
         PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_OUT);
@@ -179,7 +179,7 @@ public class Superstructure {
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L2_ALGAE_REMOVAL),
         L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_ALGAE_REMOVAL),
-        L2_ALGAE_EXIT (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS),
+        L2_ALGAE_EXIT (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS - 0.2),
         L3_ALGAE_EXIT (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS),
         PROCESSOR (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
         NET_PREP (ElevatorConstants.NET_PREP_METERS, WristConstants.L3_ALGAE_REMOVAL),
