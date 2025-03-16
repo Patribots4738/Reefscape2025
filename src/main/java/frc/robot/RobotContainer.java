@@ -324,7 +324,7 @@ public class RobotContainer {
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
 
         controller.leftTrigger()
-            .onTrue(superstructure.tossAlgaeCommand(controller::getLeftTrigger));
+            .onTrue(superstructure.tossAlgaeCommand());
 
         controller.povUp()
             .onTrue(superstructure.setSuperState(superstructure.CLIMB_READY));
@@ -425,7 +425,7 @@ public class RobotContainer {
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
 
         controller.leftTrigger()
-            .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
+            .onTrue(superstructure.tossAlgaeCommand());
 
     }
     

@@ -84,8 +84,10 @@ public class Superstructure {
     public final SuperState NET_PLACE_FLICK;
     public final SuperState NET_EXIT;
 
+    public final SuperState PREP_ALGAE_TOSS;
     public final SuperState BACK_ALGAE_TOSS;
     public final SuperState FRONT_ALGAE_TOSS;
+    public final SuperState REEF_ALGAE_TOSS;
 
     private SuperState targetState;
     private ArmState targetArmState;
@@ -140,7 +142,7 @@ public class Superstructure {
         L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
         TREE_ALGAE_IN = new SuperState("TREE_ALGAE_IN", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_IN);
-        ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.L2_ALGAE_EXIT, ClimbState.STOW, ClawState.ALGAE_IN, () -> false, () -> true);
+        ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.ALGAE_CARRY, ClimbState.STOW, ClawState.ALGAE_IN, () -> false, () -> true);
 
         PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClimbState.STOW, ClawState.DEFAULT);
         PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_OUT);
@@ -155,8 +157,10 @@ public class Superstructure {
         NET_PLACE_FLICK = new SuperState("NET_PLACE_FLICK", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, () -> false, () -> true);
         NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.DEFAULT);
 
+        PREP_ALGAE_TOSS = new SuperState("PREP_ALGAE_TOSS", ArmState.PREP_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_IN, () -> false, () -> true);
         BACK_ALGAE_TOSS = new SuperState("BACK_ALGAE_TOSS", ArmState.BACK_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
         FRONT_ALGAE_TOSS = new SuperState("FRONT_ALGAE_TOSS", ArmState.FRONT_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
+        REEF_ALGAE_TOSS = new SuperState("REEF_ALGAE_TOSS", ArmState.REEF_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
 
     }
 
@@ -181,13 +185,16 @@ public class Superstructure {
         L3_ALGAE (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_ALGAE_REMOVAL),
         L2_ALGAE_EXIT (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS - 0.2),
         L3_ALGAE_EXIT (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS),
+        ALGAE_CARRY(ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS - 0.2),
         PROCESSOR (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
         NET_PREP (ElevatorConstants.NET_PREP_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET_PREP_FLICK (ElevatorConstants.NET_PLACE_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET (ElevatorConstants.NET_PLACE_METERS, WristConstants.NET_RADIANS),
         NET_EXIT (ElevatorConstants.NET_PLACE_METERS, WristConstants.NET_RADIANS),
-        BACK_ALGAE_TOSS (ElevatorConstants.STOW_POSITION_METERS, WristConstants.BACK_ALGAE_TOSS),
-        FRONT_ALGAE_TOSS (ElevatorConstants.STOW_POSITION_METERS, WristConstants.FRONT_ALGAE_TOSS);
+        PREP_ALGAE_TOSS ( ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L3_ALGAE_REMOVAL),
+        BACK_ALGAE_TOSS (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.BACK_ALGAE_TOSS),
+        FRONT_ALGAE_TOSS (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.FRONT_ALGAE_TOSS),
+        REEF_ALGAE_TOSS (ElevatorConstants.L3_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS);
 
         double elevatorPosition, wristPosition;
 
@@ -383,7 +390,7 @@ public class Superstructure {
         // Derive next state based on current arm target
         SuperState placementState = switch (targetState.armState) {
             case L2, L2_PREP, L2_EXIT -> L2_PLACE;
-            case L3, L3_PREP, L3_EXIT -> L3_PLACE;
+            case L3, L3_PREP, L3_EXIT, REEF_ALGAE_TOSS -> L3_PLACE;
             case L4, L4_PREP, L4_EXIT -> L4_PLACE;
             case NET, NET_PREP, NET_EXIT, NET_PREP_FLICK -> NET_PLACE;
             case PROCESSOR -> PROCESSOR_PLACE;
@@ -454,15 +461,20 @@ public class Superstructure {
         );
     }
 
-    public Command tossAlgaeCommand(BooleanSupplier continueOuttakingSupplier) {
-        return Commands.sequence(
-            Commands.either(
-                setSuperState(BACK_ALGAE_TOSS), 
-                setSuperState(FRONT_ALGAE_TOSS), 
-                () -> Robot.isRedAlliance() ^ (robotPoseSupplier.get().getRotation().getRadians() > Math.PI / 2d || robotPoseSupplier.get().getRotation().getRadians() < -Math.PI / 2d)
+    public Command tossAlgaeCommand() {
+        return Commands.either(
+            setSuperState(REEF_ALGAE_TOSS).andThen(setSuperState(L3)),
+            Commands.sequence(
+                setSuperState(PREP_ALGAE_TOSS),
+                Commands.either(
+                    setSuperState(BACK_ALGAE_TOSS), 
+                    setSuperState(FRONT_ALGAE_TOSS), 
+                    () -> Robot.isRedAlliance() ^ (robotPoseSupplier.get().getRotation().getRadians() > Math.PI / 2d || robotPoseSupplier.get().getRotation().getRadians() < -Math.PI / 2d)
+                ),
+                Commands.waitUntil(() -> !algaeClaw.hasPiece()),
+                setSuperState(READY_STOW)
             ),
-            Commands.waitUntil(() -> !continueOuttakingSupplier.getAsBoolean() && !algaeClaw.hasPiece()),
-            setSuperState(READY_STOW)
+            this::shouldEvadeReef
         );
     }
 
@@ -492,15 +504,25 @@ public class Superstructure {
                 || targetArmState == ArmState.NET 
                 || targetArmState == ArmState.BACK_ALGAE_TOSS 
                 || targetArmState == ArmState.FRONT_ALGAE_TOSS
+                || targetArmState == ArmState.REEF_ALGAE_TOSS
         ) && !(
             targetArmState == ArmState.L2_ALGAE_EXIT 
                 || targetArmState == ArmState.L3_ALGAE_EXIT
+                || targetArmState == ArmState.ALGAE_CARRY
         );
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldRunElevatorFast")
     public boolean shouldRunElevatorFast() {
-        return !algaeClaw.hasPiece() || targetArmState == ArmState.NET;
+        return (
+            !algaeClaw.hasPiece() 
+                || targetArmState == ArmState.NET
+                || targetArmState == ArmState.REEF_ALGAE_TOSS
+        ) && !(
+            targetArmState == ArmState.L2_ALGAE_EXIT 
+                || targetArmState == ArmState.L3_ALGAE_EXIT
+                || targetArmState == ArmState.ALGAE_CARRY
+        );
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ArmAtTargetPosition")
