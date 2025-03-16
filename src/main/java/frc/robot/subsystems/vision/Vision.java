@@ -123,6 +123,39 @@ public class Vision extends SubsystemBase {
         double xyStds = 0.0;
         double radStds = 0.0;
 
+        // if ((Robot.gameMode == GameMode.DISABLED || 
+        //     Robot.gameMode == GameMode.AUTONOMOUS
+        //         && Robot.currentTimestamp - RobotContainer.gameModeStart < 1.75)
+        //         && camerasToUpdate.size() > 0) {
+        //     xyStds = 0.001;
+        //     radStds = 0.002;
+        // } else if (camerasToUpdate.size() > 0) {
+        //     // Multiple targets detected
+        //     if (tagCount > 1) {
+        //         if (Robot.gameMode == GameMode.TELEOP) {
+        //             // Trust the vision even MORE
+        //             if (tagCount > 2) {
+        //                 xyStds = Math.hypot(0.002, 0.003);
+        //             } else {
+        //                 // We can only see two tags, (still trustable)
+        //                 xyStds = Math.hypot(0.005, 0.008);
+        //             }
+        //         } else {
+        //             xyStds = Math.hypot(0.014, 0.016);
+        //         }
+        //         radStds = Units.degreesToRadians(2);
+        //     }
+        //     // 1 target with large area and close to estimated roxose
+        //     else if (tagArea > 0.14) {
+        //         xyStds = Math.hypot(0.015, 0.033);
+        //         radStds = Units.degreesToRadians(7);
+        //     }
+        //     // Conditions don't match to add a vision measurement
+        //     else {
+        //         return;
+        //     }
+        // }
+
         if ((Robot.gameMode == GameMode.DISABLED || 
             Robot.gameMode == GameMode.AUTONOMOUS
                 && Robot.currentTimestamp - RobotContainer.gameModeStart < 1.75)
@@ -131,18 +164,9 @@ public class Vision extends SubsystemBase {
             radStds = 0.002;
         } else if (camerasToUpdate.size() > 0) {
             // Multiple targets detected
-            if (tagCount > 1) {
-                if (Robot.gameMode == GameMode.TELEOP) {
-                    // Trust the vision even MORE
-                    if (tagCount > 2) {
-                        xyStds = Math.hypot(0.002, 0.003);
-                    } else {
-                        // We can only see two tags, (still trustable)
-                        xyStds = Math.hypot(0.005, 0.008);
-                    }
-                } else {
-                    xyStds = Math.hypot(0.014, 0.016);
-                }
+            if (tagCount > 1 || tagArea > 1.0) {
+                // Trust the vision even MORE
+                xyStds = Math.hypot(0.002, 0.003);
                 radStds = Units.degreesToRadians(2);
             }
             // 1 target with large area and close to estimated roxose

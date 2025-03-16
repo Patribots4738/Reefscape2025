@@ -13,7 +13,7 @@
     "Full Auto",
     "Only Driving"
   ],
-  "defaultMaxVel": 2.7,
+  "defaultMaxVel": 2.35,
   "defaultMaxAccel": 4.1,
   "defaultMaxAngVel": 270.0,
   "defaultMaxAngAccel": 450.0,

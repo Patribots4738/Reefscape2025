@@ -676,14 +676,14 @@ public final class Constants {
 
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.33;
+        public static final double INTAKE_POSITION_RADIANS = -0.3;
         public static final double L1_POSITION_RADIANS = -0.45;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
         public static final double L2_POSITION_RADIANS = 2.5;
         public static final double L3_POSITION_RADIANS = 2.5;
-        public static final double L4_POSITION_RADIANS = 2.3;
+        public static final double L4_POSITION_RADIANS = 2.4;
         public static final double L2_ALGAE_REMOVAL = 0.8;
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
@@ -717,7 +717,7 @@ public final class Constants {
 
         public static final double P_SLOW = FieldConstants.IS_REAL ? 100d : 1000d; // Chef Cushman
         public static final double I_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D_SLOW = FieldConstants.IS_REAL ? 25d : 500d;
+        public static final double D_SLOW = FieldConstants.IS_REAL ? 40d : 500d;
         public static final double A_SLOW = FieldConstants.IS_REAL ? 1d : 0d;
         public static final double S_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double V_SLOW = FieldConstants.IS_REAL ? 0d : 0d; 
@@ -725,7 +725,7 @@ public final class Constants {
 
         public static final double P_FAST = FieldConstants.IS_REAL ? 100d : 1000d;
         public static final double I_FAST = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D_FAST = FieldConstants.IS_REAL ? 25d : 500d;
+        public static final double D_FAST = FieldConstants.IS_REAL ? 40d : 500d;
         public static final double A_FAST = FieldConstants.IS_REAL ? 1d : 0d;
         public static final double S_FAST = FieldConstants.IS_REAL ? 0d : 0d; 
         public static final double V_FAST = FieldConstants.IS_REAL ? 0d : 0d;
