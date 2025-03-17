@@ -11,16 +11,28 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "5-E"
+                  "pathName": "5-DA"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "CoralL4"
+                  "name": "AlgaeIntakeStart"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralL4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DA-H"
           }
         },
         {
@@ -36,13 +48,32 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "E-CS2"
+                  "pathName": "H-N"
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "CoralIntakeStart"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "AlgaeIntakeStop"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PrepareNet"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -51,13 +82,13 @@
         {
           "type": "named",
           "data": {
-            "name": "C4"
+            "name": "PlaceNet"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "B4"
+            "pathName": "N-END"
           }
         }
       ]

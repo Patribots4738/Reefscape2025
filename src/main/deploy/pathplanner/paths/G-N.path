@@ -3,33 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6526226423364612,
-        "y": 7.364038533944852
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 2.6526226423364614,
-        "y": 7.364038533944852
-      },
-      "isLocked": false,
-      "linkedName": "CS1"
-    },
-    {
-      "anchor": {
         "x": 5.799914383561644,
         "y": 3.859912048515606
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.879147869544076,
+        "y": 4.426767437305927
+      },
+      "isLocked": false,
+      "linkedName": "G"
+    },
+    {
+      "anchor": {
+        "x": 7.858433219178083,
+        "y": 4.986643835616438
+      },
       "prevControl": {
-        "x": 7.341468437615699,
-        "y": 6.1623613728399285
+        "x": 6.953075432763666,
+        "y": 4.499514584014925
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "G"
+      "linkedName": "N"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "SlowNet",
+      "minWaypointRelativePos": 0.653958944281525,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.3,
+        "maxAcceleration": 4.1,
+        "maxAngularVelocity": 270.0,
+        "maxAngularAcceleration": 450.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,10 +59,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Coral Station",
+  "folder": "Reef",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.17962044797895
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

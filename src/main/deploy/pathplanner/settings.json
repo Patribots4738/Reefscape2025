@@ -3,11 +3,12 @@
   "robotLength": 0.8937752,
   "holonomicMode": true,
   "pathFolders": [
-    "Starting",
-    "Reef",
+    "Coral Station",
+    "Net",
     "Processor",
+    "Reef",
     "Staged",
-    "Coral Station"
+    "Starting"
   ],
   "autoFolders": [
     "Full Auto",

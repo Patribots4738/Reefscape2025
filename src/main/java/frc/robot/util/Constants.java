@@ -291,8 +291,11 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "5-E4-D4-C4-B4",
-            "3-J4-K4-L4-A4"
+            "3P Right",
+            "3P Left",
+            "Buddy 3P Left",
+            "Net Left",
+            "Net Right"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;

@@ -24,8 +24,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.characterization.StaticCharacterization;
-import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
@@ -180,24 +178,25 @@ public class RobotContainer {
         prepareNamedCommands();
 
         pathPlannerStorage.configureAutoChooser();
-        pathPlannerStorage.getAutoChooser().addOption("WheelRadiusCharacterization",
-            swerve.setWheelsOCommand()
-            .andThen(Commands.waitSeconds(0.5))
-            .andThen(new WheelRadiusCharacterization(swerve)));
-        pathPlannerStorage.getAutoChooser().addOption("DriveFFCharacterization",
-            new StaticCharacterization(
-                swerve, 
-                swerve::runDriveCharacterization, 
-                swerve::getDriveCharacterizationVelocity));
-        pathPlannerStorage.getAutoChooser().addOption("TurnFFCharacterization",
-            new StaticCharacterization(
-                swerve, 
-                swerve::runTurnCharacterization, 
-                swerve::getTurnCharacterizationVelocity));
 
         PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
             Logger.recordOutput("PathPlanner/TargetPose", pose);
         });
+
+        // pathPlannerStorage.getAutoChooser().addOption("WheelRadiusCharacterization",
+        //     swerve.setWheelsOCommand()
+        //     .andThen(Commands.waitSeconds(0.5))
+        //     .andThen(new WheelRadiusCharacterization(swerve)));
+        // pathPlannerStorage.getAutoChooser().addOption("DriveFFCharacterization",
+        //     new StaticCharacterization(
+        //         swerve, 
+        //         swerve::runDriveCharacterization, 
+        //         swerve::getDriveCharacterizationVelocity));
+        // pathPlannerStorage.getAutoChooser().addOption("TurnFFCharacterization",
+        //     new StaticCharacterization(
+        //         swerve, 
+        //         swerve::runTurnCharacterization, 
+        //         swerve::getTurnCharacterizationVelocity));
 
         // pathPlannerStorage.getAutoChooser().addOption("ElevatorStaticCharacterization", new StaticCharacterization(elevator, elevator::runCharacterization, elevator::getCharacterizationVelocity));
 
@@ -463,6 +462,10 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommandAuto());
         NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(coralClaw::hasPiece));
+        NamedCommands.registerCommand("PrepareNet", superstructure.setSuperState(superstructure.NET_PREP));
+        NamedCommands.registerCommand("PlaceNet", superstructure.netPlaceCommandAuto());
+        NamedCommands.registerCommand("AlgaeIntakeStart", superstructure.algaeRemovalCommand());
+        NamedCommands.registerCommand("AlgaeIntakeStop", superstructure.setSuperState(superstructure.ALGAE_CARRY));
         
         for (int i = 0; i < 12; i++) {
             char currentNode = AutoConstants.REEF_NODES.charAt(i);

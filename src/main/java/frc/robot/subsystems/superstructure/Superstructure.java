@@ -486,6 +486,15 @@ public class Superstructure {
         );
     }
 
+    public Command netPlaceCommandAuto() {
+        return Commands.sequence(
+            outtakeCommand(),
+            Commands.waitUntil(() -> !algaeClaw.hasPiece()),
+            stopOuttakeCommand(),
+            setSuperState(READY_STOW)
+        );
+    }
+
     public Command stopAllCommand() {
         return 
             Commands.parallel(

@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6526226423364612,
-        "y": 7.364038533944852
+        "x": 5.799914383561644,
+        "y": 4.025
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6526226423364614,
-        "y": 7.364038533944852
+        "x": 6.04952615776749,
+        "y": 4.011072969526506
       },
       "isLocked": false,
-      "linkedName": "CS1"
+      "linkedName": "DA"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 3.859912048515606
       },
       "prevControl": {
-        "x": 7.341468437615699,
-        "y": 6.1623613728399285
+        "x": 5.515280679772456,
+        "y": 3.8544746663577576
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,10 +45,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Coral Station",
+  "folder": "Reef",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.17962044797895
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
