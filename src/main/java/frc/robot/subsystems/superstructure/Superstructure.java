@@ -490,8 +490,7 @@ public class Superstructure {
         return Commands.sequence(
             outtakeCommand(),
             Commands.waitUntil(() -> !algaeClaw.hasPiece()),
-            stopOuttakeCommand(),
-            setSuperState(READY_STOW)
+            stopOuttakeCommand()
         );
     }
 

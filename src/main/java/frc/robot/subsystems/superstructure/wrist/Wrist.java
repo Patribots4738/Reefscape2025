@@ -77,6 +77,7 @@ public class Wrist extends SubsystemBase {
             io.setPosition(setpoint.position, 0);
         } else {
             setpoint.position = inputs.internalPositionRads;
+            setpoint.velocity = inputs.internalVelocityRadsPerSec;
             io.setNeutral();
         }
 

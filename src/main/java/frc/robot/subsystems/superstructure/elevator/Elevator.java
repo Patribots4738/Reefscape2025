@@ -76,6 +76,7 @@ public class Elevator extends SubsystemBase {
             io.setPosition(setpoint.position);
         } else {
             setpoint.position = inputs.leaderPositionMeters;
+            setpoint.velocity = inputs.leaderVelocityMetersPerSecond;
             io.setNeutral();
         }
 
