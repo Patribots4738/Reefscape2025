@@ -481,7 +481,7 @@ public class Superstructure {
     public Command coralPlaceCommandAuto() {
         return Commands.sequence(
             outtakeCommand(),
-            Commands.waitSeconds(0.5),
+            Commands.waitUntil(() -> !coralClaw.hasPiece()),
             stopOuttakeCommand()
         );
     }
