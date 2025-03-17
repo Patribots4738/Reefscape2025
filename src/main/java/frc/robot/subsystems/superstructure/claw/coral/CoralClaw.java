@@ -84,7 +84,7 @@ public class CoralClaw extends SubsystemBase {
         } else if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSec != 0) {
             hasPiece = hasPieceDebouncer.calculate(inputs.velocityRotationsPerSec > 0);
         } else if (Robot.gameMode != GameMode.DISABLED && percentOutput != 0.0) {
-            if (percentOutput > 0) {
+            if (percentOutput > 0 && !hasPiece) {
                 hasPiece = hasPieceDebouncer.calculate(
                     MathUtil.isNear(CoralClawConstants.CURRENT_LIMIT, inputs.torqueCurrentAmps, CoralClawConstants.CORAL_CLAW_CURRENT_DEADBAND) 
                     && Math.abs(inputs.velocityRotationsPerSec) < CoralClawConstants.HAS_PIECE_INTAKE_THRESHOLD);

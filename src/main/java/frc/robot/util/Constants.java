@@ -629,7 +629,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 5.716;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 5.738;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
