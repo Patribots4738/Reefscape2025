@@ -313,7 +313,7 @@ public class RobotContainer {
                 Commands.either(
                     superstructure.setSuperState(superstructure.NET_PREP), 
                     superstructure.setSuperState(superstructure.NET_PREP_FLICK), 
-                    () -> PoseCalculations.facingNet(swerve.getPose(), Robot.isRedAlliance()))
+                    () -> PoseCalculations.facingNet(swerve.getPose()))
                 .onlyIf(() -> superstructure.getTargetArmState() == ArmState.NET_PREP || superstructure.getTargetArmState() == ArmState.NET_PREP_FLICK)
 
             );
@@ -378,9 +378,9 @@ public class RobotContainer {
         controller.y()
             .onTrue(
                 Commands.either(
-                superstructure.setSuperState(superstructure.NET_PREP), 
-                superstructure.setSuperState(superstructure.NET_PREP_FLICK), 
-                () -> PoseCalculations.facingNet(swerve.getPose(), Robot.isRedAlliance()))
+                    superstructure.setSuperState(superstructure.NET_PREP), 
+                    superstructure.setSuperState(superstructure.NET_PREP_FLICK), 
+                    () -> PoseCalculations.facingNet(swerve.getPose()))
             );
 
         controller.start().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));

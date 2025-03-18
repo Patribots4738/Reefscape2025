@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -18,13 +16,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.Robot;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
 
 
 
 public class PoseCalculations {
-    
 
 
     public static int nearestIndex(Pose2d pos, List<Pose2d> compareTo) {
@@ -154,10 +152,10 @@ public class PoseCalculations {
         return new Pose2d(pos.getX() + distance * pos.getRotation().getCos(), pos.getY() + distance * pos.getRotation().getSin(), pos.getRotation());
     }
 
-    public static double getNetRotationNumber(Pose2d pos, boolean isRedAlliance) {
+    public static double getNetRotationNumber(Pose2d pos) {
 
-        if((pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (-(Math.PI))/2 && !isRedAlliance)
-            || (pos.getRotation().getRadians() >= Math.PI/2 && pos.getRotation().getRadians() <= (-(Math.PI))/2 && isRedAlliance)) {
+        if((pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (-(Math.PI))/2 && !Robot.isRedAlliance())
+            || (pos.getRotation().getRadians() >= Math.PI/2 && pos.getRotation().getRadians() <= (-(Math.PI))/2 && Robot.isRedAlliance())) {
             return 0;
         }
 
@@ -166,9 +164,9 @@ public class PoseCalculations {
         }
     }
 
-    public static boolean facingNet(Pose2d pos, boolean isRedAlliance) {
-        if((pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (-(Math.PI))/2 && !isRedAlliance)
-            || (pos.getRotation().getRadians() >= Math.PI/2 && pos.getRotation().getRadians() <= (-(Math.PI))/2 && isRedAlliance)) {
+    public static boolean facingNet(Pose2d pos) {
+        if((pos.getRotation().getRadians() <= Math.PI/2 && pos.getRotation().getRadians() >= (-(Math.PI))/2 && !Robot.isRedAlliance())
+            || (pos.getRotation().getRadians() >= Math.PI/2 && pos.getRotation().getRadians() <= (-(Math.PI))/2 && Robot.isRedAlliance())) {
             return true;
         }
 

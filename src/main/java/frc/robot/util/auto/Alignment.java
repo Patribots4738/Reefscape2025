@@ -1,6 +1,5 @@
 package frc.robot.util.auto;
 
-import java.security.Key;
 import java.util.Set;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -21,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Swerve;
-import frc.robot.subsystems.superstructure.SuperState;
 import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.ClimbConstants;
@@ -230,7 +228,7 @@ public class Alignment {
         double y = isRedAlliance
             ? MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT / 2)
             : MathUtil.clamp(swerve.getPose().getY(), FieldConstants.FIELD_MAX_HEIGHT / 2, FieldConstants.FIELD_MAX_HEIGHT);
-        double theta = PoseCalculations.getNetRotationNumber(swerve.getPose(), isRedAlliance);
+        double theta = PoseCalculations.getNetRotationNumber(swerve.getPose());
         Pose2d desiredPose = new Pose2d(
             x,
             y,
