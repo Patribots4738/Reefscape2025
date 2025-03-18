@@ -677,7 +677,8 @@ public final class Constants {
 
         public static final double CLIMB_RADIANS = 1.3;
 
-        public static final double DEADBAND_RADIANS = 0.06;
+        public static final double VELOCITY_DEADBAND_RADIANS = 0.1;
+        public static final double POSITION_DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double INTAKE_POSITION_RADIANS = -0.3;
         public static final double DUMP_POSITION_RADIANS = -0.45;
@@ -795,7 +796,7 @@ public final class Constants {
             CALIBRATION
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 

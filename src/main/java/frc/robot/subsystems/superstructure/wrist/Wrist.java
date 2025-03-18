@@ -121,7 +121,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public boolean atPosition(double position) {
-        return MathUtil.isNear(position, inputs.internalPositionRads, WristConstants.DEADBAND_RADIANS);
+        return MathUtil.isNear(position, inputs.internalPositionRads, WristConstants.POSITION_DEADBAND_RADIANS);
     }
 
     public boolean atTargetPosition() {
@@ -134,6 +134,10 @@ public class Wrist extends SubsystemBase {
 
     public double getVelocity() {
         return inputs.internalVelocityRadsPerSec;
+    }
+
+    public double getTargetPosition() {
+        return targetState.position;
     }
 
     public double getCharacterizationVelocity() {

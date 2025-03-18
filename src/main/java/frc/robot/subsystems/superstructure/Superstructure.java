@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -554,7 +555,9 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
-        return ((wrist.atPosition(WristConstants.UNDER_THRESHOLD_RADIANS) || wrist.getPosition() > WristConstants.UNDER_THRESHOLD_RADIANS)) && wrist.getVelocity() > -0.1;
+        return ((wrist.atPosition(WristConstants.UNDER_THRESHOLD_RADIANS) || wrist.getPosition() > WristConstants.UNDER_THRESHOLD_RADIANS)) 
+            // Wrist velocity direction equals desired direction of travel
+            && Math.signum(MathUtil.applyDeadband(wrist.getVelocity(), WristConstants.VELOCITY_DEADBAND_RADIANS)) == Math.signum(MathUtil.applyDeadband(wrist.getTargetPosition() - wrist.getPosition(), WristConstants.POSITION_DEADBAND_RADIANS));
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")
