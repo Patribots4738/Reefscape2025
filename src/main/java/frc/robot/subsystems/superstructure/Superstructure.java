@@ -255,14 +255,12 @@ public class Superstructure {
     public Command setSuperState(SuperState nextState) {
         // Update logged state
         return Commands.runOnce(() -> this.targetState = nextState).alongWith(
-            Commands.sequence(
-                // Run these commands in parallel, cancel all when first command argument ends
-                Commands.parallel(
-                    fixArmAndClimb(nextState.armState, nextState.climbState),
-                    // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
-                    setCoralClawState(nextState),
-                    setAlgaeClawState(nextState)
-                )
+            // Run these commands in parallel
+            Commands.parallel(
+                fixArmAndClimb(nextState.armState, nextState.climbState),
+                // While the arm and climb are having their little dance, the claw(s) wait until its their turn to go in parallel with the rest of this command
+                setCoralClawState(nextState),
+                setAlgaeClawState(nextState)
             )
         );
     }
@@ -398,11 +396,11 @@ public class Superstructure {
     public SuperState getPlacementState() {
         // Derive next state based on current arm target
         SuperState placementState = switch (targetState.armState) {
-            case L1, L1_PREP, L1_EXIT -> L1_PLACE;
-            case L2, L2_PREP, L2_EXIT -> L2_PLACE;
-            case L3, L3_PREP, L3_EXIT, REEF_ALGAE_TOSS -> L3_PLACE;
-            case L4, L4_PREP, L4_EXIT -> L4_PLACE;
-            case NET, NET_PREP, NET_EXIT, NET_PREP_FLICK -> NET_PLACE;
+            case L1 -> L1_PLACE;
+            case L2 -> L2_PLACE;
+            case L3, REEF_ALGAE_TOSS -> L3_PLACE;
+            case L4 -> L4_PLACE;
+            case NET_PREP -> NET_PLACE;
             case PROCESSOR -> PROCESSOR_PLACE;
             default -> CORAL_DUMP;
         };
