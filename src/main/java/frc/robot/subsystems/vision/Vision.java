@@ -95,7 +95,7 @@ public class Vision extends SubsystemBase {
                 Logger.recordOutput("Subsystems/Vision/ClosestReefTag", reefTag);
                 camera.setUsedTags(new int[] { reefTag });
             } else {
-                camera.setUsedTags(FieldConstants.VALID_TAGS);
+                camera.setUsedTags(FieldConstants.REEF_TAGS);
             }
         }
 
@@ -163,13 +163,13 @@ public class Vision extends SubsystemBase {
             xyStds = 0.001;
             radStds = 0.002;
         } else if (camerasToUpdate.size() > 0) {
-            // Multiple targets detected
             if (tagCount > 1 || tagArea > 1.0) {
+                // Multiple targets or one huge target (like reef tag)
                 // Trust the vision even MORE
                 xyStds = Math.hypot(0.002, 0.003);
                 radStds = Units.degreesToRadians(2);
             }
-            // 1 target with large area and close to estimated roxose
+            // 1 target with large area
             else if (tagArea > 0.14) {
                 xyStds = Math.hypot(0.015, 0.033);
                 radStds = Units.degreesToRadians(7);

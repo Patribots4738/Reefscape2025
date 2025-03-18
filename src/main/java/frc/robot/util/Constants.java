@@ -607,7 +607,7 @@ public final class Constants {
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
-        public static final double L1_POSITION_METERS = 0.0;
+        public static final double L1_POSITION_METERS = 0.1;
         // public static final double L2_POSITION_METERS = 0.09;
         // public static final double L3_POSITION_METERS = 0.27;
         public static final double L2_POSITION_METERS = 0.05;
@@ -680,7 +680,9 @@ public final class Constants {
         public static final double DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double INTAKE_POSITION_RADIANS = -0.3;
-        public static final double L1_POSITION_RADIANS = -0.45;
+        public static final double DUMP_POSITION_RADIANS = -0.45;
+        public static final double L1_POSITION_RADIANS = 1.8;
+        public static final double L1_PLACE_POSITION_RADIANS = 2.75;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
@@ -793,7 +795,7 @@ public final class Constants {
             CALIBRATION
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
 
     }
 
@@ -1087,8 +1089,8 @@ public final class Constants {
 
         public static final double NEAR_REEF_METERS = 1.4; 
 
-        // D:
-        public static final int[] VALID_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 }; // D:
+        public static final int[] ALL_TAGS = new int[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 };
+        public static final int[] REEF_TAGS = new int[] { 6,7,8,9,10,11,17,18,19,20,21,22 };
 
 
         public static final double CORAL_RADIUS_METERS = 0.0507745;

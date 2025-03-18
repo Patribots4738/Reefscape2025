@@ -471,11 +471,7 @@ public class Alignment {
     }
 
     public Command reefFullAlignmentCommand() {
-        return Commands.sequence(
-            // Commands.runOnce(() -> this.alignmentMode = AlignmentMode.REEF_PREP),
-            // pathfindToReefCommand().onlyIf(this::shouldPathfindToReef).until(() -> !shouldPathfindToReef()),
-            reefAlignmentCommand()
-        );
+        return reefAlignmentCommand();
     }
 
     public AlignmentMode getAlignmentMode() {
