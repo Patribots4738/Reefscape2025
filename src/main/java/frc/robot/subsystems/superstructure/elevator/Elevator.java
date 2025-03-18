@@ -147,7 +147,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public boolean atPosition(double position) {
-        return MathUtil.isNear(position, inputs.leaderPositionMeters, ElevatorConstants.DEADBAND_METERS);
+        return MathUtil.isNear(position, inputs.leaderPositionMeters, ElevatorConstants.DEADBAND_METERS) || MathUtil.isNear(position, inputs.followerPositionMeters, ElevatorConstants.DEADBAND_METERS);
     }
 
     public boolean atTargetPosition() {
