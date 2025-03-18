@@ -28,4 +28,20 @@ public class SuperState {
         this(key, armState, climbState, clawState, () -> false, () -> false);
     }
 
+    public SuperState(String key, ArmState armState, ClawState clawState, BooleanSupplier coralInterruptSupplier, BooleanSupplier algaeInterruptSupplier) {
+        this(key, armState, ClimbState.STOW, clawState, coralInterruptSupplier, algaeInterruptSupplier);
+    }
+
+    public SuperState(String key, ArmState armState, ClawState clawState) {
+        this(key, armState, clawState, () -> false, () -> false);
+    }
+
+    public SuperState(String key, ArmState armState) {
+        this(key, armState, ClawState.DEFAULT);
+    }
+
+    public SuperState(String key, ArmState armState, ClimbState climbState) {
+        this(key, armState, climbState, ClawState.DEFAULT);
+    }
+
 }

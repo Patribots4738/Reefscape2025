@@ -530,7 +530,7 @@ public final class Constants {
         public static final double INTAKE_PERCENT = 0.4;
         public static final double HOLD_PERCENT = 0.3;
         public static final double OUTTAKE_PERCENT = -0.75;
-        public static final double L1_OUTTAKE_PERCENT = -0.2;
+        public static final double L1_OUTTAKE_PERCENT = -0.1;
 
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 

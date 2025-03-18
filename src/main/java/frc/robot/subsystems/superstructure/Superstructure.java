@@ -110,64 +110,64 @@ public class Superstructure {
 
         this.robotPoseSupplier = robotPoseSupplier;
 
-        STOW = new SuperState("STOW", ArmState.STOW, ClimbState.STOW, ClawState.DEFAULT);
+        STOW = new SuperState("STOW", ArmState.STOW);
 
         targetState = STOW;
         targetArmState = ArmState.STOW;
         targetClimbState = ClimbState.STOW;
 
-        READY_STOW = new SuperState("READY_STOW", ArmState.INTAKE, ClimbState.STOW, ClawState.DEFAULT);
-        INTAKE = new SuperState("INTAKE", ArmState.INTAKE, ClimbState.STOW, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
-        CORAL_DUMP = new SuperState("CORAL_DUMP", ArmState.CORAL_DUMP, ClimbState.STOW, ClawState.CORAL_OUT);
+        READY_STOW = new SuperState("READY_STOW", ArmState.INTAKE);
+        INTAKE = new SuperState("INTAKE", ArmState.INTAKE, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
+        CORAL_DUMP = new SuperState("CORAL_DUMP", ArmState.CORAL_DUMP, ClawState.CORAL_OUT);
 
-        L1_PREP = new SuperState("L1_PREP", ArmState.L1_PREP, ClimbState.STOW, ClawState.DEFAULT);
-        L2_PREP = new SuperState("L2_PREP", ArmState.L2_PREP, ClimbState.STOW, ClawState.DEFAULT);
-        L3_PREP = new SuperState("L3_PREP", ArmState.L3_PREP, ClimbState.STOW, ClawState.DEFAULT);
-        L4_PREP = new SuperState("L4_PREP", ArmState.L4_PREP, ClimbState.STOW, ClawState.DEFAULT);
+        L1_PREP = new SuperState("L1_PREP", ArmState.L1_PREP);
+        L2_PREP = new SuperState("L2_PREP", ArmState.L2_PREP);
+        L3_PREP = new SuperState("L3_PREP", ArmState.L3_PREP);
+        L4_PREP = new SuperState("L4_PREP", ArmState.L4_PREP);
 
         currentPrepState = L4_PREP;
 
-        L1 = new SuperState("L1", ArmState.L1, ClimbState.STOW, ClawState.DEFAULT);
-        L2 = new SuperState("L2", ArmState.L2, ClimbState.STOW, ClawState.DEFAULT);
-        L3 = new SuperState("L3", ArmState.L3, ClimbState.STOW, ClawState.DEFAULT);
-        L4 = new SuperState("L4", ArmState.L4, ClimbState.STOW, ClawState.DEFAULT);
+        L1 = new SuperState("L1", ArmState.L1);
+        L2 = new SuperState("L2", ArmState.L2);
+        L3 = new SuperState("L3", ArmState.L3);
+        L4 = new SuperState("L4", ArmState.L4);
 
-        L1_PLACE = new LoggedSuperState("L1_PLACE", ArmState.L1, ClimbState.STOW, ClawState.L1_CORAL_OUT, () -> wrist.getPosition() > ArmState.L1.wristPosition || wrist.atPosition(ArmState.L1.wristPosition), () -> false);
-        L2_PLACE = new SuperState("L2_PLACE", ArmState.L2, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
-        L3_PLACE = new SuperState("L3_PLACE", ArmState.L3, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
-        L4_PLACE = new SuperState("L4_PLACE", ArmState.L4, ClimbState.STOW, ClawState.CORAL_OUT, this::armAtTargetPosition, () -> false);
+        L1_PLACE = new SuperState("L1_PLACE", ArmState.L1, ClawState.L1_CORAL_OUT, () -> wrist.getPosition() > ArmState.L1.wristPosition || wrist.atPosition(ArmState.L1.wristPosition), () -> false);
+        L2_PLACE = new SuperState("L2_PLACE", ArmState.L2, ClawState.CORAL_OUT);
+        L3_PLACE = new SuperState("L3_PLACE", ArmState.L3, ClawState.CORAL_OUT);
+        L4_PLACE = new SuperState("L4_PLACE", ArmState.L4, ClawState.CORAL_OUT);
 
-        L1_CONFIRM = new LoggedSuperState("L1_CONFIRM", ArmState.L1_PLACE, ClimbState.STOW, ClawState.CORAL_OUT, () -> true, () -> false);
+        L1_CONFIRM = new SuperState("L1_CONFIRM", ArmState.L1_PLACE, ClawState.CORAL_OUT, () -> true, () -> false);
+    
+        L1_EXIT = new SuperState("L1_EXIT", ArmState.L1_EXIT);
+        L2_EXIT = new SuperState("L2_EXIT", ArmState.L2_EXIT);
+        L3_EXIT = new SuperState("L3_EXIT", ArmState.L3_EXIT);
+        L4_EXIT = new SuperState("L4_EXIT", ArmState.L4_EXIT);
 
-        L1_EXIT = new SuperState("L1_EXIT", ArmState.L1_EXIT, ClimbState.STOW, ClawState.DEFAULT);
-        L2_EXIT = new SuperState("L2_EXIT", ArmState.L2_EXIT, ClimbState.STOW, ClawState.DEFAULT);
-        L3_EXIT = new SuperState("L3_EXIT", ArmState.L3_EXIT, ClimbState.STOW, ClawState.DEFAULT);
-        L4_EXIT = new SuperState("L4_EXIT", ArmState.L4_EXIT, ClimbState.STOW, ClawState.DEFAULT);
+        L2_ALGAE_EXIT = new SuperState("L2_ALGAE_EXIT", ArmState.L2_ALGAE_EXIT, ClawState.ALGAE_IN);
+        L3_ALGAE_EXIT = new SuperState("L3_ALGAE_EXIT", ArmState.L3_ALGAE_EXIT, ClawState.ALGAE_IN);
+        L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClawState.ALGAE_IN);
+        L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClawState.ALGAE_IN);
+        TREE_ALGAE_IN = new SuperState("TREE_ALGAE_IN", ArmState.PROCESSOR, ClawState.ALGAE_IN);
+        ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.ALGAE_CARRY, ClawState.ALGAE_IN, () -> false, () -> true);
 
-        L2_ALGAE_EXIT = new SuperState("L2_ALGAE_EXIT", ArmState.L2_ALGAE_EXIT, ClimbState.STOW, ClawState.ALGAE_IN);
-        L3_ALGAE_EXIT = new SuperState("L3_ALGAE_EXIT", ArmState.L3_ALGAE_EXIT, ClimbState.STOW, ClawState.ALGAE_IN);
-        L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
-        L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClimbState.STOW, ClawState.ALGAE_IN);
-        TREE_ALGAE_IN = new SuperState("TREE_ALGAE_IN", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_IN);
-        ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.ALGAE_CARRY, ClimbState.STOW, ClawState.ALGAE_IN, () -> false, () -> true);
+        PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClawState.DEFAULT);
+        PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClawState.ALGAE_OUT);
+        PROCESSOR_EXIT = new SuperState("PROCESSOR_EXIT", ArmState.PROCESSOR, ClawState.DEFAULT);
 
-        PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClimbState.STOW, ClawState.DEFAULT);
-        PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClimbState.STOW, ClawState.ALGAE_OUT);
-        PROCESSOR_EXIT = new SuperState("PROCESSOR_EXIT", ArmState.PROCESSOR, ClimbState.STOW, ClawState.DEFAULT);
+        CLIMB_READY = new SuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY);
+        CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL);
 
-        CLIMB_READY = new SuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY, ClawState.DEFAULT);
-        CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL, ClawState.DEFAULT);
+        NET_PREP = new SuperState("NET_PREP", ArmState.NET_PREP);
+        NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClawState.ALGAE_OUT, () -> false, () -> wrist.getPosition() > 1.5);
+        NET_PREP_FLICK = new SuperState("NET_PREP_FLICK", ArmState.NET_PREP_FLICK);
+        NET_PLACE_FLICK = new SuperState("NET_PLACE_FLICK", ArmState.NET, ClawState.ALGAE_OUT, () -> false, () -> true);
+        NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT);
 
-        NET_PREP = new SuperState("NET_PREP", ArmState.NET_PREP, ClimbState.STOW, ClawState.DEFAULT);
-        NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, () -> false, () -> wrist.getPosition() > 1.5);
-        NET_PREP_FLICK = new SuperState("NET_PREP_FLICK", ArmState.NET_PREP_FLICK, ClimbState.STOW, ClawState.DEFAULT);
-        NET_PLACE_FLICK = new SuperState("NET_PLACE_FLICK", ArmState.NET, ClimbState.STOW, ClawState.ALGAE_OUT, () -> false, () -> true);
-        NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT, ClimbState.STOW, ClawState.DEFAULT);
-
-        PREP_ALGAE_TOSS = new SuperState("PREP_ALGAE_TOSS", ArmState.PREP_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_IN, () -> false, () -> true);
-        BACK_ALGAE_TOSS = new SuperState("BACK_ALGAE_TOSS", ArmState.BACK_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
-        FRONT_ALGAE_TOSS = new SuperState("FRONT_ALGAE_TOSS", ArmState.FRONT_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
-        REEF_ALGAE_TOSS = new SuperState("REEF_ALGAE_TOSS", ArmState.REEF_ALGAE_TOSS, ClimbState.STOW, ClawState.ALGAE_OUT);
+        PREP_ALGAE_TOSS = new SuperState("PREP_ALGAE_TOSS", ArmState.PREP_ALGAE_TOSS, ClawState.ALGAE_IN, () -> false, () -> true);
+        BACK_ALGAE_TOSS = new SuperState("BACK_ALGAE_TOSS", ArmState.BACK_ALGAE_TOSS, ClawState.ALGAE_OUT);
+        FRONT_ALGAE_TOSS = new SuperState("FRONT_ALGAE_TOSS", ArmState.FRONT_ALGAE_TOSS, ClawState.ALGAE_OUT);
+        REEF_ALGAE_TOSS = new SuperState("REEF_ALGAE_TOSS", ArmState.REEF_ALGAE_TOSS, ClawState.ALGAE_OUT);
 
     }
 

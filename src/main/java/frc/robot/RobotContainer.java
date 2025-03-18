@@ -424,7 +424,7 @@ public class RobotContainer {
             .onTrue(superstructure.placeCommand(controller::getRightTrigger));
 
         controller.leftTrigger()
-            .onTrue(superstructure.tossAlgaeCommand());
+            .onTrue(superstructure.coralIntakeCommand(controller::getLeftTrigger));
 
     }
     
