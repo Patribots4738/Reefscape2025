@@ -388,6 +388,10 @@ public class Swerve extends SubsystemBase {
         desiredHDCPose = pose;
     }
 
+    public Pose2d getDesiredPose() {
+        return desiredHDCPose;
+    }
+
     public ChassisSpeeds getRobotRelativeVelocity() {
         return speeds;
     }

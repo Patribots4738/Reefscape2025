@@ -141,10 +141,9 @@ public class Alignment {
     }
 
     public ChassisSpeeds getProfiledAutoSpeeds(Pose2d position) {
-        swerve.setDesiredPose(position);
         Pose2d currentPose = swerve.getPose();
-        if (targetXY.position == 0) {
-            // First run of alignment, set up profile
+        if (targetXY.position == 0 || !swerve.getDesiredPose().equals(position)) {
+            // First run of alignment or change of target pose, set up profile
             xySetpoint.position = 0;
             double distanceToTarget = currentPose.getTranslation().getDistance(position.getTranslation());
             targetXY.position = distanceToTarget;
@@ -165,6 +164,7 @@ public class Alignment {
             Logger.recordOutput("Subsystems/Swerve/SetpointStartVelocity", xySetpoint.velocity);
             profileStartingPose = currentPose;
         }
+        swerve.setDesiredPose(position);
         position = getProfiledPosition(currentPose, position);
         Logger.recordOutput("Subsystems/Swerve/StepPosition", position);
         return AutoConstants.TELE_HDC.calculate(swerve.getPose(), position, 0, position.getRotation());
