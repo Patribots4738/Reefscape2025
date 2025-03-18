@@ -302,7 +302,6 @@ public final class Constants {
         public static final double CAGE_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double NET_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double PROCESSER_ALIGNMENT_MULTIPLIER = 0.5;
-
     }
 
     public static final class MAXSwerveModuleConstants {

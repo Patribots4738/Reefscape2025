@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.drive.Drive;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.subsystems.superstructure.Superstructure.ArmState;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClawIOKraken;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
@@ -74,6 +75,7 @@ public class RobotContainer {
     private final Climb climb;
     private final Superstructure superstructure;
     private final Alignment alignment;
+
 
     public static Field2d field2d = new Field2d();
 
@@ -308,7 +310,15 @@ public class RobotContainer {
             .whileTrue(alignment.reefFullAlignmentCommand());
 
         controller.b()
-            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX));
+            .whileTrue(alignment.netAlignmentCommand(controller::getLeftX))
+            .onTrue(
+                Commands.either(
+                    superstructure.setSuperState(superstructure.NET_PREP), 
+                    superstructure.setSuperState(superstructure.NET_PREP_FLICK), 
+                    () -> PoseCalculations.facingNet(swerve.getPose()))
+                .onlyIf(() -> superstructure.getTargetArmState() == ArmState.NET_PREP || superstructure.getTargetArmState() == ArmState.NET_PREP_FLICK)
+
+            );
 
         controller.x()
             .whileTrue(alignment.intakeAlignmentCommand());
@@ -368,7 +378,12 @@ public class RobotContainer {
             .toggleOnTrue(superstructure.algaeRemovalCommand());
 
         controller.y()
-            .onTrue(superstructure.setSuperState(superstructure.NET_PREP));
+            .onTrue(
+                Commands.either(
+                    superstructure.setSuperState(superstructure.NET_PREP), 
+                    superstructure.setSuperState(superstructure.NET_PREP_FLICK), 
+                    () -> PoseCalculations.facingNet(swerve.getPose()))
+            );
 
         controller.start().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
         controller.back().onTrue(coralClaw.setPercentCommand(CoralClawConstants.INTAKE_PERCENT));

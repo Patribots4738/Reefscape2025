@@ -36,6 +36,7 @@ public class Alignment {
     @AutoLogOutput (key = "Subsystems/Swerve/AlignmentIndex")
     private int alignmentIndex = -1;
 
+
     private TrapezoidProfile xyProfile = new TrapezoidProfile(new Constraints(AutoConstants.HDC_XY_VELOCITY, AutoConstants.HDC_XY_ACCELERATION));
 
     private State xySetpoint = new State(0, 0);
@@ -245,7 +246,7 @@ public class Alignment {
         double y = isRedAlliance
             ? MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT / 2)
             : MathUtil.clamp(swerve.getPose().getY(), FieldConstants.FIELD_MAX_HEIGHT / 2, FieldConstants.FIELD_MAX_HEIGHT);
-        double theta = Robot.isRedAlliance() ? Math.PI : 0;
+        double theta = PoseCalculations.getNetRotationNumber(swerve.getPose());
         Pose2d desiredPose = new Pose2d(
             x,
             y,
@@ -450,8 +451,10 @@ public class Alignment {
                 AlignmentMode.NET, 
                 this::getNetAutoSpeeds, 
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
+
                 true
             );
+            
     }
 
     public Command reefAlignmentCommand() {

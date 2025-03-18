@@ -401,12 +401,13 @@ public class Superstructure {
             case L2, L2_PREP, L2_EXIT -> L2_PLACE;
             case L3, L3_PREP, L3_EXIT, REEF_ALGAE_TOSS -> L3_PLACE;
             case L4, L4_PREP, L4_EXIT -> L4_PLACE;
-            case NET, NET_PREP, NET_EXIT, NET_PREP_FLICK -> NET_PLACE;
+            case NET, NET_PREP, NET_EXIT -> NET_PLACE;
+            case NET_PREP_FLICK -> NET_PLACE_FLICK;
             case PROCESSOR -> PROCESSOR_PLACE;
             default -> CORAL_DUMP;
         };
 
-        if (placementState != NET_PLACE && placementState != PROCESSOR_PLACE) {
+        if (placementState != NET_PLACE && placementState != PROCESSOR_PLACE && placementState != NET_PLACE_FLICK) {
             currentPrepState = getPrepState(placementState);
         }
 
