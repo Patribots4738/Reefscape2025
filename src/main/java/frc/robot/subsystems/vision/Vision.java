@@ -115,24 +115,13 @@ public class Vision extends SubsystemBase {
                 camerasToUpdate.add(i);
                 // Find "true" ta, td and tag count based on tags we want to filter
                 // This should remove any comp surprises with tags we aren't expecting
-                double cameraAverageTA = 0;
-                double cameraAverageTD = 0;
-                int cameraTagCount = 0;
                 for (int j = 0; j < inputs[i].tagIds.length; j++) {
-                    if (FieldConstants.VALID_TAGS_LIST.contains(inputs[i].tagIds[i])) {
-                        cameraTagCount++;
-                        cameraAverageTA += inputs[i].tagAreas[i];
-                        cameraAverageTD += inputs[i].tagDistances[i];
+                    if (FieldConstants.VALID_TAGS_LIST.contains(inputs[i].tagIds[j])) {
+                        tagCount++;
+                        tagArea += inputs[i].tagAreas[j];
+                        tagDistance += inputs[i].tagDistances[j];
                     }
                 }
-                // Take mean
-                if (cameraTagCount > 0) {
-                    cameraAverageTA /= cameraTagCount;
-                    cameraAverageTD /= cameraTagCount;
-                }
-                tagCount += cameraTagCount;
-                tagArea += cameraAverageTA;
-                tagDistance += cameraAverageTD;
             }
         }
         // Take mean
