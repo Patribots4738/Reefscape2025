@@ -12,9 +12,9 @@ public interface VisionIO {
         public Pose2d robotPose = Pose2d.kZero;
         public boolean robotPoseValid = false;
         public double timestampSeconds = 0.0;
-        public double averageTA = 0.0;
-        public double averageTD = 0.0;
         public int[] tagIds = new int[0];
+        public double[] tagAreas = new double[0];
+        public double[] tagDistances = new double[0];
 
     }
 

@@ -105,6 +105,7 @@ public class Vision extends SubsystemBase {
     private void updatePoseEstimator() {
         int tagCount = 0;
         double tagArea = 0;
+        double tagDistance = 0;
 
         List<Integer> camerasToUpdate = new ArrayList<>();
         for (int i = 0; i < cameras.length; i++) {
@@ -112,49 +113,40 @@ public class Vision extends SubsystemBase {
             Logger.recordOutput("Subsystems/Vision/UpdateCamera" + i, updateCamera);
             if (updateCamera) {
                 camerasToUpdate.add(i);
-                tagCount += inputs[i].tagIds.length;
-                tagArea = (tagArea * (camerasToUpdate.size() - 1) + inputs[i].averageTA) / camerasToUpdate.size();
+                // Find "true" ta, td and tag count based on tags we want to filter
+                // This should remove any comp surprises with tags we aren't expecting
+                double cameraAverageTA = 0;
+                double cameraAverageTD = 0;
+                int cameraTagCount = 0;
+                for (int j = 0; j < inputs[i].tagIds.length; j++) {
+                    if (FieldConstants.VALID_TAGS_LIST.contains(inputs[i].tagIds[i])) {
+                        cameraTagCount++;
+                        cameraAverageTA += inputs[i].tagAreas[i];
+                        cameraAverageTD += inputs[i].tagDistances[i];
+                    }
+                }
+                // Take mean
+                if (cameraTagCount > 0) {
+                    cameraAverageTA /= cameraTagCount;
+                    cameraAverageTD /= cameraTagCount;
+                }
+                tagCount += cameraTagCount;
+                tagArea += cameraAverageTA;
+                tagDistance += cameraAverageTD;
             }
+        }
+        // Take mean
+        if (tagCount > 0) {
+            tagArea /= tagCount;
+            tagDistance /= tagCount;
         }
 
         Logger.recordOutput("Subsystems/Vision/TagCount", tagCount);
         Logger.recordOutput("Subsystems/Vision/TagArea", tagArea);
+        Logger.recordOutput("Subsystems/Vision/TagDistance", tagDistance);
 
         double xyStds = 0.0;
         double radStds = 0.0;
-
-        // if ((Robot.gameMode == GameMode.DISABLED || 
-        //     Robot.gameMode == GameMode.AUTONOMOUS
-        //         && Robot.currentTimestamp - RobotContainer.gameModeStart < 1.75)
-        //         && camerasToUpdate.size() > 0) {
-        //     xyStds = 0.001;
-        //     radStds = 0.002;
-        // } else if (camerasToUpdate.size() > 0) {
-        //     // Multiple targets detected
-        //     if (tagCount > 1) {
-        //         if (Robot.gameMode == GameMode.TELEOP) {
-        //             // Trust the vision even MORE
-        //             if (tagCount > 2) {
-        //                 xyStds = Math.hypot(0.002, 0.003);
-        //             } else {
-        //                 // We can only see two tags, (still trustable)
-        //                 xyStds = Math.hypot(0.005, 0.008);
-        //             }
-        //         } else {
-        //             xyStds = Math.hypot(0.014, 0.016);
-        //         }
-        //         radStds = Units.degreesToRadians(2);
-        //     }
-        //     // 1 target with large area and close to estimated roxose
-        //     else if (tagArea > 0.14) {
-        //         xyStds = Math.hypot(0.015, 0.033);
-        //         radStds = Units.degreesToRadians(7);
-        //     }
-        //     // Conditions don't match to add a vision measurement
-        //     else {
-        //         return;
-        //     }
-        // }
 
         if ((Robot.gameMode == GameMode.DISABLED || 
             Robot.gameMode == GameMode.AUTONOMOUS
@@ -198,7 +190,8 @@ public class Vision extends SubsystemBase {
             || Double.isNaN(inputs[cameraIndex].robotPose.getY()) 
             || Double.isNaN(inputs[cameraIndex].robotPose.getRotation().getRadians())
             || inputs[cameraIndex].robotPose.equals(Pose2d.kZero)
-            || (shouldUseMT1() && inputs[cameraIndex].tagIds.length == 1 && inputs[cameraIndex].averageTA < 0.17))
+            // || (shouldUseMT1() && inputs[cameraIndex].tagIds.length == 1 && inputs[cameraIndex].averageTA < 0.17)
+        )
         {
             return false;
         }

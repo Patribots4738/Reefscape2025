@@ -15,14 +15,16 @@ public class VisionIOLimelight implements VisionIO {
         camera.refreshPoseEstimate();
         inputs.robotPoseValid = camera.hasValidPoseEstimate();
         inputs.robotPose = camera.getRobotPose();
-        inputs.averageTA = camera.getAverageTA();
-        inputs.averageTD = camera.getAverageTD();
         inputs.timestampSeconds = camera.getTimestamp();
-        RawFiducial[] rawFrontFiducials = camera.getRawFiducials();
-        inputs.tagIds = new int[rawFrontFiducials.length];
-        for (int i = 0; i < rawFrontFiducials.length; i++) {
-            RawFiducial fid = rawFrontFiducials[i];
+        RawFiducial[] rawFiducials = camera.getRawFiducials();
+        inputs.tagIds = new int[rawFiducials.length];
+        inputs.tagAreas = new double[rawFiducials.length];
+        inputs.tagDistances = new double[rawFiducials.length];
+        for (int i = 0; i < rawFiducials.length; i++) {
+            RawFiducial fid = rawFiducials[i];
             inputs.tagIds[i] = fid.id;
+            inputs.tagAreas[i] = fid.ta;
+            inputs.tagDistances[i] = fid.distToRobot;
         }
     }
 
