@@ -293,6 +293,8 @@ public final class Constants {
         public static final String[] AUTO_NAMES = new String[] {
             "3P Right",
             "3P Left",
+            "Removal 3P Right",
+            "Removal 3P Left",
             "Buddy 3P Left",
             "Net Left",
             "Net Right"

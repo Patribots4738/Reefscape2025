@@ -466,6 +466,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("PlaceNet", superstructure.netPlaceCommandAuto());
         NamedCommands.registerCommand("AlgaeIntakeStart", superstructure.algaeRemovalCommand());
         NamedCommands.registerCommand("AlgaeIntakeStop", superstructure.setSuperState(superstructure.ALGAE_CARRY));
+        NamedCommands.registerCommand("TossAlgae", superstructure.tossAlgaeCommand());
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.READY_STOW));
         
         for (int i = 0; i < 12; i++) {
