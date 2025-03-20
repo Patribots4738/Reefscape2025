@@ -453,10 +453,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.280273;
-        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081299;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.152344;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.28076171875;
+        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283203;
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081543;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.151123;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -552,7 +552,7 @@ public final class Constants {
         public static final int CAN_ID = 14;
 
         public static final boolean BRAKE_MOTOR = true;
-        public static final double CURRENT_LIMIT = 80.0;
+        public static final double CURRENT_LIMIT = 60.0;
 
         public static final boolean MOTOR_INVERTED = false;
 
@@ -583,7 +583,7 @@ public final class Constants {
 
         public static final double P = FieldConstants.IS_REAL ? 400d : 800d;
         public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D = FieldConstants.IS_REAL ? 30d : 200d;
+        public static final double D = FieldConstants.IS_REAL ? 27d : 200d;
         public static final double A = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double S = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
@@ -618,7 +618,7 @@ public final class Constants {
         public static final double L3_POSITION_REMOVE_ALGAE = 0.13;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.0;
         public static final double PROCESSOR_METERS = 0;
-        public static final double NET_PREP_METERS = 0.5;
+        public static final double NET_PREP_METERS = 0.54;
         public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double DEADBAND_METERS = 0.02;
@@ -631,7 +631,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 5.738;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.674;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -682,7 +682,7 @@ public final class Constants {
         public static final double VELOCITY_DEADBAND_RADIANS = 0.1;
         public static final double POSITION_DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.3;
+        public static final double INTAKE_POSITION_RADIANS = -0.35;
         public static final double DUMP_POSITION_RADIANS = -0.45;
         public static final double L1_POSITION_RADIANS = 1.8;
         public static final double L1_PLACE_POSITION_RADIANS = 2.75;
@@ -691,7 +691,7 @@ public final class Constants {
         // public static final double L4_POSITION_RADIANS = 2.32;
         public static final double L2_POSITION_RADIANS = 2.5;
         public static final double L3_POSITION_RADIANS = 2.5;
-        public static final double L4_POSITION_RADIANS = 2.4;
+        public static final double L4_POSITION_RADIANS = 2.35;
         public static final double L2_ALGAE_REMOVAL = 0.8;
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
@@ -807,7 +807,7 @@ public final class Constants {
         public static final int ENABLED_THROTTLE = 0; // Process every frame
         public static final int DISABLED_THROTTLE = 30; // Process 1 of every 80 frames
 
-        public static Pose3d LL3G_POSE = new Pose3d(
+        public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
             -0.120619,
             0.197874,

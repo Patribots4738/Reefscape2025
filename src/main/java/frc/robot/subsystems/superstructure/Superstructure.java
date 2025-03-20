@@ -118,7 +118,7 @@ public class Superstructure {
 
         READY_STOW = new SuperState("READY_STOW", ArmState.INTAKE);
         INTAKE = new SuperState("INTAKE", ArmState.INTAKE, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
-        CORAL_DUMP = new SuperState("CORAL_DUMP", ArmState.CORAL_DUMP, ClawState.CORAL_OUT);
+        CORAL_DUMP = new SuperState("CORAL_DUMP", ArmState.CORAL_DUMP, ClawState.L1_CORAL_OUT);
 
         L1_PREP = new SuperState("L1_PREP", ArmState.L1_PREP);
         L2_PREP = new SuperState("L2_PREP", ArmState.L2_PREP);
@@ -137,7 +137,7 @@ public class Superstructure {
         L3_PLACE = new SuperState("L3_PLACE", ArmState.L3, ClawState.CORAL_OUT);
         L4_PLACE = new SuperState("L4_PLACE", ArmState.L4, ClawState.CORAL_OUT);
 
-        L1_CONFIRM = new SuperState("L1_CONFIRM", ArmState.L1_PLACE, ClawState.CORAL_OUT, () -> true, () -> false);
+        L1_CONFIRM = new SuperState("L1_CONFIRM", ArmState.L1_PLACE, ClawState.L1_CORAL_OUT, () -> true, () -> false);
     
         L1_EXIT = new SuperState("L1_EXIT", ArmState.L1_EXIT);
         L2_EXIT = new SuperState("L2_EXIT", ArmState.L2_EXIT);
@@ -452,7 +452,7 @@ public class Superstructure {
         return Commands.sequence(
             outtakeCommand(),
             Commands.sequence(
-                Commands.waitSeconds(0.1),
+                Commands.waitSeconds(0.06),
                 setSuperState(L1_CONFIRM)
             ).onlyIf(() -> targetArmState == ArmState.L1),
             Commands.waitUntil(() -> 

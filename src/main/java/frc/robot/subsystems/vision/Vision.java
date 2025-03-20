@@ -112,21 +112,10 @@ public class Vision extends SubsystemBase {
             boolean cameraHasTarget = cameraHasTarget(i);
             Logger.recordOutput("Subsystems/Vision/Camera" + i + "HasTarget", cameraHasTarget);
             if (cameraHasTarget) {
-                boolean shouldUpdate = false;
-                // Find "true" ta, td and tag count based on tags we want to filter
-                // This should remove any comp surprises with tags we aren't expecting
-                for (int j = 0; j < inputs[i].tagIds.length; j++) {
-                    if (FieldConstants.VALID_TAGS_LIST.contains(inputs[i].tagIds[j])) {
-                        shouldUpdate = true;
-                        tagCount++;
-                        tagArea += inputs[i].tagAreas[j];
-                        tagDistance += inputs[i].tagDistances[j];
-                    }
-                }
-                // If we found a valid tag in the visible fiducials, use this camera to update pe
-                if (shouldUpdate) {
-                    camerasToUpdate.add(i);
-                }
+                camerasToUpdate.add(i);
+                tagCount += inputs[i].tagIds.length;
+                tagArea += inputs[i].tagArea / 100d;
+                tagDistance += inputs[i].tagDistance;
             }
         }
         // Take mean

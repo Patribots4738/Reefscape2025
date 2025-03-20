@@ -13,8 +13,8 @@ public interface VisionIO {
         public boolean robotPoseValid = false;
         public double timestampSeconds = 0.0;
         public int[] tagIds = new int[0];
-        public double[] tagAreas = new double[0];
-        public double[] tagDistances = new double[0];
+        public double tagArea = 0;
+        public double tagDistance = 0;
 
     }
 
