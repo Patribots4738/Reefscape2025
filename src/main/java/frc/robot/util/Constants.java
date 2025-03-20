@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.DEVBOT;
+        private static RobotType robotType = RobotType.COMPBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {

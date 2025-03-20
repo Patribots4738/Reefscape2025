@@ -34,8 +34,8 @@ public class AlgaeClaw extends SubsystemBase {
     
     public AlgaeClaw(ClawIO io) {
         this.io = io;
-        hasPieceDebouncerRising = new Debouncer(0.05, DebounceType.kRising);
-        hasPieceDebouncerFalling = new Debouncer(0.05, DebounceType.kFalling);
+        hasPieceDebouncerRising = new Debouncer(0.1, DebounceType.kRising);
+        hasPieceDebouncerFalling = new Debouncer(0.1, DebounceType.kFalling);
     }
 
     @Override
