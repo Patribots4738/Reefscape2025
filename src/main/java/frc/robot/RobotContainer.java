@@ -237,8 +237,11 @@ public class RobotContainer {
 
     private void configureMiscTriggers() {
         new Trigger(() -> alignment.getAlignmentMode() != AlignmentMode.NONE && swerve.atHDCPose())
-            .whileTrue(Commands.run(() -> driver.setRumble(0.1))
+            .whileTrue(Commands.run(() -> driver.setRumble(0.2))
                 .finallyDo(() -> driver.setRumble(0)));
+
+        new Trigger(() -> coralClaw.hasPiece() || algaeClaw.hasPiece())
+            .onTrue(Commands.parallel(driver.setRumble(() -> 0.2, 0.25), operator.setRumble(() -> 0.2, 0.25)));
 
         if (FieldConstants.IS_SIMULATION) {
             new Trigger(coralClaw::hasPiece)
