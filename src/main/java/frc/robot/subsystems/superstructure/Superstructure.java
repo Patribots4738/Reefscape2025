@@ -185,7 +185,7 @@ public class Superstructure {
         L3 (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
         L4 (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS),
         L1_PLACE (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
-        L1_EXIT (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_POSITION_RADIANS),
+        L1_EXIT (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
         L2_EXIT (ElevatorConstants.L2_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
         L3_EXIT (ElevatorConstants.L3_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
         L4_EXIT (ElevatorConstants.L4_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
@@ -427,6 +427,7 @@ public class Superstructure {
         // Derive next state based on current arm target
         SuperState exitState = switch (targetState.armState) {
             case L1 -> L1_EXIT;
+            case L1_PLACE -> L1_EXIT;
             case L2 -> L2_EXIT;
             case L3 -> L3_EXIT;
             case L4 -> L4_EXIT;
