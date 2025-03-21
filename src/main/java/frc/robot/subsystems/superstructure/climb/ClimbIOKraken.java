@@ -10,7 +10,7 @@ public class ClimbIOKraken implements ClimbIO {
     private final Kraken motor;
 
     public ClimbIOKraken() {
-        motor = new Kraken(ClimbConstants.CAN_ID, true, false, ControlPreference.MM_TORQUE_CURRENT);
+        motor = new Kraken(ClimbConstants.CAN_ID, true, false, ControlPreference.TORQUE_CURRENT);
         
         configMotor();
     }

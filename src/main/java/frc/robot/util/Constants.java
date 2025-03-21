@@ -296,8 +296,7 @@ public final class Constants {
             "Removal 3P Right",
             "Removal 3P Left",
             "Buddy 3P Left",
-            "Net Left",
-            "Net Right"
+            "Net Mid"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
@@ -543,7 +542,7 @@ public final class Constants {
         public static final double HAS_PIECE_INTAKE_THRESHOLD = 5d;
 
         public static final double HAS_PIECE_OUTTAKE_THRESHOLD_1 = 30d;
-        public static final double HAS_PIECE_OUTTAKE_THRESHOLD_2 = 7d;
+        public static final double HAS_PIECE_OUTTAKE_THRESHOLD_2 = 15d;
 
     }
 
@@ -737,7 +736,7 @@ public final class Constants {
         public static final double A_FAST = FieldConstants.IS_REAL ? 1d : 0d;
         public static final double S_FAST = FieldConstants.IS_REAL ? 0d : 0d; 
         public static final double V_FAST = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double G_FAST = FieldConstants.IS_REAL ? -50d : 0d;
+        public static final double G_FAST = FieldConstants.IS_REAL ? -60d : 0d;
 
         public static final double VELOCITY = Math.PI;
         public static final double ACCELERATION = 20d;
@@ -767,12 +766,12 @@ public final class Constants {
         // public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 2.5;
-        public static final double FINAL_POSITION_RADIANS = 0.7;
+        public static final double READY_POSITION_RADIANS = 2.762;
+        public static final double FINAL_POSITION_RADIANS = 0.5;
 
         public static final double Y_CHASSIS_OFFSET = 0.0508;
 
-        public static final double DEADBAND_RADIANS = Units.degreesToRadians(3.0);
+        public static final double DEADBAND_RADIANS = Units.degreesToRadians(10.0);
 
     }
 
@@ -812,9 +811,9 @@ public final class Constants {
             -0.120619,
             0.197874,
             new Rotation3d(
-                Units.degreesToRadians(-2.303), 
-                Units.degreesToRadians(-15), 
-                Units.degreesToRadians(-141.83)
+                Units.degreesToRadians(0), // -2.303 
+                Units.degreesToRadians(15), 
+                Units.degreesToRadians(-141.77)
             )
         );
 
@@ -823,9 +822,9 @@ public final class Constants {
             0.120619,
             0.197874,
             new Rotation3d(
-                Units.degreesToRadians(2.303),
-                Units.degreesToRadians(-15),
-                Units.degreesToRadians(141.83)
+                Units.degreesToRadians(0), // 2.303
+                Units.degreesToRadians(15),
+                Units.degreesToRadians(141.77)
             )
         );
 

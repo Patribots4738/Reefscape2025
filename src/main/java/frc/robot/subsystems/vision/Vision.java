@@ -116,7 +116,7 @@ public class Vision extends SubsystemBase {
                 tagArea = (tagArea * (camerasToUpdate.size() - 1) + inputs[i].averageTA) / camerasToUpdate.size();
             }
         }
-
+        
         Logger.recordOutput("Subsystems/Vision/TagCount", tagCount);
         Logger.recordOutput("Subsystems/Vision/TagArea", tagArea);
 
