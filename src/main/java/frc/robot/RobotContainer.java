@@ -436,6 +436,10 @@ public class RobotContainer {
 
         controller.a().onTrue(vision.toggleMT1Command().ignoringDisable(true));
 
+        controller.y().onTrue(vision.toggleEnabledThrottleCommand().ignoringDisable(true));
+
+        controller.b().onTrue(vision.toggleDisableFour().ignoringDisable(true));
+
     }
 
     public Command getAutonomousCommand() {

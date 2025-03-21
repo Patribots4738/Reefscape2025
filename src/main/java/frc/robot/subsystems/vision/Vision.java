@@ -32,7 +32,12 @@ public class Vision extends SubsystemBase {
 
     private final VisionIOInputsAutoLogged[] inputs;
     private final VisionIO[] cameras;
+    @AutoLogOutput (key = "Subsystems/Vision/Calibration/MT1Override")
     private boolean useMT1Override = false;
+    @AutoLogOutput (key = "Subsystems/Vision/Calibration/EnabledThrottle")
+    private boolean enabledThrottleOverride = false;
+    @AutoLogOutput (key = "Subsystems/Vision/Calibration/DisableFour")
+    private boolean disableFour = false;
 
     // private final LoggedTunableNumber xyStdsDisabled = new LoggedTunableNumber("Vision/xyStdsDisabled", 0.001);
     // private final LoggedTunableNumber radStdsDisabled = new LoggedTunableNumber("Vision/RadStdsDisabled", 0.002);
@@ -73,7 +78,7 @@ public class Vision extends SubsystemBase {
         for (int i = 0; i < cameras.length; i++) {
             VisionIO camera = cameras[i];
 
-            if (Robot.gameMode == GameMode.DISABLED && !DriverStation.isFMSAttached()) {
+            if ((Robot.gameMode == GameMode.DISABLED && !DriverStation.isFMSAttached() && OIConstants.DRIVER_MODE != DriverMode.CALIBRATION) || (OIConstants.DRIVER_MODE == DriverMode.CALIBRATION && (!enabledThrottleOverride || disableFour && i == 0))) {
                 // If robot is disabled, only process some frames
                 // This should minimize overheating issues with the LL4
                 camera.setThrottle(CameraConstants.DISABLED_THROTTLE);
@@ -211,6 +216,14 @@ public class Vision extends SubsystemBase {
 
     public Command toggleMT1Command() {
         return runOnce(() -> this.useMT1Override = !this.useMT1Override);
+    }
+
+    public Command toggleEnabledThrottleCommand() {
+        return runOnce(() -> this.enabledThrottleOverride = !this.enabledThrottleOverride);
+    }
+
+    public Command toggleDisableFour() {
+        return runOnce(() -> this.disableFour = !this.disableFour);
     }
 
     @AutoLogOutput (key = "Subsystems/Vision/MT1")
