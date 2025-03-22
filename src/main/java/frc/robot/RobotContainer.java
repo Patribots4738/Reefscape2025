@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.superstructure.Superstructure;
@@ -183,10 +184,10 @@ public class RobotContainer {
             Logger.recordOutput("PathPlanner/TargetPose", pose);
         });
 
-        // pathPlannerStorage.getAutoChooser().addOption("WheelRadiusCharacterization",
-        //     swerve.setWheelsOCommand()
-        //     .andThen(Commands.waitSeconds(0.5))
-        //     .andThen(new WheelRadiusCharacterization(swerve)));
+        pathPlannerStorage.getAutoChooser().addOption("WheelRadiusCharacterization",
+            swerve.setWheelsOCommand()
+            .andThen(Commands.waitSeconds(0.5))
+            .andThen(new WheelRadiusCharacterization(swerve)));
         // pathPlannerStorage.getAutoChooser().addOption("DriveFFCharacterization",
         //     new StaticCharacterization(
         //         swerve, 
