@@ -1,0 +1,91 @@
+{
+    "name": "Hugo (Opaque)",
+    "rotations": [
+        {
+            "axis": "x", 
+            "degrees": 90
+        },
+        {
+            "axis": "z", 
+            "degrees": 90
+        }
+    ],
+    "position": [
+        0,
+        0,
+        0
+    ],
+    "cameras": [
+        
+    ],
+    "components": [
+        {
+            "zeroedRotations": [
+                {
+                    "axis": "x", 
+                    "degrees": 90
+                },
+                {
+                    "axis": "z", 
+                    "degrees": 90
+                }
+            ],
+            "zeroedPosition": [
+                -0.056,
+                -0.241,
+                -0.2735
+            ]
+        },
+        {
+            "zeroedRotations": [
+                {
+                    "axis": "x", 
+                    "degrees": 90
+                },
+                {
+                    "axis": "z", 
+                    "degrees": 90
+                }
+            ],
+            "zeroedPosition": [
+                0.0054708171,
+                0.0070311264,
+                0.0
+            ]
+        },
+        {
+            "zeroedRotations": [
+                {
+                    "axis": "x", 
+                    "degrees": 90
+                },
+                {
+                    "axis": "z", 
+                    "degrees": 90
+                }
+            ],
+            "zeroedPosition": [
+                0.0054708171,
+                0.0070311264,
+                0.0
+            ]
+        },
+        {
+            "zeroedRotations": [
+                {
+                    "axis": "x", 
+                    "degrees": 90
+                },
+                {
+                    "axis": "z", 
+                    "degrees": 90
+                }
+            ],
+            "zeroedPosition": [
+                0.166,
+                -0.007,
+                -0.7836464896
+            ]
+        }
+    ]
+}
