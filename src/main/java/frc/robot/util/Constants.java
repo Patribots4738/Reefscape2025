@@ -720,9 +720,9 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
-        public static final double MAX_ANGLE_RADIANS = 2.5;
+        public static final double MAX_ANGLE_RADIANS = 2.814;
 
-        public static final double P_SLOW = FieldConstants.IS_REAL ? 100d : 1000d; // Chef Cushman
+        public static final double P_SLOW = FieldConstants.IS_REAL ? 120d : 1000d; // Chef Cushman
         public static final double I_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double D_SLOW = FieldConstants.IS_REAL ? 40d : 500d;
         public static final double A_SLOW = FieldConstants.IS_REAL ? 1d : 0d;
@@ -730,7 +730,7 @@ public final class Constants {
         public static final double V_SLOW = FieldConstants.IS_REAL ? 0d : 0d; 
         public static final double G_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
 
-        public static final double P_FAST = FieldConstants.IS_REAL ? 100d : 1000d;
+        public static final double P_FAST = FieldConstants.IS_REAL ? 120d : 1000d;
         public static final double I_FAST = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double D_FAST = FieldConstants.IS_REAL ? 40d : 500d;
         public static final double A_FAST = FieldConstants.IS_REAL ? 1d : 0d;
@@ -766,8 +766,8 @@ public final class Constants {
         // public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 2.762;
-        public static final double FINAL_POSITION_RADIANS = 0.2;
+        public static final double READY_POSITION_RADIANS = 2.814;
+        public static final double FINAL_POSITION_RADIANS = 0.814;
 
         public static final double Y_CHASSIS_OFFSET = 0.0508;
 
