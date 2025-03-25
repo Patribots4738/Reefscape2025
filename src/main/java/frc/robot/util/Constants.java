@@ -465,7 +465,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8679838332104803 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9187114863955308 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -608,16 +608,16 @@ public final class Constants {
 
         public static final double STOW_POSITION_METERS = 0.0;
         public static final double INTAKE_POSITION_METERS = 0.0;
-        public static final double L1_POSITION_METERS = 0.1;
+        public static final double L1_POSITION_METERS = 0.0;
         // public static final double L2_POSITION_METERS = 0.09;
         // public static final double L3_POSITION_METERS = 0.27;
-        public static final double L2_POSITION_METERS = 0.05;
+        public static final double L2_POSITION_METERS = 0.03;
         public static final double L3_POSITION_METERS = 0.23;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
         public static final double L3_POSITION_REMOVE_ALGAE = 0.13;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.0;
         public static final double PROCESSOR_METERS = 0;
-        public static final double NET_PREP_METERS = 0.54;
+        public static final double NET_PREP_METERS = 0.52;
         public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double DEADBAND_METERS = 0.02;
@@ -630,7 +630,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.674;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.643;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -683,7 +683,7 @@ public final class Constants {
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double INTAKE_POSITION_RADIANS = -0.35;
         public static final double DUMP_POSITION_RADIANS = -0.45;
-        public static final double L1_POSITION_RADIANS = 1.8;
+        public static final double L1_POSITION_RADIANS = 1.95;
         public static final double L1_PLACE_POSITION_RADIANS = 2.75;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
@@ -720,9 +720,9 @@ public final class Constants {
         public static final boolean BRAKE_MOTOR = true;
 
         public static final double MIN_ANGLE_RADIANS = 0.0;
-        public static final double MAX_ANGLE_RADIANS = 2.5;
+        public static final double MAX_ANGLE_RADIANS = 2.814;
 
-        public static final double P_SLOW = FieldConstants.IS_REAL ? 100d : 1000d; // Chef Cushman
+        public static final double P_SLOW = FieldConstants.IS_REAL ? 120d : 1000d; // Chef Cushman
         public static final double I_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double D_SLOW = FieldConstants.IS_REAL ? 40d : 500d;
         public static final double A_SLOW = FieldConstants.IS_REAL ? 1d : 0d;
@@ -730,13 +730,13 @@ public final class Constants {
         public static final double V_SLOW = FieldConstants.IS_REAL ? 0d : 0d; 
         public static final double G_SLOW = FieldConstants.IS_REAL ? 0d : 0d;
 
-        public static final double P_FAST = FieldConstants.IS_REAL ? 100d : 1000d;
+        public static final double P_FAST = FieldConstants.IS_REAL ? 120d : 1000d;
         public static final double I_FAST = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double D_FAST = FieldConstants.IS_REAL ? 40d : 500d;
         public static final double A_FAST = FieldConstants.IS_REAL ? 1d : 0d;
         public static final double S_FAST = FieldConstants.IS_REAL ? 0d : 0d; 
         public static final double V_FAST = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double G_FAST = FieldConstants.IS_REAL ? -60d : 0d;
+        public static final double G_FAST = FieldConstants.IS_REAL ? -70d : 0d;
 
         public static final double VELOCITY = Math.PI;
         public static final double ACCELERATION = 20d;
@@ -766,8 +766,8 @@ public final class Constants {
         // public static final LoggedGainConstants LOGGED_FAST_GAINS = new LoggedGainConstants(ClimbConstants.FAST_GAINS, "Climb/FastGains");
         
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double READY_POSITION_RADIANS = 2.762;
-        public static final double FINAL_POSITION_RADIANS = 0.5;
+        public static final double READY_POSITION_RADIANS = 2.814;
+        public static final double FINAL_POSITION_RADIANS = 0.814;
 
         public static final double Y_CHASSIS_OFFSET = 0.0508;
 
