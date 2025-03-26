@@ -82,7 +82,6 @@ public class AlgaeClaw extends SubsystemBase {
     }
     
     public boolean hasPiece() {
-        return (LoggingConstants.getMode() != Mode.REPLAY && !FieldConstants.IS_REAL) ? percentOutput > 0 : hasPiece;
+        return (LoggingConstants.getMode() != Mode.REPLAY && FieldConstants.IS_SIMULATION) ? percentOutput > 0 : hasPiece;
     }
 }
-

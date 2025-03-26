@@ -138,8 +138,12 @@ public class PoseCalculations {
     }
 
     public static Pose3d getClosestAlgaeRemovalNode(Pose3d pos) {
+        return getClosestAlgaeRemovalNode(pos, true);
+    }
+
+    public static Pose3d getClosestAlgaeRemovalNode(Pose3d pos, boolean removeNode) {
         Pose3d nearestPose = nearestPose3d(pos, FieldConstants.ALGAE_REMOVAL_LOCATIONS_LIST);
-        FieldConstants.ALGAE_REMOVAL_LOCATIONS_LIST.remove(nearestPose);
+        if (removeNode) FieldConstants.ALGAE_REMOVAL_LOCATIONS_LIST.remove(nearestPose);
         return nearestPose;
     }
 
