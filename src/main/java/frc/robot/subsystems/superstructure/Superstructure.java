@@ -152,7 +152,7 @@ public class Superstructure {
         ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.ALGAE_CARRY, ClawState.ALGAE_IN, () -> false, () -> true);
 
         PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClawState.DEFAULT);
-        PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClawState.ALGAE_OUT);
+        PROCESSOR_PLACE = new SuperState("PROCESSOR_PLACE", ArmState.PROCESSOR, ClawState.PROCESSOR_ALGAE_OUT);
         PROCESSOR_EXIT = new SuperState("PROCESSOR_EXIT", ArmState.PROCESSOR, ClawState.DEFAULT);
 
         CLIMB_READY = new SuperState("CLIMB_READY", ArmState.CLIMB, ClimbState.READY);
@@ -186,7 +186,7 @@ public class Superstructure {
         L4 (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS),
         L1_PLACE (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
         L1_EXIT (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
-        L2_EXIT (ElevatorConstants.L2_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
+        L2_EXIT (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS),
         L3_EXIT (ElevatorConstants.L3_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
         L4_EXIT (ElevatorConstants.L4_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
@@ -238,6 +238,7 @@ public class Superstructure {
         L1_CORAL_OUT (CoralClawConstants.L1_OUTTAKE_PERCENT, 0),
         ALGAE_IN (0, AlgaeClawConstants.INTAKE_PERCENT),
         ALGAE_OUT (0, AlgaeClawConstants.OUTTAKE_PERCENT),
+        PROCESSOR_ALGAE_OUT (0, AlgaeClawConstants.PROCESSOR_OUTTAKE_PERCENT),
         BOTH_IN (CoralClawConstants.INTAKE_PERCENT, AlgaeClawConstants.INTAKE_PERCENT),
         BOTH_OUT (CoralClawConstants.OUTTAKE_PERCENT, AlgaeClawConstants.INTAKE_PERCENT);
 
