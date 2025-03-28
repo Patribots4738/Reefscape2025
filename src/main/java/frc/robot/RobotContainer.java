@@ -351,16 +351,16 @@ public class RobotContainer {
             .onTrue(superstructure.algaeTreeCommand());
 
         controller.povLeft()
-            .onTrue(superstructure.setSuperState(superstructure.L1));
+            .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L1));
         
         controller.povDown()
-            .onTrue(superstructure.setSuperState(superstructure.L2));
+            .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L2));
 
         controller.povRight()
-            .onTrue(superstructure.setSuperState(superstructure.L3));
+            .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L3));
 
         controller.povUp()
-            .onTrue(superstructure.setSuperState(superstructure.L4));
+            .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L4));
         
         controller.b()
             .onTrue(superstructure.setSuperState(superstructure.STOW));

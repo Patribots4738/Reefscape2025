@@ -11,6 +11,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
@@ -148,7 +149,7 @@ public class Superstructure {
         L3_ALGAE_EXIT = new SuperState("L3_ALGAE_EXIT", ArmState.L3_ALGAE_EXIT, ClawState.ALGAE_IN);
         L2_ALGAE_IN = new SuperState("L2_ALGAE_IN", ArmState.L2_ALGAE, ClawState.ALGAE_IN);
         L3_ALGAE_IN = new SuperState("L3_ALGAE_IN", ArmState.L3_ALGAE, ClawState.ALGAE_IN);
-        TREE_ALGAE_IN = new SuperState("TREE_ALGAE_IN", ArmState.PROCESSOR, ClawState.ALGAE_IN);
+        TREE_ALGAE_IN = new SuperState("TREE_ALGAE_IN", ArmState.GROUND_ALGAE_IN, ClawState.ALGAE_IN);
         ALGAE_CARRY = new SuperState("ALGAE_CARRY", ArmState.ALGAE_CARRY, ClawState.ALGAE_IN, () -> false, () -> true);
 
         PROCESSOR_PREP = new SuperState("PROCESSOR_PREP", ArmState.PROCESSOR, ClawState.DEFAULT);
@@ -196,6 +197,7 @@ public class Superstructure {
         L3_ALGAE_EXIT (ElevatorConstants.L3_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS),
         ALGAE_CARRY(ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L3_POSITION_RADIANS - 0.2),
         PROCESSOR (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
+        GROUND_ALGAE_IN (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
         NET_PREP (ElevatorConstants.NET_PREP_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET_PREP_FLICK (ElevatorConstants.NET_PLACE_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET (ElevatorConstants.NET_PLACE_METERS, WristConstants.NET_RADIANS),
@@ -501,6 +503,13 @@ public class Superstructure {
             outtakeCommand(),
             Commands.waitUntil(() -> !algaeClaw.hasPiece()),
             stopOuttakeCommand()
+        );
+    }
+
+    public Command setSuperStateFromRemovalCommand(SuperState state) {
+        return Commands.sequence(
+            Commands.waitUntil(algaeClaw::hasPiece).onlyIf(() -> targetState.clawState.algaePercent > 0),
+            new ScheduleCommand(setSuperState(state))
         );
     }
 
