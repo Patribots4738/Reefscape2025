@@ -696,7 +696,7 @@ public final class Constants {
         public static final double L3_ALGAE_REMOVAL = 1.2;
         public static final double BACK_ALGAE_TOSS = 0;
         public static final double FRONT_ALGAE_TOSS = 2.0;
-        public static final double PROCESSOR_RADIANS = -0.7;
+        public static final double PROCESSOR_RADIANS = -0.75;
 
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
@@ -712,7 +712,7 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double GEAR_RATIO = 268.8;
+        public static final double GEAR_RATIO = 422.4;
 
         public static final double POSITION_CONVERSION_FACTOR = 2.0 * Math.PI;
         public static final double VELOCITY_CONVERSION_FACTOR = 2.0 * Math.PI;
@@ -737,7 +737,7 @@ public final class Constants {
         public static final double A_FAST = FieldConstants.IS_REAL ? 1d : 0d;
         public static final double S_FAST = FieldConstants.IS_REAL ? 0d : 0d; 
         public static final double V_FAST = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double G_FAST = FieldConstants.IS_REAL ? -70d : 0d;
+        public static final double G_FAST = FieldConstants.IS_REAL ? -30d : 0d;
 
         public static final double VELOCITY = Math.PI;
         public static final double ACCELERATION = 20d;

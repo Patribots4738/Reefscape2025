@@ -454,7 +454,7 @@ public class Superstructure {
         return Commands.sequence(
             outtakeCommand(),
             Commands.sequence(
-                Commands.waitSeconds(0.5),
+                Commands.waitSeconds(0.25),
                 setSuperState(L1_CONFIRM)
             ).onlyIf(() -> targetArmState == ArmState.L1),
             Commands.waitUntil(() -> 
