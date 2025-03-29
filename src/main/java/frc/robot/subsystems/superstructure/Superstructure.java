@@ -188,7 +188,7 @@ public class Superstructure {
         L1_PLACE (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
         L1_EXIT (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
         L2_EXIT (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS),
-        L3_EXIT (ElevatorConstants.L3_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
+        L3_EXIT (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
         L4_EXIT (ElevatorConstants.L4_POSITION_METERS, WristConstants.MAX_ANGLE_RADIANS),
         CLIMB (ElevatorConstants.STOW_POSITION_METERS, WristConstants.CLIMB_RADIANS),
         L2_ALGAE (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L2_ALGAE_REMOVAL),
@@ -456,7 +456,7 @@ public class Superstructure {
         return Commands.sequence(
             outtakeCommand(),
             Commands.sequence(
-                Commands.waitSeconds(0.25),
+                Commands.waitSeconds(0.15),
                 setSuperState(L1_CONFIRM)
             ).onlyIf(() -> targetArmState == ArmState.L1),
             Commands.waitUntil(() -> 
