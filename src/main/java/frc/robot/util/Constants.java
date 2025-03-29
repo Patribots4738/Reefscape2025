@@ -901,6 +901,13 @@ public final class Constants {
 
     }
 
+    public static final class CANdleConstants {
+
+        public static final int CANDLE_CAN_ID = 28;
+        public static final int LED_COUNT = 100;
+
+    }
+
     public static final class GeneralHardwareConstants {
         public static final boolean SAFE_HARDWARE_MODE = false;
         public static final double TIMEOUT_SECONDS = 1.0;
