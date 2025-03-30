@@ -71,7 +71,16 @@ public class CANRangeCustom extends CANrange {
     }
 
     /**
-     * Restores the factory defaults of the Pigeon2.
+     * Returns whether the object is detected as a boolean
+     * 
+     * @return whether the object is detected as a boolean
+     */
+    public boolean getIsDetectedAsBoolean() {
+        return isDetected.getValue();
+    }
+
+    /**
+     * Restores the factory defaults of the CANRange.
      * 
      * @return The status code indicating the result of the operation.
      */
@@ -83,7 +92,7 @@ public class CANRangeCustom extends CANrange {
     }
 
     /**
-     * Applies a parameter to the CANCoder device and returns the status code.
+     * Applies a parameter to the CANRange device and returns the status code.
      *
      * @param configApplication the supplier function that applies the parameter configuration
      * @param name the name of the parameter
@@ -105,7 +114,7 @@ public class CANRangeCustom extends CANrange {
     }
 
     /**
-     * Applies the specified signal frequency to the given status signals for the Pigeon2Custom device.
+     * Applies the specified signal frequency to the given status signals for the CANRange device.
      *
      * @param frequency The signal frequency to be applied.
      * @param signals The status signals to which the frequency should be applied.
