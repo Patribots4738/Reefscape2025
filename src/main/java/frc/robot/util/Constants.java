@@ -539,7 +539,7 @@ public final class Constants {
 
         public static final double CORAL_CLAW_CURRENT_DEADBAND = 15d;
 
-        public static final double HAS_PIECE_INTAKE_THRESHOLD = 5d;
+        public static final double HAS_PIECE_INTAKE_THRESHOLD = 10d;
 
         public static final double HAS_PIECE_OUTTAKE_THRESHOLD_1 = 30d;
         public static final double HAS_PIECE_OUTTAKE_THRESHOLD_2 = 15d;
@@ -612,13 +612,15 @@ public final class Constants {
         public static final double L1_POSITION_METERS = 0.0;
         // public static final double L2_POSITION_METERS = 0.09;
         // public static final double L3_POSITION_METERS = 0.27;
-        public static final double L2_POSITION_METERS = 0.03;
+        public static final double L2_POSITION_METERS = 0.015;
         public static final double L3_POSITION_METERS = 0.22;
+        public static final double L2_WITH_ALGAE_METERS = 0.06;
+        public static final double L3_WITH_ALGAE_METERS = 0.25;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
-        public static final double L3_POSITION_REMOVE_ALGAE = 0.13;
+        public static final double L3_POSITION_REMOVE_ALGAE = 0.12;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.0;
         public static final double PROCESSOR_METERS = 0;
-        public static final double NET_PREP_METERS = 0.52;
+        public static final double NET_PREP_METERS = 0.54;
         public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double DEADBAND_METERS = 0.02;
@@ -631,7 +633,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.656;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.668;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -682,18 +684,20 @@ public final class Constants {
         public static final double VELOCITY_DEADBAND_RADIANS = 0.1;
         public static final double POSITION_DEADBAND_RADIANS = 0.06;
         public static final double STOW_POSITION_RADIANS = 0.0;
-        public static final double INTAKE_POSITION_RADIANS = -0.686;
-        public static final double DUMP_POSITION_RADIANS = -0.6995;
+        public static final double INTAKE_POSITION_RADIANS = -0.594;
+        public static final double DUMP_POSITION_RADIANS = -0.6;
         public static final double L1_POSITION_RADIANS = 1.95;
-        public static final double L1_PLACE_POSITION_RADIANS = 2.75;
+        public static final double L1_PLACE_POSITION_RADIANS = 2.6;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
         public static final double L2_POSITION_RADIANS = 2.5;
         public static final double L3_POSITION_RADIANS = 2.5;
-        public static final double L4_POSITION_RADIANS = 2.35;
+        public static final double L2_WITH_ALGAE_RADIANS = 2.35;
+        public static final double L3_WITH_ALGAE_RADIANS = 2.35;
+        public static final double L4_POSITION_RADIANS = 2.25;
         public static final double L2_ALGAE_REMOVAL = 0.8;
-        public static final double L3_ALGAE_REMOVAL = 1.2;
+        public static final double L3_ALGAE_REMOVAL = 1.3;
         public static final double BACK_ALGAE_TOSS = 0;
         public static final double FRONT_ALGAE_TOSS = 2.0;
         public static final double PROCESSOR_RADIANS = -0.75;
@@ -701,7 +705,8 @@ public final class Constants {
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
-        public static final double NET_RADIANS = 1.7;
+        public static final double NET_PREP_RADIANS = 1.35;
+        public static final double NET_RADIANS = 2.0;
         public static final double NET_FLICK_RADIANS = 2.0;
     }
 

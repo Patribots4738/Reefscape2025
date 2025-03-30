@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
@@ -354,10 +355,22 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L1));
         
         controller.povDown()
-            .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L2));
+            .onTrue(
+                Commands.either(
+                    superstructure.setSuperStateFromRemovalCommand(superstructure.L2_WITH_ALGAE),
+                    new ScheduleCommand(superstructure.setSuperState(superstructure.L2)),
+                    () -> superstructure.getTargetClawState().algaePercent > 0
+                )
+            );
 
         controller.povRight()
-            .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L3));
+        .onTrue(
+            Commands.either(
+                superstructure.setSuperStateFromRemovalCommand(superstructure.L3_WITH_ALGAE),
+                new ScheduleCommand(superstructure.setSuperState(superstructure.L3)),
+                () -> superstructure.getTargetClawState().algaePercent > 0
+            )
+        );
 
         controller.povUp()
             .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L4));
