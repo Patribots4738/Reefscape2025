@@ -239,13 +239,14 @@ public class Alignment {
 
     public ChassisSpeeds getNetAutoSpeeds() {
         boolean isRedAlliance = Robot.isRedAlliance();
-        double x = isRedAlliance 
+        boolean onRedSide = PoseCalculations.isOnRedSide(swerve.getPose());
+        double x = onRedSide 
             ? FieldConstants.FIELD_MAX_LENGTH / 2 + AlgaeClawConstants.NET_X_CHASSIS_OFFSET
             : FieldConstants.FIELD_MAX_LENGTH / 2 - AlgaeClawConstants.NET_X_CHASSIS_OFFSET;
         double y = isRedAlliance
             ? MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT / 2)
             : MathUtil.clamp(swerve.getPose().getY(), FieldConstants.FIELD_MAX_HEIGHT / 2, FieldConstants.FIELD_MAX_HEIGHT);
-        double theta = Robot.isRedAlliance() ? Math.PI : 0;
+        double theta = onRedSide ? Math.PI : 0;
         Pose2d desiredPose = new Pose2d(
             x,
             y,
