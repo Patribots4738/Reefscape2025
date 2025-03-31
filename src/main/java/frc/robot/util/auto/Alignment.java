@@ -237,7 +237,7 @@ public class Alignment {
         return getAutoSpeeds(desiredPose);
     }
 
-    public ChassisSpeeds getNetAutoSpeeds() {
+    public Pose2d getNetAutoPose() {
         boolean isRedAlliance = Robot.isRedAlliance();
         boolean onRedSide = PoseCalculations.isOnRedSide(swerve.getPose());
         double x = onRedSide 
@@ -252,7 +252,23 @@ public class Alignment {
             y,
             Rotation2d.fromRadians(theta)
         );
-        return getAutoSpeeds(desiredPose);
+        return desiredPose;
+    }
+
+    public ChassisSpeeds getNetAutoSpeeds() {
+        return getAutoSpeeds(getNetAutoPose());
+    }
+
+    public ChassisSpeeds getNetProfiledAutoSpeeds() {
+        Pose2d netAutoPose = getNetAutoPose();
+        Pose2d desiredPose;
+        if (alignmentIndex == -1) {
+            desiredPose = netAutoPose;
+            alignmentIndex = 0;
+        } else {
+            desiredPose = swerve.getDesiredPose();
+        }
+        return getProfiledAutoSpeeds(desiredPose);
     }
 
     public ChassisSpeeds getProcessorAutoSpeeds() {
@@ -443,8 +459,16 @@ public class Alignment {
     public Command pathfindToPoseCommand(Supplier<Pose2d> pos) {
         return Commands.defer(() -> AutoBuilder.pathfindToPose(pos.get(), AutoConstants.prepReefConstraints, 0.0), Set.of(swerve));
     }
+
+    public Command netInitialAlignmentCommand() {
+        return autoAlignmentCommand(
+            AlignmentMode.NET, 
+            this::getNetProfiledAutoSpeeds,
+            true
+        );
+    }
   
-    public Command netAlignmentCommand(DoubleSupplier driverX) {
+    public Command netFinalAlignmentCommand(DoubleSupplier driverX) {
         return
             autoAlignmentCommand(
                 AlignmentMode.NET, 
@@ -452,6 +476,10 @@ public class Alignment {
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
                 true
             );
+    }
+
+    public Command netAlignmentCommand(DoubleSupplier driverX) {
+        return netInitialAlignmentCommand().until(() -> swerve.getPose().getTranslation().getDistance(swerve.getDesiredPose().getTranslation()) < 0.5).andThen(netFinalAlignmentCommand(driverX));
     }
 
     public Command reefAlignmentCommand() {
