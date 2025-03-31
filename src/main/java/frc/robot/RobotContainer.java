@@ -482,6 +482,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL3", superstructure.setSuperState(superstructure.L3));
         NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommandAuto());
+        NamedCommands.registerCommand("ExitCoral", superstructure.stopOuttakeCommand());
         NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(coralClaw::hasPiece));
         NamedCommands.registerCommand("PrepareNet", superstructure.setSuperState(superstructure.NET_PREP));
         NamedCommands.registerCommand("PlaceNet", superstructure.netPlaceCommandAuto());

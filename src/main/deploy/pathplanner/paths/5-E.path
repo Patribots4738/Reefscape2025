@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.148469387755102,
-        "y": 2.3199936224489783
+        "x": 5.765505378269487,
+        "y": 2.891590650684272
       },
       "isLocked": false,
       "linkedName": "5"
@@ -20,8 +20,8 @@
         "y": 2.812468112244898
       },
       "prevControl": {
-        "x": 5.417219387755102,
-        "y": 1.9543686224489787
+        "x": 6.249512722874968,
+        "y": 2.9088998167995617
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,10 +32,10 @@
   "constraintZones": [
     {
       "name": "SlowPlace",
-      "minWaypointRelativePos": 0.2634228187919464,
+      "minWaypointRelativePos": 0.5366568914956014,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.3,
+        "maxVelocity": 1.5,
         "maxAcceleration": 4.5,
         "maxAngularVelocity": 200.0,
         "maxAngularAcceleration": 360.0,
@@ -47,8 +47,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.35,
-    "maxAcceleration": 4.1,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 270.0,
     "maxAngularAcceleration": 450.0,
     "nominalVoltage": 12.0,
@@ -62,7 +62,7 @@
   "folder": "Starting",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -19.089195193000958
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

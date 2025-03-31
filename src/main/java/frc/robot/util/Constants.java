@@ -291,7 +291,7 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "3P Right",
+            "4P Right",
             "3P Left",
             "Removal 3P Right",
             "Removal 3P Left",
@@ -581,9 +581,9 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        public static final double P = FieldConstants.IS_REAL ? 400d : 800d;
+        public static final double P = FieldConstants.IS_REAL ? 400d : 1500;
         public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D = FieldConstants.IS_REAL ? 27d : 200d;
+        public static final double D = FieldConstants.IS_REAL ? 27d : 300;
         public static final double A = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double S = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
@@ -640,9 +640,9 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = FieldConstants.IS_REAL ? 1500d : 5000d;
+        public static final double P = FieldConstants.IS_REAL ? 1500d : 12000;
         public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D = FieldConstants.IS_REAL ? 100d : 500d;
+        public static final double D = FieldConstants.IS_REAL ? 100d : 2300;
         public static final double A = FieldConstants.IS_REAL ? 3d : 0d;
         public static final double S = FieldConstants.IS_REAL ? 1.5052 : 0d;
         public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
@@ -661,9 +661,9 @@ public final class Constants {
         // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
         public static final double FAST_VELOCITY = 11d;
-        public static final double FAST_ACCELERATION = FieldConstants.IS_REAL ? 90d : 15d;
+        public static final double FAST_ACCELERATION = 90d;
         public static final double SLOW_VELOCITY = 5d;
-        public static final double SLOW_ACCELERATION = FieldConstants.IS_REAL ? 10d : 15d;
+        public static final double SLOW_ACCELERATION = 10d;
         public static final double JERK = 900d;
 
         public static final double GEAR_RATIO = 60.0;
