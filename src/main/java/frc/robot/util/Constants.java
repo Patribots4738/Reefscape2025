@@ -291,6 +291,7 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
+            "4P Right DRIVING",
             "4P Right HOME",
             "4P Right COMP",
             "3P Left",
