@@ -70,7 +70,7 @@ public class PathPlannerStorage {
                         NamedCommands.getCommand("Align" + reefNode)
                     ),
                     Commands.sequence(
-                        Commands.waitSeconds(0.0),
+                        NamedCommands.getCommand("WaitUntilShouldRaise"),
                         NamedCommands.getCommand("Coral" + reefLevel)
                     )
                 ),
@@ -82,6 +82,7 @@ public class PathPlannerStorage {
                     ),
                     Commands.sequence(
                         NamedCommands.getCommand("ExitCoral"),
+                        NamedCommands.getCommand("WaitUntilShouldLower"),
                         NamedCommands.getCommand("CoralIntakeStart")
                     )   
                 )
