@@ -74,6 +74,7 @@ public class PathPlannerStorage {
                     //     NamedCommands.getCommand("Coral" + reefLevel)
                     // )
                 ),
+                Commands.waitSeconds(0.1),
                 // NamedCommands.getCommand("PlaceCoral"),
                 Commands.parallel(
                     Commands.sequence(

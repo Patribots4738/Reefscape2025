@@ -44,6 +44,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
