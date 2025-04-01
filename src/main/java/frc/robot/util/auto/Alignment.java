@@ -393,6 +393,14 @@ public class Alignment {
             });
     }
 
+    public Command profiledAutoAlignmentCommand(AlignmentMode mode, Supplier<Pose2d> desiredPose) {
+        return autoAlignmentCommand(mode, () -> getProfiledAutoSpeeds(desiredPose.get()), true);
+    }
+
+    public Command autonomousReefAutoAlignmentCommand(Supplier<ReefSide> side, boolean alignLeft) {
+        return profiledAutoAlignmentCommand(AlignmentMode.REEF, () -> PoseCalculations.getPoseWithDistance(alignLeft ? side.get().getLeft() : side.get().getRight(), DriveConstants.FULL_ROBOT_LENGTH_METERS / 2)).until(() -> swerve.atHDCPose());
+    }
+
     public Command intakeRotationalAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
         return autoAlignmentCommand(
             AlignmentMode.INTAKE_SOFT, 

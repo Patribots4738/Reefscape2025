@@ -9,9 +9,35 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "5-F"
+                  "commands": [
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "5-F"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "WaitUntilShouldAlign"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "AlignF"
+                      }
+                    }
+                  ]
                 }
               },
               {

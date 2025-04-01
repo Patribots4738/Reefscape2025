@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.708184590366862,
-        "y": 1.4498434138349374
+        "x": 3.025419045728195,
+        "y": 2.2652718744433638
       },
       "isLocked": false,
       "linkedName": "CS2"
@@ -20,8 +20,8 @@
         "y": 2.9732020547945206
       },
       "prevControl": {
-        "x": 3.298086734693878,
-        "y": 2.1856823979591833
+        "x": 3.4761353550059324,
+        "y": 2.7459329788126254
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,7 +35,7 @@
       "minWaypointRelativePos": 0.6744966442953011,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.5,
+        "maxVelocity": 3.0,
         "maxAcceleration": 5.0,
         "maxAngularVelocity": 180.0,
         "maxAngularAcceleration": 450.0,
