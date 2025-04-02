@@ -217,7 +217,7 @@ public final class Constants {
                 Units.degreesToRadians(450)
             );
 
-        public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
+        public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(2);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
         public static final double REEF_ALIGNMENT_MAX_SPEED = 1.0;
@@ -467,7 +467,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9187114863955308 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8924 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -697,7 +697,7 @@ public final class Constants {
         public static final double L3_POSITION_RADIANS = 2.5;
         public static final double L2_WITH_ALGAE_RADIANS = 2.35;
         public static final double L3_WITH_ALGAE_RADIANS = 2.35;
-        public static final double L4_POSITION_RADIANS = 2.25;
+        public static final double L4_POSITION_RADIANS = 2.3;
         public static final double L2_ALGAE_REMOVAL = 0.8;
         public static final double L3_ALGAE_REMOVAL = 1.3;
         public static final double BACK_ALGAE_TOSS = 0;

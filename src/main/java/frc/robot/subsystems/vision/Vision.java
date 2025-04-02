@@ -132,18 +132,18 @@ public class Vision extends SubsystemBase {
                 && Robot.currentTimestamp - RobotContainer.gameModeStart < 1.75)
                 && camerasToUpdate.size() > 0) {
             xyStds = 0.001;
-            radStds = 0.002;
+            radStds = 0.001;
         } else if (camerasToUpdate.size() > 0) {
             if (tagCount > 1 || tagArea > 4.0) {
                 // Multiple targets or one huge target (like reef tag)
                 // Trust the vision even MORE
-                xyStds = Math.hypot(0.002, 0.002);
-                radStds = 0.002;
+                xyStds = Math.hypot(0.001, 0.001);
+                radStds = 0.003;
             }
             // 1 target with large area
             else if (tagArea > 0.14) {
-                xyStds = Math.hypot(0.004, 0.005);
-                radStds = 0.001;
+                xyStds = Math.hypot(0.01, 0.009);
+                radStds = 0.004;
             }
             // Conditions don't match to add a vision measurement
             else {

@@ -78,12 +78,6 @@
         {
           "type": "named",
           "data": {
-            "name": "E4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "D4"
           }
         },
@@ -91,6 +85,12 @@
           "type": "named",
           "data": {
             "name": "C4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "E4"
           }
         }
       ]

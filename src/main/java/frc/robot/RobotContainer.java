@@ -483,7 +483,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommandAuto());
         NamedCommands.registerCommand("ExitCoral", superstructure.stopOuttakeCommand());
-        NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(coralClaw::hasPiece));
+        NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(coralClaw::hasPiece).withTimeout(0.1));
         NamedCommands.registerCommand("PrepareNet", superstructure.setSuperState(superstructure.NET_PREP));
         NamedCommands.registerCommand("PlaceNet", superstructure.netPlaceCommandAuto());
         NamedCommands.registerCommand("AlgaeIntakeStart", superstructure.algaeRemovalCommand());
@@ -492,7 +492,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.READY_STOW));
         NamedCommands.registerCommand("WaitUntilShouldAlign", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 1.6));
         NamedCommands.registerCommand("WaitUntilShouldLower", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) > FieldConstants.NEAR_REEF_METERS));
-        NamedCommands.registerCommand("WaitUntilShouldRaise", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 3.7));
+        NamedCommands.registerCommand("WaitUntilShouldRaise", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 4.0));
 
         NamedCommands.registerCommand("AlignA", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(0), true));
         NamedCommands.registerCommand("AlignB", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(0), false));
