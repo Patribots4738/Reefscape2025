@@ -62,7 +62,7 @@
   "folder": "Reef",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 118.90918365114784
+    "rotation": 120.32535497569467
   },
   "useDefaultConstraints": true
 }

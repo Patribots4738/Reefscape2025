@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.957873664380468,
-        "y": 6.122326569560654
+        "x": 2.8398544520547944,
+        "y": 6.21875
       },
       "isLocked": false,
       "linkedName": "CS1"
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "SlowPlace",
-      "minWaypointRelativePos": 0.35402684563758313,
+      "minWaypointRelativePos": 0.48,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,

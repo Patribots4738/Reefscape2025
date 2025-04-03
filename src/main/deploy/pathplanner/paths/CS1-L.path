@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5988435811121178,
+        "x": 1.6,
         "y": 7.320572648179957
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8198905373070806,
-        "y": 5.9351277095743065
+        "x": 2.961216350394732,
+        "y": 5.903210616438356
       },
       "isLocked": false,
       "linkedName": "CS1"
@@ -20,8 +20,8 @@
         "y": 5.080835459183673
       },
       "prevControl": {
-        "x": 3.5103786902767795,
-        "y": 5.290885144376338
+        "x": 3.5009845890410958,
+        "y": 5.317208904109589
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "SlowPlace",
-      "minWaypointRelativePos": 0.4244966442953023,
+      "minWaypointRelativePos": 0.46,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 118.90918365114784
+    "rotation": 120.32535497569467
   },
   "reversed": false,
   "folder": "Coral Station",
