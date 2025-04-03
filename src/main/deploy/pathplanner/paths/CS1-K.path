@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6526226423364612,
-        "y": 7.364038533944852
+        "x": 1.5744260204081633,
+        "y": 7.334279336734694
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0116527256048125,
-        "y": 6.1657924553255485
+        "x": 2.9334561036765145,
+        "y": 6.136033258115391
       },
       "isLocked": false,
       "linkedName": "CS1"
@@ -20,8 +20,8 @@
         "y": 5.230070153061224
       },
       "prevControl": {
-        "x": 3.7529373850541727,
-        "y": 5.340745639973656
+        "x": 3.760714285714286,
+        "y": 5.453922193877551
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "SlowPlace",
-      "minWaypointRelativePos": 0.4809384164222875,
+      "minWaypointRelativePos": 0.35402684563758313,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,

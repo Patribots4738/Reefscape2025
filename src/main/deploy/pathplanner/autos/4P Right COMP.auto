@@ -47,12 +47,6 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "WaitUntilShouldRaise"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
                         "name": "CoralL4"
                       }
                     }
@@ -60,6 +54,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
           }
         },
         {

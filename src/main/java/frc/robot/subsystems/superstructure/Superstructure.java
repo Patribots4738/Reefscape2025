@@ -155,13 +155,13 @@ public class Superstructure {
 
         L1_CONFIRM = new SuperState("L1_CONFIRM", ArmState.L1_PLACE, ClawState.L1_CORAL_OUT, () -> true, () -> false);
     
-        L1_EXIT = new SuperState("L1_EXIT", ArmState.L1_EXIT);
-        L2_EXIT = new SuperState("L2_EXIT", ArmState.L2_EXIT);
-        L3_EXIT = new SuperState("L3_EXIT", ArmState.L3_EXIT);
-        L4_EXIT = new SuperState("L4_EXIT", ArmState.L4_EXIT);
+        L1_EXIT = new SuperState("L1_EXIT", ArmState.L1_EXIT, ClawState.CORAL_OUT);
+        L2_EXIT = new SuperState("L2_EXIT", ArmState.L2_EXIT, ClawState.CORAL_OUT);
+        L3_EXIT = new SuperState("L3_EXIT", ArmState.L3_EXIT, ClawState.CORAL_OUT);
+        L4_EXIT = new SuperState("L4_EXIT", ArmState.L4_EXIT, ClawState.CORAL_OUT);
 
-        L2_WITH_ALGAE_EXIT = new SuperState("L2_WITH_ALGAE_EXIT", ArmState.L2_WITH_ALGAE_EXIT);
-        L3_WITH_ALGAE_EXIT = new SuperState("L3_WITH_ALGAE_EXIT", ArmState.L3_WITH_ALGAE_EXIT);
+        L2_WITH_ALGAE_EXIT = new SuperState("L2_WITH_ALGAE_EXIT", ArmState.L2_WITH_ALGAE_EXIT, ClawState.CORAL_OUT);
+        L3_WITH_ALGAE_EXIT = new SuperState("L3_WITH_ALGAE_EXIT", ArmState.L3_WITH_ALGAE_EXIT, ClawState.CORAL_OUT);
 
         L2_ALGAE_EXIT = new SuperState("L2_ALGAE_EXIT", ArmState.L2_ALGAE_EXIT, ClawState.ALGAE_IN);
         L3_ALGAE_EXIT = new SuperState("L3_ALGAE_EXIT", ArmState.L3_ALGAE_EXIT, ClawState.ALGAE_IN);

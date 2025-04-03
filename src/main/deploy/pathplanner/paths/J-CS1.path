@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.653,
-        "y": 7.364
+        "x": 1.5744260204081633,
+        "y": 7.334279336734694
       },
       "prevControl": {
-        "x": 2.103595890410959,
-        "y": 7.1052654109589035
+        "x": 2.025021910819122,
+        "y": 7.0755447476935975
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,10 +32,10 @@
   "constraintZones": [
     {
       "name": "SlowIntake",
-      "minWaypointRelativePos": 0.6304985337243402,
+      "minWaypointRelativePos": 0.5033557046979867,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.8,
+        "maxVelocity": 2.0,
         "maxAcceleration": 6.0,
         "maxAngularVelocity": 270.0,
         "maxAngularAcceleration": 450.0,
