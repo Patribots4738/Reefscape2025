@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5467109053316754,
-        "y": 6.129353680915116
+        "x": 4.710960977371599,
+        "y": 5.437885807988051
       },
       "isLocked": false,
       "linkedName": "I"
     },
     {
       "anchor": {
-        "x": 1.5744260204081633,
-        "y": 7.334279336734694
+        "x": 1.5988435811121178,
+        "y": 7.320572648179957
       },
       "prevControl": {
-        "x": 3.6960183163698903,
-        "y": 5.965692930537547
+        "x": 3.080265410958904,
+        "y": 6.429109589041095
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "SlowIntake",
-      "minWaypointRelativePos": 0.5033557046979844,
+      "minWaypointRelativePos": 0.6539589442815249,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 2.0,
