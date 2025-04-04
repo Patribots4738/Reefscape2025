@@ -392,8 +392,8 @@ public class Superstructure {
                 () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
             ).repeatedly().until(algaeClaw::hasPiece),
             Commands.either(
-                setSuperState(L3_ALGAE_EXIT), 
-                setSuperState(L2_ALGAE_EXIT), 
+                setSuperState(L3_WITH_ALGAE), 
+                setSuperState(L2_ALGAE_EXIT).andThen(setSuperState(L3_WITH_ALGAE)), 
                 () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
             )
         );

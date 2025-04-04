@@ -94,7 +94,7 @@ public class Wrist extends SubsystemBase {
         position = MathUtil.clamp(position, WristConstants.MIN_ANGLE_RADIANS, WristConstants.MAX_ANGLE_RADIANS);
         targetState.position = position;
         setpoint.position = inputs.internalPositionRads;
-        setpoint.velocity = inputs.internalVelocityRadsPerSec;
+        setpoint.velocity = 0;
         shouldRunSetpoint = true;
         shouldRunFast = runFast;
 

@@ -104,7 +104,7 @@ public class Elevator extends SubsystemBase {
         position = MathUtil.clamp(position, 0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
         targetState.position = position;
         setpoint.position = inputs.leaderPositionMeters;
-        setpoint.velocity = inputs.leaderVelocityMetersPerSecond;
+        setpoint.velocity = 0;
         shouldRunSetpoint = true;
         shouldRunFast = runFast;
 
