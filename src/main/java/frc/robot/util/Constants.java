@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.DEVBOT;
+        private static RobotType robotType = RobotType.COMPBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
@@ -624,6 +624,7 @@ public final class Constants {
         public static final double NET_PREP_METERS = 0.54;
         public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
 
+        public static final double VELOCITY_DEADBAND_MPS = 0.2;
         public static final double DEADBAND_METERS = 0.02;
 
     }
@@ -684,6 +685,7 @@ public final class Constants {
 
         public static final double VELOCITY_DEADBAND_RADIANS = 0.1;
         public static final double POSITION_DEADBAND_RADIANS = 0.06;
+        public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         public static final double INTAKE_POSITION_RADIANS = -0.594;
         public static final double DUMP_POSITION_RADIANS = -0.6;

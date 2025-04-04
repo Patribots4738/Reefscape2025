@@ -6,6 +6,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -300,7 +301,8 @@ public class Superstructure {
                     wrist.setPositionCommand(() -> state.wristPosition, this::shouldRunWristFast), 
                     () -> 
                         // Only transition wrist if elevator needs to move in addition to other conditions
-                        state.wristPosition < WristConstants.UNDER_THRESHOLD_RADIANS && !elevator.atPosition(state.elevatorPosition)
+                        state.wristPosition < WristConstants.UNDER_THRESHOLD_RADIANS 
+                            && (!elevator.atPosition(state.elevatorPosition) || !elevator.atTargetPosition())
                 // Stop blocking sequence when wrist is in a safe position
                 ).until(this::wristSafe),
                 elevator.setPositionCommand(() -> state.elevatorPosition, this::shouldRunElevatorFast),
@@ -603,9 +605,24 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/WristSafe")
     public boolean wristSafe() {
+        Logger.recordOutput("Subsystems/Superstructure/WristVelocity", wrist.getVelocity());
+        Logger.recordOutput("Subsystems/Superstructure/WristTarget", targetState.armState.wristPosition);
+        Logger.recordOutput("Subsystems/Superstructure/WristPosition", wrist.getPosition());
+        double velocitySignum = wristVelocitySignum();
+        double positionSignum = wristPositionSignum();
+        Logger.recordOutput("Subsystems/Superstructure/WristVelocitySignum", velocitySignum);
+        Logger.recordOutput("Subsystems/Superstructure/WristPositionSignum", positionSignum);
         return ((wrist.atPosition(WristConstants.UNDER_THRESHOLD_RADIANS) || wrist.getPosition() > WristConstants.UNDER_THRESHOLD_RADIANS)) 
             // Wrist velocity direction equals desired direction of travel
-            && Math.signum(MathUtil.applyDeadband(wrist.getVelocity(), WristConstants.VELOCITY_DEADBAND_RADIANS)) == Math.signum(MathUtil.applyDeadband(wrist.getTargetPosition() - wrist.getPosition(), WristConstants.POSITION_DEADBAND_RADIANS));
+            && velocitySignum == positionSignum;
+    }
+
+    public double wristVelocitySignum() {
+        return Math.signum(MathUtil.applyDeadband(wrist.getVelocity(), WristConstants.VELOCITY_DEADBAND_RADIANS));
+    }
+
+    public double wristPositionSignum() {
+        return Math.signum(MathUtil.applyDeadband(targetState.armState.wristPosition - wrist.getPosition(), WristConstants.POSITION_SIGNUM_DEADBAND_RADIANS));
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEvadeReef")
