@@ -364,13 +364,13 @@ public class RobotContainer {
             );
 
         controller.povRight()
-        .onTrue(
-            Commands.either(
-                superstructure.setSuperStateFromRemovalCommand(superstructure.L3_WITH_ALGAE),
-                new ScheduleCommand(superstructure.setSuperState(superstructure.L3)),
-                () -> superstructure.getTargetClawState().algaePercent > 0
-            )
-        );
+            .onTrue(
+                Commands.either(
+                    superstructure.setSuperStateFromRemovalCommand(superstructure.L3_WITH_ALGAE),
+                    new ScheduleCommand(superstructure.setSuperState(superstructure.L3)),
+                    () -> superstructure.getTargetClawState().algaePercent > 0
+                )
+            );
 
         controller.povUp()
             .onTrue(superstructure.setSuperStateFromRemovalCommand(superstructure.L4));
@@ -480,14 +480,16 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL1", superstructure.setSuperState(superstructure.L1));
         NamedCommands.registerCommand("CoralL2", superstructure.setSuperState(superstructure.L2));
         NamedCommands.registerCommand("CoralL3", superstructure.setSuperState(superstructure.L3));
+        NamedCommands.registerCommand("CoralL3WithAlgae", superstructure.setSuperState(superstructure.L3_WITH_ALGAE));
         NamedCommands.registerCommand("CoralL4", superstructure.setSuperState(superstructure.L4));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommandAuto());
         NamedCommands.registerCommand("ExitCoral", superstructure.stopOuttakeCommand());
         NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(() -> coralClaw.hasPiece() || coralClaw.hasPieceMoving()));
         NamedCommands.registerCommand("PrepareNet", superstructure.setSuperState(superstructure.NET_PREP));
         NamedCommands.registerCommand("PlaceNet", superstructure.netPlaceCommandAuto());
-        NamedCommands.registerCommand("AlgaeIntakeStart", superstructure.algaeRemovalCommand());
-        NamedCommands.registerCommand("AlgaeIntakeStop", superstructure.setSuperState(superstructure.ALGAE_CARRY));
+        NamedCommands.registerCommand("AlgaeIntakeStart", superstructure.algaeRemovalAutoStartCommand());
+        NamedCommands.registerCommand("AlgaeIntakeStop", superstructure.algaeRemovalAutoStopCommand());
+        NamedCommands.registerCommand("AlgaeCarry", superstructure.setSuperState(superstructure.ALGAE_CARRY));
         NamedCommands.registerCommand("TossAlgae", superstructure.tossAlgaeCommand());
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.READY_STOW));
         NamedCommands.registerCommand("WaitUntilShouldAlign", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 1.9));

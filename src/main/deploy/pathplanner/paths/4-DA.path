@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "SlowRemoval",
-      "minWaypointRelativePos": 0.5542521994134899,
+      "minWaypointRelativePos": 0.3892617449664419,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.3,

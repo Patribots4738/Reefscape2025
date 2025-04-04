@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 7.858433219178083,
-        "y": 4.986643835616438
+        "x": 7.8124362244897965,
+        "y": 5.3121492346938775
       },
       "prevControl": {
-        "x": 6.858433219178083,
-        "y": 4.986643835616438
+        "x": 6.8124362244897965,
+        "y": 5.3121492346938775
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "SlowNet",
-      "minWaypointRelativePos": 0.6392617449664437,
+      "minWaypointRelativePos": 0.3557046979865762,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.8,

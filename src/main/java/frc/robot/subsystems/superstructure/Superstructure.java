@@ -203,8 +203,8 @@ public class Superstructure {
         L2 (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS),
         L3 (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
         L4 (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS),
-        L2_WITH_ALGAE (ElevatorConstants.L2_WITH_ALGAE_METERS, WristConstants.L2_WITH_ALGAE_RADIANS),
-        L3_WITH_ALGAE (ElevatorConstants.L3_WITH_ALGAE_METERS, WristConstants.L3_WITH_ALGAE_RADIANS),
+        L2_WITH_ALGAE (ElevatorConstants.L2_WITH_ALGAE_METERS, WristConstants.L2_POSITION_RADIANS),
+        L3_WITH_ALGAE (ElevatorConstants.L3_WITH_ALGAE_METERS, WristConstants.L3_POSITION_RADIANS),
         L2_WITH_ALGAE_EXIT (ElevatorConstants.L2_WITH_ALGAE_METERS, WristConstants.L2_WITH_ALGAE_RADIANS),
         L3_WITH_ALGAE_EXIT (ElevatorConstants.L3_WITH_ALGAE_METERS, WristConstants.L3_WITH_ALGAE_RADIANS),
         L1_PLACE (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
@@ -397,6 +397,22 @@ public class Superstructure {
         );
     }
 
+    public Command algaeRemovalAutoStartCommand() {
+        return new ActiveConditionalCommand(
+            setSuperState(L3_ALGAE_IN),
+            setSuperState(L2_ALGAE_IN),
+            () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
+        ).repeatedly().until(algaeClaw::hasPiece);
+    }
+
+    public Command algaeRemovalAutoStopCommand() {
+        return Commands.either(
+            setSuperState(L3_ALGAE_EXIT), 
+            setSuperState(L2_ALGAE_EXIT), 
+            () -> PoseCalculations.isHighAlgaeReefSide(robotPoseSupplier.get())
+        );
+    }
+
     public Command coralIntakeCommand(BooleanSupplier continueIntakingSupplier) {
         return 
             Commands.sequence(
@@ -531,7 +547,7 @@ public class Superstructure {
 
     public Command setSuperStateFromRemovalCommand(SuperState state) {
         return Commands.sequence(
-            Commands.waitUntil(algaeClaw::hasPiece).onlyIf(() -> targetState.clawState.algaePercent > 0),
+            Commands.waitUntil(algaeClaw::hasPiece).onlyIf(() -> targetState.clawState.algaePercent > 0).withTimeout(2.0),
             new ScheduleCommand(setSuperState(state))
         );
     }
@@ -619,6 +635,11 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ClawState")
     public ClawState getTargetClawState() {
         return targetState.clawState;
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/AlgaePercent")
+    public double getAlgaePercent() {
+        return targetState.clawState.algaePercent;
     }
 
 }
