@@ -696,7 +696,7 @@ public final class Constants {
         public static final double L3_POSITION_RADIANS = 2.5;
         public static final double L2_WITH_ALGAE_RADIANS = 2.35;
         public static final double L3_WITH_ALGAE_RADIANS = 2.35;
-        public static final double L4_POSITION_RADIANS = 2.3;
+        public static final double L4_POSITION_RADIANS = 2.23;
         public static final double L2_ALGAE_REMOVAL = 0.8;
         public static final double L3_ALGAE_REMOVAL = 1.3;
         public static final double BACK_ALGAE_TOSS = 0;
