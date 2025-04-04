@@ -102,9 +102,11 @@ public class Elevator extends SubsystemBase {
 
     public void setPosition(double position, boolean runFast) {
         position = MathUtil.clamp(position, 0, ElevatorConstants.MAX_DISPLACEMENT_METERS);
+        if (position != targetState.position) {
+            setpoint.position = inputs.leaderPositionMeters;
+            setpoint.velocity = 0;
+        }
         targetState.position = position;
-        setpoint.position = inputs.leaderPositionMeters;
-        setpoint.velocity = 0;
         shouldRunSetpoint = true;
         shouldRunFast = runFast;
 

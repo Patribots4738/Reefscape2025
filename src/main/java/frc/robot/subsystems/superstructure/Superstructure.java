@@ -294,17 +294,22 @@ public class Superstructure {
     public Command setArmState(ArmState state) {
         return Commands.runOnce(() -> targetArmState = state).alongWith(
             Commands.sequence(
-                Commands.either(
-                    // Move wrist to nearest transition pose, unless the arm was previously stowed up (which is a safe spot)
-                    transitionWrist(() -> state.wristPosition), 
-                    // Move wrist straight to target position
-                    wrist.setPositionCommand(() -> state.wristPosition, this::shouldRunWristFast), 
-                    () -> 
-                        // Only transition wrist if elevator needs to move in addition to other conditions
-                        state.wristPosition < WristConstants.UNDER_THRESHOLD_RADIANS 
-                            && (!elevator.atPosition(state.elevatorPosition) || !elevator.atTargetPosition())
-                // Stop blocking sequence when wrist is in a safe position
-                ).until(this::wristSafe),
+                Commands.race(
+                    Commands.either(
+                        // Move wrist to nearest transition pose, unless the arm was previously stowed up (which is a safe spot)
+                        transitionWrist(() -> state.wristPosition), 
+                        // Move wrist straight to target position
+                        wrist.setPositionCommand(() -> state.wristPosition, this::shouldRunWristFast), 
+                        () -> 
+                            // Only transition wrist if elevator needs to move in addition to other conditions
+                            state.wristPosition < WristConstants.UNDER_THRESHOLD_RADIANS 
+                                && (!elevator.atPosition(state.elevatorPosition) || !elevator.atTargetPosition())
+                    ),
+                    Commands.sequence(
+                        Commands.waitSeconds(0.05),
+                        Commands.waitUntil(this::wristSafe)
+                    )
+                ),
                 elevator.setPositionCommand(() -> state.elevatorPosition, this::shouldRunElevatorFast),
                 // Below here is only effectual if wrist just transitioned
                 wrist.setPositionCommand(() -> state.wristPosition, this::shouldRunWristFast)
