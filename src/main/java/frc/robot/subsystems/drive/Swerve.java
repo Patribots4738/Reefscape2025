@@ -568,8 +568,8 @@ public class Swerve extends SubsystemBase {
             && MathUtil.isNear(0, angleDiff, AutoConstants.HDC_ROTATION_TOLERANCE_RADIANS);
     }
 
+    @AutoLogOutput (key = "Subsystems/Swerve/AtHDCPose")
     public boolean atHDCPose() {
-        
         return atPose(desiredHDCPose);
     }
 
