@@ -237,8 +237,8 @@ public class RobotContainer {
     }
 
     private void configureMiscTriggers() {
-        new Trigger(() -> alignment.getAlignmentMode() != AlignmentMode.NONE && swerve.atHDCPose())
-            .whileTrue(Commands.run(() -> driver.setRumble(0.2))
+        new Trigger(() -> alignment.getAlignmentMode() == AlignmentMode.REEF && swerve.onHDCAxis() && swerve.getPose().getTranslation().getDistance(swerve.getDesiredPose().getTranslation()) < 0.12)
+            .whileTrue(Commands.run(() -> driver.setRumble(0.7))
                 .finallyDo(() -> driver.setRumble(0)));
 
         new Trigger(() -> coralClaw.hasPiece() || algaeClaw.hasPiece())

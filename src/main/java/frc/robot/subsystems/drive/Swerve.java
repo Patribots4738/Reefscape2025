@@ -47,6 +47,7 @@ import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.Constants.MK4cSwerveModuleConstants;
+import frc.robot.util.calc.PoseCalculations;
 
 public class Swerve extends SubsystemBase {
 
@@ -561,16 +562,16 @@ public class Swerve extends SubsystemBase {
     public boolean atPose(Pose2d position) {
         // More lenient on x axis, less lenient on y axis and rotation
         Pose2d currentPose = getPose();
-        double angleDiff = currentPose.getRotation().minus(position.getRotation()).getRadians();
-		double distance = currentPose.relativeTo(position).getTranslation().getNorm();
-        return 
-            MathUtil.isNear(0, distance, AutoConstants.HDC_POSITION_TOLERANCE_METERS)
-            && MathUtil.isNear(0, angleDiff, AutoConstants.HDC_ROTATION_TOLERANCE_RADIANS);
+        return PoseCalculations.isPoseNear(currentPose, desiredHDCPose) && !desiredHDCPose.equals(Pose2d.kZero);
     }
 
     @AutoLogOutput (key = "Subsystems/Swerve/AtHDCPose")
     public boolean atHDCPose() {
         return atPose(desiredHDCPose);
+    }
+
+    public boolean onHDCAxis() {
+        return PoseCalculations.isPoseOnAxis(getPose(), desiredHDCPose);
     }
 
     public boolean atHDCAngle() {

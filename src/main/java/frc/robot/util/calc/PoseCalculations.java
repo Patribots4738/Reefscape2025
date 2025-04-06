@@ -9,12 +9,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
 
@@ -149,6 +153,22 @@ public class PoseCalculations {
 
     public static boolean isOnRedSide(Pose2d pos) {
         return pos.getX() > FieldConstants.FIELD_MAX_LENGTH / 2;
+    }
+
+    public static boolean isPoseNear(Pose2d pos1, Pose2d pos2) {
+        double angleDiff = pos1.getRotation().minus(pos2.getRotation()).getRadians();
+		double distance = pos1.relativeTo(pos2).getTranslation().getNorm();
+        return 
+            MathUtil.isNear(0, distance, AutoConstants.HDC_POSITION_TOLERANCE_METERS)
+            && MathUtil.isNear(0, angleDiff, AutoConstants.HDC_ROTATION_TOLERANCE_RADIANS);
+    }
+
+    public static boolean isPoseOnAxis(Pose2d pos1, Pose2d pos2) {
+        double distance = pos1.getTranslation().getDistance(pos2.getTranslation());
+        Pose2d addedAxisPose = getPoseWithDistance(new Pose2d(pos1.getX(), pos1.getY(), pos2.getRotation().minus(Rotation2d.fromRadians(Math.PI))), distance);
+        addedAxisPose = new Pose2d(addedAxisPose.getX(), addedAxisPose.getY(), pos2.getRotation());
+        Logger.recordOutput("Subsystems/Swerve/AddedAxisPose", addedAxisPose);
+        return isPoseNear(addedAxisPose, pos2);
     }
   
 }
