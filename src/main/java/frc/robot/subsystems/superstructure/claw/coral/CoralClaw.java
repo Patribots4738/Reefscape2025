@@ -32,6 +32,7 @@ public class CoralClaw extends SubsystemBase {
     private double percentOutput = 0.0;
     private boolean shouldRunSetpoint = false;
     private boolean hasPiece;
+    private boolean pieceMovingInClaw = false;
 
     private final Debouncer hasPieceDebouncer;
     
@@ -79,6 +80,8 @@ public class CoralClaw extends SubsystemBase {
     }
 
     public void updateHasPiece() {
+        Logger.recordOutput("Subsystems/CoralClaw/PercentOutput", percentOutput);
+        pieceMovingInClaw = percentOutput > 0 && (inputs.velocityRotationsPerSec < 35);
         if (FieldConstants.IS_SIMULATION && inputs.percentOutput != 0.0 && LoggingConstants.getMode() != Mode.REPLAY) {
             hasPiece = inputs.percentOutput > 0.0;
         } else if (Robot.gameMode == GameMode.DISABLED && inputs.velocityRotationsPerSec != 0) {
@@ -97,5 +100,10 @@ public class CoralClaw extends SubsystemBase {
     @AutoLogOutput (key = "Subsystems/CoralClaw/HasCoral")
     public boolean hasPiece() {
         return hasPiece;    
+    }
+
+    @AutoLogOutput (key = "Subsystems/CoralClaw/HasCoralMoving")
+    public boolean hasPieceMoving() {
+        return pieceMovingInClaw;
     }
 }

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6526226423364612,
-        "y": 7.364038533944852
+        "x": 1.6,
+        "y": 7.320572648179957
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.406257846418094,
-        "y": 6.632788533944852
+        "x": 2.961216350394732,
+        "y": 5.903210616438356
       },
       "isLocked": false,
       "linkedName": "CS1"
@@ -20,8 +20,8 @@
         "y": 5.080835459183673
       },
       "prevControl": {
-        "x": 3.3055484693877553,
-        "y": 5.894164540816325
+        "x": 3.5009845890410958,
+        "y": 5.317208904109589
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "SlowPlace",
-      "minWaypointRelativePos": 0.7012195121951208,
+      "minWaypointRelativePos": 0.46,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,
-        "maxAcceleration": 4.5,
+        "maxAcceleration": 5.0,
         "maxAngularVelocity": 270.0,
         "maxAngularAcceleration": 450.0,
         "nominalVoltage": 12.0,
@@ -47,8 +47,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.35,
-    "maxAcceleration": 4.1,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 270.0,
     "maxAngularAcceleration": 450.0,
     "nominalVoltage": 12.0,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 118.90918365114784
+    "rotation": 120.32535497569467
   },
   "reversed": false,
   "folder": "Coral Station",

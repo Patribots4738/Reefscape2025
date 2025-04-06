@@ -35,7 +35,7 @@ public class PoseCalculations {
     }
 
     public static ReefSide getClosestReefSide(Pose2d pos) {
-        return nearest(pos, FieldConstants.GET_REEF_FACE_POSITIONS());
+        return nearest(pos, FieldConstants.REEF_FACE_POSITIONS);
     }
 
     public static boolean isHighAlgaeIndex(int index) {
@@ -43,7 +43,7 @@ public class PoseCalculations {
     }
 
     public static boolean isHighAlgaeReefSide(ReefSide side) {
-        return isHighAlgaeIndex(FieldConstants.GET_REEF_FACE_POSITIONS().indexOf(side));
+        return isHighAlgaeIndex(FieldConstants.REEF_FACE_POSITIONS.indexOf(side));
     }
 
     public static boolean isHighAlgaeReefSide(Pose2d pos) {
@@ -145,6 +145,10 @@ public class PoseCalculations {
 
     public static Pose2d getPoseWithDistance(Pose2d pos, double distance) {
         return new Pose2d(pos.getX() + distance * pos.getRotation().getCos(), pos.getY() + distance * pos.getRotation().getSin(), pos.getRotation());
+    }
+
+    public static boolean isOnRedSide(Pose2d pos) {
+        return pos.getX() > FieldConstants.FIELD_MAX_LENGTH / 2;
     }
   
 }

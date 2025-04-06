@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.COMPBOT;
+        private static RobotType robotType = RobotType.DEVBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
@@ -217,7 +217,7 @@ public final class Constants {
                 Units.degreesToRadians(450)
             );
 
-        public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(1);
+        public static final double HDC_POSITION_TOLERANCE_METERS = Units.inchesToMeters(2);
         public static final double HDC_ROTATION_TOLERANCE_RADIANS = Units.degreesToRadians(2);
 
         public static final double REEF_ALIGNMENT_MAX_SPEED = 1.0;
@@ -291,8 +291,9 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "3P Right",
-            "3P Left",
+            "4P Left",
+            "4P Right HOME",
+            "4P Right COMP",
             "Removal 3P Right",
             "Removal 3P Left",
             "Buddy 3P Left",
@@ -465,7 +466,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9187114863955308 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8924 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -581,9 +582,9 @@ public final class Constants {
         public static final double POSITION_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
         public static final double VELOCITY_CONVERSION_FACTOR = Units.inchesToMeters(6.01716904509);
 
-        public static final double P = FieldConstants.IS_REAL ? 400d : 800d;
+        public static final double P = FieldConstants.IS_REAL ? 400d : 1500;
         public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D = FieldConstants.IS_REAL ? 27d : 200d;
+        public static final double D = FieldConstants.IS_REAL ? 27d : 300;
         public static final double A = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double S = FieldConstants.IS_REAL ? 0d : 0d;
         public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
@@ -623,6 +624,7 @@ public final class Constants {
         public static final double NET_PREP_METERS = 0.54;
         public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
 
+        public static final double VELOCITY_DEADBAND_MPS = 0.2;
         public static final double DEADBAND_METERS = 0.02;
 
     }
@@ -640,9 +642,9 @@ public final class Constants {
 
         public static final boolean MOTOR_INVERTED = false;
 
-        public static final double P = FieldConstants.IS_REAL ? 1500d : 5000d;
+        public static final double P = FieldConstants.IS_REAL ? 1500d : 12000;
         public static final double I = FieldConstants.IS_REAL ? 0d : 0d;
-        public static final double D = FieldConstants.IS_REAL ? 100d : 500d;
+        public static final double D = FieldConstants.IS_REAL ? 100d : 2300;
         public static final double A = FieldConstants.IS_REAL ? 3d : 0d;
         public static final double S = FieldConstants.IS_REAL ? 1.5052 : 0d;
         public static final double V = FieldConstants.IS_REAL ? 0d : 0d;
@@ -661,9 +663,9 @@ public final class Constants {
         // public static final LoggedGainConstants LOGGED_GAINS = new LoggedGainConstants(WristConstants.GAINS, "Wrist");
 
         public static final double FAST_VELOCITY = 11d;
-        public static final double FAST_ACCELERATION = FieldConstants.IS_REAL ? 90d : 15d;
+        public static final double FAST_ACCELERATION = 90d;
         public static final double SLOW_VELOCITY = 5d;
-        public static final double SLOW_ACCELERATION = FieldConstants.IS_REAL ? 10d : 15d;
+        public static final double SLOW_ACCELERATION = 10d;
         public static final double JERK = 900d;
 
         public static final double GEAR_RATIO = 60.0;
@@ -683,6 +685,7 @@ public final class Constants {
 
         public static final double VELOCITY_DEADBAND_RADIANS = 0.1;
         public static final double POSITION_DEADBAND_RADIANS = 0.06;
+        public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
         public static final double INTAKE_POSITION_RADIANS = -0.6;

@@ -237,21 +237,38 @@ public class Alignment {
         return getAutoSpeeds(desiredPose);
     }
 
-    public ChassisSpeeds getNetAutoSpeeds() {
+    public Pose2d getNetAutoPose() {
         boolean isRedAlliance = Robot.isRedAlliance();
-        double x = isRedAlliance 
+        boolean onRedSide = PoseCalculations.isOnRedSide(swerve.getPose());
+        double x = onRedSide 
             ? FieldConstants.FIELD_MAX_LENGTH / 2 + AlgaeClawConstants.NET_X_CHASSIS_OFFSET
             : FieldConstants.FIELD_MAX_LENGTH / 2 - AlgaeClawConstants.NET_X_CHASSIS_OFFSET;
         double y = isRedAlliance
             ? MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT / 2)
             : MathUtil.clamp(swerve.getPose().getY(), FieldConstants.FIELD_MAX_HEIGHT / 2, FieldConstants.FIELD_MAX_HEIGHT);
-        double theta = Robot.isRedAlliance() ? Math.PI : 0;
+        double theta = onRedSide ? Math.PI : 0;
         Pose2d desiredPose = new Pose2d(
             x,
             y,
             Rotation2d.fromRadians(theta)
         );
-        return getAutoSpeeds(desiredPose);
+        return desiredPose;
+    }
+
+    public ChassisSpeeds getNetAutoSpeeds() {
+        return getAutoSpeeds(getNetAutoPose());
+    }
+
+    public ChassisSpeeds getNetProfiledAutoSpeeds() {
+        Pose2d netAutoPose = getNetAutoPose();
+        Pose2d desiredPose;
+        if (alignmentIndex == -1) {
+            desiredPose = netAutoPose;
+            alignmentIndex = 0;
+        } else {
+            desiredPose = swerve.getDesiredPose();
+        }
+        return getProfiledAutoSpeeds(desiredPose);
     }
 
     public ChassisSpeeds getProcessorAutoSpeeds() {
@@ -376,6 +393,14 @@ public class Alignment {
             });
     }
 
+    public Command profiledAutoAlignmentCommand(AlignmentMode mode, Supplier<Pose2d> desiredPose) {
+        return autoAlignmentCommand(mode, () -> getProfiledAutoSpeeds(desiredPose.get()), true);
+    }
+
+    public Command autonomousReefAutoAlignmentCommand(Supplier<ReefSide> side, boolean alignLeft) {
+        return profiledAutoAlignmentCommand(AlignmentMode.REEF, () -> PoseCalculations.getPoseWithDistance(alignLeft ? side.get().getLeft() : side.get().getRight(), DriveConstants.FULL_ROBOT_LENGTH_METERS / 2)).until(() -> swerve.atHDCPose());
+    }
+
     public Command intakeRotationalAlignmentCommand(DoubleSupplier driverX, DoubleSupplier driverY) {
         return autoAlignmentCommand(
             AlignmentMode.INTAKE_SOFT, 
@@ -442,8 +467,16 @@ public class Alignment {
     public Command pathfindToPoseCommand(Supplier<Pose2d> pos) {
         return Commands.defer(() -> AutoBuilder.pathfindToPose(pos.get(), AutoConstants.prepReefConstraints, 0.0), Set.of(swerve));
     }
+
+    public Command netInitialAlignmentCommand() {
+        return autoAlignmentCommand(
+            AlignmentMode.NET, 
+            this::getNetProfiledAutoSpeeds,
+            true
+        );
+    }
   
-    public Command netAlignmentCommand(DoubleSupplier driverX) {
+    public Command netFinalAlignmentCommand(DoubleSupplier driverX) {
         return
             autoAlignmentCommand(
                 AlignmentMode.NET, 
@@ -451,6 +484,10 @@ public class Alignment {
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
                 true
             );
+    }
+
+    public Command netAlignmentCommand(DoubleSupplier driverX) {
+        return netInitialAlignmentCommand().until(() -> swerve.getPose().getTranslation().getDistance(swerve.getDesiredPose().getTranslation()) < 0.5).andThen(netFinalAlignmentCommand(driverX));
     }
 
     public Command reefAlignmentCommand() {

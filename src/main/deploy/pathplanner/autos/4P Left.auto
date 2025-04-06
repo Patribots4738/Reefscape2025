@@ -9,15 +9,48 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "3-J"
+                  "commands": [
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "3-I"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "WaitUntilShouldAlign"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "AlignI"
+                      }
+                    }
+                  ]
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "CoralL4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "CoralL4"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -40,7 +73,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "J-CS1"
+                        "pathName": "I-CS1"
                       }
                     },
                     {
@@ -57,9 +90,15 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 0.5
+                        "name": "ExitCoral"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "WaitUntilShouldLower"
                       }
                     },
                     {
@@ -77,19 +116,19 @@
         {
           "type": "named",
           "data": {
-            "name": "K4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "L4"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "A4"
+            "name": "K4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "J4"
           }
         }
       ]
