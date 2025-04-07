@@ -440,8 +440,6 @@ public class Alignment {
             );
     }
 
-
-
     public Command reefAxisAlignmentCommand() {
         return autoAlignmentCommand(
             AlignmentMode.REEF, 
@@ -511,8 +509,7 @@ public class Alignment {
     public Command intakeAlignmentCommand() {
         return Commands.sequence(
             Commands.runOnce(() -> this.alignmentMode = AlignmentMode.INTAKE),
-            pathfindToIntakeCommand(),
-            // .until(() -> swerve.getPose().getTranslation().getDistance(PoseCalculations.getClosestCoralStation(swerve.getPose()).getTranslation()) < 1.5),
+            pathfindToIntakeCommand().until(() -> swerve.getPose().getTranslation().getDistance(PoseCalculations.getClosestCoralStation(swerve.getPose()).getTranslation()) < 1.0),
             intakeFinalAlignmentCommand()
         );
     }
