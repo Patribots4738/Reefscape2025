@@ -635,7 +635,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.72;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.73;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -688,18 +688,18 @@ public final class Constants {
         public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
-        public static final double INTAKE_POSITION_RADIANS = -0.5;
-        public static final double DUMP_POSITION_RADIANS = -0.58;
+        public static final double INTAKE_POSITION_RADIANS = -0.42;
+        public static final double DUMP_POSITION_RADIANS = -0.43;
         public static final double L1_POSITION_RADIANS = 1.95;
         public static final double L1_PLACE_POSITION_RADIANS = 2.6;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
-        public static final double L2_POSITION_RADIANS = 2.6;
-        public static final double L3_POSITION_RADIANS = 2.6;
+        public static final double L2_POSITION_RADIANS = 2.5;
+        public static final double L3_POSITION_RADIANS = 2.5;
         public static final double L2_WITH_ALGAE_RADIANS = 2.35;
         public static final double L3_WITH_ALGAE_RADIANS = 2.35;
-        public static final double L4_POSITION_RADIANS = 2.4;
+        public static final double L4_POSITION_RADIANS = 2.35;
         public static final double L2_ALGAE_REMOVAL = 0.8;
         public static final double L3_ALGAE_REMOVAL = 1.3;
         public static final double BACK_ALGAE_TOSS = 0;
