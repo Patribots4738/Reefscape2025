@@ -204,8 +204,8 @@ public class Superstructure {
         L2 (ElevatorConstants.L2_POSITION_METERS, WristConstants.L2_POSITION_RADIANS),
         L3 (ElevatorConstants.L3_POSITION_METERS, WristConstants.L3_POSITION_RADIANS),
         L4 (ElevatorConstants.L4_POSITION_METERS, WristConstants.L4_POSITION_RADIANS),
-        L2_WITH_ALGAE (ElevatorConstants.L2_WITH_ALGAE_METERS, WristConstants.L2_POSITION_RADIANS),
-        L3_WITH_ALGAE (ElevatorConstants.L3_WITH_ALGAE_METERS, WristConstants.L3_POSITION_RADIANS),
+        L2_WITH_ALGAE (ElevatorConstants.L2_WITH_ALGAE_METERS, WristConstants.L2_WITH_ALGAE_RADIANS),
+        L3_WITH_ALGAE (ElevatorConstants.L3_WITH_ALGAE_METERS, WristConstants.L3_WITH_ALGAE_RADIANS),
         L2_WITH_ALGAE_EXIT (ElevatorConstants.L2_WITH_ALGAE_METERS, WristConstants.L2_WITH_ALGAE_RADIANS),
         L3_WITH_ALGAE_EXIT (ElevatorConstants.L3_WITH_ALGAE_METERS, WristConstants.L3_WITH_ALGAE_RADIANS),
         L1_PLACE (ElevatorConstants.L1_POSITION_METERS, WristConstants.L1_PLACE_POSITION_RADIANS),
@@ -441,8 +441,10 @@ public class Superstructure {
         // Derive next state based on current arm target
         SuperState placementState = switch (targetState.armState) {
             case L1 -> L1_PLACE;
-            case L2, L2_WITH_ALGAE -> L2_PLACE;
-            case L3, REEF_ALGAE_TOSS, L3_WITH_ALGAE -> L3_PLACE;
+            case L2 -> L2_PLACE;
+            case L2_WITH_ALGAE -> L2_WITH_ALGAE_PLACE;
+            case L3, REEF_ALGAE_TOSS -> L3_PLACE;
+            case L3_WITH_ALGAE -> L3_WITH_ALGAE_PLACE;
             case L4 -> L4_PLACE;
             case NET_PREP -> NET_PLACE;
             case PROCESSOR -> PROCESSOR_PLACE;
