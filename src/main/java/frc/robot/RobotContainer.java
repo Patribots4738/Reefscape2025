@@ -306,7 +306,13 @@ public class RobotContainer {
                 ).until(() -> Math.hypot(controller.getRightX(), controller.getRightY()) > OIConstants.DRIVER_ALIGN_CANCEL_DEADBAND));
 
         controller.y()
-            .whileTrue(alignment.processorAlignmentCommand(controller::getLeftX));
+            .whileTrue(
+                new ActiveConditionalCommand(
+                    alignment.processorAlignmentCommand(controller::getLeftX),
+                    alignment.treeAlignmentCommand(controller::getLeftX),
+                    () -> Robot.isRedAlliance() ? swerve.getPose().getX() < FieldConstants.GET_REEF_POSITION().getX() : swerve.getPose().getX() > FieldConstants.GET_REEF_POSITION().getX()
+                )
+            );
 
         controller.a()
             .whileTrue(alignment.reefFullAlignmentCommand());
@@ -399,12 +405,7 @@ public class RobotContainer {
             .whileTrue(alignment.intakeAlignmentCommand());
 
         controller.y()
-            .toggleOnTrue(
-                new ActiveConditionalCommand(
-                    superstructure.algaeRemovalCommand(),
-                    superstructure.setSuperState(superstructure.NET_PREP),
-                    () -> Robot.isRedAlliance() ? swerve.getPose().getX() > FieldConstants.FIELD_MAX_LENGTH / 2.0 + 2d : swerve.getPose().getX() < FieldConstants.FIELD_MAX_LENGTH / 2.0 - 2d
-                ).repeatedly());
+            .toggleOnTrue(superstructure.algaeRemovalCommand());
 
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
@@ -416,7 +417,7 @@ public class RobotContainer {
             .onTrue(superstructure.setSuperState(superstructure.L3));
 
         controller.povUp()
-            .onTrue(superstructure.setSuperState(superstructure.L4));
+            .onTrue(superstructure.setSuperState(superstructure.NET_PREP));
 
         controller.leftBumper()
             .onTrue(alignment.updateIndexCommand(-1));

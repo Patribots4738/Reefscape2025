@@ -64,6 +64,7 @@ public class Alignment {
         REEF_PREP,
         NET,
         PROCESSOR,
+        TREE,
         NONE
     }
 
@@ -329,6 +330,24 @@ public class Alignment {
         return autoSpeeds;
     }
 
+    public ChassisSpeeds getTreeAutoSpeeds() {
+        Pose2d currentPose = swerve.getPose();
+        ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(swerve.getRobotRelativeVelocity(), currentPose.getRotation());
+        double effectiveYVelocity = MathUtil.applyDeadband(fieldRelativeSpeeds.vyMetersPerSecond, 0.2);
+        Rotation2d desiredRotation;
+        if (effectiveYVelocity == 0) {
+            Rotation2d currentRotation = currentPose.getRotation();
+            double rads = MathUtil.angleModulus(currentRotation.getRadians());
+            double rotationDiff = Math.abs(rads - (-Math.PI / 2)) - Math.abs(rads - Math.PI / 2);
+            desiredRotation = Rotation2d.fromRadians(rotationDiff > 0 ? Math.PI / 2 : -Math.PI / 2);
+        } else {
+            desiredRotation = Rotation2d.fromRadians(effectiveYVelocity > 0 ? -Math.PI / 2 : Math.PI / 2);
+        }
+        Pose2d treePose = FieldConstants.GET_STAGED_POSITIONS().get(0);
+        Pose2d desiredPose = new Pose2d(treePose.getX(), currentPose.getY(), desiredRotation);
+        return getAutoSpeeds(desiredPose);
+    }
+
     public void updateIndex(int increment) {
         resetHDC();
         resetProfile();
@@ -436,6 +455,16 @@ public class Alignment {
                 AlignmentMode.PROCESSOR, 
                 this::getProcessorAutoSpeeds, 
                 () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.NET_ALIGNMENT_MULTIPLIER), 0),
+                true   
+            );
+    }
+
+    public Command treeAlignmentCommand(DoubleSupplier driverX) {
+        return
+            autoAlignmentCommand(
+                AlignmentMode.TREE, 
+                this::getTreeAutoSpeeds, 
+                () -> getControllerSpeeds((driverX.getAsDouble() * AutoConstants.TREE_ALIGNMENT_MULTIPLIER), 0),
                 true   
             );
     }

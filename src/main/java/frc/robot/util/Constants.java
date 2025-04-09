@@ -303,6 +303,7 @@ public final class Constants {
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double CAGE_ALIGNMENT_MULTIPLIER = 0.5;
         public static final double NET_ALIGNMENT_MULTIPLIER = 0.5;
+        public static final double TREE_ALIGNMENT_MULTIPLIER = 0.8;
         public static final double PROCESSER_ALIGNMENT_MULTIPLIER = 0.5;
 
     }
@@ -807,7 +808,7 @@ public final class Constants {
             CALIBRATION
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
 
     }
 
