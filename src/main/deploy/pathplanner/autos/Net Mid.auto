@@ -30,9 +30,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "DA-H Back"
+            "name": "AlignH"
           }
         },
         {
@@ -197,6 +197,18 @@
           "type": "named",
           "data": {
             "name": "PlaceNet"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N-END"
           }
         }
       ]

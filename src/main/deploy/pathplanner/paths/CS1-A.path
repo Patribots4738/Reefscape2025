@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7554124586631374,
-        "y": 5.895381321649345
+        "x": 2.7683035714285715,
+        "y": 6.0359375
       },
       "isLocked": false,
       "linkedName": "CS1"
@@ -20,8 +20,8 @@
         "y": 4.192889030612244
       },
       "prevControl": {
-        "x": 1.8728954081632654,
-        "y": 4.23765943877551
+        "x": 2.3056760204081637,
+        "y": 4.4316645408163255
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "SlowPlace",
-      "minWaypointRelativePos": 0.6920731707317089,
+      "minWaypointRelativePos": 0.5771812080536902,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,
-        "maxAcceleration": 4.5,
+        "maxAcceleration": 5.0,
         "maxAngularVelocity": 270.0,
         "maxAngularAcceleration": 450.0,
         "nominalVoltage": 12.0,

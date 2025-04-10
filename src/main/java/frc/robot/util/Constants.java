@@ -291,11 +291,10 @@ public final class Constants {
                 Units.degreesToRadians(45)));
 
         public static final String[] AUTO_NAMES = new String[] {
-            "4P Left",
+            "4P Left HOME",
+            "4P Left COMP",
             "4P Right HOME",
             "4P Right COMP",
-            "Removal 3P Right",
-            "Removal 3P Left",
             "Buddy 3P Left",
             "Net Mid"
         };
@@ -636,7 +635,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.73;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.74;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -689,10 +688,10 @@ public final class Constants {
         public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
-        public static final double INTAKE_POSITION_RADIANS = -0.42;
-        public static final double DUMP_POSITION_RADIANS = -0.44;
+        public static final double INTAKE_POSITION_RADIANS = -0.48;
+        public static final double DUMP_POSITION_RADIANS = -0.55;
         public static final double L1_POSITION_RADIANS = 1.95;
-        public static final double L1_PLACE_POSITION_RADIANS = 2.6;
+        public static final double L1_PLACE_POSITION_RADIANS = 2.5;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
@@ -808,7 +807,7 @@ public final class Constants {
             CALIBRATION
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DEV;
+        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
 
     }
 

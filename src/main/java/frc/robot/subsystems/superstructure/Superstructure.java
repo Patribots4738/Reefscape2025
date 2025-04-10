@@ -129,7 +129,7 @@ public class Superstructure {
 
         READY_STOW = new SuperState("READY_STOW", ArmState.INTAKE);
         INTAKE = new SuperState("INTAKE", ArmState.INTAKE, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
-        CORAL_DUMP = new SuperState("CORAL_DUMP", ArmState.CORAL_DUMP, ClawState.L1_CORAL_OUT);
+        CORAL_DUMP = new SuperState("CORAL_DUMP", ArmState.CORAL_DUMP, ClawState.CORAL_OUT);
 
         L1_PREP = new SuperState("L1_PREP", ArmState.L1_PREP);
         L2_PREP = new SuperState("L2_PREP", ArmState.L2_PREP);
