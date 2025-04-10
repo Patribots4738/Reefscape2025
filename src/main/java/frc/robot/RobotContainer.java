@@ -379,7 +379,7 @@ public class RobotContainer {
             .toggleOnTrue(superstructure.algaeRemovalCommand());
 
         controller.y()
-            .onTrue(superstructure.setSuperState(superstructure.NET_PREP));
+            .onTrue(superstructure.netPrepCommand());
 
         controller.start().onTrue(coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
         controller.back().onTrue(coralClaw.setPercentCommand(CoralClawConstants.INTAKE_PERCENT));

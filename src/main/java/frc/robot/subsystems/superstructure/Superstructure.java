@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
+import frc.robot.Robot.GameMode;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
@@ -94,10 +96,13 @@ public class Superstructure {
     public final SuperState CLIMB_FINAL;
 
     public final SuperState NET_PREP;
+    public final SuperState NET_PREP_ENDGAME;
     public final SuperState NET_PLACE;
+    public final SuperState NET_PLACE_ENDGAME;
     public final SuperState NET_PREP_FLICK;
     public final SuperState NET_PLACE_FLICK;
     public final SuperState NET_EXIT;
+    public final SuperState NET_EXIT_ENDGAME;
 
     public final SuperState PREP_ALGAE_TOSS;
     public final SuperState BACK_ALGAE_TOSS;
@@ -179,10 +184,13 @@ public class Superstructure {
         CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL);
 
         NET_PREP = new SuperState("NET_PREP", ArmState.NET_PREP);
+        NET_PREP_ENDGAME = new SuperState("NET_PREP_ENDGAME", ArmState.NET_PREP, ClimbState.READY);
         NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClawState.ALGAE_OUT, () -> false, () -> wrist.getPosition() > 1.6);
+        NET_PLACE_ENDGAME = new SuperState("NET_PLACE_ENDGAME", ArmState.NET, ClimbState.READY, ClawState.ALGAE_OUT, () -> false, () -> wrist.getPosition() > 1.6);
         NET_PREP_FLICK = new SuperState("NET_PREP_FLICK", ArmState.NET_PREP_FLICK);
         NET_PLACE_FLICK = new SuperState("NET_PLACE_FLICK", ArmState.NET, ClawState.ALGAE_OUT, () -> false, () -> true);
         NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT);
+        NET_EXIT_ENDGAME = new SuperState("NET_EXIT_ENDGAME", ArmState.NET_EXIT, ClimbState.READY);
 
         PREP_ALGAE_TOSS = new SuperState("PREP_ALGAE_TOSS", ArmState.PREP_ALGAE_TOSS, ClawState.ALGAE_IN, () -> false, () -> true);
         BACK_ALGAE_TOSS = new SuperState("BACK_ALGAE_TOSS", ArmState.BACK_ALGAE_TOSS, ClawState.ALGAE_OUT);
@@ -366,11 +374,16 @@ public class Superstructure {
 
     public Command fixArmAndClimb(ArmState armState, ClimbState climbState) {
         return Commands.either(
-            // Climb needs to move to achieve goal state()
-            Commands.sequence(
-                setArmState(ArmState.CLIMB),
-                setClimbState(climbState),
-                setArmState(armState)
+            // Climb needs to move to achieve goal state
+            Commands.either(
+                // Arm goal is unsafe for climb, give way to climb then move arm back in
+                Commands.sequence(
+                    avoidClimb(ArmState.CLIMB, climbState),
+                    setArmState(armState)
+                ), 
+                // Arm goal is safe for climb, move to arm goal then set climb state
+                avoidClimb(armState, climbState), 
+                () -> armState.wristPosition < ArmState.CLIMB.wristPosition
             ), 
             // Climb doesn't need to move, set goal arm state and update climb control loop JIC
             Commands.parallel(
@@ -446,7 +459,7 @@ public class Superstructure {
             case L3, REEF_ALGAE_TOSS -> L3_PLACE;
             case L3_WITH_ALGAE -> L3_WITH_ALGAE_PLACE;
             case L4 -> L4_PLACE;
-            case NET_PREP -> NET_PLACE;
+            case NET_PREP -> shouldEndgameNet() ? NET_PLACE_ENDGAME : NET_PLACE;
             case PROCESSOR -> PROCESSOR_PLACE;
             default -> CORAL_DUMP;
         };
@@ -479,7 +492,7 @@ public class Superstructure {
             case L4 -> L4_EXIT;
             case L2_WITH_ALGAE -> L2_WITH_ALGAE_EXIT;
             case L3_WITH_ALGAE -> L3_WITH_ALGAE_EXIT;
-            case NET -> NET_EXIT;
+            case NET -> shouldEndgameNet() ? NET_EXIT_ENDGAME : NET_EXIT;
             case PROCESSOR -> PROCESSOR_EXIT;
             default -> READY_STOW;
         };
@@ -511,9 +524,13 @@ public class Superstructure {
             stopOuttakeCommand(),
             Commands.waitUntil(() -> !shouldEvadeReef()),
             Commands.either(
-                setSuperState(ALGAE_CARRY), 
-                setSuperState(READY_STOW), 
-                algaeClaw::hasPiece
+                setSuperState(CLIMB_READY), 
+                Commands.either(
+                    setSuperState(ALGAE_CARRY), 
+                    setSuperState(READY_STOW), 
+                    algaeClaw::hasPiece
+                ),
+                () -> shouldEndgameNet() && targetState.armState == ArmState.NET_EXIT
             )
         );
     }
@@ -555,6 +572,10 @@ public class Superstructure {
             Commands.waitUntil(algaeClaw::hasPiece).onlyIf(() -> targetState.clawState.algaePercent > 0).withTimeout(2.0),
             new ScheduleCommand(setSuperState(state))
         );
+    }
+
+    public Command netPrepCommand() {
+        return Commands.either(setSuperState(NET_PREP_ENDGAME), setSuperState(NET_PREP), this::shouldEndgameNet);
     }
 
     public Command stopAllCommand() {
@@ -660,6 +681,11 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/AlgaePercent")
     public double getAlgaePercent() {
         return targetState.clawState.algaePercent;
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEndgameNet")
+    public boolean shouldEndgameNet() {
+        return Robot.gameMode == GameMode.TELEOP && Robot.currentTimestamp - RobotContainer.gameModeStart >= 120.0;
     }
 
 }
