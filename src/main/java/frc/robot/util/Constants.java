@@ -688,7 +688,7 @@ public final class Constants {
         public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
-        public static final double INTAKE_POSITION_RADIANS = -0.48;
+        public static final double INTAKE_POSITION_RADIANS = -0.44;
         public static final double DUMP_POSITION_RADIANS = -0.55;
         public static final double L1_POSITION_RADIANS = 1.95;
         public static final double L1_PLACE_POSITION_RADIANS = 2.5;
@@ -937,8 +937,8 @@ public final class Constants {
             add(PoseCalculations.mirrorPose(BLUE_PROCESSOR));
         }};
 
-        public static final Pose2d CORAL_STATION_1 = new Pose2d(1.600, 7.321, Rotation2d.fromDegrees(125));
-        public static final Pose2d CORAL_STATION_2 = new Pose2d(1.600, 0.699, Rotation2d.fromDegrees(-125));
+        public static final Pose2d CORAL_STATION_1 = new Pose2d(1.600, 7.0, Rotation2d.fromDegrees(125));
+        public static final Pose2d CORAL_STATION_2 = new Pose2d(1.600, 0.73, Rotation2d.fromDegrees(-125));
 
         public static final double CORAL_STATION_HEIGHT = 0.95;
 

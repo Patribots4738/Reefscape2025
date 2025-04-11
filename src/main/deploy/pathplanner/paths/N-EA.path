@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 7.8124362244897965,
-        "y": 5.3121492346938775
+        "y": 4.909215561224489
       },
       "prevControl": null,
       "nextControl": {
         "x": 6.148469387755102,
-        "y": 5.453922193877551
+        "y": 5.050988520408162
       },
       "isLocked": false,
       "linkedName": "N"
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "SlowRemoval",
-      "minWaypointRelativePos": 0.6812080536912755,
+      "minWaypointRelativePos": 0.5906040268456387,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.3,
-        "maxAcceleration": 4.1,
+        "maxVelocity": 1.5,
+        "maxAcceleration": 5.0,
         "maxAngularVelocity": 270.0,
         "maxAngularAcceleration": 450.0,
         "nominalVoltage": 12.0,

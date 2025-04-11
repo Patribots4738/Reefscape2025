@@ -2,7 +2,6 @@ package frc.robot.subsystems.superstructure;
 
 import java.util.Set;
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -10,6 +9,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -305,7 +305,7 @@ public class Superstructure {
                 Commands.race(
                     Commands.either(
                         // Move wrist to nearest transition pose, unless the arm was previously stowed up (which is a safe spot)
-                        transitionWrist(() -> state.wristPosition), 
+                        transitionWrist(), 
                         // Move wrist straight to target position
                         wrist.setPositionCommand(() -> state.wristPosition, this::shouldRunWristFast), 
                         () -> 
@@ -394,7 +394,7 @@ public class Superstructure {
         );
     }
 
-    public Command transitionWrist(DoubleSupplier targetWristPosition) {
+    public Command transitionWrist() {
         return wrist.setPositionCommand(WristConstants.TRANSITION_RADIANS, this::shouldRunWristFast);
     }
 
@@ -685,7 +685,7 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEndgameNet")
     public boolean shouldEndgameNet() {
-        return Robot.gameMode == GameMode.TELEOP && Robot.currentTimestamp - RobotContainer.gameModeStart >= 120.0;
+        return Robot.gameMode == GameMode.TELEOP && Robot.currentTimestamp - RobotContainer.gameModeStart >= 120.0 && DriverStation.isFMSAttached();
     }
 
 }
