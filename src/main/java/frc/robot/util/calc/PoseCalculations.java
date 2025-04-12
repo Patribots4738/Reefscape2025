@@ -168,7 +168,7 @@ public class PoseCalculations {
         double distance = pos1.getTranslation().getDistance(pos2.getTranslation());
         Pose2d addedAxisPose = getPoseWithDistance(new Pose2d(pos1.getX(), pos1.getY(), pos2.getRotation().minus(Rotation2d.fromRadians(Math.PI))), distance);
         addedAxisPose = new Pose2d(addedAxisPose.getX(), addedAxisPose.getY(), pos2.getRotation());
-        Logger.recordOutput("Subsystems/Swerve/AddedAxisPose", addedAxisPose);
+        // Logger.recordOutput("Subsystems/Swerve/AddedAxisPose", addedAxisPose);
         return isPoseNear(addedAxisPose, pos2);
     }
 

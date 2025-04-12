@@ -71,8 +71,8 @@ public class Elevator extends SubsystemBase {
 
         if (shouldRunSetpoint) {
             setpoint = (shouldRunFast ? fastProfile : slowProfile).calculate(0.02, setpoint, targetState);
-            Logger.recordOutput("Subsystems/Elevator/Step/Velocity", setpoint.velocity);
-            Logger.recordOutput("Subsystems/Elevator/Step/Position", setpoint.position);
+            // Logger.recordOutput("Subsystems/Elevator/Step/Velocity", setpoint.velocity);
+            // Logger.recordOutput("Subsystems/Elevator/Step/Position", setpoint.position);
             io.setPosition(setpoint.position);
         } else {
             setpoint.position = inputs.leaderPositionMeters;

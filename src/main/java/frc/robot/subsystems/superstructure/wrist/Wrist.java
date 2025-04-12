@@ -72,8 +72,8 @@ public class Wrist extends SubsystemBase {
 
         if (shouldRunSetpoint) {
             setpoint = (shouldRunFast ? fastProfile : slowProfile).calculate(0.02, setpoint, targetState);
-            Logger.recordOutput("Subsystems/Wrist/Step/Velocity", setpoint.velocity);
-            Logger.recordOutput("Subsystems/Wrist/Step/Position", setpoint.position);
+            // Logger.recordOutput("Subsystems/Wrist/Step/Velocity", setpoint.velocity);
+            // Logger.recordOutput("Subsystems/Wrist/Step/Position", setpoint.position);
             io.setPosition(setpoint.position, 0);
         } else {
             setpoint.position = inputs.internalPositionRads;

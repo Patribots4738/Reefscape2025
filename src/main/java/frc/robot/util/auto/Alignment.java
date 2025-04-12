@@ -127,7 +127,7 @@ public class Alignment {
             MathUtil.applyDeadband((normalizeSpeed(autoSpeeds.vyMetersPerSecond)), 0.01),
             -MathUtil.applyDeadband((normalizeSpeed(autoSpeeds.vxMetersPerSecond)), 0.01),
             MathUtil.applyDeadband(autoSpeeds.omegaRadiansPerSecond / swerve.getMaxAngularVelocity(), 0.005));
-        Logger.recordOutput("Subsystems/Swerve/NormalizedSpeeds", normalizedSpeeds);
+        // Logger.recordOutput("Subsystems/Swerve/NormalizedSpeeds", normalizedSpeeds);
         return normalizedSpeeds;
     }
 
@@ -163,7 +163,7 @@ public class Alignment {
             // Project velocity vector onto direction of position vector by calculating 
             // a new component of the velocity vector that acts in the direction of pTheta
             xySetpoint.velocity = MathUtil.clamp(vMagnitude * Math.cos(theta), 0, swerve.getMaxLinearVelocity());
-            Logger.recordOutput("Subsystems/Swerve/SetpointStartVelocity", xySetpoint.velocity);
+            // Logger.recordOutput("Subsystems/Swerve/SetpointStartVelocity", xySetpoint.velocity);
             profileStartingPose = currentPose;
         }
         swerve.setDesiredPose(position);
@@ -330,13 +330,13 @@ public class Alignment {
             // Post-alignment, use current alignmentIndex
             node = alignmentIndex == 0 ? reefSide.getLeft() : reefSide.getRight();
         }
-        Logger.recordOutput("Subsystems/Swerve/TargetNode", node);
+        // Logger.recordOutput("Subsystems/Swerve/TargetNode", node);
         // Get desired position from face angle
         double distance = DriveConstants.FULL_ROBOT_LENGTH_METERS / 2;
         Pose2d desiredPose = PoseCalculations.getPoseWithDistance(node, distance);
 
         ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(desiredPose);
-        Logger.recordOutput("Subsystems/Swerve/AutoSpeeds", autoSpeeds);
+        // Logger.recordOutput("Subsystems/Swerve/AutoSpeeds", autoSpeeds);
         return autoSpeeds;
     }
 
@@ -492,7 +492,7 @@ public class Alignment {
         return pathfindToPoseCommand(
             () -> {
                 Pose2d prep = PoseCalculations.getPoseWithDistance(PoseCalculations.getClosestReefSide(swerve.getPose()).getCenter(), AutoConstants.REEF_ALIGNMENT_PREP_DISTANCE);
-                Logger.recordOutput("Subsystems/Swerve/PrepPose", prep);
+                // Logger.recordOutput("Subsystems/Swerve/PrepPose", prep);
                 return prep;
             }
         );

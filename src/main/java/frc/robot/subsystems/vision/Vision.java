@@ -96,7 +96,7 @@ public class Vision extends SubsystemBase {
 
             if (alignmentSupplier.get() == AlignmentMode.REEF) {
                 int reefTag = closestReefTag();
-                Logger.recordOutput("Subsystems/Vision/ClosestReefTag", reefTag);
+                // Logger.recordOutput("Subsystems/Vision/ClosestReefTag", reefTag);
                 camera.setUsedTags(new int[] { reefTag });
             } else {
                 camera.setUsedTags(FieldConstants.REEF_TAGS);
@@ -113,7 +113,7 @@ public class Vision extends SubsystemBase {
         List<Integer> camerasToUpdate = new ArrayList<>();
         for (int i = 0; i < cameras.length; i++) {
             boolean updateCamera = cameraHasTarget(i);
-            Logger.recordOutput("Subsystems/Vision/UpdateCamera" + i, updateCamera);
+            // Logger.recordOutput("Subsystems/Vision/UpdateCamera" + i, updateCamera);
             if (updateCamera) {
                 camerasToUpdate.add(i);
                 tagCount += inputs[i].tagIds.length;
@@ -159,8 +159,8 @@ public class Vision extends SubsystemBase {
             rotationUpdated = true;
         }
 
-        Logger.recordOutput("Subsystems/Vision/XYStdDev", xyStds);
-        Logger.recordOutput("Subsystems/Vision/ThetaStdDev", radStds);
+        // Logger.recordOutput("Subsystems/Vision/XYStdDev", xyStds);
+        // Logger.recordOutput("Subsystems/Vision/ThetaStdDev", radStds);
     }
 
     private boolean cameraHasTarget(int cameraIndex) {
