@@ -453,10 +453,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.28076171875;
-        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283203;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.081543;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.151123;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.279785;
+        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.082031;
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET = 0.153320;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -635,7 +635,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.74;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.727;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -688,8 +688,8 @@ public final class Constants {
         public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
-        public static final double INTAKE_POSITION_RADIANS = -0.48;
-        public static final double DUMP_POSITION_RADIANS = -0.55;
+        public static final double INTAKE_POSITION_RADIANS = -0.43;
+        public static final double DUMP_POSITION_RADIANS = -0.6;
         public static final double L1_POSITION_RADIANS = 1.95;
         public static final double L1_PLACE_POSITION_RADIANS = 2.5;
         // public static final double L2_POSITION_RADIANS = 2.41;

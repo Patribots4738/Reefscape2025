@@ -357,6 +357,9 @@ public class RobotContainer {
         controller.rightBumper()
             .onTrue(superstructure.algaeTreeCommand());
 
+        controller.leftTrigger()
+            .onTrue(superstructure.fixIntakeCommand());
+
         controller.povLeft()
             .onTrue(superstructure.setSuperState(superstructure.L1));
         

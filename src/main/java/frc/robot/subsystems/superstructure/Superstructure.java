@@ -584,7 +584,7 @@ public class Superstructure {
 
     public Command fixIntakeCommand() {
         return Commands.sequence(
-            setSuperState(INTAKE_FIX).until(() -> wrist.getPosition() > WristConstants.INTAKE_POSITION_RADIANS + 0.1),
+            setSuperState(INTAKE_FIX),
             coralIntakeCommand(() -> false)
         );
     }
