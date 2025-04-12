@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.Robot;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.FieldConstants;
 import frc.robot.util.custom.ReefSide;
@@ -169,6 +170,10 @@ public class PoseCalculations {
         addedAxisPose = new Pose2d(addedAxisPose.getX(), addedAxisPose.getY(), pos2.getRotation());
         Logger.recordOutput("Subsystems/Swerve/AddedAxisPose", addedAxisPose);
         return isPoseNear(addedAxisPose, pos2);
+    }
+
+    public static boolean shouldAlignToStation1(Pose2d pos) {
+        return Robot.isRedAlliance() ^ pos.getY() > FieldConstants.FIELD_MAX_HEIGHT / 2;
     }
   
 }

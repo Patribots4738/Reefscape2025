@@ -688,7 +688,7 @@ public final class Constants {
         public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
-        public static final double INTAKE_POSITION_RADIANS = -0.44;
+        public static final double INTAKE_POSITION_RADIANS = -0.48;
         public static final double DUMP_POSITION_RADIANS = -0.55;
         public static final double L1_POSITION_RADIANS = 1.95;
         public static final double L1_PLACE_POSITION_RADIANS = 2.5;
@@ -937,8 +937,8 @@ public final class Constants {
             add(PoseCalculations.mirrorPose(BLUE_PROCESSOR));
         }};
 
-        public static final Pose2d CORAL_STATION_1 = new Pose2d(1.600, 7.0, Rotation2d.fromDegrees(125));
-        public static final Pose2d CORAL_STATION_2 = new Pose2d(1.600, 0.73, Rotation2d.fromDegrees(-125));
+        public static final Pose2d CORAL_STATION_1 = new Pose2d(1.600, 7.321, Rotation2d.fromDegrees(125));
+        public static final Pose2d CORAL_STATION_2 = new Pose2d(1.600, 0.699, Rotation2d.fromDegrees(-125));
 
         public static final double CORAL_STATION_HEIGHT = 0.95;
 
@@ -959,6 +959,47 @@ public final class Constants {
         public static final List<Pose2d> GET_CORAL_STATION_POSITIONS() {
             int startIndex = Robot.isRedAlliance() ? 2 : 0;
             return CORAL_STATION_POSITIONS.subList(startIndex, startIndex + 2);
+        }
+
+        public static final Pose2d CORAL_STATION_1_FAR = CORAL_STATION_1;
+        public static final Pose2d CORAL_STATION_1_MID = new Pose2d(1.157, 7.028, Rotation2d.fromDegrees(125));
+        public static final Pose2d CORAL_STATION_1_CLOSE = new Pose2d(0.701, 6.678, Rotation2d.fromDegrees(125));
+        public static final Pose2d CORAL_STATION_2_FAR = CORAL_STATION_2;
+        public static final Pose2d CORAL_STATION_2_MID = new Pose2d(1.157, 1.014, Rotation2d.fromDegrees(-125));
+        public static final Pose2d CORAL_STATION_2_CLOSE = new Pose2d(0.701, 1.350, Rotation2d.fromDegrees(-125));
+
+        public static final List<Pose2d> CORAL_STATION_SLOT_POSITIONS = new ArrayList<Pose2d>() {{
+            Pose2d farSlot1 = CORAL_STATION_1_FAR;
+            Pose2d midSlot1 = CORAL_STATION_1_MID;
+            Pose2d closeSlot1 = CORAL_STATION_1_CLOSE;
+            Pose2d farSlot2 = CORAL_STATION_2_FAR;
+            Pose2d midSlot2 = CORAL_STATION_2_MID;
+            Pose2d closeSlot2 = CORAL_STATION_2_CLOSE;
+            add(farSlot1);
+            add(midSlot1);
+            add(closeSlot1);
+            add(closeSlot2);
+            add(midSlot2);
+            add(farSlot2);
+            add(PoseCalculations.mirrorPose(farSlot1));
+            add(PoseCalculations.mirrorPose(midSlot1));
+            add(PoseCalculations.mirrorPose(closeSlot1));
+            add(PoseCalculations.mirrorPose(closeSlot2));
+            add(PoseCalculations.mirrorPose(midSlot2));
+            add(PoseCalculations.mirrorPose(farSlot2));
+        }};
+
+        public static final List<Pose2d> GET_CORAL_STATION_SLOT_POSITIONS() {
+            int startIndex = Robot.isRedAlliance() ? 6 : 0;
+            return CORAL_STATION_SLOT_POSITIONS.subList(startIndex, startIndex + 6);
+        }
+
+        public static final List<Pose2d> GET_CORAL_STATION_1_POSITIONS() {
+            return GET_CORAL_STATION_SLOT_POSITIONS().subList(0, 3);
+        }
+
+        public static final List<Pose2d> GET_CORAL_STATION_2_POSITIONS() {
+            return GET_CORAL_STATION_SLOT_POSITIONS().subList(3, 6);
         }
 
         public static final Pose2d BLUE_REEF = new Pose2d(4.477431, FieldConstants.FIELD_MAX_HEIGHT / 2.0, new Rotation2d());

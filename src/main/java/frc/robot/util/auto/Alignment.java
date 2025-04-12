@@ -1,5 +1,6 @@
 package frc.robot.util.auto;
 
+import java.util.List;
 import java.util.Set;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -212,8 +213,17 @@ public class Alignment {
     }
 
     public ChassisSpeeds getIntakeAutoSpeeds() {
-        Pose2d intakeStation = PoseCalculations.getClosestCoralStation(swerve.getPose());
-        ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(intakeStation);
+        Pose2d desiredPose;
+        boolean shouldAlignToStation1 = PoseCalculations.shouldAlignToStation1(swerve.getPose());
+        Logger.recordOutput("Subsystems/Swerve/ShouldAlignToStation1", shouldAlignToStation1);
+        List<Pose2d> slotPoses = shouldAlignToStation1 ? FieldConstants.GET_CORAL_STATION_1_POSITIONS() : FieldConstants.GET_CORAL_STATION_2_POSITIONS();
+        if (alignmentIndex == -1) {
+            alignmentIndex = shouldAlignToStation1 ? 0 : 2;
+            desiredPose = slotPoses.get(alignmentIndex);
+        } else {
+            desiredPose = slotPoses.get(MathUtil.clamp(alignmentIndex, 0, 2));
+        }
+        ChassisSpeeds autoSpeeds = getProfiledAutoSpeeds(desiredPose);
         return autoSpeeds;
     }
     
@@ -360,6 +370,7 @@ public class Alignment {
             switch (alignmentMode) {
                 case CAGE -> MathUtil.clamp(alignmentIndex, 0, FieldConstants.GET_CAGE_POSITIONS().size() - 1);
                 case REEF, REEF_PREP -> MathUtil.clamp(alignmentIndex, 0, 1);
+                case INTAKE -> MathUtil.clamp(alignmentIndex, 0, 2);
                 default -> alignmentIndex = -1;
             };
     }

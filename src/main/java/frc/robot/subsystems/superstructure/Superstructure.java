@@ -48,6 +48,7 @@ public class Superstructure {
     public final SuperState STOW;
     public final SuperState READY_STOW;
     public final SuperState INTAKE;
+    public final SuperState INTAKE_FIX;
     public final SuperState CORAL_DUMP;
 
     public final SuperState L1;
@@ -132,8 +133,9 @@ public class Superstructure {
         targetArmState = ArmState.STOW;
         targetClimbState = ClimbState.STOW;
 
-        READY_STOW = new SuperState("READY_STOW", ArmState.INTAKE);
+        READY_STOW = new SuperState("READY_STOW", ArmState.READY_STOW);
         INTAKE = new SuperState("INTAKE", ArmState.INTAKE, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
+        INTAKE_FIX = new SuperState("INTAKE_FIX", ArmState.INTAKE_FIX, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
         CORAL_DUMP = new SuperState("CORAL_DUMP", ArmState.CORAL_DUMP, ClawState.CORAL_OUT);
 
         L1_PREP = new SuperState("L1_PREP", ArmState.L1_PREP);
@@ -202,7 +204,9 @@ public class Superstructure {
     public enum ArmState {
 
         STOW (ElevatorConstants.STOW_POSITION_METERS, WristConstants.STOW_POSITION_RADIANS),
+        READY_STOW (ElevatorConstants.STOW_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS),
         INTAKE (ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS),
+        INTAKE_FIX(ElevatorConstants.INTAKE_POSITION_METERS, WristConstants.INTAKE_POSITION_RADIANS + 0.25),
         CORAL_DUMP(ElevatorConstants.STOW_POSITION_METERS, WristConstants.DUMP_POSITION_RADIANS),
         L1_PREP (ElevatorConstants.L1_POSITION_METERS, WristConstants.TRANSITION_RADIANS),
         L2_PREP (ElevatorConstants.L2_POSITION_METERS, WristConstants.TRANSITION_RADIANS),
@@ -576,6 +580,13 @@ public class Superstructure {
 
     public Command netPrepCommand() {
         return Commands.either(setSuperState(NET_PREP_ENDGAME), setSuperState(NET_PREP), this::shouldEndgameNet);
+    }
+
+    public Command fixIntakeCommand() {
+        return Commands.sequence(
+            setSuperState(INTAKE_FIX).until(() -> wrist.getPosition() > WristConstants.INTAKE_POSITION_RADIANS + 0.1),
+            coralIntakeCommand(() -> false)
+        );
     }
 
     public Command stopAllCommand() {
