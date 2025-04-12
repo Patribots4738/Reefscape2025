@@ -97,12 +97,15 @@ public class Superstructure {
     public final SuperState CLIMB_FINAL;
 
     public final SuperState NET_PREP;
+    public final SuperState NET_PREP_FAR;
     public final SuperState NET_PREP_ENDGAME;
     public final SuperState NET_PLACE;
+    public final SuperState NET_PLACE_FAR;
     public final SuperState NET_PLACE_ENDGAME;
     public final SuperState NET_PREP_FLICK;
     public final SuperState NET_PLACE_FLICK;
     public final SuperState NET_EXIT;
+    public final SuperState NET_EXIT_FAR;
     public final SuperState NET_EXIT_ENDGAME;
 
     public final SuperState PREP_ALGAE_TOSS;
@@ -186,12 +189,15 @@ public class Superstructure {
         CLIMB_FINAL = new SuperState("CLIMB_FINAL", ArmState.CLIMB, ClimbState.FINAL);
 
         NET_PREP = new SuperState("NET_PREP", ArmState.NET_PREP);
+        NET_PREP_FAR = new SuperState("NET_PREP_FAR", ArmState.NET_PREP_FAR);
         NET_PREP_ENDGAME = new SuperState("NET_PREP_ENDGAME", ArmState.NET_PREP, ClimbState.READY);
         NET_PLACE = new SuperState("NET_PLACE", ArmState.NET, ClawState.ALGAE_OUT, () -> false, () -> wrist.getPosition() > 1.6);
+        NET_PLACE_FAR = new SuperState("NET_PLACE_FAR", ArmState.NET_FAR, ClawState.ALGAE_OUT, () -> false, () -> wrist.getPosition() > 1.6 && elevator.getPosition() > 0.35);
         NET_PLACE_ENDGAME = new SuperState("NET_PLACE_ENDGAME", ArmState.NET, ClimbState.READY, ClawState.ALGAE_OUT, () -> false, () -> wrist.getPosition() > 1.6);
         NET_PREP_FLICK = new SuperState("NET_PREP_FLICK", ArmState.NET_PREP_FLICK);
         NET_PLACE_FLICK = new SuperState("NET_PLACE_FLICK", ArmState.NET, ClawState.ALGAE_OUT, () -> false, () -> true);
         NET_EXIT = new SuperState("NET_EXIT", ArmState.NET_EXIT);
+        NET_EXIT_FAR = new SuperState("NET_EXIT_FAR", ArmState.NET_EXIT_FAR);
         NET_EXIT_ENDGAME = new SuperState("NET_EXIT_ENDGAME", ArmState.NET_EXIT, ClimbState.READY);
 
         PREP_ALGAE_TOSS = new SuperState("PREP_ALGAE_TOSS", ArmState.PREP_ALGAE_TOSS, ClawState.ALGAE_IN, () -> false, () -> true);
@@ -234,9 +240,12 @@ public class Superstructure {
         PROCESSOR (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
         GROUND_ALGAE_IN (ElevatorConstants.PROCESSOR_METERS, WristConstants.PROCESSOR_RADIANS),
         NET_PREP (ElevatorConstants.NET_PREP_METERS, WristConstants.NET_PREP_RADIANS),
+        NET_PREP_FAR (0.25, WristConstants.NET_PREP_RADIANS),
         NET_PREP_FLICK (ElevatorConstants.NET_PLACE_METERS, WristConstants.L3_ALGAE_REMOVAL),
         NET (ElevatorConstants.NET_PLACE_METERS, WristConstants.NET_RADIANS),
+        NET_FAR (ElevatorConstants.NET_PLACE_METERS, 2.3),
         NET_EXIT (ElevatorConstants.NET_PLACE_METERS, WristConstants.NET_RADIANS),
+        NET_EXIT_FAR (ElevatorConstants.NET_PLACE_METERS, WristConstants.NET_RADIANS),
         PREP_ALGAE_TOSS ( ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.L3_ALGAE_REMOVAL),
         BACK_ALGAE_TOSS (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.BACK_ALGAE_TOSS),
         FRONT_ALGAE_TOSS (ElevatorConstants.L2_POSITION_REMOVE_ALGAE, WristConstants.FRONT_ALGAE_TOSS),
@@ -464,6 +473,7 @@ public class Superstructure {
             case L3_WITH_ALGAE -> L3_WITH_ALGAE_PLACE;
             case L4 -> L4_PLACE;
             case NET_PREP -> shouldEndgameNet() ? NET_PLACE_ENDGAME : NET_PLACE;
+            case NET_PREP_FAR -> NET_PLACE_FAR;
             case PROCESSOR -> PROCESSOR_PLACE;
             default -> CORAL_DUMP;
         };
@@ -497,6 +507,7 @@ public class Superstructure {
             case L2_WITH_ALGAE -> L2_WITH_ALGAE_EXIT;
             case L3_WITH_ALGAE -> L3_WITH_ALGAE_EXIT;
             case NET -> shouldEndgameNet() ? NET_EXIT_ENDGAME : NET_EXIT;
+            case NET_FAR -> NET_EXIT_FAR;
             case PROCESSOR -> PROCESSOR_EXIT;
             default -> READY_STOW;
         };
@@ -605,6 +616,7 @@ public class Superstructure {
         return (
             !algaeClaw.hasPiece() 
                 || targetArmState == ArmState.NET 
+                || targetArmState == ArmState.NET_FAR
                 || targetArmState == ArmState.BACK_ALGAE_TOSS 
                 || targetArmState == ArmState.FRONT_ALGAE_TOSS
                 || targetArmState == ArmState.REEF_ALGAE_TOSS
@@ -620,6 +632,7 @@ public class Superstructure {
         return (
             !algaeClaw.hasPiece() 
                 || targetArmState == ArmState.NET
+                || targetArmState == ArmState.NET_FAR
                 || targetArmState == ArmState.REEF_ALGAE_TOSS
         ) && !(
             targetArmState == ArmState.L2_ALGAE_EXIT 
