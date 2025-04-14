@@ -32,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AlignH"
+            "name": "PAlignH"
           }
         },
         {
@@ -143,15 +143,79 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Stow"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "N-CA"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AlgaeIntakeStart"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "N-END"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CA-FN"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "AlgaeIntakeStop"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PrepareNetFar"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceNet"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stow"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "FN-END L"
+                }
+              }
+            ]
           }
         }
       ]

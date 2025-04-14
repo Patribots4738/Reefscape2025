@@ -295,8 +295,9 @@ public final class Constants {
             "4P Left COMP",
             "4P Right HOME",
             "4P Right COMP",
-            "Buddy 3P Left",
-            "Net Mid"
+            "Buddy 4P Left",
+            "Net Left",
+            "Net Right"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;

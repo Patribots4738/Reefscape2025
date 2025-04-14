@@ -34,7 +34,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "AlignF"
+                        "name": "PAlignF"
                       }
                     }
                   ]
