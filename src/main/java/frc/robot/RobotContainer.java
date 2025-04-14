@@ -496,25 +496,25 @@ public class RobotContainer {
         NamedCommands.registerCommand("WaitForCoralHard", Commands.waitUntil(() -> coralClaw.hasPiece()));
         NamedCommands.registerCommand("WaitForElevator", Commands.waitUntil(() -> superstructure.getTargetState().armState != ArmState.INTAKE));
 
-        NamedCommands.registerCommand("AlignA", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(0), true).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignB", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(0), false).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignC", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(1), true).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignD", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(1), false).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignE", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(2), false).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignF", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(2), true).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignG", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(3), false).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignH", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(3), true).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignI", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(4), false).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignJ", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(4), true).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignK", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(5), true).onlyIf(() -> coralClaw.hasPiece()));
-        NamedCommands.registerCommand("AlignL", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(5), false).onlyIf(() -> coralClaw.hasPiece()));
+        NamedCommands.registerCommand("AlignA", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(0), true).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignB", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(0), false).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignC", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(1), true).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignD", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(1), false).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignE", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(2), false).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignF", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(2), true).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignG", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(3), false).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignH", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(3), true).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignI", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(4), false).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignJ", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(4), true).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignK", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(5), true).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
+        NamedCommands.registerCommand("AlignL", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(5), false).onlyIf(() -> coralClaw.hasPiece()).withTimeout(3.0));
 
-        NamedCommands.registerCommand("PAlignE", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(2), false));
-        NamedCommands.registerCommand("PAlignF", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(2), true));
-        NamedCommands.registerCommand("PAlignG", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(3), false));
-        NamedCommands.registerCommand("PAlignH", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(3), true));
-        NamedCommands.registerCommand("PAlignI", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(4), false));
-        NamedCommands.registerCommand("PAlignJ", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(4), true));
+        NamedCommands.registerCommand("PAlignE", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(2), false).withTimeout(3.0));
+        NamedCommands.registerCommand("PAlignF", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(2), true).withTimeout(3.0));
+        NamedCommands.registerCommand("PAlignG", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(3), false).withTimeout(3.0));
+        NamedCommands.registerCommand("PAlignH", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(3), true).withTimeout(3.0));
+        NamedCommands.registerCommand("PAlignI", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(4), false).withTimeout(3.0));
+        NamedCommands.registerCommand("PAlignJ", alignment.autonomousReefAutoAlignmentCommand(() -> FieldConstants.GET_REEF_FACE_POSITIONS().get(4), true).withTimeout(3.0));
 
         for (int i = 0; i < 12; i++) {
             char currentNode = AutoConstants.REEF_NODES.charAt(i);
