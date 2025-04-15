@@ -709,7 +709,7 @@ public class Superstructure {
 
     @AutoLogOutput (key = "Subsystems/Superstructure/ShouldEndgameNet")
     public boolean shouldEndgameNet() {
-        return Robot.gameMode == GameMode.TELEOP && Robot.currentTimestamp - RobotContainer.gameModeStart >= 120.0 && DriverStation.isFMSAttached();
+        return Robot.gameMode == GameMode.TELEOP && Robot.currentTimestamp - RobotContainer.gameModeStart >= 125.0 && DriverStation.isFMSAttached();
     }
 
 }
