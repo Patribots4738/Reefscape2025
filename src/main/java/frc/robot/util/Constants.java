@@ -467,7 +467,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.8924 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.875 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -615,7 +615,7 @@ public final class Constants {
         // public static final double L2_POSITION_METERS = 0.09;
         // public static final double L3_POSITION_METERS = 0.27;
         public static final double L2_POSITION_METERS = 0.035;
-        public static final double L3_POSITION_METERS = 0.23;
+        public static final double L3_POSITION_METERS = 0.24;
         public static final double L2_WITH_ALGAE_METERS = 0.06;
         public static final double L3_WITH_ALGAE_METERS = 0.3;
         public static final double L4_POSITION_METERS = MAX_DISPLACEMENT_METERS;
