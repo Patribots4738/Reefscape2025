@@ -690,6 +690,7 @@ public final class Constants {
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
         public static final double INTAKE_POSITION_RADIANS = -0.46;
+        public static final double INTAKE_POSITION_RADIANS = -0.46;
         public static final double DUMP_POSITION_RADIANS = -0.6;
         public static final double L1_POSITION_RADIANS = 1.95;
         public static final double L1_PLACE_POSITION_RADIANS = 2.6;
