@@ -35,6 +35,11 @@ Thanks for checking us out, & be sure to star this repository if you find anythi
 ____
 
 ## ✨Highlights✨
+- Depth perception with two adjacent limelights angled inward 
+- Auto alignment to barge, net, reef, and processor
+- Match replay using `Advantage Scope` and Rio Logs
+- Efficient driver station set-up using `Elastic`
+- Data logging and modularity using `Advantage Kit`
 
 ## Simulation & Testing 🪄
 
