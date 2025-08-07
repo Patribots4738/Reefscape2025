@@ -15,10 +15,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.Robot.GameMode;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
 import frc.robot.subsystems.superstructure.claw.coral.CoralClaw;
+import frc.robot.subsystems.superstructure.climb.Climb;
 import frc.robot.subsystems.superstructure.elevator.Elevator;
 import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.util.Constants.AlgaeClawConstants;
@@ -28,7 +29,6 @@ import frc.robot.util.Constants.ElevatorConstants;
 import frc.robot.util.Constants.WristConstants;
 import frc.robot.util.calc.PoseCalculations;
 import frc.robot.util.custom.ActiveConditionalCommand;
-import frc.robot.subsystems.superstructure.climb.Climb;
 
 public class Superstructure {
     
@@ -46,6 +46,7 @@ public class Superstructure {
     // private final LoggedTunableNumber wristReefTransition = new LoggedTunableNumber("Wrist/ReefTransitionPosition", WristConstants.REEF_TRANSITION_RADIANS);
 
     public final SuperState STOW;
+    public final SuperState CORAL;
     public final SuperState READY_STOW;
     public final SuperState INTAKE;
     public final SuperState INTAKE_FIX;
@@ -114,6 +115,7 @@ public class Superstructure {
     public final SuperState REEF_ALGAE_TOSS;
 
     private SuperState targetState;
+    private String nextReefLevel;
     private ArmState targetArmState;
     private ClimbState targetClimbState;
 
@@ -131,20 +133,23 @@ public class Superstructure {
         this.robotPoseSupplier = robotPoseSupplier;
 
         STOW = new SuperState("STOW", ArmState.STOW);
+        CORAL = new SuperState("CORAL", ArmState.STOW); //this is a placeholder superstate
 
         targetState = STOW;
         targetArmState = ArmState.STOW;
         targetClimbState = ClimbState.STOW;
-
+        nextReefLevel = "STOW";
+        
         READY_STOW = new SuperState("READY_STOW", ArmState.READY_STOW);
         INTAKE = new SuperState("INTAKE", ArmState.INTAKE, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
         INTAKE_FIX = new SuperState("INTAKE_FIX", ArmState.INTAKE_FIX, ClawState.CORAL_IN, () -> elevator.atPosition(targetState.armState.elevatorPosition), () -> false);
         CORAL_DUMP = new SuperState("CORAL_DUMP", ArmState.CORAL_DUMP, ClawState.CORAL_OUT);
-
+        
         L1_PREP = new SuperState("L1_PREP", ArmState.L1_PREP);
         L2_PREP = new SuperState("L2_PREP", ArmState.L2_PREP);
         L3_PREP = new SuperState("L3_PREP", ArmState.L3_PREP);
         L4_PREP = new SuperState("L4_PREP", ArmState.L4_PREP);
+
 
         currentPrepState = L4_PREP;
 
@@ -297,9 +302,25 @@ public class Superstructure {
 
     }
 
+    public Command saveNextReefLevel(String level) {
+        return Commands.runOnce(() -> nextReefLevel = level);
+    }
+
     // This command allows us to consistently transition between superstructure states.
     // Note that this command is not safe if the end configuration is not possible, for example if the final goal has the claw inside the climb.
-    public Command setSuperState(SuperState nextState) {
+    public Command setSuperState(SuperState state) {
+        SuperState nextState;
+        if (state == CORAL && nextReefLevel.indexOf('L') >= 0) {   // make this state == this.CORAL so when the operator does not press a pov button, this command will do nothing
+            nextState = switch (nextReefLevel) {
+                case "L1" -> L1;
+                case "L2" -> L2;
+                case "L3" ->  L3;
+                default -> L4;
+            };
+        }
+        else {
+            nextState = state;
+        }
         // Update logged state
         return Commands.runOnce(() -> this.targetState = nextState).alongWith(
             // Run these commands in parallel
@@ -685,6 +706,11 @@ public class Superstructure {
     @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/Key")
     public String getTargetStateKey() {
         return targetState.key;
+    }
+
+    @AutoLogOutput (key = "Subsystems/Superstructure/NextReefLevelKey")
+    public String getNextReefLevel() {
+        return nextReefLevel;
     }
 
     @AutoLogOutput (key = "Subsystems/Superstructure/TargetState/ArmState")

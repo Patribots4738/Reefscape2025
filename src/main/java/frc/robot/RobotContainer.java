@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.characterization.WheelRadiusCharacterization;
 import frc.robot.commands.drive.Drive;
 import frc.robot.subsystems.drive.Swerve;
+import frc.robot.subsystems.superstructure.SuperState;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.ArmState;
 import frc.robot.subsystems.superstructure.claw.algae.AlgaeClaw;
@@ -316,6 +317,7 @@ public class RobotContainer {
             );
 
         controller.a()
+            .onTrue(superstructure.setSuperState(superstructure.CORAL))
             .whileTrue(alignment.reefFullAlignmentCommand());
 
         controller.b()
@@ -361,16 +363,17 @@ public class RobotContainer {
             .onTrue(superstructure.fixIntakeCommand());
 
         controller.povLeft()
-            .onTrue(superstructure.setSuperState(superstructure.L1));
+            .onTrue(superstructure.saveNextReefLevel("L1")); // when the driver aligns, the target state is set to L1
         
         controller.povDown()
-            .onTrue(superstructure.setSuperState(superstructure.L2));
+            .onTrue(superstructure.saveNextReefLevel("L2")); //setSuperState(L1) for a.ontrue then in the command
+                                                                    // if state = L1, then check what the nextReefLevel String is saving then use it to change target state
 
         controller.povRight()
-            .onTrue(superstructure.setSuperState(superstructure.L3));
+            .onTrue(superstructure.saveNextReefLevel("L3"));
 
         controller.povUp()
-            .onTrue(superstructure.setSuperState(superstructure.L4));
+            .onTrue(superstructure.saveNextReefLevel("L4"));
         
         controller.b()
             .onTrue(superstructure.setSuperState(superstructure.STOW));
