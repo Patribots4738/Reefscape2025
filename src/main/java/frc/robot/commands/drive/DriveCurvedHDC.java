@@ -21,9 +21,6 @@ import frc.robot.util.Constants.DriveConstants;
 public class DriveCurvedHDC extends Command {
     private final Swerve swerve;
 
-    private final DoubleSupplier xSupplier;
-    private final DoubleSupplier ySupplier;
-    private final DoubleSupplier rotationSupplier;
     private final BooleanSupplier shouldMirror;
     private final Rotation2d desiredHeading;
     private final List<Translation2d> waypoints;
@@ -32,10 +29,6 @@ public class DriveCurvedHDC extends Command {
     
     public DriveCurvedHDC (
             Swerve swerve,
-            DoubleSupplier xSupplier,
-            DoubleSupplier ySupplier,
-            DoubleSupplier rotationsSupplier,
-            BooleanSupplier fieldRelativeSupplier,
             BooleanSupplier shouldMirror,
             Rotation2d desiredHeading,
             Pose2d endPose,
@@ -44,9 +37,6 @@ public class DriveCurvedHDC extends Command {
 
         this.swerve = swerve;
 
-        this.xSupplier = xSupplier;
-        this.ySupplier = ySupplier;
-        this.rotationSupplier = rotationsSupplier;
         this.endPose = endPose;
         this.desiredHeading = desiredHeading;
 
@@ -63,15 +53,15 @@ public class DriveCurvedHDC extends Command {
 
     @Override
     public void execute() {
-        // create a list of points along a curved trajectory
-        List<Trajectory.State> points = TrajectoryGenerator.generateTrajectory(swerve.getPose(), waypoints, endPose, AutoConstants.REEF_ALIGNMENT_TRAJECTORY_CONFIG).getStates();
-
         // If the desired pose is more than 2 meters away, reset it to the current pose
         // This is to prevent the robot from chasing the sun
         if (endPose.getTranslation().getDistance(swerve.getPose().getTranslation()) > 2) {
             endPose = swerve.getPose();
         }
 
+        // create a list of points along a curved trajectory
+        List<Trajectory.State> points = TrajectoryGenerator.generateTrajectory(swerve.getPose(), waypoints, endPose, AutoConstants.REEF_ALIGNMENT_TRAJECTORY_CONFIG).getStates();
+        
         // move to each point along the curve
         for (Trajectory.State point : points) {
             swerve.drive(
