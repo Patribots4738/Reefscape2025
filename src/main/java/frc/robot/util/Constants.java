@@ -15,6 +15,8 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.SparkBase;
 
+
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -27,6 +29,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
@@ -134,6 +137,8 @@ public final class Constants {
         public static final double MAX_SPEED_METERS_PER_SECOND = 4.5;
 
         public static final double MAX_ANGULAR_SPEED_RADS_PER_SECOND = Units.degreesToRadians(1137.21); // radians per second
+        
+
 
         public static final double ODOMETRY_FREQUENCY = 250.0;
 
@@ -226,7 +231,12 @@ public final class Constants {
 
         public static final double REEF_ALIGNMENT_PREP_DISTANCE = 1.0;
 
-
+        public static final TrajectoryConfig REEF_ALIGNMENT_TRAJECTORY_CONFIG = new TrajectoryConfig(REEF_ALIGNMENT_MAX_SPEED, HDC_THETA_VELOCITY)
+                                                                                        .setEndVelocity(0.0)
+                                                                                        .setStartVelocity(REEF_ALIGNMENT_MAX_SPEED)
+                                                                                        .setKinematics(DriveConstants.DRIVE_KINEMATICS)
+                                                                                        .setReversed(false);
+        
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
             6, 
             0.0, 

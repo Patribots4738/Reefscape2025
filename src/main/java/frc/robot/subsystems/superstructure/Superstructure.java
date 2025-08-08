@@ -318,6 +318,9 @@ public class Superstructure {
                 default -> L4;
             };
         }
+        else if (nextReefLevel.indexOf('L') == -1) {
+            nextState = targetState;    // the goal of this is to prevent the superstructure from stowing when the operator has not selected a reef level and the driver auto aligns to reef
+        }
         else {
             nextState = state;
         }
