@@ -1,0 +1,430 @@
+{
+  "version": 1.0,
+  "grid_size": 10,
+  "tabs": [
+    {
+      "name": "Comp",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Auto Routine",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 940.0,
+            "height": 110.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Auto Routine",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "limelight-four",
+            "x": 0.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 260.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-four",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "limelight-threeg",
+            "x": 1000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 260.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-threeg",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Timer",
+            "x": 940.0,
+            "y": 0.0,
+            "width": 960.0,
+            "height": 330.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Draggables/Timer",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 15,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "LL4",
+            "x": 470.0,
+            "y": 500.0,
+            "width": 470.0,
+            "height": 260.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-four",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "LL3G",
+            "x": 0.0,
+            "y": 500.0,
+            "width": 470.0,
+            "height": 260.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-threeg",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Field",
+            "x": 0.0,
+            "y": 110.0,
+            "width": 940.0,
+            "height": 390.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295
+            }
+          },
+          {
+            "title": "limelight-clime",
+            "x": 940.0,
+            "y": 330.0,
+            "width": 970.0,
+            "height": 430.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-clime",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "EncoderAbsPositonRads",
+            "x": 20.0,
+            "y": 770.0,
+            "width": 290.0,
+            "height": 130.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/SubsystemInputs/Wrist/EncoderAbsPositonRads",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "HasCoral",
+            "x": 330.0,
+            "y": 770.0,
+            "width": 130.0,
+            "height": 130.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Subsystems/CoralClaw/HasCoral",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Practice",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Auto Routine",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1000.0,
+            "height": 110.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Auto Routine",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "Timer",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Draggables/Timer",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 15,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Field",
+            "x": 1000.0,
+            "y": 0.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Crescendo",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295
+            }
+          },
+          {
+            "title": "limelight-threeg",
+            "x": 1000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 260.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-threeg",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "TagArea",
+            "x": 1000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Subsystems/Vision/TagArea",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "ta",
+            "x": 1000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/limelight-four/ta",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "EncoderAbsPositonRads",
+            "x": 2000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/SubsystemInputs/Wrist/EncoderAbsPositonRads",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Test",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Auto Routine",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1000.0,
+            "height": 110.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Auto Routine",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "Field",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1000.0,
+            "height": 260.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295
+            }
+          },
+          {
+            "title": "limelight-four",
+            "x": 1000.0,
+            "y": 0.0,
+            "width": 1000.0,
+            "height": 260.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-four",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "limelight-threeg",
+            "x": 1000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 260.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-threeg",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "SuperState",
+            "x": 0.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Subsystems/Superstructure/TargetState/Key",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "ArmState",
+            "x": 0.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Subsystems/Superstructure/TargetState/ArmState",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "ClimbState",
+            "x": 1000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Subsystems/Superstructure/TargetState/ClimbState",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "StructureAtDesiredPosition",
+            "x": 1000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Subsystems/SuperStructure/StructureAtDesiredPosition",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "MT1",
+            "x": 1000.0,
+            "y": 1000.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Subsystems/Vision/MT1",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Timer",
+            "x": 1000.0,
+            "y": 0.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Draggables/Timer",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 15,
+              "yellow_start_time": 30
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
