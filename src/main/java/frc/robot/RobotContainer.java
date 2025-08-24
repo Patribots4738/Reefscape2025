@@ -481,7 +481,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralL4WithCoral", superstructure.setSuperState(superstructure.L4).onlyIf(() -> coralClaw.hasPiece()));
         NamedCommands.registerCommand("PlaceCoral", superstructure.coralPlaceCommandAuto().onlyIf(() -> superstructure.getTargetState().armState != ArmState.INTAKE));
         NamedCommands.registerCommand("ExitCoral", superstructure.stopOuttakeCommand());
-        NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(() -> coralClaw.hasPiece() || coralClaw.hasPieceMoving()).withTimeout(1.0));
+        NamedCommands.registerCommand("WaitForCoral", Commands.waitUntil(() -> coralClaw.hasPiece() || coralClaw.hasPieceMoving()).withTimeout(0.75));
         NamedCommands.registerCommand("PrepareNet", superstructure.setSuperState(superstructure.NET_PREP));
         NamedCommands.registerCommand("PrepareNetFar", superstructure.setSuperState(superstructure.NET_PREP_FAR));
         NamedCommands.registerCommand("PlaceNet", superstructure.netPlaceCommandAuto());
@@ -491,6 +491,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("TossAlgae", superstructure.tossAlgaeCommand());
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.READY_STOW));
         NamedCommands.registerCommand("WaitUntilShouldAlign", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 1.9));
+        NamedCommands.registerCommand("WaitUntilShouldRaiseJ4", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_FACE_POSITIONS().get(4).getLeft().getTranslation()) < 1));
+        NamedCommands.registerCommand("WaitUntilShouldRaiseC4", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_FACE_POSITIONS().get(1).getRight().getTranslation()) < 1));
         NamedCommands.registerCommand("WaitUntilShouldLower", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) > FieldConstants.NEAR_REEF_METERS));
         NamedCommands.registerCommand("WaitUntilShouldRaise", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 4.2));
         NamedCommands.registerCommand("WaitForCoralHard", Commands.waitUntil(() -> coralClaw.hasPiece()));
