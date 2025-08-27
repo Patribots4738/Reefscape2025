@@ -38,7 +38,12 @@ Thanks for checking us out, & be sure to star this repository if you find anythi
 ____
 
 ## ✨Highlights✨
-
+	- Automatic alignment to reef
+	- Two claws, one for algae and one for coral
+	- Log replay using Advantage Scope
+	- Modular autonomous routines
+	- April Tag detection using Limelight
+	- Fully simulated robot in Advantage Scope
 ## Simulation & Testing 🪄
 
 ## Swerve Drive 🛞
