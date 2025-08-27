@@ -1,3 +1,6 @@
+
+
+
 ![Gradle Build](https://img.shields.io/github/actions/workflow/status/Patribots4738/Reefscape2025/gradle.yml?label=Gradle%20Build&logo=Gradle)
 
 <sup><sup>repo must be public for this to work ^</sup></sup>
@@ -52,8 +55,16 @@ ______
 
 > [`subsystems/`](src/main/java/frc/robot/subsystems) Folder containing class files for each subsystem on the robot.
 > - Superstructure [`subsystems/superstructure/`](src/main/java/frc/robot/subsystems/superstructure) Folder containing class files for superstructure subsystem
+> - - Claw [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/claw) Folder containing files for both claw subsytems
+>   - - Algea Claw [`subsytems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/claw/algae) Files that allow the robot to have fun with the algae
+>     - Coral Claw [`subsytems/subersturcture/`](scr/main/java/frc/robot/subsytems/superstructure/claw/coral) Files that allow the robot to manipulate
+>   - Climb [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/climb) Folder containing files that let the robot clim (kinda... when it feels like it)
+>    - Elevator [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/elevator) Folder containing files for the elevator that lets the robot get tall
+>    - Wrist [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/wrist) Folder containing files for different reef angles
 > - Vision [`subsystems/vision/`](src/main/java/frc/robot/subsystems/vision) Folder containing class files for the vision subsystem
 > - Drive [`subsystems/drive/`](src/main/java/frc/robot/subsystems/drive) Folder containing class files for the drive subsystem
+>
+> 
 ### Commands
 
 ### Utilities
