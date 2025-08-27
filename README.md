@@ -51,8 +51,15 @@ ____
 ## Swerve Drive 🛞
 
 ## Autonomous 🤖
+  ### PathPlanner!
+  We use PathPlanner to make autopaths! We use named waypoints, scheduled commands, & bezier curves to generate a singular auto path between a starting position, a preferable placing position, or the coral station. We then link multiple auto paths together to make one predetermined autonomous path. Using the limelights mounted on it the robot can tell its position and will know where to move next.
 
 ## Teleoperated 🎮
+  ### Auto Alignment
+  A feature that we have on the robot is Auto Alignment! This feature allows to align to field elements such as reef faces. When alligned to a reef face, the driver can move the robot to align it to the target branch. This helps the driver with steering and alignment.
+
+### Joystick Axis Remapping
+  We use Xbox controllers to control the robot. However, the range of the joystick axis from the Xbox controller is the shape of a skewed square with chamfered edges which is preferable for usage. In PatriBoxController, we remapped the range of input to a circle that is easier to use. Here's our desmos if you want to check out the math!
 
 
 ______
