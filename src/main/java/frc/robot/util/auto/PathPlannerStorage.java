@@ -59,61 +59,95 @@ public class PathPlannerStorage {
             return Commands.none();
         }
 
-        if(reefNode == 'J') {
-            return Commands.defer(
-                () -> Commands.sequence(
-                    Commands.parallel(
-                        Commands.sequence(
-                            Commands.race(
+        switch (reefNode) {
+            case 'J':
+                return Commands.defer(
+                    () -> Commands.sequence(
+                        Commands.parallel(
+                            Commands.sequence(
+                                Commands.race(
+                                    AutoBuilder.followPath(pathToReef),
+                                    NamedCommands.getCommand("WaitUntilShouldAlign")
+                                ),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                                NamedCommands.getCommand("Align" + reefNode)
+                            ),
+                            Commands.sequence(
+                                NamedCommands.getCommand("WaitForShouldRaiseJ4").withTimeout(2.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
+                            )
+                        ),
+                        NamedCommands.getCommand("PlaceCoral"),
+                        Commands.parallel(
+                            Commands.sequence(
+                                AutoBuilder.followPath(pathToStation),
+                                NamedCommands.getCommand("WaitForCoral")
+                            ),
+                            Commands.sequence(
+                                NamedCommands.getCommand("ExitCoral"),
+                                NamedCommands.getCommand("WaitUntilShouldLower"),
+                                NamedCommands.getCommand("CoralIntakeStart")
+                            )   
+                        )
+                    ), requirements);
+
+            case 'C':
+                return Commands.defer(
+                    () -> Commands.sequence(
+                        Commands.parallel(
+                            Commands.sequence(
+                                Commands.race(
+                                    AutoBuilder.followPath(pathToReef),
+                                    NamedCommands.getCommand("WaitUntilShouldAlign")
+                                ),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                                NamedCommands.getCommand("Align" + reefNode)
+                            ),
+                            Commands.sequence(
+                                NamedCommands.getCommand("WaitForShouldRaiseC4"),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
+                            )
+                        ),
+                        NamedCommands.getCommand("PlaceCoral"),
+                        Commands.parallel(
+                            Commands.sequence(
+                                AutoBuilder.followPath(pathToStation),
+                                NamedCommands.getCommand("WaitForCoral")
+                            ),
+                            Commands.sequence(
+                                NamedCommands.getCommand("ExitCoral"),
+                                NamedCommands.getCommand("WaitUntilShouldLower"),
+                                NamedCommands.getCommand("CoralIntakeStart")
+                            )   
+                        )
+                    ), requirements);
+
+            default:
+                return Commands.defer(
+                    () -> Commands.sequence(
+                        Commands.parallel(
+                            Commands.sequence(
+                                Commands.race(
                                 AutoBuilder.followPath(pathToReef),
                                 NamedCommands.getCommand("WaitUntilShouldAlign")
                             ),
                             NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
                             NamedCommands.getCommand("Align" + reefNode)
-                        ),
-                        Commands.sequence(
-                            NamedCommands.getCommand("WaitForShouldRaiseJ4"),
-                            NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
-                            NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
-                        )
-                    ),
-                    NamedCommands.getCommand("PlaceCoral"),
-                    Commands.parallel(
-                        Commands.sequence(
-                            AutoBuilder.followPath(pathToStation),
-                            NamedCommands.getCommand("WaitForCoral")
-                        ),
-                        Commands.sequence(
-                            NamedCommands.getCommand("ExitCoral"),
-                            NamedCommands.getCommand("WaitUntilShouldLower"),
-                            NamedCommands.getCommand("CoralIntakeStart")
-                        )   
-                    )
-                ), requirements);
-        } else if (reefNode == 'C') {
-            return Commands.defer(
-                () -> Commands.sequence(
-                    Commands.parallel(
-                        Commands.sequence(
-                            Commands.race(
-                                AutoBuilder.followPath(pathToReef),
-                                NamedCommands.getCommand("WaitUntilShouldAlign")
                             ),
-                            NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
-                            NamedCommands.getCommand("Align" + reefNode)
+                            Commands.sequence(
+                                NamedCommands.getCommand("WaitUntilShouldRaise"),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
+                            )
                         ),
-                        Commands.sequence(
-                            NamedCommands.getCommand("WaitForShouldRaiseC4"),
-                            NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
-                            NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
-                        )
-                    ),
-                    NamedCommands.getCommand("PlaceCoral"),
-                    Commands.parallel(
-                        Commands.sequence(
+                        NamedCommands.getCommand("PlaceCoral"),
+                        Commands.parallel(
+                            Commands.sequence(
                             AutoBuilder.followPath(pathToStation),
                             NamedCommands.getCommand("WaitForCoral")
-                        ),
+                            ),
                         Commands.sequence(
                             NamedCommands.getCommand("ExitCoral"),
                             NamedCommands.getCommand("WaitUntilShouldLower"),
@@ -122,36 +156,6 @@ public class PathPlannerStorage {
                     )
                 ), requirements);
         }
-        return Commands.defer(
-            () -> Commands.sequence(
-                Commands.parallel(
-                    Commands.sequence(
-                        Commands.race(
-                            AutoBuilder.followPath(pathToReef),
-                            NamedCommands.getCommand("WaitUntilShouldAlign")
-                        ),
-                        NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
-                        NamedCommands.getCommand("Align" + reefNode)
-                    ),
-                    Commands.sequence(
-                        NamedCommands.getCommand("WaitUntilShouldRaise"),
-                        NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
-                        NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
-                    )
-                ),
-                NamedCommands.getCommand("PlaceCoral"),
-                Commands.parallel(
-                    Commands.sequence(
-                        AutoBuilder.followPath(pathToStation),
-                        NamedCommands.getCommand("WaitForCoral")
-                    ),
-                    Commands.sequence(
-                        NamedCommands.getCommand("ExitCoral"),
-                        NamedCommands.getCommand("WaitUntilShouldLower"),
-                        NamedCommands.getCommand("CoralIntakeStart")
-                    )   
-                )
-            ), requirements);
     }
 
     // By default we will just build this part in PP, however this will be handy in a jam
