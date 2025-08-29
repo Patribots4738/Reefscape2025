@@ -70,9 +70,9 @@ ______
 > [`subsystems/`](src/main/java/frc/robot/subsystems) Folder containing class files for each subsystem on the robot.
 > - Superstructure [`subsystems/superstructure/`](src/main/java/frc/robot/subsystems/superstructure) Folder containing class files for superstructure subsystem
 > - - Claw [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/claw) Folder containing files for both claw subsytems
->   - - Algea Claw [`subsytems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/claw/algae) Files that allow the robot to have fun with the algae
+>   - - Algae Claw [`subsytems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/claw/algae) Files that allow the robot to have fun with the algae
 >     - Coral Claw [`subsytems/subersturcture/`](scr/main/java/frc/robot/subsytems/superstructure/claw/coral) Files that allow the robot to manipulate
->   - Climb [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/climb) Folder containing files that let the robot clim (kinda... when it feels like it)
+>   - Climb [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/climb) Folder containing files that let the robot climb (kinda... when it feels like it)
 >    - Elevator [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/elevator) Folder containing files for the elevator that lets the robot get tall
 >    - Wrist [`subsystems/superstructure/`](scr/main/java/frc/robot/subsytems/superstructure/wrist) Folder containing files for different reef angles
 > - Vision [`subsystems/vision/`](src/main/java/frc/robot/subsystems/vision) Folder containing class files for the vision subsystem
@@ -80,8 +80,18 @@ ______
 >
 > 
 ### Commands
+> [`commands/`](src/main/java/frc/robot/commands) Folder containing command files that control the robot.
+>   - [`commands/characterization/`](src/main/java/frc/robot/commands/characterization) Folder that contains our FeedForward commands
+>   - [`commands/drive/`](src/main/java/frc/robot/commands/drive) Folder containing our drive commands
+>   - [`commands/managers/`](src/main/java/frc/robot/commands/managers) Folder containing our Hollonomic Drive Command Tuner file
 
 ### Utilities
+> [`util/`](src/main/java/frc/robot/util) Folder containing values, logic, and math used by other files to help them function.
+> - [`util/auto/`](src/main/java/frc/robot/util/auto) Folder containing the storage files for PathPlanner and for auto alignment
+> - [`util/calc/`](src/main/java/frc/robot/util/calc) Folder containing the calculations we use for the robot's functions
+> - [`util/custom/`](src/main/java/frc/robot/util/custom) Folder containing all of our custom files
+> - [`util/hardware/`](src/main/java/frc/robot/util/hardware) Folder containing folders and files for each hardware component we program
+> - [`util/Constants`](src/main/java/frc/robot/util/Constants.java) File containing constants used throughout the robot code to prevent a mismatch in data & hardcoding values
 
 ## Controls 🎮
 ![image](https://github.com/user-attachments/assets/590642e6-7ad0-47f0-adc2-b79603a9b17d)
