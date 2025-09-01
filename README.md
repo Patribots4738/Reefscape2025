@@ -47,8 +47,12 @@ ____
 >	- Fully simulated robot in Advantage Scope
 
 ## Simulation & Testing 🪄
+We use AdvantageScope and its simulation tool to test our placing positions before we get the robot as well as using it for driver practice. It allows us to test things when we aren't able to use the robot 
 
 ## Swerve Drive 🛞
+
+## Vision 📷
+We use both Limelight 3g's and Limelight 4's to accurately calculate our Robots position on the field. During autonomous we put full faith in our cameras ability to give us a good estimation of our pose, but during teleop we trust our cameras more depending on if we see 2 or more tags, or see a large tag. We also switch between Megatag 1 and Megatag 2 when we need to find our rotional pose.
 
 ## Autonomous 🤖
   ### PathPlanner!
@@ -56,7 +60,10 @@ ____
 
 ## Teleoperated 🎮
   ### Auto Alignment
-  A feature that we have on the robot is Auto Alignment! This feature allows to align to field elements such as reef faces. When alligned to a reef face, the driver can move the robot to align it to the target branch. This helps the driver with steering and alignment.
+  A feature that we have on the robot is Auto Alignment! This feature allows to align to field elements such as reef faces, the processor, intake station, and the barge. When alligned to a reef face, the driver can move the robot to align it to the target branch. This helps the driver with steering and alignment.
+
+  ### Climblight
+  To make sure all of the hooks on our climb and the foot has properly been locked into the cage, we use a Limelight 3g pointed where we index the cage. Using this we can make sure we dont accidentally drop test the robot during the climbing procces or fail climb in any other way.
 
 ### Joystick Axis Remapping
   We use Xbox controllers to control the robot. However, the range of the joystick axis from the Xbox controller is the shape of a skewed square with chamfered edges which is preferable for usage. In PatriBoxController, we remapped the range of input to a circle that is easier to use. Here's our desmos if you want to check out the math!
