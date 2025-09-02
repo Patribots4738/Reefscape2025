@@ -104,6 +104,6 @@ ______
 
 
 ## Components & Tools 🛠️
-![image](https://github.com/user-attachments/assets/73cc0088-d5e0-48d7-adc0-f5bda248e3e5)
-![image](https://github.com/user-attachments/assets/a7313f5c-6d63-4da5-b680-fecf20fb1eaf)
+![image](/images/robot_software.svg)
+![image](/images/robot_hardware.svg)
 
