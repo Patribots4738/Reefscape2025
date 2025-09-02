@@ -47,7 +47,7 @@ ____
 >	- Fully simulated robot in Advantage Scope
 
 ## Simulation & Testing 🪄
-We use AdvantageScope and its simulation tool to test our placing positions before we get the robot as well as using it for driver practice. It allows us to test things when we aren't able to use the robot.
+We use AdvantageScope and its simulation tool to test our placing positions before we get the robot as well as using it for driver practice. It allows us to test things when we aren't able to use the robot. We also use Elastic to look at values from Network Tables when testing, during practice or at competitions.
 
 ## Vision 📷
 We use both Limelight 3g's and Limelight 4's to accurately calculate our Robots position on the field. During autonomous we put full faith in our cameras ability to give us a good estimation of our pose, but during teleop we trust our cameras more depending on if we see 2 or more tags, or see a large tag. We also switch between Megatag 1 and Megatag 2 when we need to find our rotional pose.
