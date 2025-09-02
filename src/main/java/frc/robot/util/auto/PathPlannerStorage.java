@@ -73,7 +73,7 @@ public class PathPlannerStorage {
                                 NamedCommands.getCommand("Align" + reefNode)
                             ),
                             Commands.sequence(
-                                NamedCommands.getCommand("WaitForShouldRaiseJ4").withTimeout(2.0),
+                                NamedCommands.getCommand("WaitUntilShouldRaiseJ4"),
                                 NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
                                 NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
                             )
@@ -92,7 +92,7 @@ public class PathPlannerStorage {
                         )
                     ), requirements);
 
-            case 'C':
+            case 'E':
                 return Commands.defer(
                     () -> Commands.sequence(
                         Commands.parallel(
@@ -105,7 +105,7 @@ public class PathPlannerStorage {
                                 NamedCommands.getCommand("Align" + reefNode)
                             ),
                             Commands.sequence(
-                                NamedCommands.getCommand("WaitForShouldRaiseC4"),
+                                NamedCommands.getCommand("WaitUntilShouldRaiseE4"),
                                 NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
                                 NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
                             )
