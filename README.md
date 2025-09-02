@@ -54,7 +54,7 @@ We use both Limelight 3g's and Limelight 4's to accurately calculate our Robots 
 
 ## Autonomous 🤖
   ### PathPlanner!
-  We use PathPlanner to make autopaths! We use named waypoints, scheduled commands, & bezier curves to generate a singular auto path between a starting position, a preferable placing position, or the coral station. We then link multiple auto paths together to make one predetermined autonomous path. Using the limelights mounted on it the robot can tell its position and will know where to move next.
+  We use PathPlanner to make autopaths! We use named waypoints, scheduled commands, & bezier curves to generate a singular auto path between a starting position, a preferable placing position, or the coral station. We then link multiple auto paths together to make one predetermined autonomous path. Using the limelights mounted on it the robot can tell its position and will know where to move next. We have auto alignments that when activated will align the robot to the different reef faces, the processor, the coral station, the net, and the barge for consistency. 
 
 ## Teleoperated 🎮
   ### Auto Alignment
