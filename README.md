@@ -64,7 +64,7 @@ We use both Limelight 3g's and Limelight 4's to accurately calculate our Robots 
   To make sure all of the hooks on our climb and the foot has properly been locked into the cage, we use a Limelight 3g pointed where we index the cage. Using this we can make sure we dont accidentally drop test the robot during the climbing procces or fail climb in any other way.
 
 ### Joystick Axis Remapping
-  We use Xbox controllers to control the robot. However, the range of the joystick axis from the Xbox controller is the shape of a skewed square with chamfered edges which is preferable for usage. In PatriBoxController, we remapped the range of input to a circle that is easier to use. Here's our desmos if you want to check out the math!
+  We use Xbox controllers to control the robot. However, the range of the joystick axis from the Xbox controller is the shape of a skewed square with chamfered edges which is preferable for usage. In PatriBoxController, we remapped the range of input to a circle that is easier to use. Here's our [desmos](https://www.desmos.com/calculator/e07raajzh5) if you want to check out the math!
 
 
 ______
