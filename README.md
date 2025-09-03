@@ -45,6 +45,7 @@ ____
 >	- Modular autonomous routines
 >	- April Tag detection using Limelight
 >	- Fully simulated robot in Advantage Scope
+> - Motion Magic that makes the motor move with a pre-specified velocity, acceleration, and optionally jerk during its journey towards its positional setpoint.
 
 ## Simulation & Testing 🪄
 We use AdvantageScope and its simulation tool to test our placing positions before we get the robot as well as using it for driver practice. It allows us to test things when we aren't able to use the robot. We also use Elastic to look at values from Network Tables when testing, during practice or at competitions.
