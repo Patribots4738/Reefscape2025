@@ -490,9 +490,12 @@ public class RobotContainer {
         NamedCommands.registerCommand("AlgaeCarry", superstructure.setSuperState(superstructure.ALGAE_CARRY));
         NamedCommands.registerCommand("TossAlgae", superstructure.tossAlgaeCommand());
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.READY_STOW));
+        NamedCommands.registerCommand("PrepL4", superstructure.setSuperState(superstructure.L2));
         NamedCommands.registerCommand("WaitUntilShouldAlign", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 1.9));
         NamedCommands.registerCommand("WaitUntilShouldRaiseJ4", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_FACE_POSITIONS().get(4).getLeft().getTranslation()) < 2.3));
         NamedCommands.registerCommand("WaitUntilShouldRaiseE4", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_FACE_POSITIONS().get(2).getRight().getTranslation()) < 2.3));
+        NamedCommands.registerCommand("WaitUntilShouldRaiseA4", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_FACE_POSITIONS().get(0).getLeft().getTranslation()) < 2.6));
+        NamedCommands.registerCommand("WaitUntilShouldRaiseB4", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_FACE_POSITIONS().get(0).getRight().getTranslation()) < 2.6));
         NamedCommands.registerCommand("WaitUntilShouldLower", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) > FieldConstants.NEAR_REEF_METERS));
         NamedCommands.registerCommand("WaitUntilShouldRaise", Commands.waitUntil(() -> swerve.getPose().getTranslation().getDistance(FieldConstants.GET_REEF_POSITION().getTranslation()) < 4.2));
         NamedCommands.registerCommand("WaitForCoralHard", Commands.waitUntil(() -> coralClaw.hasPiece()));

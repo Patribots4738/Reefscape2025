@@ -90,7 +90,8 @@ public class PathPlannerStorage {
                                 NamedCommands.getCommand("CoralIntakeStart")
                             )   
                         )
-                    ), requirements);
+                    ), requirements
+                );
 
             case 'E':
                 return Commands.defer(
@@ -122,7 +123,74 @@ public class PathPlannerStorage {
                                 NamedCommands.getCommand("CoralIntakeStart")
                             )   
                         )
-                    ), requirements);
+                    ), requirements
+                );
+            
+            case 'A':
+                return Commands.defer(
+                    () -> Commands.sequence(
+                        Commands.parallel(
+                            Commands.sequence(
+                                Commands.race(
+                                    AutoBuilder.followPath(pathToReef),
+                                    NamedCommands.getCommand("WaitUntilShouldAlign")
+                                ),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                                NamedCommands.getCommand("Align" + reefNode)
+                            ),
+                            Commands.sequence(
+                                NamedCommands.getCommand("WaitUntilShouldRaiseA4"),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
+                            )
+                        ),
+                        NamedCommands.getCommand("PlaceCoral"),
+                        Commands.parallel(
+                            Commands.sequence(
+                                AutoBuilder.followPath(pathToStation),
+                                NamedCommands.getCommand("WaitForCoral")
+                            ),
+                            Commands.sequence(
+                                NamedCommands.getCommand("ExitCoral"),
+                                NamedCommands.getCommand("WaitUntilShouldLower"),
+                                NamedCommands.getCommand("CoralIntakeStart")
+                            )   
+                        )
+                    ), requirements
+                );
+
+            case 'B':
+                return Commands.defer(
+                    () -> Commands.sequence(
+                        Commands.parallel(
+                            Commands.sequence(
+                                Commands.race(
+                                    AutoBuilder.followPath(pathToReef),
+                                    NamedCommands.getCommand("WaitUntilShouldAlign")
+                                ),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                                NamedCommands.getCommand("Align" + reefNode)
+                            ),
+                            Commands.sequence(
+                                NamedCommands.getCommand("WaitUntilShouldRaiseB4"),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
+                            )
+                        ),
+                        NamedCommands.getCommand("PlaceCoral"),
+                        Commands.parallel(
+                            Commands.sequence(
+                                AutoBuilder.followPath(pathToStation),
+                                NamedCommands.getCommand("WaitForCoral")
+                            ),
+                            Commands.sequence(
+                                NamedCommands.getCommand("ExitCoral"),
+                                NamedCommands.getCommand("WaitUntilShouldLower"),
+                                NamedCommands.getCommand("CoralIntakeStart")
+                            )   
+                        )
+                    ), requirements
+                );
 
             default:
                 return Commands.defer(
@@ -148,13 +216,14 @@ public class PathPlannerStorage {
                             AutoBuilder.followPath(pathToStation),
                             NamedCommands.getCommand("WaitForCoral")
                             ),
-                        Commands.sequence(
-                            NamedCommands.getCommand("ExitCoral"),
-                            NamedCommands.getCommand("WaitUntilShouldLower"),
-                            NamedCommands.getCommand("CoralIntakeStart")
-                        )   
-                    )
-                ), requirements);
+                            Commands.sequence(
+                                NamedCommands.getCommand("ExitCoral"),
+                                NamedCommands.getCommand("WaitUntilShouldLower"),
+                                NamedCommands.getCommand("CoralIntakeStart")
+                            )   
+                        )
+                ), requirements
+            );
         }
     }
 
