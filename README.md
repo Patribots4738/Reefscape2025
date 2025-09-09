@@ -3,8 +3,6 @@
 
 ![Gradle Build](https://img.shields.io/github/actions/workflow/status/Patribots4738/Reefscape2025/gradle.yml?label=Gradle%20Build&logo=Gradle)
 
-<sup><sup>repo must be public for this to work ^</sup></sup>
-
 [`src/main/java/frc/robot`](src/main/java/frc/robot) shortcut
 
 [![Game Manual](https://static.wixstatic.com/media/695840_853bc2abe81d42d3a57225beb3304874~mv2.jpg)](https://firstfrc.blob.core.windows.net/frc2025/Manual/2025GameManual.pdf)
