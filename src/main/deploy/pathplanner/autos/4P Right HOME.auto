@@ -19,7 +19,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "5-E"
+                              "pathName": "5-F"
                             }
                           },
                           {
@@ -34,7 +34,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "PAlignE"
+                        "name": "PAlignF"
                       }
                     }
                   ]
@@ -73,7 +73,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "E-CS2 2"
+                        "pathName": "F-CS2"
                       }
                     },
                     {
