@@ -1,6 +1,5 @@
 package frc.robot;
 
-import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -15,8 +14,6 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 
 import java.util.Optional;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -25,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.auto.LocalADStarAK;
 import frc.robot.util.Constants.KrakenMotorConstants;
 import frc.robot.util.Constants.LoggingConstants;
-import frc.robot.util.custom.LoggedTunableNumber;
 import frc.robot.util.hardware.phoenix.Kraken;
 
 /**
@@ -97,12 +93,6 @@ public class Robot extends LoggedRobot {
         RobotContainer.threadRTCommand().schedule();
     }
 
-    private final LoggedTunableNumber x = new LoggedTunableNumber("TunablePose/x", 1.0);
-    private final LoggedTunableNumber y = new LoggedTunableNumber("TunablePose/y", 1.0);
-    private final LoggedTunableNumber z = new LoggedTunableNumber("TunablePose/z", 1.0);    
-    @AutoLogOutput (key = "TunablePose/Pose")
-    private Pose3d tunePose = new Pose3d();
-
     /**
      * This function is called every 20 ms, no matter the mode. Used for items like diagnostics
      * ran during disabled, autonomous, teleoperated and test. :D
@@ -112,7 +102,6 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotPeriodic() {
-        tunePose = new Pose3d(x.get(), y.get(), z.get(), new Rotation3d());
         
         Robot.previousTimestamp = Robot.currentTimestamp;
         Robot.currentTimestamp = Timer.getFPGATimestamp();
