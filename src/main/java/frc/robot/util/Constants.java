@@ -228,9 +228,9 @@ public final class Constants {
 
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
-            6, 
+            3.5, 
             0.0, 
-            0.09
+            1.0
         );
 
         public static final GainConstants TELE_XY_GAINS = new GainConstants(
@@ -467,7 +467,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters( 1.8737833853308032 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.886163759699379 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -636,7 +636,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.73;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.705;
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -689,18 +689,20 @@ public final class Constants {
         public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
-        public static final double INTAKE_POSITION_RADIANS = -0.465;
+        public static final double INTAKE_POSITION_RADIANS = -0.544;
         public static final double DUMP_POSITION_RADIANS = -0.6;
-        public static final double L1_POSITION_RADIANS = 1.95;
-        public static final double L1_PLACE_POSITION_RADIANS = 2.6;
+        public static final double L1_POSITION_RADIANS = 1.85
+        ;
+        public static final double L1_PLACE_POSITION_RADIANS = 2.5
+        ;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
-        public static final double L2_POSITION_RADIANS = 2.55;
-        public static final double L3_POSITION_RADIANS = 2.55;
+        public static final double L2_POSITION_RADIANS = 2.45;
+        public static final double L3_POSITION_RADIANS = 2.45;
         public static final double L2_WITH_ALGAE_RADIANS = 2.2;
-        public static final double L3_WITH_ALGAE_RADIANS = 2.2;
-        public static final double L4_POSITION_RADIANS = 2.38;
+        public static final double L3_WITH_ALGAE_RADIANS = 2.1;
+        public static final double L4_POSITION_RADIANS = 2.28;
         public static final double L2_ALGAE_REMOVAL = 0.8;
         public static final double L3_ALGAE_REMOVAL = 1.3;
         public static final double BACK_ALGAE_TOSS = 0;
@@ -815,7 +817,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 120; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 200; // Process 1 of every 80 frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
