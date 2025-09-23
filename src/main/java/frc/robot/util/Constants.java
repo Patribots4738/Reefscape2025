@@ -228,9 +228,9 @@ public final class Constants {
 
 
         public static final GainConstants AUTO_XY_GAINS = new GainConstants(
-            3.5, 
+            4.0, 
             0.0, 
-            1.0
+            0.9
         );
 
         public static final GainConstants TELE_XY_GAINS = new GainConstants(
@@ -456,7 +456,7 @@ public final class Constants {
 
         public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.279785;
         public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.082031;
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.080811;
         public static final double REAR_RIGHT_TURN_ENCODER_OFFSET =  -0.113037;
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
