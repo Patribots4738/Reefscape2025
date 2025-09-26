@@ -689,12 +689,10 @@ public final class Constants {
         public static final double POSITION_SIGNUM_DEADBAND_RADIANS = 0.2;
         public static final double STOW_POSITION_RADIANS = 0.0;
         // public static final double INTAKE_POSITION_RADIANS = -0.67;
-        public static final double INTAKE_POSITION_RADIANS = -0.544;
+        public static final double INTAKE_POSITION_RADIANS = -0.54;
         public static final double DUMP_POSITION_RADIANS = -0.6;
-        public static final double L1_POSITION_RADIANS = 1.85
-        ;
-        public static final double L1_PLACE_POSITION_RADIANS = 2.5
-        ;
+        public static final double L1_POSITION_RADIANS = 1.85;
+        public static final double L1_PLACE_POSITION_RADIANS = 2.5;
         // public static final double L2_POSITION_RADIANS = 2.41;
         // public static final double L3_POSITION_RADIANS = 2.41;
         // public static final double L4_POSITION_RADIANS = 2.32;
@@ -817,7 +815,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 200; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 30; // Process 1 of every 80 frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
