@@ -19,7 +19,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "5-F"
+                              "pathName": "5-E"
                             }
                           },
                           {
@@ -34,7 +34,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "PAlignF"
+                        "name": "PAlignE"
                       }
                     }
                   ]
@@ -44,12 +44,6 @@
                 "type": "sequential",
                 "data": {
                   "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "WaitUntilShouldRaisePreload"
-                      }
-                    },
                     {
                       "type": "named",
                       "data": {
@@ -79,7 +73,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "F-CS2"
+                        "pathName": "E-CS2"
                       }
                     },
                     {
