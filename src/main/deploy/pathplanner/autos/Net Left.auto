@@ -149,70 +149,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "N-CA"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AlgaeIntakeStart"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CA-FN"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AlgaeIntakeStop"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PrepareNetFar"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceNet"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Stow"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "FN-END L"
+                  "pathName": "N-END L"
                 }
               }
             ]

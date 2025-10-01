@@ -19,7 +19,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "3-I"
+                              "pathName": "3-J"
                             }
                           },
                           {
@@ -34,7 +34,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "PAlignI"
+                        "name": "PAlignJ"
                       }
                     }
                   ]
@@ -79,7 +79,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "I-CS1"
+                        "pathName": "J-CS1"
                       }
                     },
                     {
