@@ -297,6 +297,18 @@ public class Superstructure {
 
     }
 
+    // sets the state of the motors to neutral in the case the superstructure
+    // is stuck and we need to end the PID input to prevent browning-out
+    // will not affect the climb
+    public Command killSuperStructure() {
+        return Commands.parallel(
+            algaeClaw.setNeutralCommand(),
+            coralClaw.setNeutralCommand(),
+            elevator.setNeutralCommand(),
+            wrist.setNeutralCommand()
+        );
+    }
+
     // This command allows us to consistently transition between superstructure states.
     // Note that this command is not safe if the end configuration is not possible, for example if the final goal has the claw inside the climb.
     public Command setSuperState(SuperState nextState) {

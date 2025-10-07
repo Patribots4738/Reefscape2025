@@ -351,6 +351,9 @@ public class RobotContainer {
 
     private void configureOperatorBindings(PatriBoxController controller) {
 
+        controller.rightStick().and(controller.leftStick())
+            .onTrue(superstructure.killSuperStructure());
+
         controller.leftBumper()
             .onTrue(superstructure.coralIntakeCommand(controller::getLeftBumper));
 
