@@ -565,7 +565,7 @@ public final class Constants {
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
         public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
-        public static final double NET_X_CHASSIS_OFFSET = 1.0;
+        public static final double NET_X_CHASSIS_OFFSET = 0.58;
 
     }
     public static final class ElevatorConstants {
@@ -636,7 +636,8 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 9;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.705;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.636;
+        
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -712,8 +713,8 @@ public final class Constants {
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
-        public static final double NET_PREP_RADIANS = 1.35;
-        public static final double NET_RADIANS = 2.0;
+        public static final double NET_PREP_RADIANS = 1.85;
+        public static final double NET_RADIANS = 1.85;
         public static final double NET_FLICK_RADIANS = 2.0;
     }
 

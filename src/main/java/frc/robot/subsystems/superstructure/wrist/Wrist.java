@@ -69,6 +69,7 @@ public class Wrist extends SubsystemBase {
 
         Logger.recordOutput("Subsystems/Wrist/AtTargetPosition", atTargetPosition());
         Logger.recordOutput("Subsystems/Wrist/TargetPosition", targetState.position);
+        Logger.recordOutput("Subsystems/Wrist/EncoderWantToBreak", getPosition() > WristConstants.MAX_ANGLE_RADIANS);
 
         if (shouldRunSetpoint) {
             setpoint = (shouldRunFast ? fastProfile : slowProfile).calculate(0.02, setpoint, targetState);
