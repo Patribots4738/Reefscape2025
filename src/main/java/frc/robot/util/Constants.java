@@ -565,7 +565,8 @@ public final class Constants {
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
         public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
-        public static final double NET_X_CHASSIS_OFFSET = 0.58;
+        public static final double NET_X_CHASSIS_OFFSET = 1.0;
+        public static final double NET_FAR_X_CHASSIS_OFFSET = 1.08;
 
     }
     public static final class ElevatorConstants {
