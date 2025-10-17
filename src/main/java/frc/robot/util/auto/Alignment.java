@@ -252,8 +252,8 @@ public class Alignment {
         boolean isRedAlliance = Robot.isRedAlliance();
         boolean onRedSide = PoseCalculations.isOnRedSide(swerve.getPose());
         double x = onRedSide 
-            ? FieldConstants.FIELD_MAX_LENGTH / 2 + AlgaeClawConstants.NET_X_CHASSIS_OFFSET
-            : FieldConstants.FIELD_MAX_LENGTH / 2 - AlgaeClawConstants.NET_X_CHASSIS_OFFSET;
+            ? FieldConstants.FIELD_MAX_LENGTH / 2 + (alignmentIndex == -1 ? AlgaeClawConstants.NET_X_CHASSIS_OFFSET : AlgaeClawConstants.NET_FAR_X_CHASSIS_OFFSET)
+            : FieldConstants.FIELD_MAX_LENGTH / 2 - (alignmentIndex == -1 ? AlgaeClawConstants.NET_X_CHASSIS_OFFSET : AlgaeClawConstants.NET_FAR_X_CHASSIS_OFFSET);
         double y = isRedAlliance
             ? MathUtil.clamp(swerve.getPose().getY(), 0, FieldConstants.FIELD_MAX_HEIGHT / 2)
             : MathUtil.clamp(swerve.getPose().getY(), FieldConstants.FIELD_MAX_HEIGHT / 2, FieldConstants.FIELD_MAX_HEIGHT);
@@ -371,6 +371,7 @@ public class Alignment {
                 case CAGE -> MathUtil.clamp(alignmentIndex, 0, FieldConstants.GET_CAGE_POSITIONS().size() - 1);
                 case REEF, REEF_PREP -> MathUtil.clamp(alignmentIndex, 0, 1);
                 case INTAKE -> MathUtil.clamp(alignmentIndex, 0, 2);
+                case NET -> MathUtil.clamp(alignmentIndex, -1, 0);
                 default -> alignmentIndex = -1;
             };
     }
