@@ -234,9 +234,9 @@ public final class Constants {
         );
 
         public static final GainConstants TELE_XY_GAINS = new GainConstants(
-            4.0, 
+            3.6, 
             0, 
-            0.0
+            0
         );
 
         // public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
@@ -713,7 +713,7 @@ public final class Constants {
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
         public static final double NET_PREP_RADIANS = 1.45;
-        public static final double NET_RADIANS = 2;
+        public static final double NET_RADIANS = 2.0;
         public static final double NET_FLICK_RADIANS = 2.0;
     }
 
@@ -817,7 +817,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 50; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 230; // Process 1 of every 80 frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
