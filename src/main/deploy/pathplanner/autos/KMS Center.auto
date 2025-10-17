@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4-Dr"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ForceCoralOuttake"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Full Auto",
+  "choreoAuto": false
+}
