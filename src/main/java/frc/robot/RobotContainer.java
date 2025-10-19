@@ -469,7 +469,8 @@ public class RobotContainer {
     
     private void prepareNamedCommands() {
 
-        NamedCommands.registerCommand("ForceCoralOuttake", coralClaw.setPercentCommand(CoralClawConstants.OUTTAKE_PERCENT));
+        NamedCommands.registerCommand("ForceCoralOut", coralClaw.setPercentCommand(-1.0));
+        NamedCommands.registerCommand("KillSuperStructure", superstructure.killSuperStructure());
         NamedCommands.registerCommand("CoralIntakeStart", superstructure.coralAutoIntakeStartCommand());
         NamedCommands.registerCommand("CoralIntakeStop", superstructure.coralAutoIntakeStopCommand());
         NamedCommands.registerCommand("Stow", superstructure.setSuperState(superstructure.READY_STOW));

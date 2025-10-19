@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "5-Br"
+            "pathName": "4-Leave"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ForceCoralOuttake"
+            "name": "KillSuperStructure"
           }
         }
       ]
