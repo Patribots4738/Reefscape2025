@@ -80,6 +80,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.0
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "PlaceNet"
@@ -137,6 +143,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "PlaceNet"
@@ -150,6 +162,12 @@
                 "type": "path",
                 "data": {
                   "pathName": "N-END L"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stow"
                 }
               }
             ]
