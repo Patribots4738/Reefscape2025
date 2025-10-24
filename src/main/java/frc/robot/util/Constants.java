@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.DEVBOT;
+        private static RobotType robotType = RobotType.COMPBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
@@ -820,7 +820,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 230; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 25; // Process 1 of every 80 frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
