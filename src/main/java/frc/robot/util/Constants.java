@@ -638,9 +638,9 @@ public final class Constants {
     public static final class WristConstants {
 
         public static final int CAN_ID = 12;
-        public static final int ENCODER_DIO_PIN = 9;
+        public static final int ENCODER_DIO_PIN = 7;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.636;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 4.702;
         
         public static final boolean ENCODER_INVERTED = false;
 
