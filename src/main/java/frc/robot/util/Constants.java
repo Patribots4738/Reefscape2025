@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.DEVBOT;
+        private static RobotType robotType = RobotType.COMPBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
@@ -568,7 +568,7 @@ public final class Constants {
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
         public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
-        public static final double NET_X_CHASSIS_OFFSET = 1.0;
+        public static final double NET_X_CHASSIS_OFFSET = 1.05;
         public static final double NET_FAR_X_CHASSIS_OFFSET = 1.39;
 
     }
@@ -626,7 +626,7 @@ public final class Constants {
         public static final double L3_POSITION_REMOVE_ALGAE = 0.15;
         public static final double L2_POSITION_REMOVE_ALGAE = 0.0;
         public static final double PROCESSOR_METERS = 0;
-        public static final double NET_PREP_METERS = 0.54;
+        public static final double NET_PREP_METERS = MAX_DISPLACEMENT_METERS;
         public static final double NET_PLACE_METERS = MAX_DISPLACEMENT_METERS;
 
         public static final double VELOCITY_DEADBAND_MPS = 0.2;
@@ -638,9 +638,9 @@ public final class Constants {
     public static final class WristConstants {
 
         public static final int CAN_ID = 12;
-        public static final int ENCODER_DIO_PIN = 9;
+        public static final int ENCODER_DIO_PIN = 7;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.636;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 4.7065;
         
         public static final boolean ENCODER_INVERTED = false;
 
@@ -820,7 +820,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 230; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 25; // Process 1 of every 80 frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
