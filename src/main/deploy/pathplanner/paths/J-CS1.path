@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.423244383647994,
-        "y": 5.8916117598825215
+        "x": 5.289041095890411,
+        "y": 6.301391267123288
       },
       "isLocked": false,
       "linkedName": "J"
@@ -20,8 +20,8 @@
         "y": 7.320572648179957
       },
       "prevControl": {
-        "x": 2.817232299444257,
-        "y": 6.479480126415605
+        "x": 1.752385461687256,
+        "y": 7.12327872807736
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,6 +34,19 @@
       "name": "SlowIntake",
       "minWaypointRelativePos": 0.5806451612903225,
       "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 6.0,
+        "maxAngularVelocity": 270.0,
+        "maxAngularAcceleration": 450.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.49624060150375937,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 6.0,
