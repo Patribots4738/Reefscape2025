@@ -820,7 +820,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 25; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 0; // Process 1 of every n frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
