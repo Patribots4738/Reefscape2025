@@ -640,7 +640,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 7;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 4.7065;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.695;
         
         public static final boolean ENCODER_INVERTED = false;
 
@@ -820,7 +820,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 0; // Process 1 of every n frames
+        public static final int DISABLED_THROTTLE = 50; // Process 1 of every n frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
