@@ -362,7 +362,7 @@ public final class Constants {
         // Calculations required for driving motor conversion factors and feed forward
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = NeoMotorConstants.VORTEX_FREE_SPEED_RPM / 60;
         // **********************************************************************MAX SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.4642497827983136*2.0);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9160266045332792*2.0);
         // **********************************************************************MAX SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
         // 45 teeth on the wheel's bevel gear, 15 teeth on the bevel pinion
@@ -470,7 +470,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.886163759699379 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9160266045332792 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -640,7 +640,7 @@ public final class Constants {
         public static final int CAN_ID = 12;
         public static final int ENCODER_DIO_PIN = 7;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 4.7065;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.695;
         
         public static final boolean ENCODER_INVERTED = false;
 
@@ -820,7 +820,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 25; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 50; // Process 1 of every n frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
