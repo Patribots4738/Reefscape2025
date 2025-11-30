@@ -69,12 +69,12 @@ public class PathPlannerStorage {
                                     AutoBuilder.followPath(pathToReef),
                                     NamedCommands.getCommand("WaitUntilShouldAlign")
                                 ),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.5),
                                 NamedCommands.getCommand("Align" + reefNode)
                             ),
                             Commands.sequence(
                                 NamedCommands.getCommand("WaitUntilShouldRaiseJ4"),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.75),
                                 NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
                             )
                         ),
@@ -102,12 +102,12 @@ public class PathPlannerStorage {
                                     AutoBuilder.followPath(pathToReef),
                                     NamedCommands.getCommand("WaitUntilShouldAlign")
                                 ),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.5),
                                 NamedCommands.getCommand("Align" + reefNode)
                             ),
                             Commands.sequence(
                                 NamedCommands.getCommand("WaitUntilShouldRaiseE4"),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.75),
                                 NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
                             )
                         ),
@@ -135,12 +135,12 @@ public class PathPlannerStorage {
                                     AutoBuilder.followPath(pathToReef),
                                     NamedCommands.getCommand("WaitUntilShouldAlign")
                                 ),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.5),
                                 NamedCommands.getCommand("Align" + reefNode)
                             ),
                             Commands.sequence(
                                 NamedCommands.getCommand("WaitUntilShouldRaiseA4"),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.75),
                                 NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
                             )
                         ),
@@ -168,12 +168,12 @@ public class PathPlannerStorage {
                                     AutoBuilder.followPath(pathToReef),
                                     NamedCommands.getCommand("WaitUntilShouldAlign")
                                 ),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.5),
                                 NamedCommands.getCommand("Align" + reefNode)
                             ),
                             Commands.sequence(
                                 NamedCommands.getCommand("WaitUntilShouldRaiseB4"),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.75),
                                 NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
                             )
                         ),
@@ -201,12 +201,12 @@ public class PathPlannerStorage {
                                 AutoBuilder.followPath(pathToReef),
                                 NamedCommands.getCommand("WaitUntilShouldAlign")
                             ),
-                            NamedCommands.getCommand("WaitForCoralHard").withTimeout(1.0),
+                            NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.5),
                             NamedCommands.getCommand("Align" + reefNode)
                             ),
                             Commands.sequence(
                                 NamedCommands.getCommand("WaitUntilShouldRaise"),
-                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(2.0),
+                                NamedCommands.getCommand("WaitForCoralHard").withTimeout(0.75),
                                 NamedCommands.getCommand("Coral" + reefLevel + "WithCoral")
                             )
                         ),

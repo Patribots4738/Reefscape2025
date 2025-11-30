@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.DEVBOT;
+        private static RobotType robotType = RobotType.COMPBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
@@ -234,9 +234,9 @@ public final class Constants {
         );
 
         public static final GainConstants TELE_XY_GAINS = new GainConstants(
-            4.0, 
+            3.6, 
             0, 
-            0.0
+            0
         );
 
         // public static final LoggedGainConstants LOGGED_TELE_XY_GAINS = new LoggedGainConstants(AutoConstants.TELE_XY_GAINS, "TeleXY");
@@ -297,7 +297,10 @@ public final class Constants {
             "4P Right COMP",
             "Buddy 4P Left",
             "Net Left",
-            "Net Right"
+            "Net Right",
+            "Leave Left",
+            "Leave Right",
+            "Leave Center"
         };
 
         public static final double REEF_ALIGNMENT_MULTIPLIER = 0.5;
@@ -359,7 +362,7 @@ public final class Constants {
         // Calculations required for driving motor conversion factors and feed forward
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = NeoMotorConstants.VORTEX_FREE_SPEED_RPM / 60;
         // **********************************************************************MAX SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.4642497827983136*2.0);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9160266045332792*2.0);
         // **********************************************************************MAX SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
         // 45 teeth on the wheel's bevel gear, 15 teeth on the bevel pinion
@@ -454,10 +457,10 @@ public final class Constants {
         
         public static final SwerveGearing CURRENT_GEARING = SwerveGearing.L2;
 
-        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.279785;
-        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936;
-        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.080811;
-        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET =  -0.113037;
+        public static final double FRONT_LEFT_TURN_ENCODER_OFFSET = 0.280029; 
+        public static final double FRONT_RIGHT_TURN_ENCODER_OFFSET = -0.283936; 
+        public static final double REAR_LEFT_TURN_ENCODER_OFFSET = 0.080322; 
+        public static final double REAR_RIGHT_TURN_ENCODER_OFFSET =  -0.116211; 
 
         public static final double TURNING_MOTOR_REDUCTION = 12.8;
 
@@ -467,7 +470,7 @@ public final class Constants {
 
         public static final double DRIVING_MOTOR_FREE_SPEED_RPS = KrakenMotorConstants.KRAKENX60_FREE_SPEED_RPM_FOC / 60;
         // **********************************************************************MK4c SWERVE**********************
-        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.886163759699379 * 2);
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(1.9160266045332792 * 2);
         // **********************************************************************MK4c SWERVE**********************
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
@@ -565,7 +568,8 @@ public final class Constants {
         public static final double PLACING_NAMED_COMMAND_TIME = 0.5;
 
         public static final double PROCESSOR_X_CHASSIS_OFFSET = 0.0;
-        public static final double NET_X_CHASSIS_OFFSET = 1.08;
+        public static final double NET_X_CHASSIS_OFFSET = 1.05;
+        public static final double NET_FAR_X_CHASSIS_OFFSET = 1.39;
 
     }
     public static final class ElevatorConstants {
@@ -634,9 +638,10 @@ public final class Constants {
     public static final class WristConstants {
 
         public static final int CAN_ID = 12;
-        public static final int ENCODER_DIO_PIN = 9;
+        public static final int ENCODER_DIO_PIN = 7;
 
-        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 0.68;
+        public static final double ENCODER_POSITION_OFFSET_ROTATIONS = 2.695;
+        
         public static final boolean ENCODER_INVERTED = false;
 
         public static final boolean BRAKE_MOTOR = true;
@@ -710,7 +715,7 @@ public final class Constants {
         public static final double TRANSITION_RADIANS = 1.57;
         public static final double UNDER_THRESHOLD_RADIANS = 1.2;
 
-        public static final double NET_PREP_RADIANS = 1.35;
+        public static final double NET_PREP_RADIANS = 1.45;
         public static final double NET_RADIANS = 2.0;
         public static final double NET_FLICK_RADIANS = 2.0;
     }
@@ -815,7 +820,7 @@ public final class Constants {
     public static final class CameraConstants {
 
         public static final int ENABLED_THROTTLE = 0; // Process every frame
-        public static final int DISABLED_THROTTLE = 50; // Process 1 of every 80 frames
+        public static final int DISABLED_THROTTLE = 50; // Process 1 of every n frames
 
         public static Pose3d LL3G_POSE = new Pose3d( 
             -0.312655,
