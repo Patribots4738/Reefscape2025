@@ -49,6 +49,9 @@ public class Module {
         // Optimize the reference state to avoid spinning further than 90 degrees.
         this.desiredState.optimize(new Rotation2d(inputs.turnEncoderAbsPositionRads));
 
+        // Multiply and update the speed by the cosine of the difference in the angle between the desired and current angle to limit skew when changing direction
+        this.desiredState.speedMetersPerSecond *= this.desiredState.angle.minus(new Rotation2d(inputs.turnEncoderAbsPositionRads)).getCos();
+
         // Command driving and turning TalonFX towards their respective setpoints.
         io.runDriveVelocity(this.desiredState.speedMetersPerSecond, feedforward);
         io.setTurnPosition(this.desiredState.angle.getRadians());
