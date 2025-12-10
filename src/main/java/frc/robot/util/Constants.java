@@ -52,12 +52,12 @@ public final class Constants {
 
     public static final class LoggingConstants {
 
-        private static RobotType robotType = RobotType.COMPBOT;
+        private static RobotType robotType = RobotType.DEVBOT;
 
         public static RobotType getRobot() {
             if (FieldConstants.IS_REAL && robotType == RobotType.SIMBOT) {
                 System.out.println("Incorrect robot type selected, changing to real robot");
-                robotType = RobotType.COMPBOT;
+                robotType = RobotType.DEVBOT;
             }
             return robotType;
         }
