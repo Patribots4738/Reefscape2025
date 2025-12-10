@@ -297,6 +297,10 @@ public class RobotContainer {
     private void configureDriverBindings(PatriBoxController controller) {
 
         controller.start().onTrue(vision.toggleMT1Command());
+
+        controller.leftStick().onTrue(swerve.setSlowDrive());
+
+        controller.rightStick().and(controller.leftStick()).onTrue(swerve.setNormalDrive());
         
         controller.rightStick()
             .toggleOnTrue(

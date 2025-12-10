@@ -34,6 +34,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -66,6 +67,10 @@ public class Swerve extends SubsystemBase {
 
     private final SwerveSetpointGenerator setpointGenerator;
     private SwerveSetpoint previousSetpoint;
+
+    private double driveMultiplier;
+    private double maxLinearVelocity;
+    private double maxAngularVelocity;
 
     // private final LoggedTunableNumber driveMultiplier = new LoggedTunableNumber("Swerve/DriveMultiplier", 1.0);
     // private final LoggedTunableNumber driveMaxLinearVelocity = new LoggedTunableNumber("Swerve/DriveLinearVelocity", DriveConstants.MAX_SPEED_METERS_PER_SECOND);
@@ -122,6 +127,10 @@ public class Swerve extends SubsystemBase {
             rearRight
         };
             
+        driveMultiplier = 1.0;
+        maxLinearVelocity = DriveConstants.MAX_SPEED_METERS_PER_SECOND;
+        maxAngularVelocity = DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND;
+
         gyro = new Gyro(new GyroIOPigeon2(DriveConstants.GYRO_CAN_ID));
 
         resetEncoders();
@@ -371,16 +380,36 @@ public class Swerve extends SubsystemBase {
         return average / 4.0;
     }
 
+    public void setSpeedsSlow() {
+        this.driveMultiplier = 0.5;
+        this.maxLinearVelocity = 2.25;
+        this.maxAngularVelocity = 568.605;
+    }
+
+    public void setSpeedsNormal() {
+        this.driveMultiplier = 1.0;
+        this.maxLinearVelocity = DriveConstants.MAX_SPEED_METERS_PER_SECOND;
+        this.maxAngularVelocity = DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND;
+    }
+
+    public Command setSlowDrive() {
+        return run(this::setSpeedsSlow);
+    }
+
+    public Command setNormalDrive() {
+        return run(this::setSpeedsNormal);
+    }
+
     public double getMaxLinearVelocity() {
-        return DriveConstants.MAX_SPEED_METERS_PER_SECOND;
+        return maxLinearVelocity;
     }
 
     public double getMaxAngularVelocity() {
-        return DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND;
+        return maxAngularVelocity;
     }
 
     public double getDriveMultiplier() {
-        return 1.0;
+        return driveMultiplier;
     }
     
     @AutoLogOutput (key = "Subsystems/Swerve/DesiredHDCPose")
@@ -419,7 +448,7 @@ public class Swerve extends SubsystemBase {
 
     public Command getSetWheelsO() {
         return run(this::setWheelsO);
-    }  
+    }
 
     public void setWheelsZero() {
         for (Module mod : swerveModules) {
