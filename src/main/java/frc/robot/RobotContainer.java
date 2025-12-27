@@ -41,6 +41,8 @@ import frc.robot.subsystems.superstructure.wrist.Wrist;
 import frc.robot.subsystems.superstructure.wrist.WristIOKraken;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
+import frc.robot.util.Constants;
+import frc.robot.util.Constants.AlgaeClawConstants;
 import frc.robot.util.Constants.AutoConstants;
 import frc.robot.util.Constants.CoralClawConstants;
 import frc.robot.util.Constants.FieldConstants;
@@ -229,12 +231,35 @@ public class RobotContainer {
                 configureDevBindings(driver);
                 break;
             case DOUBLE:
+                swerve.setSpeedsNormal();
                 configureDriverBindings(driver);
                 configureOperatorBindings(operator);
                 break;
             case CALIBRATION:
                 configureCalibrationBindings(driver);
+                break;
+            case DEMO:
+                swerve.setSpeedsSlow();
+                configureDemoBindings(driver);
         }
+    }
+
+    private void configureDemoBindings(PatriBoxController controller) {
+        controller.rightBumper()
+            .onTrue(superstructure.algaeTreeCommand());
+
+        controller.leftTrigger()
+            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
+
+        controller.a()
+            .onTrue(algaeClaw.setPercentCommand(AlgaeClawConstants.OUTTAKE_PERCENT));
+
+        controller.povUp()
+            .onTrue(superstructure.netPrepCommand());
+
+        controller.povDown()
+            .onTrue(superstructure.setSuperState(superstructure.STOW));
+
     }
 
     private void configureMiscTriggers() {
@@ -297,10 +322,6 @@ public class RobotContainer {
     private void configureDriverBindings(PatriBoxController controller) {
 
         controller.start().onTrue(vision.toggleMT1Command());
-
-        controller.leftStick().onTrue(swerve.setSlowDrive());
-
-        controller.rightStick().and(controller.leftStick()).onTrue(swerve.setNormalDrive());
         
         controller.rightStick()
             .toggleOnTrue(

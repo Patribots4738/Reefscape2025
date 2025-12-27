@@ -68,7 +68,6 @@ public class Swerve extends SubsystemBase {
     private final SwerveSetpointGenerator setpointGenerator;
     private SwerveSetpoint previousSetpoint;
 
-    private double driveMultiplier;
     private double maxLinearVelocity;
     private double maxAngularVelocity;
 
@@ -127,7 +126,6 @@ public class Swerve extends SubsystemBase {
             rearRight
         };
             
-        driveMultiplier = 1.0;
         maxLinearVelocity = DriveConstants.MAX_SPEED_METERS_PER_SECOND;
         maxAngularVelocity = DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND;
 
@@ -381,13 +379,11 @@ public class Swerve extends SubsystemBase {
     }
 
     public void setSpeedsSlow() {
-        this.driveMultiplier = 0.5;
         this.maxLinearVelocity = 2.25;
         this.maxAngularVelocity = 568.605;
     }
 
     public void setSpeedsNormal() {
-        this.driveMultiplier = 1.0;
         this.maxLinearVelocity = DriveConstants.MAX_SPEED_METERS_PER_SECOND;
         this.maxAngularVelocity = DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND;
     }
@@ -409,7 +405,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public double getDriveMultiplier() {
-        return driveMultiplier;
+        return 1.0;
     }
     
     @AutoLogOutput (key = "Subsystems/Swerve/DesiredHDCPose")

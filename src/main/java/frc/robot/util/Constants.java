@@ -810,10 +810,11 @@ public final class Constants {
         public enum DriverMode {
             DOUBLE,
             DEV,
-            CALIBRATION
+            CALIBRATION,
+            DEMO
         }
 
-        public static final DriverMode DRIVER_MODE = DriverMode.DOUBLE;
+        public static final DriverMode DRIVER_MODE = DriverMode.DEMO;
 
     }
 
