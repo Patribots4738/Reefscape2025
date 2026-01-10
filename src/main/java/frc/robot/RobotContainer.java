@@ -246,12 +246,9 @@ public class RobotContainer {
 
     private void configureDemoBindings(PatriBoxController controller) {
         controller.rightBumper()
-            .onTrue(superstructure.algaeTreeCommand());
+            .onTrue(superstructure.algaeRemovalCommand());
 
         controller.leftTrigger()
-            .onTrue(superstructure.placeCommand(controller::getRightTrigger));
-
-        controller.a()
             .onTrue(algaeClaw.setPercentCommand(AlgaeClawConstants.OUTTAKE_PERCENT));
 
         controller.povUp()

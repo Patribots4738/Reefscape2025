@@ -379,8 +379,8 @@ public class Swerve extends SubsystemBase {
     }
 
     public void setSpeedsSlow() {
-        this.maxLinearVelocity = 2.25;
-        this.maxAngularVelocity = 568.605;
+        this.maxLinearVelocity = 0.5;
+        this.maxAngularVelocity = 7;
     }
 
     public void setSpeedsNormal() {
