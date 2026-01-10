@@ -549,16 +549,17 @@ public class Superstructure {
                 (targetState.clawState.coralPercent != 0 && !coralClaw.hasPiece() 
                     || targetState.clawState.algaePercent != 0 && !algaeClaw.hasPiece())),
             stopOuttakeCommand(),
-            Commands.waitUntil(() -> !shouldEvadeReef()),
-            Commands.either(
-                setSuperState(CLIMB_READY), 
-                Commands.either(
-                    setSuperState(ALGAE_CARRY), 
-                    setSuperState(READY_STOW), 
-                    algaeClaw::hasPiece
-                ),
-                () -> shouldEndgameNet() && targetState.armState == ArmState.NET_EXIT
-            )
+            Commands.waitUntil(() -> !shouldEvadeReef())
+            // ,
+            // Commands.either(
+            //     setSuperState(CLIMB_READY), 
+            //     Commands.either(
+            //         setSuperState(ALGAE_CARRY), 
+            //         setSuperState(READY_STOW), 
+            //         algaeClaw::hasPiece
+            //     ),
+            //     () -> shouldEndgameNet() && targetState.armState == ArmState.NET_EXIT
+            // )
         );
     }
 
