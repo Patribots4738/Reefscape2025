@@ -125,11 +125,7 @@ public class Swerve extends SubsystemBase {
             rearLeft,
             rearRight
         };
-<<<<<<< HEAD
-    
-=======
             
->>>>>>> ccd581b27c6d3dde80e9f63121c3c967b4257096
         maxLinearVelocity = DriveConstants.MAX_SPEED_METERS_PER_SECOND;
         maxAngularVelocity = DriveConstants.MAX_ANGULAR_SPEED_RADS_PER_SECOND;
 
